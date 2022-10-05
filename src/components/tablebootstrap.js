@@ -1,13 +1,5 @@
-const options = {
-    url: "https://jsonplaceholder.typicode.com/posts",
-    method: 'get'
-}
-
-async function generateTableBootstrap(options = {}) {
-    const response = await fetch(options.url)
-    const data = await response.json()
-
-    const loyaut = `
+async function generateTableBootstrap(data = []) {
+    const layout = `
     <table class="table">
         <thead>
             <tr>
@@ -19,7 +11,7 @@ async function generateTableBootstrap(options = {}) {
         </tbody>
     </table>
     `
-    return loyaut
+    return layout
 }
 
 function generateTableHeaders(titles = []) {

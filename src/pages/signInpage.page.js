@@ -1,4 +1,4 @@
-const loyaut = `
+const layout = `
 <div class="overlay">
 <div class="d-flex justify-content-center">
   <div class="spinner-border" role="status">
@@ -103,7 +103,7 @@ const loyaut = `
 function renderSignInPage() {
     const signIn = document.createElement('div')
     signIn.insertAdjacentHTML(
-      "afterbegin", loyaut)
+      "afterbegin", layout)
       document.body.prepend(signIn)
 
       const email = signIn.querySelector('#emailinput')

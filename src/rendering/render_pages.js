@@ -1,21 +1,20 @@
 const renderPages = {
-    'home': renderHomePage,
-    'orders' : renderOrdersPage,
-    'sign In': renderSignInPage,
-    'add new order': renderNewOrderPage,
-    'products' : renderProductsPage
+    'Home': renderHomePage,
+    'Orders' : renderOrdersPage,
+    'Sign In': renderSignInPage,
+    'Add new order': renderNewOrderPage,
+    'Products' : renderProductsPage,
+    'Landing' : renderLandingPage
 }
 
 function renderNewOrderPage(options) {
     deleteContent()
-    // renderTitle(options)
     clickOnSideMenuAsync(renderNewOrder, options)
 }
 
 async function renderProductsPage(options) {
     deleteContent()
     await clickOnSideMenuAsync(_createTableBootstrap,options)
-    // _createTableBootstrap()
     renderTitle(options)
     sideMenuActivateElement('Products');
 }
@@ -29,12 +28,20 @@ function renderHomePage() {
     sideMenuActivateElement('Home')
 }
 
-function renderOrdersPage(options) {
-    deleteContent()
-    clickOnSideMenuAsync(_createTable, options)
-    renderTitle(options)
-    sideMenuActivateElement('Orders');
+
+async function renderOrdersPage(options = {}) {
+    const spinner = document.querySelector(`.overlay`);
+    spinner.style.display = "block";
+    document.getElementById(CONTENTCONTAINERID).innerHTML = await renderOrderPageContent(options)
+    spinner.style.display = "none";
+    sideMenuActivateElement(options.path);
 }
+
+function renderLandingPage(options = {}) {
+    document.querySelector('body').innerHTML = renderLandingPageLayout(options)
+}
+
+
 
 function renderTitle(options) {
     const title = document.querySelector('.pageTitle')

@@ -1,19 +1,20 @@
 const token = localStorage.getItem("token");
-token ? renderPages['home']() : renderPages['sign In']();
+// token ? renderPages['home']() : renderPages['sign In']();
+token ? renderPages['Landing'](landingProps) : renderPages['Sign In']();
 
 
 
 async function sideMenuClickHandler(page) {
   switch (page) {
-    case "home":
+    case "Home":
       renderPages[page]();
       break;
 
-    case "orders":
+    case "Orders":
       await renderPages[page](OrderProps);
       break;
 
-    case "products":
+    case "Products":
       renderPages[page]({ title: "Products" });
       break;
   }
@@ -26,6 +27,7 @@ async function sideMenuClickHandler(page) {
 
   //   break;
 }
+
 
 function createData() {
   const data = document.createElement("div");
@@ -46,9 +48,6 @@ function removeData() {
   data.parentNode.removeChild(data);
 }
 
-const OrderProps = {
-  title: "Orders List",
-};
 
 const dashboardProps = {
   title: "Products list",
