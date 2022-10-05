@@ -1,7 +1,7 @@
-const SIDEBARID = 'sidebar'
+const SIDEBAR_ID = 'sidebar'
 const CONTENTCONTAINERID = 'root'
-const contentId = 'contentInner'
-const pageTitleId = 'title'
+const CONTENT_ID = 'contentInner'
+const PAGE_TITLE_ID = 'title'
 
 const getDataFromApi = async function(options = {}) {
     let response 

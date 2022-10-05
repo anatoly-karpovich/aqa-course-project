@@ -1,11 +1,11 @@
-async function renderOrderPageContent(options) {
+async function renderOrderPageLayout(options) {
     const data = await getDataFromApi(options)
     return `<div id="${CONTENTCONTAINERID}">
-                <div id="${pageTitleId}">
+                <div id="${PAGE_TITLE_ID}">
                     <h2 class="pageTitle">${options.title}</h2>
                     ${options.buttons ? options.buttons.map(el => `<button class="${el.classlist}">${el.text}</button>`) : ""}
                 </div>
-                <div id="${contentId}">
+                <div id="${CONTENT_ID}">
                   ${await generateTableBootstrap(data)}
                 </div>
             </div>`

@@ -1,5 +1,4 @@
 const token = localStorage.getItem("token");
-// token ? renderPages['home']() : renderPages['sign In']();
 token ? renderPages['Landing'](landingProps) : renderPages['Sign In']();
 
 
@@ -18,6 +17,10 @@ async function sideMenuClickHandler(page) {
       renderPages[page]({ title: "Products" });
       break;
   }
+
+
+
+
   // case 1:
   //   {
   //     await clickOnSideMenuAsync(_createTable);
@@ -36,7 +39,7 @@ function createData() {
     "afterbegin",
     `
         <div>
-            <h2>Zalupa</h2>
+            <h4>Home content</h4>
         </div>
       `
   );

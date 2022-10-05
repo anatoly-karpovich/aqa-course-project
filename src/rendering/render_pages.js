@@ -32,13 +32,18 @@ function renderHomePage() {
 async function renderOrdersPage(options = {}) {
     const spinner = document.querySelector(`.overlay`);
     spinner.style.display = "block";
-    document.getElementById(CONTENTCONTAINERID).innerHTML = await renderOrderPageContent(options)
+    document.getElementById(CONTENTCONTAINERID).innerHTML = await renderOrderPageLayout(options)
     spinner.style.display = "none";
     sideMenuActivateElement(options.path);
 }
 
 function renderLandingPage(options = {}) {
     document.querySelector('body').innerHTML = renderLandingPageLayout(options)
+    document.querySelector('#signOut').addEventListener('click', () => {
+        localStorage.removeItem('token')
+        document.querySelector('#sidemenu').parentNode.removeChild(document.querySelector('#sidemenu'))
+        renderSignInPage()
+})
 }
 
 

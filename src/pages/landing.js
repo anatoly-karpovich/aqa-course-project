@@ -1,22 +1,25 @@
 // import {renderSpinner} from '../components/spinner.js'
 function renderLandingPageLayout(options) {
     return `
+    ${getIconSvgHTML()}
+    <div id="sidemenu">
     ${renderSpinner()} 
         <div class="contentWrapper">
                 ${generateSidebar(options)}
                 <div id="root">
                     <div id="title">
-                        <h2 class="pageTitle">Dashboard</h2>
+                        <h2 class="pageTitle">Home Page</h2>
                     </div>
                     <div id="contentInner">
-                        <div class="zalupa">
+                        <div class="aaa">
                             <div>
-                                <h2>Zalupa</h2>
+                                <h4>Home Content</h4>
                             </div>
                         </div>
                     </div>
                 </div>
         </div>
+    </div>
     `
 }
 
