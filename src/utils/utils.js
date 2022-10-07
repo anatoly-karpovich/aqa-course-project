@@ -26,7 +26,7 @@ const getDataFromApi = async function(requestOpts = {}) {
     let response 
         try{
             response = await fetch(requestOpts.url, {...requestOpts.opts})
-            if(response.status == 200) {
+            if(response.status < 300) {
             response = await response.json() //.then(data => data.json())
             response.isSuccess = true
             } else {
