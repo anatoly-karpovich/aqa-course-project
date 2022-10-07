@@ -15,7 +15,7 @@ async function generateTableBootstrap(data = []) {
 }
 
 function generateTableHeaders(titles = []) {
-    return titles.map((title) => `<th scope="col" onClick="tableOnClickSort('${title}');">${title}</th>`).join("");
+    return titles.map((title) => `<th scope="col" onClick="tableOnClickSort('${title}');">${title}</th>`).join("") + `<th scope="col">View</th>`;
   }
   
   function generateTableBody(arr = []) {
@@ -24,6 +24,7 @@ function generateTableHeaders(titles = []) {
   
   function generateTableRow(obj = {}) {
     return Object.values(obj)
-      .map((value) => `<td>${value}</td>`)
-      .join("");
+      .map((value, index) => `<td>${index === Object.values(obj).length - 1 && (new Date(value)) ?  moment(value).format('MM/DD/YYYY') : value}</td>`)
+      .join("")  
+      + `<td><button class="btn btn-primary" onClick="alert('${1}')">Open</button></td>`;
   }

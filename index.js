@@ -6,7 +6,7 @@ token ? renderPages['Landing'](landingProps) : renderPages['Sign In']();
 async function sideMenuClickHandler(page) {
   switch (page) {
     case "Home":
-      renderPages[page]();
+      renderPages[page](homeProps);
       break;
 
     case "Orders":
@@ -16,19 +16,10 @@ async function sideMenuClickHandler(page) {
     case "Products":
       renderPages[page]({ title: "Products" });
       break;
-  }
-
-
-
-
-  // case 1:
-  //   {
-  //     await clickOnSideMenuAsync(_createTable);
-  //     sideMenuActivateElement(1);
-  //     // location.href = 'Dashboard'
-  //   }
-
-  //   break;
+  
+    case "Customers":
+      renderPages[page](CustomerProps)
+    }
 }
 
 
@@ -46,12 +37,3 @@ function createData() {
   document.querySelector("#contentInner").prepend(data);
 }
 
-function removeData() {
-  const data = document.querySelector(".zalupa");
-  data.parentNode.removeChild(data);
-}
-
-
-const dashboardProps = {
-  title: "Products list",
-};

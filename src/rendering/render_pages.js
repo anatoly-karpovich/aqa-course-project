@@ -4,12 +4,13 @@ const renderPages = {
     'Sign In': renderSignInPage,
     'Add new order': renderNewOrderPage,
     'Products' : renderProductsPage,
-    'Landing' : renderLandingPage
+    'Landing' : renderLandingPage,
+    'Customers' : renderCustomersPage
 }
 
 function renderNewOrderPage(options) {
     deleteContent()
-    clickOnSideMenuAsync(renderNewOrder, options)
+    clickOnSideMenuAsync(renderNewOrderLoyaut, options)
 }
 
 async function renderProductsPage(options) {
@@ -19,23 +20,32 @@ async function renderProductsPage(options) {
     sideMenuActivateElement('Products');
 }
 
-function renderHomePage() {
-    if(!document.querySelector('.contentWrapper')) {
-    _createSidebar();
-}
-    deleteContent()
-    createData()
-    sideMenuActivateElement('Home')
-}
-
-
 async function renderOrdersPage(options = {}) {
     const spinner = document.querySelector(`.overlay`);
     spinner.style.display = "block";
-    document.getElementById(CONTENTCONTAINERID).innerHTML = await renderOrderPageLayout(options)
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderOrderPageLayout(options)
     spinner.style.display = "none";
     sideMenuActivateElement(options.path);
 }
+
+async function renderCustomersPage(options = {}) {
+    const spinner = document.querySelector(`.overlay`);
+    spinner.style.display = "block";
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderCustomersPageLayout(options)
+    spinner.style.display = "none";
+    sideMenuActivateElement(options.path);
+    document.querySelector('button.pageTitle').addEventListener('click', () => renderAddNewCustomerPage() )
+}
+
+function renderAddNewCustomerPage(options = addNewCustomerProps) {
+    const spinner = document.querySelector(`.overlay`);
+    spinner.style.display = "block";
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderAddNewCustomerLayout(options)
+    spinner.style.display = "none";
+    sideMenuActivateElement(options.path);
+    addListenersToAddNewCustomerPage()
+}
+
 
 function renderLandingPage(options = {}) {
     document.querySelector('body').innerHTML = renderLandingPageLayout(options)
@@ -43,11 +53,16 @@ function renderLandingPage(options = {}) {
         localStorage.removeItem('token')
         document.querySelector('#sidemenu').parentNode.removeChild(document.querySelector('#sidemenu'))
         renderSignInPage()
-})
+    })
+}
+
+function renderHomePage(options = {}) {
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(options)
+    sideMenuActivateElement(options.path);
 }
 
 
-
+//Remove after refactor finishing
 function renderTitle(options) {
     const title = document.querySelector('.pageTitle')
     title.innerText = options.title
@@ -83,6 +98,7 @@ function sideMenuActivateElement(value) {
     li[index].classList.add("active");
   }
 
+  //to be deleted after Products Page implementation
 function deleteContent() {
     document.querySelector("#contentInner").innerHTML = "";
     // document.querySelector("#contentInner").removeChilds()

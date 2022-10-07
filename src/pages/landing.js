@@ -1,5 +1,4 @@
-// import {renderSpinner} from '../components/spinner.js'
-function renderLandingPageLayout(options) {
+function renderLandingPageLayout(options = landingProps) {
     return `
     ${getIconSvgHTML()}
     <div id="sidemenu">
@@ -11,21 +10,19 @@ function renderLandingPageLayout(options) {
                         <h2 class="pageTitle">Home Page</h2>
                     </div>
                     <div id="contentInner">
-                        <div class="aaa">
-                            <div>
-                                <h4>Home Content</h4>
-                            </div>
+                        <div>
+                            <h4>Home Content</h4>
                         </div>
                     </div>
                 </div>
+            </div>
         </div>
-    </div>
     `
 }
 
 const landingProps = {
     navbar: {
-        name: 'Sidebar',
+        name: 'Sales Portal',
         items: [
             {
                 name: 'Home',

@@ -117,14 +117,14 @@ function renderSignInPage() {
             spinner.style.display = 'block'
             setTimeout(() => {
             spinner.style.display = 'none'
-                _createSidebar()
+                
                 const token = '4fb18062-435d-11ed-b878-0242ac120002'
                 localStorage.setItem('token', token)
                 signIn.parentNode.removeChild(signIn)
+                renderLandingPage(landingProps)
             }, 1000)
            
         } else {
-            // alert(validateSignIn(email, password))
             const message = signIn.querySelector('#errorMessage')
             message.style.display = 'block'
             message.innerText = 'Credentials are required'

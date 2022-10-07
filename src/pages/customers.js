@@ -1,6 +1,8 @@
-async function renderOrderPageLayout(options = OrderProps) {
+async function renderCustomersPageLayout(options = CustomerProps) {
 
-    const data = await getDataFromApi(options)
+    const data = (await getDataFromApi(options.requestOpts)).map(el => { 
+        return {Id: el.id, Email: el.email, Name: el.name, Countrt: el.country, City: el.city, Address: el.address, Phone: el.phone, ['Registration Date']: el.date_create} 
+    })
 
     return `    <div id="${PAGE_TITLE_ID}">
                     <h2 class="pageTitle">${options.title}</h2>
@@ -11,15 +13,19 @@ async function renderOrderPageLayout(options = OrderProps) {
                 </div>`
 }
 
-const OrderProps = {
-    path: 'Orders',
-    url: "https://jsonplaceholder.typicode.com/posts",
-    method: 'get',
-    title: 'Orders List',
+const CustomerProps = {
+    path: 'Customers',
+    title: 'Customers List',
+    requestOpts: {
+        url: ENDPOINTS['Customers'],
+        opts: {
+            method: 'GET',
+        }
+    },
     buttons: [
         {
             classlist: "btn btn-primary pageTitle",
-            text: "Add New Order"
+            text: "Add New Customer"
         }
     ]
   }
