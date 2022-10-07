@@ -1,41 +1,68 @@
 const renderPages = {
-    'home': renderHomePage,
-    'orders' : renderOrdersPage,
-    'sign In': renderSignInPage,
-    'add new order': renderNewOrderPage,
-    'products' : renderProductsPage
+    'Home': renderHomePage,
+    'Orders' : renderOrdersPage,
+    'Sign In': renderSignInPage,
+    'Add new order': renderNewOrderPage,
+    'Products' : renderProductsPage,
+    'Landing' : renderLandingPage,
+    'Customers' : renderCustomersPage
 }
 
 function renderNewOrderPage(options) {
     deleteContent()
-    // renderTitle(options)
-    clickOnSideMenuAsync(renderNewOrder, options)
+    clickOnSideMenuAsync(renderNewOrderLoyaut, options)
 }
 
 async function renderProductsPage(options) {
     deleteContent()
     await clickOnSideMenuAsync(_createTableBootstrap,options)
-    // _createTableBootstrap()
     renderTitle(options)
     sideMenuActivateElement('Products');
 }
 
-function renderHomePage() {
-    if(!document.querySelector('.contentWrapper')) {
-    _createSidebar();
-}
-    deleteContent()
-    createData()
-    sideMenuActivateElement('Home')
-}
-
-function renderOrdersPage(options) {
-    deleteContent()
-    clickOnSideMenuAsync(_createTable, options)
-    renderTitle(options)
-    sideMenuActivateElement('Orders');
+async function renderOrdersPage(options = {}) {
+    const spinner = document.querySelector(`.overlay`);
+    spinner.style.display = "block";
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderOrderPageLayout(options)
+    spinner.style.display = "none";
+    sideMenuActivateElement(options.path);
 }
 
+async function renderCustomersPage(options = {}) {
+    const spinner = document.querySelector(`.overlay`);
+    spinner.style.display = "block";
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderCustomersPageLayout(options)
+    spinner.style.display = "none";
+    sideMenuActivateElement(options.path);
+    document.querySelector('button.pageTitle').addEventListener('click', () => renderAddNewCustomerPage() )
+}
+
+function renderAddNewCustomerPage(options = addNewCustomerProps) {
+    const spinner = document.querySelector(`.overlay`);
+    spinner.style.display = "block";
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderAddNewCustomerLayout(options)
+    spinner.style.display = "none";
+    sideMenuActivateElement(options.path);
+    addListenersToAddNewCustomerPage()
+}
+
+
+function renderLandingPage(options = {}) {
+    document.querySelector('body').innerHTML = renderLandingPageLayout(options)
+    document.querySelector('#signOut').addEventListener('click', () => {
+        localStorage.removeItem('token')
+        document.querySelector('#sidemenu').parentNode.removeChild(document.querySelector('#sidemenu'))
+        renderSignInPage()
+    })
+}
+
+function renderHomePage(options = {}) {
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(options)
+    sideMenuActivateElement(options.path);
+}
+
+
+//Remove after refactor finishing
 function renderTitle(options) {
     const title = document.querySelector('.pageTitle')
     title.innerText = options.title
@@ -71,6 +98,7 @@ function sideMenuActivateElement(value) {
     li[index].classList.add("active");
   }
 
+  //to be deleted after Products Page implementation
 function deleteContent() {
     document.querySelector("#contentInner").innerHTML = "";
     // document.querySelector("#contentInner").removeChilds()

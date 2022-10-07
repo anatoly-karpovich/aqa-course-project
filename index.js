@@ -1,31 +1,27 @@
 const token = localStorage.getItem("token");
-token ? renderPages['home']() : renderPages['sign In']();
+token ? renderPages['Landing'](landingProps) : renderPages['Sign In']();
 
 
 
 async function sideMenuClickHandler(page) {
   switch (page) {
-    case "home":
-      renderPages[page]();
+    case "Home":
+      renderPages[page](homeProps);
       break;
 
-    case "orders":
+    case "Orders":
       await renderPages[page](OrderProps);
       break;
 
-    case "products":
+    case "Products":
       renderPages[page]({ title: "Products" });
       break;
-  }
-  // case 1:
-  //   {
-  //     await clickOnSideMenuAsync(_createTable);
-  //     sideMenuActivateElement(1);
-  //     // location.href = 'Dashboard'
-  //   }
-
-  //   break;
+  
+    case "Customers":
+      renderPages[page](CustomerProps)
+    }
 }
+
 
 function createData() {
   const data = document.createElement("div");
@@ -34,22 +30,10 @@ function createData() {
     "afterbegin",
     `
         <div>
-            <h2>Zalupa</h2>
+            <h4>Home content</h4>
         </div>
       `
   );
   document.querySelector("#contentInner").prepend(data);
 }
 
-function removeData() {
-  const data = document.querySelector(".zalupa");
-  data.parentNode.removeChild(data);
-}
-
-const OrderProps = {
-  title: "Orders List",
-};
-
-const dashboardProps = {
-  title: "Products list",
-};

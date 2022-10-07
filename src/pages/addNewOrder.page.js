@@ -1,4 +1,4 @@
-function renderNewOrder(options) {
+function renderNewOrderLoyaut(options) {
     const newOrder = document.createElement("div");
     newOrder.insertAdjacentHTML(
       "afterbegin",

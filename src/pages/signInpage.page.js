@@ -1,4 +1,4 @@
-const loyaut = `
+const layout = `
 <div class="overlay">
 <div class="d-flex justify-content-center">
   <div class="spinner-border" role="status">
@@ -103,7 +103,7 @@ const loyaut = `
 function renderSignInPage() {
     const signIn = document.createElement('div')
     signIn.insertAdjacentHTML(
-      "afterbegin", loyaut)
+      "afterbegin", layout)
       document.body.prepend(signIn)
 
       const email = signIn.querySelector('#emailinput')
@@ -117,14 +117,14 @@ function renderSignInPage() {
             spinner.style.display = 'block'
             setTimeout(() => {
             spinner.style.display = 'none'
-                _createSidebar()
+                
                 const token = '4fb18062-435d-11ed-b878-0242ac120002'
                 localStorage.setItem('token', token)
                 signIn.parentNode.removeChild(signIn)
+                renderLandingPage(landingProps)
             }, 1000)
            
         } else {
-            // alert(validateSignIn(email, password))
             const message = signIn.querySelector('#errorMessage')
             message.style.display = 'block'
             message.innerText = 'Credentials are required'
