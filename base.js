@@ -20,7 +20,8 @@ const VALIDATION_ERROR_MESSAGES = {
     ['City']: `City's name should contain only 1-20 alphabetical characters and space between`,
     ['Address']: `Address should contain only 1-20 alphabetical characters and space between`,
     ['Email']: 'Invalid Email Address',
-    ['Phone']: "Mobile Number should be at least 10 characters and start with a +"
+    ['Phone']: "Mobile Number should be at least 10 characters and start with a +",
+    ['Notes']: "Notes should be in range 0-250"
 }
 
 const REGULAR_EXPRESSIONS = {
