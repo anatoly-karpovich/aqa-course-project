@@ -23,8 +23,25 @@ function generateTableHeaders(titles = []) {
   }
   
   function generateTableRow(obj = {}) {
-    return Object.values(obj)
-      .map((value, index) => `<td>${index === Object.values(obj).length - 1 && (new Date(value)) ?  moment(value).format('MM/DD/YYYY') : value}</td>`)
-      .join("")  
-      + `<td><button class="btn btn-primary" onClick="alert('${1}')">Open</button></td>`;
+    return Object.keys(obj)
+    .map((key) => `<td>${key === 'Registration Date' ?  moment(obj[key]).format('MM/DD/YYYY') || '-' : obj[key] || '-'}</td>`)
+    .join("")  
+    + `<td><button class="btn btn-link" onClick="renderCustomerDetailsPage('${obj.Id}')">Details</button></td>`;
+  }
+
+  //+ `<td><button class="btn btn-link" onClick="renderCustomerDetailsPage('${obj.Id}')">Details</button></td>`;
+
+
+  //TODO: Implement this code into table generator function
+  function generateTableRowButtons(buttons = [], id) {
+    return buttons.map(el => {
+        `<td><button class="${el.classList}" onClick="${el.handler}('${id}')">${el.name}</button></td>`;
+    }).join('')
+  }
+  
+  //TODO: Implement this code into table generator function
+  function generateTableHeadersForButtons(buttons = []) {
+        return buttons.map(el => {
+            `<th scope="col">${buttons.header}</th>`
+        }).join('')
   }

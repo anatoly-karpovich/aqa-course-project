@@ -166,7 +166,18 @@ main {
 
 .error-message-for-input {
   font-size: 0.5rem;
-  color: red
+  color: red;
 }
 
+.details {
+  display:flex; 
+  justify-content: space-between;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.center {
+  margin: auto;
+  width: 120%;
+}
 

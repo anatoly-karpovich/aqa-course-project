@@ -34,7 +34,10 @@ async function renderCustomersPage(options = {}) {
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderCustomersPageLayout(options)
     spinner.style.display = "none";
     sideMenuActivateElement(options.path);
-    document.querySelector('button.pageTitle').addEventListener('click', () => renderAddNewCustomerPage() )
+    const addCustomerBtn = document.querySelector('button.pageTitle')
+    if(addCustomerBtn) {
+        addCustomerBtn.addEventListener('click', () => renderAddNewCustomerPage() )
+    }
 }
 
 function renderAddNewCustomerPage(options = addNewCustomerProps) {
@@ -46,6 +49,16 @@ function renderAddNewCustomerPage(options = addNewCustomerProps) {
     addListenersToAddNewCustomerPage()
 }
 
+async function renderCustomerDetailsPage(id) {
+    const options = {id: id}
+    const spinner = document.querySelector(`.overlay`);
+    spinner.style.display = "block";
+    // document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderCustomerDetailsLyaout(options)
+    await renderCustomerDetailsModal(options)
+
+    spinner.style.display = "none";
+    sideMenuActivateElement('Customers');
+}
 
 function renderLandingPage(options = {}) {
     document.querySelector('body').innerHTML = renderLandingPageLayout(options)
@@ -57,8 +70,11 @@ function renderLandingPage(options = {}) {
 }
 
 function renderHomePage(options = {}) {
+    const spinner = document.querySelector(`.overlay`);
+    spinner.style.display = "block";
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(options)
     sideMenuActivateElement(options.path);
+    spinner.style.display = "none";
 }
 
 

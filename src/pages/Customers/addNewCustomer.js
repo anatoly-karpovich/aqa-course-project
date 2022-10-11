@@ -1,3 +1,4 @@
+//TODO: Prepare renderInputs function
 function renderAddNewCustomerLayout(options = addNewCustomerProps) {
   return `
     <div id="${PAGE_TITLE_ID}">
@@ -35,19 +36,30 @@ function renderAddNewCustomerLayout(options = addNewCustomerProps) {
         <input type="${options.inputs.phone.type}" class="${options.inputs.phone.classlist}" id="${options.inputs.phone.id}" placeholder="${options.inputs.phone.placeholder}">
         <strong class="error-message-for-input"></strong>
       </div>
+      <div class="col-md-12">
+        <label for="textarea" class="form-label">Notes</label>
+        <textarea class="${options.inputs.phone.classlist}" id="textarea" rows="3" placeholder="Enter Notes" maxLength=250></textarea>
+        <strong class="error-message-for-input"></strong>
+    </div>
       
-      <div class="col-12" style="margin-top: 50px;">
-        <button type="submit" class="btn btn-primary form-buttons" id="save-new-customer" disabled>Save New Customer</button>
-        <button class="btn btn-secondary form-buttons" id="back-to-customers-page">Back</button>
+      <div class="col-12" style="margin-top: 50px; display: flex; justify-content: space-between;">
+        <div>
+            <button type="submit" class="btn btn-primary form-buttons" id="save-new-customer" disabled>Save New Customer</button>
+            <button class="btn btn-secondary form-buttons" id="back-to-customers-page" onClick="renderCustomersPage(CustomerProps)">Back</button>
+        </div>
+        <div>
+            <button class="btn btn-link" form-buttons" id="back-to-customers-page" onClick="clearAllInputs(addNewCustomerProps.inputs);">Clear all</button>
+        </div>
+      
       </div>
     </form>
     `;
 }
 
 function renderOptions(values) {
-  return values.map((el, index) => `<option ${index === 0 ? "selected" : ""} value="${el}">${el}</option>`).join("");
+  return values.map((el, index) => `<option ${index === 2 ? "selected" : ""} value="${el}">${el}</option>`).join("");
 }
-
+//TODO: Add NOTES to props object
 const addNewCustomerProps = {
   path: "Customers",
   title: "Add New Customer",
@@ -127,13 +139,20 @@ async function submitNewCustomer(requestOpts) {
   return response;
 }
 
+
+//TODO: Prepare validation for NOTES input
+
+//TODO: Send NOTES value to backand
+
+//TODO: Prepare the function to add Event Listeners to inputs using loop and add it to Utils file
 function addListenersToAddNewCustomerPage() {
-  //back button click
-  document.getElementById("back-to-customers-page").addEventListener("click", async () => {
-    await renderCustomersPage(CustomerProps);
-  });
+
   //save button click
   document.getElementById("save-new-customer").addEventListener("click", async () => {
+    const spinner = document.querySelector(`.overlay`);
+    spinner.style.display = "block";
+    document.getElementById("save-new-customer").setAttribute("disabled", "");
+
     newCustomerModel = {
       email: document.getElementById("inputEmail").value,
       name: document.getElementById("inputName").value,
@@ -146,19 +165,20 @@ function addListenersToAddNewCustomerPage() {
     addNewCustomerProps.requestOpts.opts.body = JSON.stringify(Object.assign(newCustomerModel));
     const response = await submitNewCustomer(addNewCustomerProps.requestOpts);
     clearAllInputs(addNewCustomerProps.inputs);
-    document.getElementById("save-new-customer").setAttribute("disabled", "");
-
+    spinner.style.display = "none";
     if (response.isSuccess) {
       renderNotification({ message: SUCCESS_MESSAGES["New Customer Added"] });
     } else {
       renderNotification({
-        message: Object.keys(response)
+        message: response 
+        ? Object.keys(response)
           .map((key) => {
-            if (key !== "isSuccess") {
+            if (key !== "isSuccess" && key !== "status") {
               return `${response[key]}`;
             }
           })
-          .join("\n"),
+          .join("\n")
+        : `Connection issue. Customer wasn't saved.`
       });
       document.querySelector(".toast").style["background-color"] = "red";
       document.querySelector(".toast").classList.add("text-white");
@@ -194,45 +214,6 @@ function addListenersToAddNewCustomerPage() {
       });
     }
   }
-}
 
-{
-  /* <form class="row g-3">
-      <div class="col-md-6">
-        <label for="inputEmail4" class="form-label">Email</label>
-        <input type="email" class="form-control" id="inputEmail4">
-      </div>
-      <div class="col-md-6">
-        <label for="inputPassword4" class="form-label">Password</label>
-        <input type="password" class="form-control" id="inputPassword4">
-      </div>
-      <div class="col-12">
-        <label for="inputAddress" class="form-label">Address</label>
-        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-      </div>
-      <div class="col-12">
-        <label for="inputAddress2" class="form-label">Address 2</label>
-        <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-      </div>
-      <div class="col-md-6">
-        <label for="inputCity" class="form-label">City</label>
-        <input type="text" class="form-control" id="inputCity">
-      </div>
-      <div class="col-md-4">
-        <label for="inputState" class="form-label">State</label>
-        <select id="inputState" class="form-select">
-          <option selected>Choose...</option>
-          <option>...</option>
-        </select>
-      </div>
-      <div class="col-md-2">
-        <label for="inputZip" class="form-label">Zip</label>
-        <input type="text" class="form-control" id="inputZip">
-      </div>
-      
-      <div class="col-12">
-        <button type="submit" class="btn btn-primary form-buttons">Add New Customer</button>
-        <button class="btn btn-secondary form-buttons">Back</button>
-      </div>
-    </form> */
+
 }
