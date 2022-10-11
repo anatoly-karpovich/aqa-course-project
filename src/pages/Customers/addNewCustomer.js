@@ -37,8 +37,8 @@ function renderAddNewCustomerLayout(options = addNewCustomerProps) {
         <strong class="error-message-for-input"></strong>
       </div>
       <div class="col-md-12">
-        <label for="textarea" class="form-label">Notes</label>
-        <textarea class="${options.inputs.phone.classlist}" id="textarea" rows="3" placeholder="Enter Notes" maxLength=250></textarea>
+        <label for="${options.inputs.notes.id}" class="form-label">${options.inputs.notes.name}</label>
+        <textarea class="${options.inputs.notes.classList}" id="${options.inputs.notes.id}" ${options.inputs.notes.attributes} placeholder="${options.inputs.notes.placeholder}"></textarea>
         <strong class="error-message-for-input"></strong>
     </div>
       
@@ -129,6 +129,16 @@ const addNewCustomerProps = {
       errorMessageSelector: "div:has(input#inputPhone) > strong",
       errorMessage: VALIDATION_ERROR_MESSAGES["Phone"],
     },
+    notes: {
+      name: "Notes",
+      tagName: "textarea",
+      classList: "form-control",
+      placeholder: `Enter notes`,
+      id: "textareaNotes",
+      errorMessageSelector: "div:has(textarea#textareaNotes) > strong",
+      errorMessage: VALIDATION_ERROR_MESSAGES['Notes'],
+      attributes: `rows="3"`
+    }
   },
 };
 
@@ -160,6 +170,7 @@ function addListenersToAddNewCustomerPage() {
       city: document.getElementById("inputCity").value,
       address: document.getElementById("inputAddress").value,
       phone: document.getElementById("inputPhone").value,
+      note: document.getElementById('textareaNotes').value
     };
 
     addNewCustomerProps.requestOpts.opts.body = JSON.stringify(Object.assign(newCustomerModel));
