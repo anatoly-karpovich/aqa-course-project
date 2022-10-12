@@ -4,7 +4,7 @@ async function renderCustomersPageLayout(options = CustomerProps) {
         return renderErrorPageLayout(response.status)
     } else {
         const data = await response.data.map(el => { 
-            return {Id: el.id, Email: el.email, Name: el.name, Country: el.country}  // City: el.city, Address: el.address, Phone: el.phone, ['Registration Date']: el.date_create
+            return {Id: el.id, Email: el.email, Name: el.name, Country: el.country} 
         })
     
         return `    <div id="${PAGE_TITLE_ID}">
@@ -33,9 +33,15 @@ const CustomerProps = {
             text: "Add New Customer"
         }
     ],
-    tableButtons: [
-        
-    ]
+    tableProps: {
+       buttons: [
+        {
+            name: 'Details',
+            classlist: 'btn btn-link',
+            onclick: 'renderCustomerDetailsPage' 
+        }
+       ]
+    }
   }
 
 

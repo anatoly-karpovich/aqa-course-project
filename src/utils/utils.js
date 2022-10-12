@@ -20,16 +20,15 @@ function renderButtons(buttons = []) {
 }
 
 const getDataFromApi = async function (requestOpts = {}) {
-  // await fetch(requestOpts.url, {...requestOpts.opts}) //.then(e => console.log('resp:', e)).catch(e => console.log('error', e))
   let response = {};
   try {
     response = await fetch(requestOpts.url, { ...requestOpts.opts });
     const status = response.status
     if (response.ok) {
         try{
-            response.data = await response.json(); //.then(data => data.json())
+            response.data = await response.json();
         } catch {
-            response = {}
+            response.data = {}
         }
       response.isSuccess = true;
       response.status = status
@@ -51,15 +50,32 @@ function clearAllInputs(inputs) {
   for (const input in inputs) {
     const field = document.getElementById(inputs[input].id)
     if(inputs[input].type === "select") {
-        field.value = inputs[input].options.values[0] //.toLowerCase()
+        field.value = inputs[input].options.values[0]
     } else {
         field.value = "";
         field.style.border = null;
-        document.querySelector(addNewCustomerProps.inputs[input].errorMessageSelector).innerText = "";
+        document.querySelector(add_new_customer_props.inputs[input].errorMessageSelector).innerText = "";
     }
   }
 }
 
-function customerInputValidation(input, value = "") {
-  return REGULAR_EXPRESSIONS[input].test(value.trim());
+function customerInputValidation(inputName, value = "") {
+  return REGULAR_EXPRESSIONS[inputName].test(value.trim());
+}
+
+function renderOptions(values = [], name) {
+  return name 
+  ? values.map((el, index) => `<option ${index === values.findIndex(el => el === name) ? "selected" : ""} value="${el}">${el}</option>`).join("")
+  : values.map((el, index) => `<option ${index === 2 ? "selected" : ""} value="${el}">${el}</option>`).join("")
+
+}
+
+function convertApiErrors(errors) {
+return Object.keys(errors)
+.map((key) => {
+  if (key !== "isSuccess" && key !== "status") {
+    return `${errors[key]}`;
+  }
+})
+.join("\n")
 }

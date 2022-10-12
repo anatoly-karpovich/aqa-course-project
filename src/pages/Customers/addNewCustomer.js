@@ -1,5 +1,5 @@
 //TODO: Prepare renderInputs function
-function renderAddNewCustomerLayout(options = addNewCustomerProps) {
+function renderAddNewCustomerLayout(options = add_new_customer_props) {
   return `
     <div id="${PAGE_TITLE_ID}">
         <h2 class="pageTitle">${options.title}</h2>
@@ -48,7 +48,7 @@ function renderAddNewCustomerLayout(options = addNewCustomerProps) {
             <button class="btn btn-secondary form-buttons" id="back-to-customers-page" onClick="renderCustomersPage(CustomerProps)">Back</button>
         </div>
         <div>
-            <button class="btn btn-link" form-buttons" id="back-to-customers-page" onClick="clearAllInputs(addNewCustomerProps.inputs);">Clear all</button>
+            <button class="btn btn-link" form-buttons" onClick="clearAllInputs(add_new_customer_props.inputs);">Clear all</button>
         </div>
       
       </div>
@@ -56,11 +56,7 @@ function renderAddNewCustomerLayout(options = addNewCustomerProps) {
     `;
 }
 
-function renderOptions(values) {
-  return values.map((el, index) => `<option ${index === 2 ? "selected" : ""} value="${el}">${el}</option>`).join("");
-}
-//TODO: Add NOTES to props object
-const addNewCustomerProps = {
+const add_new_customer_props = {
   path: "Customers",
   title: "Add New Customer",
   formId: "add-new-customer-form",
@@ -146,13 +142,11 @@ let newCustomerModel = {};
 
 async function submitNewCustomer(requestOpts) {
   const response = await getDataFromApi(requestOpts);
+  console.log(response)
   return response;
 }
 
 
-//TODO: Prepare validation for NOTES input
-
-//TODO: Send NOTES value to backand
 
 //TODO: Prepare the function to add Event Listeners to inputs using loop and add it to Utils file
 function addListenersToAddNewCustomerPage() {
@@ -164,33 +158,23 @@ function addListenersToAddNewCustomerPage() {
     document.getElementById("save-new-customer").setAttribute("disabled", "");
 
     newCustomerModel = {
-      email: document.getElementById("inputEmail").value,
-      name: document.getElementById("inputName").value,
-      country: document.getElementById("inputCountry").value,
-      city: document.getElementById("inputCity").value,
-      address: document.getElementById("inputAddress").value,
-      phone: document.getElementById("inputPhone").value,
-      note: document.getElementById('textareaNotes').value
+      email: document.getElementById("inputEmail").value.trim(),
+      name: document.getElementById("inputName").value.trim(),
+      country: document.getElementById("inputCountry").value.trim(),
+      city: document.getElementById("inputCity").value.trim(),
+      address: document.getElementById("inputAddress").value.trim(),
+      phone: document.getElementById("inputPhone").value.trim(),
+      note: document.getElementById('textareaNotes').value.trim()
     };
 
-    addNewCustomerProps.requestOpts.opts.body = JSON.stringify(Object.assign(newCustomerModel));
-    const response = await submitNewCustomer(addNewCustomerProps.requestOpts);
-    clearAllInputs(addNewCustomerProps.inputs);
+    add_new_customer_props.requestOpts.opts.body = JSON.stringify(Object.assign(newCustomerModel));
+    const response = await submitNewCustomer(add_new_customer_props.requestOpts);
+    clearAllInputs(add_new_customer_props.inputs);
     spinner.style.display = "none";
     if (response.isSuccess) {
       renderNotification({ message: SUCCESS_MESSAGES["New Customer Added"] });
     } else {
-      renderNotification({
-        message: response 
-        ? Object.keys(response)
-          .map((key) => {
-            if (key !== "isSuccess" && key !== "status") {
-              return `${response[key]}`;
-            }
-          })
-          .join("\n")
-        : `Connection issue. Customer wasn't saved.`
-      });
+      renderNotification({ message: response.data ? convertApiErrors(response.data.errors) : `Connection issue. Customer wasn't saved.` });
       document.querySelector(".toast").style["background-color"] = "red";
       document.querySelector(".toast").classList.add("text-white");
     }
@@ -198,23 +182,23 @@ function addListenersToAddNewCustomerPage() {
 
   //on input validations
 
-  for (let input in addNewCustomerProps.inputs) {
-    const field = document.getElementById(addNewCustomerProps.inputs[input].id);
-    const errorField = document.querySelector(addNewCustomerProps.inputs[input].errorMessageSelector);
+  for (let input in add_new_customer_props.inputs) {
+    const field = document.getElementById(add_new_customer_props.inputs[input].id);
+    const errorField = document.querySelector(add_new_customer_props.inputs[input].errorMessageSelector);
     const saveButton = document.getElementById("save-new-customer");
-    if (addNewCustomerProps.inputs[input].type !== "select") {
+    if (add_new_customer_props.inputs[input].type !== "select") {
       field.addEventListener("input", () => {
-        if (!customerInputValidation(addNewCustomerProps.inputs[input].name, field.value)) {
-          errorField.innerText = addNewCustomerProps.inputs[input].errorMessage;
+        if (!customerInputValidation(add_new_customer_props.inputs[input].name, field.value)) {
+          errorField.innerText = add_new_customer_props.inputs[input].errorMessage;
           field.style = "border:1px solid red";
           saveButton.setAttribute("disabled", "");
         } else {
           errorField.innerText = "";
           field.style.border = null;
           let isValid = true;
-          for (let i in addNewCustomerProps.inputs) {
-            const f = document.getElementById(addNewCustomerProps.inputs[i].id);
-            if (addNewCustomerProps.inputs[i].type !== "select" && !customerInputValidation(addNewCustomerProps.inputs[i].name, f.value)) {
+          for (let i in add_new_customer_props.inputs) {
+            const f = document.getElementById(add_new_customer_props.inputs[i].id);
+            if (add_new_customer_props.inputs[i].type !== "select" && !customerInputValidation(add_new_customer_props.inputs[i].name, f.value)) {
               isValid = false;
             }
           }

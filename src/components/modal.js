@@ -54,12 +54,12 @@ if(modalWrap !== null) {
           </p>
       
           <p class="note note-light details">
-            <strong>Registation date:</strong> 
+            <strong>Registered:</strong> 
             ${options.data.date_create ? moment(options.data.date_create).format('LLL') : '-'}
           </p>
       
-          <p class="note note-light details">
-          <strong>Notes:</strong> 
+          <p class="note note-light details" style="word-break: break-word">
+          <strong style="word-break:normal; margin-right: 20px">Notes:</strong> 
             ${options.data.note ? options.data.note : '-'}
           </p>
       

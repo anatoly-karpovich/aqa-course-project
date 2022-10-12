@@ -12,7 +12,8 @@ const ENDPOINTS = {
 
 const SUCCESS_MESSAGES = {
     ['New Customer Added'] : "Customer successfully created",
-    ['Customer Successfully Deleted'] : (name) => `${name} Successfully Deleted`
+    ['Customer Successfully Deleted'] : (name) => `${name} Successfully Deleted`,
+    ['Customer Successfully Updated'] : (name) => `${name} Successfully Updated`
 }
 
 const VALIDATION_ERROR_MESSAGES = {

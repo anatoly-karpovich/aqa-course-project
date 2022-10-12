@@ -40,7 +40,7 @@ async function renderCustomersPage(options = {}) {
     }
 }
 
-function renderAddNewCustomerPage(options = addNewCustomerProps) {
+function renderAddNewCustomerPage(options = add_new_customer_props) {
     const spinner = document.querySelector(`.overlay`);
     spinner.style.display = "block";
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderAddNewCustomerLayout(options)
@@ -58,6 +58,16 @@ async function renderCustomerDetailsPage(id) {
 
     spinner.style.display = "none";
     sideMenuActivateElement('Customers');
+}
+
+async function renderEditCustomerPage(id = 9) {
+    const requestOpts = {id: id}
+    const spinner = document.querySelector(`.overlay`);
+    spinner.style.display = "block";
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderEditCustomerLayout(requestOpts, edit_customer_props)
+    spinner.style.display = "none";
+    sideMenuActivateElement('Customers');
+    addListenersToEditCustomerPage()
 }
 
 function renderLandingPage(options = {}) {
