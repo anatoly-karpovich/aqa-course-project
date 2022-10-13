@@ -1,6 +1,6 @@
 let modalWrap = null
 //TODO: Create generateModalLayout and generateModalRaws functions
-async function renderCustomerDetailsModal(options = {}) {
+async function createCustomerDetailsModal(options = {}) {
     
 if(modalWrap !== null) {
     modalWrap.remove()
@@ -67,14 +67,9 @@ if(modalWrap !== null) {
         </div>
           
       </div>
-      <div class="modal-footer details">
-      <div>
-        <button type="button" style="margin-right: 10px" class="btn btn-primary" onClick="removeCustomerDetailsModal();">Edit Customer Details</button>
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick="removeCustomerDetailsModal();">Delete</button>
-      </div>
-      <div>
+      <div class="modal-footer">
+        <button type="button" style="margin-right: 10px" class="btn btn-primary" onClick="renderEditCustomerPage('${options.id}');">Edit Customer</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="removeCustomerDetailsModal();">Cancel</button>
-        </div>
       </div>
     </div>
   </div>
@@ -89,5 +84,8 @@ if(modalWrap !== null) {
 function removeCustomerDetailsModal() {
     modalWrap.remove()
     modalWrap = null
+    if(document.querySelector('.modal-backdrop')) {
+      document.querySelector('.modal-backdrop').parentNode.removeChild(document.querySelector('.modal-backdrop'))
+  }
 }
 

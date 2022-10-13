@@ -64,7 +64,7 @@ async function renderEditCustomerLayout(requestOpts, options) {
             <button class="btn btn-secondary form-buttons" id="back-to-customers-page" onClick="renderCustomersPage(CustomerProps)">Back</button>
         </div>
         <div>
-            <button class="btn btn-link" form-buttons" onClick="clearAllInputs(edit_customer_props.inputs);">Clear all</button>
+            <button class="btn btn-danger" form-buttons" onClick="renderDeleteCustomerModal('${requestOpts.id}');">Delete Customer</button>
         </div>
       
       </div>

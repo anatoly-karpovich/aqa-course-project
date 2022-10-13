@@ -28,9 +28,9 @@ function generateTableHeaders(titles = []) {
     .map((key) => `<td>${key === 'Registration Date' ?  moment(obj[key]).format('MM/DD/YYYY') || '-' : obj[key] || '-'}</td>`)
     .join("")  
     + `<td>
-    <button class="btn btn-link" onClick="renderCustomerDetailsPage('${obj.Id}')">Details</button>
-    <button class="btn btn-primary" onClick="renderEditCustomerPage('${obj.Id}')">Edit</button>
-    <button class="btn btn-danger" onClick="renderCustomerDetailsPage('${obj.Id}')">Delete</button>
+    <button class="btn btn-link" onClick="renderCustomerDetailsModal('${obj.Id}')">Details</button>
+    <button class="btn btn-primary table-action-buttons" onClick="renderEditCustomerPage('${obj.Id}')">Edit</button>
+    <button class="btn btn-danger table-action-buttons" onClick="renderDeleteCustomerModal('${obj.Id}')">Delete</button>
         </td>`
 
   }
