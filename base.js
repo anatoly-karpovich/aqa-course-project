@@ -12,7 +12,8 @@ const ENDPOINTS = {
 
 const SUCCESS_MESSAGES = {
     ['New Customer Added'] : "Customer successfully created",
-    ['Customer Successfully Deleted'] : (name) => `${name} Successfully Deleted`
+    ['Customer Successfully Deleted'] : (name) => `${name} Successfully Deleted`,
+    ['Customer Successfully Updated'] : (name) => `${name} Successfully Updated`
 }
 
 const VALIDATION_ERROR_MESSAGES = {
@@ -33,5 +34,6 @@ const REGULAR_EXPRESSIONS = {
     ['Address']: /^\b(?!.*?\s{2})[A-Za-z0-9 ]{1,20}\b$/m,
     // ['Email']: /^[a-zA-Z0-9._%+*^'-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$/m
     ['Email']: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/m,
-    ['Notes']: /^.{0,250}$/m
+    // ['Notes']: /^.{0,250}$/m
+    ['Notes']: /^[^<>]{0,250}$/m
 }

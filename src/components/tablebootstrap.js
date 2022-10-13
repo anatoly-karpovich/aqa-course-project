@@ -15,7 +15,8 @@ async function generateTableBootstrap(data = []) {
 }
 
 function generateTableHeaders(titles = []) {
-    return titles.map((title) => `<th scope="col" onClick="tableOnClickSort('${title}');">${title}</th>`).join("") + `<th scope="col">View</th>`;
+    return titles.map((title) => `<th scope="col" onClick="tableOnClickSort('${title}');">${title}</th>`).join("") 
+    + `<th scope="col" style="text-align:center">Actions</th>`
   }
   
   function generateTableBody(arr = []) {
@@ -26,7 +27,12 @@ function generateTableHeaders(titles = []) {
     return Object.keys(obj)
     .map((key) => `<td>${key === 'Registration Date' ?  moment(obj[key]).format('MM/DD/YYYY') || '-' : obj[key] || '-'}</td>`)
     .join("")  
-    + `<td><button class="btn btn-link" onClick="renderCustomerDetailsPage('${obj.Id}')">Details</button></td>`;
+    + `<td>
+    <button class="btn btn-link" onClick="renderCustomerDetailsModal('${obj.Id}')">Details</button>
+    <button class="btn btn-primary table-action-buttons" onClick="renderEditCustomerPage('${obj.Id}')">Edit</button>
+    <button class="btn btn-danger table-action-buttons" onClick="renderDeleteCustomerModal('${obj.Id}')">Delete</button>
+        </td>`
+
   }
 
   //+ `<td><button class="btn btn-link" onClick="renderCustomerDetailsPage('${obj.Id}')">Details</button></td>`;
@@ -38,7 +44,7 @@ function generateTableHeaders(titles = []) {
         `<td><button class="${el.classList}" onClick="${el.handler}('${id}')">${el.name}</button></td>`;
     }).join('')
   }
-  
+
   //TODO: Implement this code into table generator function
   function generateTableHeadersForButtons(buttons = []) {
         return buttons.map(el => {

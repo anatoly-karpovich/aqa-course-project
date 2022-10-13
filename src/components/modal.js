@@ -1,6 +1,6 @@
 let modalWrap = null
 //TODO: Create generateModalLayout and generateModalRaws functions
-async function renderCustomerDetailsModal(options = {}) {
+async function createCustomerDetailsModal(options = {}) {
     
 if(modalWrap !== null) {
     modalWrap.remove()
@@ -54,12 +54,12 @@ if(modalWrap !== null) {
           </p>
       
           <p class="note note-light details">
-            <strong>Registation date:</strong> 
+            <strong>Registered:</strong> 
             ${options.data.date_create ? moment(options.data.date_create).format('LLL') : '-'}
           </p>
       
-          <p class="note note-light details">
-          <strong>Notes:</strong> 
+          <p class="note note-light details" style="word-break: break-word">
+          <strong style="word-break:normal; margin-right: 20px">Notes:</strong> 
             ${options.data.note ? options.data.note : '-'}
           </p>
       
@@ -67,14 +67,9 @@ if(modalWrap !== null) {
         </div>
           
       </div>
-      <div class="modal-footer details">
-      <div>
-        <button type="button" style="margin-right: 10px" class="btn btn-primary" onClick="removeCustomerDetailsModal();">Edit Customer Details</button>
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick="removeCustomerDetailsModal();">Delete</button>
-      </div>
-      <div>
+      <div class="modal-footer">
+        <button type="button" style="margin-right: 10px" class="btn btn-primary" onClick="renderEditCustomerPage('${options.id}');">Edit Customer</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="removeCustomerDetailsModal();">Cancel</button>
-        </div>
       </div>
     </div>
   </div>
@@ -89,5 +84,8 @@ if(modalWrap !== null) {
 function removeCustomerDetailsModal() {
     modalWrap.remove()
     modalWrap = null
+    if(document.querySelector('.modal-backdrop')) {
+      document.querySelector('.modal-backdrop').parentNode.removeChild(document.querySelector('.modal-backdrop'))
+  }
 }
 

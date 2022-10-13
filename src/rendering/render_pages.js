@@ -40,7 +40,7 @@ async function renderCustomersPage(options = {}) {
     }
 }
 
-function renderAddNewCustomerPage(options = addNewCustomerProps) {
+function renderAddNewCustomerPage(options = add_new_customer_props) {
     const spinner = document.querySelector(`.overlay`);
     spinner.style.display = "block";
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderAddNewCustomerLayout(options)
@@ -49,15 +49,31 @@ function renderAddNewCustomerPage(options = addNewCustomerProps) {
     addListenersToAddNewCustomerPage()
 }
 
-async function renderCustomerDetailsPage(id) {
-    const options = {id: id}
+async function renderCustomerDetailsModal(id) {
+    const renderOpts = {id}
     const spinner = document.querySelector(`.overlay`);
     spinner.style.display = "block";
-    // document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderCustomerDetailsLyaout(options)
-    await renderCustomerDetailsModal(options)
+    await createCustomerDetailsModal(renderOpts)
 
     spinner.style.display = "none";
     sideMenuActivateElement('Customers');
+}
+
+async function renderEditCustomerPage(id) {
+    if(modalWrap) {
+        removeCustomerDetailsModal()
+    }
+    const requestOpts = {id: id}
+    const spinner = document.querySelector(`.overlay`);
+    spinner.style.display = "block";
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderEditCustomerLayout(requestOpts, edit_customer_props)
+    spinner.style.display = "none";
+    sideMenuActivateElement('Customers');
+    addListenersToEditCustomerPage()
+}
+
+function renderDeleteCustomerModal(id) {
+    renderConfirmationModal(id, delete_customer_confirmation_opts)
 }
 
 function renderLandingPage(options = {}) {
