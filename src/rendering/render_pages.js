@@ -1,32 +1,29 @@
 const renderPages = {
     'Home': renderHomePage,
-    'Orders' : renderOrdersPage,
     'Sign In': renderSignInPage,
-    'Add new order': renderNewOrderPage,
-    'Products' : renderProductsPage,
     'Landing' : renderLandingPage,
     'Customers' : renderCustomersPage
 }
 
-function renderNewOrderPage(options) {
-    deleteContent()
-    clickOnSideMenuAsync(renderNewOrderLoyaut, options)
-}
+// function renderNewOrderPage(options) {
+//     deleteContent()
+//     clickOnSideMenuAsync(renderNewOrderLoyaut, options)
+// }
 
-async function renderProductsPage(options) {
-    deleteContent()
-    await clickOnSideMenuAsync(_createTableBootstrap,options)
-    renderTitle(options)
-    sideMenuActivateElement('Products');
-}
+// async function renderProductsPage(options) {
+//     deleteContent()
+//     await clickOnSideMenuAsync(_createTableBootstrap,options)
+//     renderTitle(options)
+//     sideMenuActivateElement('Products');
+// }
 
-async function renderOrdersPage(options = {}) {
-    const spinner = document.querySelector(`.overlay`);
-    spinner.style.display = "block";
-    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderOrderPageLayout(options)
-    spinner.style.display = "none";
-    sideMenuActivateElement(options.path);
-}
+// async function renderOrdersPage(options = {}) {
+//     const spinner = document.querySelector(`.overlay`);
+//     spinner.style.display = "block";
+//     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderOrderPageLayout(options)
+//     spinner.style.display = "none";
+//     sideMenuActivateElement(options.path);
+// }
 
 async function renderCustomersPage(options = {}) {
     const spinner = document.querySelector(`.overlay`);
@@ -73,7 +70,7 @@ async function renderEditCustomerPage(id) {
 }
 
 function renderDeleteCustomerModal(id) {
-    renderConfirmationModal(id, delete_customer_confirmation_opts)
+    renderConfirmationModal(id, delete_customer_confirmation_props)
 }
 
 function renderLandingPage(options = {}) {
