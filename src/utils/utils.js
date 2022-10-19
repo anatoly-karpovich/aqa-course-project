@@ -66,15 +66,14 @@ function customerInputValidation(inputName, value = "") {
 function renderOptions(values = [], name) {
   return name 
   ? values.map((el, index) => `<option ${index === values.findIndex(el => el === name) ? "selected" : ""} value="${el}">${el}</option>`).join("")
-  : values.map((el, index) => `<option ${index === 2 ? "selected" : ""} value="${el}">${el}</option>`).join("")
-
+  : values.map((el, index) => `<option ${index === values.findIndex(el => el === 'USA') ? "selected" : ""} value="${el}">${el}</option>`).join("")
 }
 
 function convertApiErrors(errors) {
 return Object.keys(errors)
 .map((key) => {
   if (key !== "isSuccess" && key !== "status") {
-    return `${errors[key]}`;
+    return `Error in ${key}: ${errors[key]}`;
   }
 })
 .join("\n")

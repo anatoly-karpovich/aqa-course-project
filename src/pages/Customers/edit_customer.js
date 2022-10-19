@@ -123,10 +123,10 @@ function addListenersToEditCustomerPage() {
       console.log(response)
       spinner.style.display = "none";
       if (response.isSuccess) {
-        await renderCustomersPage(CustomerProps)
+        await renderCustomersPage(customer_props)
         renderNotification({ message: SUCCESS_MESSAGES['Customer Successfully Updated'](EditedCustomerModel.name) });
       } else {
-        renderNotification({message: response.data.errors ? convertApiErrors(response.data.errors) : `Connection issue. Customer wasn't updated.` });
+        renderNotification({message: response.data.errors ? convertApiErrors(response.data.errors) : ERROR_MESSAGES["Connection Issue"] });
         document.querySelector(".toast").style["background-color"] = "red";
         document.querySelector(".toast").classList.add("text-white");
       }
