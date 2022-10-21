@@ -120,10 +120,9 @@ function addListenersToEditCustomerPage() {
   
       edit_customer_props.requestOpts.opts.body = JSON.stringify(Object.assign(EditedCustomerModel));
       const response = await submitNewCustomer(edit_customer_props.requestOpts)
-      console.log(response)
       spinner.style.display = "none";
       if (response.isSuccess) {
-        await renderCustomersPage(customer_props)
+        await renderCustomersPage(CustomerProps)
         renderNotification({ message: SUCCESS_MESSAGES['Customer Successfully Updated'](EditedCustomerModel.name) });
       } else {
         renderNotification({message: response.data.errors ? convertApiErrors(response.data.errors) : ERROR_MESSAGES["Connection Issue"] });
@@ -161,6 +160,23 @@ function addListenersToEditCustomerPage() {
             }
           }
         });
+      } else {
+        field.addEventListener('change', () => {
+          if( _.isEqual(_.omit(currentCustomerState,'date_create'), getEditCustomerInputValues())) {
+            saveButton.setAttribute("disabled", "");
+          } else {
+            let isValid = true;
+            for (let i in edit_customer_props.inputs) {
+              const f = document.getElementById(edit_customer_props.inputs[i].id);
+              if (edit_customer_props.inputs[i].type !== "select" && !customerInputValidation(edit_customer_props.inputs[i].name, f.value)) {
+                isValid = false;
+              }
+            }
+            if (isValid) {
+              saveButton.removeAttribute("disabled");
+            }
+          }
+        })
       }
     }
   
