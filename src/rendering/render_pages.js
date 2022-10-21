@@ -70,7 +70,7 @@ async function renderEditCustomerPage(id) {
 }
 
 function renderDeleteCustomerModal(id) {
-    renderConfirmationModal(id, delete_customer_confirmation_props)
+    renderConfirmationModal(id, delete_customer_confirmation_opts)
 }
 
 function renderLandingPage(options = {}) {
