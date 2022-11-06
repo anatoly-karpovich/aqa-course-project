@@ -25,7 +25,7 @@ function generateTableHeaders(titles = []) {
   
   function generateTableRow(obj = {}) {
     return Object.keys(obj)
-    .map((key) => `<td>${key === 'Registration Date' ?  moment(obj[key]).format('MM/DD/YYYY') || '-' : obj[key] || '-'}</td>`)
+    .map((key) => `<td style="word-break: break-word; width: ${key === 'Id' ? 70 : 200 }px;">${key === 'Registration Date' ?  moment(obj[key]).format('MM/DD/YYYY') || '-' : obj[key] || '-'}</td>`)
     .join("")  
     + `<td>
     <button class="btn btn-link" onClick="renderCustomerDetailsModal('${obj.Id}')">Details</button>

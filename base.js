@@ -3,7 +3,7 @@ const CONTENT_CONTAINER_ID = "root";
 const CONTENT_ID = "contentInner";
 const PAGE_TITLE_ID = "title";
 
-const BASE_URL = "https://f126-93-174-93-20.ngrok.io";
+const BASE_URL = "https://ba43-95-73-76-84.ngrok.io";
 
 const ENDPOINTS = {
   ["Customers"]: `${BASE_URL}/api/costumers/`,
@@ -23,7 +23,7 @@ const ERROR_MESSAGES = {
 const VALIDATION_ERROR_MESSAGES = {
   ["Customer Name"]: `Customer's name should contain only 1-40 alphabetical characters and one space between`,
   ["City"]: `City's name should contain only 1-20 alphabetical characters and one space between`,
-  ["Address"]: `Address should contain only 1-20 alphabetical characters and one space between`,
+  ["Address"]: `Address should contain only 1-20 alphanumerical characters and one space between`,
   ["Email"]: "Invalid Email Address",
   ["Phone"]: "Mobile Number should be at least 10 characters and start with a +",
   ["Notes"]: "Notes should be in range 0-250 and without < or > symbols",

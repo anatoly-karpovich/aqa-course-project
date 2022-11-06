@@ -7,7 +7,7 @@ async function renderEditCustomerLayout(requestOpts, options) {
   if (!response.isSuccess) {
     return renderErrorPageLayout(response.status);
   } else {
-    const data = await response.data;
+     const data = await response.data;
     currentCustomerState = data;
 
     return `

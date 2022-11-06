@@ -142,7 +142,6 @@ let newCustomerModel = {};
 
 async function submitNewCustomer(requestOpts) {
   const response = await getDataFromApi(requestOpts);
-  console.log(response)
   return response;
 }
 
