@@ -170,10 +170,16 @@ main {
 }
 
 .details {
-  display:flex; 
+  display: flex;
   justify-content: space-between;
   margin-left: 5px;
   margin-right: 5px;
+  word-break: break-word;
+}
+
+.strong-details {
+  word-break: normal;
+  margin-right: 20px;
 }
 
 .center {
@@ -184,4 +190,3 @@ main {
 .table-action-buttons {
   margin-right: 15px;
 }
-

@@ -3,7 +3,7 @@ const CONTENT_CONTAINER_ID = "root";
 const CONTENT_ID = "contentInner";
 const PAGE_TITLE_ID = "title";
 
-const BASE_URL = "https://ba43-95-73-76-84.ngrok.io";
+const BASE_URL = "https://62af-95-73-76-84.ngrok.io";
 
 const ENDPOINTS = {
   ["Customers"]: `${BASE_URL}/api/costumers/`,

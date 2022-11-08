@@ -173,7 +173,7 @@ function addListenersToAddNewCustomerPage() {
     if (response.isSuccess) {
       renderNotification({ message: SUCCESS_MESSAGES["New Customer Added"] });
     } else {
-      renderNotification({ message: response.data ? convertApiErrors(response.data.errors) : ERROR_MESSAGES["Connection Issue"] });
+      renderNotification({ message: response.data ? convertApiErrors(response.data) : ERROR_MESSAGES["Connection Issue"] });
       document.querySelector(".toast").style["background-color"] = "red";
       document.querySelector(".toast").classList.add("text-white");
     }

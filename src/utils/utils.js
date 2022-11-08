@@ -73,7 +73,7 @@ function convertApiErrors(errors) {
 return Object.keys(errors)
 .map((key) => {
   if (key !== "isSuccess" && key !== "status") {
-    return `Error in ${key}: ${errors[key]}`;
+    return `Errors in ${key}: ${errors[key].join('\n')}`;
   }
 })
 .join("\n")
