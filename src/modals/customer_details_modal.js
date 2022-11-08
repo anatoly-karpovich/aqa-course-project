@@ -24,42 +24,42 @@ if(modalWrap !== null) {
         
                     <section class="w-100 p-4 mb-4">
           <p class="note note-primary details">
-            <strong>Email:</strong> 
+            <strong class="strong-details">Email:</strong> 
             ${options.data.email ? options.data.email : '-'}
           </p>
       
-          <p class="note note-secondary details">
-            <strong>Name:</strong> 
+          <p class="note note-primary details">
+            <strong class="strong-details">Name:</strong> 
             ${options.data.name ? options.data.name : '-'}
           </p>
       
-          <p class="note note-success details">
-            <strong>Country:</strong> 
+          <p class="note note-primary details">
+            <strong class="strong-details">Country:</strong> 
             ${options.data.country ? options.data.country : '-'}
           </p>
       
-          <p class="note note-danger details">
-            <strong>City:</strong> 
+          <p class="note note-primary details">
+            <strong class="strong-details">City:</strong> 
             ${options.data.city ? options.data.city : '-'}      
           </p>
       
-          <p class="note note-warning details">
-            <strong>Address:</strong>
+          <p class="note note-primary details">
+            <strong class="strong-details">Address:</strong>
             ${options.data.address ? options.data.address : '-'}      
           </p>
       
-          <p class="note note-info details">
-            <strong>Phone:</strong> 
+          <p class="note note-primary details">
+            <strong class="strong-details">Phone:</strong> 
             ${options.data.phone ? options.data.phone : '-'}      
           </p>
       
-          <p class="note note-light details">
-            <strong>Registered:</strong> 
+          <p class="note note-primary details">
+            <strong class="strong-details">Registered:</strong> 
             ${options.data.date_create ? moment(options.data.date_create).format('LLL') : '-'}
           </p>
       
-          <p class="note note-light details" style="word-break: break-word">
-          <strong style="word-break:normal; margin-right: 20px">Notes:</strong> 
+          <p class="note note-primary details">
+          <strong class="strong-details">Notes:</strong> 
             ${options.data.note ? options.data.note : '-'}
           </p>
       
@@ -79,6 +79,10 @@ if(modalWrap !== null) {
     
     const customersModal = new bootstrap.Modal(modalWrap.querySelector('.modal'));
     customersModal.show();
+}
+
+function generateModalBody(options) {
+return options.data
 }
 
 function removeCustomerDetailsModal() {

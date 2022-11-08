@@ -13,7 +13,7 @@ async function renderCustomersPageLayout(options = CustomerProps) {
                         ${options.buttons ? options.buttons.map((el) => `<button class="${el.classlist}">${el.text}</button>`) : ""}
                     </div>
                     <div id="${CONTENT_ID}">
-                      ${_.isEmpty(data) ? "" : await generateTableBootstrap(data)}
+                      ${_.isEmpty(data) ? "" : await generateTableBootstrap(data, options)}
                     </div>`;
   }
 }
@@ -38,8 +38,18 @@ const CustomerProps = {
       {
         name: "Details",
         classlist: "btn btn-link",
-        onclick: "renderCustomerDetailsPage",
+        onclick: "renderCustomerDetailsModal",
       },
+      {
+        name: "Edit",
+        classlist: "btn btn-primary table-action-buttons",
+        onclick: "renderEditCustomerPage"
+      },
+      {
+        name: "Delete",
+        classlist: "btn btn-danger table-action-buttons",
+        onclick: "renderDeleteCustomerModal"
+      }
     ],
   },
 };
