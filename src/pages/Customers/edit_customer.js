@@ -1,13 +1,12 @@
 async function renderEditCustomerLayout(requestOpts, options) {
-
-    edit_customer_props.requestOpts.url = ENDPOINTS["Get Customer By Id"](requestOpts.id)
-    edit_customer_props.id = requestOpts.id
+  edit_customer_props.requestOpts.url = ENDPOINTS["Get Customer By Id"](requestOpts.id);
+  edit_customer_props.id = requestOpts.id;
 
   const response = await getDataFromApi({ url: ENDPOINTS["Get Customer By Id"](requestOpts.id) });
   if (!response.isSuccess) {
     return renderErrorPageLayout(response.status);
   } else {
-     const data = await response.data;
+    const data = await response.data;
     currentCustomerState = data;
 
     return `
@@ -77,7 +76,7 @@ const edit_customer_props = {
   path: "Customers",
   title: "Edit",
   formId: "edit-customer-form",
-  id: '',
+  id: "",
   inputs: {
     ...add_new_customer_props.inputs,
   },
@@ -92,94 +91,89 @@ const edit_customer_props = {
     },
   },
 };
-let currentCustomerState = {}
-let EditedCustomerModel = {}
+let currentCustomerState = {};
+let EditedCustomerModel = {};
 
 function getEditCustomerInputValues() {
-    return {
-        id: +edit_customer_props.id,
-        email: document.getElementById("inputEmail").value.trim(),
-        name: document.getElementById("inputName").value.trim(),
-        country: document.getElementById("inputCountry").value.trim(),
-        city: document.getElementById("inputCity").value.trim(),
-        address: document.getElementById("inputAddress").value.trim(),
-        phone: document.getElementById("inputPhone").value.trim(),
-        note: document.getElementById('textareaNotes').value.trim()
-    }
+  return {
+    id: +edit_customer_props.id,
+    email: document.getElementById("inputEmail").value.trim(),
+    name: document.getElementById("inputName").value.trim(),
+    country: document.getElementById("inputCountry").value.trim(),
+    city: document.getElementById("inputCity").value.trim(),
+    address: document.getElementById("inputAddress").value.trim(),
+    phone: document.getElementById("inputPhone").value.trim(),
+    note: document.getElementById("textareaNotes").value.trim(),
+  };
 }
 
 function addListenersToEditCustomerPage() {
+  //save button click
+  document.getElementById("save-customer-changes").addEventListener("click", async () => {
+    showSpinner();
+    document.getElementById("save-customer-changes").setAttribute("disabled", "");
 
-    //save button click
-    document.getElementById("save-customer-changes").addEventListener("click", async () => {
-      const spinner = document.querySelector(`.overlay`);
-      spinner.style.display = "block";
-      document.getElementById("save-customer-changes").setAttribute("disabled", "");
-  
-      EditedCustomerModel = getEditCustomerInputValues()
-  
-      edit_customer_props.requestOpts.opts.body = JSON.stringify(Object.assign(EditedCustomerModel));
-      const response = await submitNewCustomer(edit_customer_props.requestOpts)
-      spinner.style.display = "none";
-      if (response.isSuccess) {
-        await renderCustomersPage(CustomerProps)
-        renderNotification({ message: SUCCESS_MESSAGES['Customer Successfully Updated'](EditedCustomerModel.name) });
-      } else {
-        renderNotification({message: response.data.errors ? convertApiErrors(response.data.errors) : ERROR_MESSAGES["Connection Issue"] });
-        document.querySelector(".toast").style["background-color"] = "red";
-        document.querySelector(".toast").classList.add("text-white");
-      }
-    });
-  
-    //on input validations
-  
-    for (let input in edit_customer_props.inputs) {
-      const field = document.getElementById(edit_customer_props.inputs[input].id);
-      const errorField = document.querySelector(edit_customer_props.inputs[input].errorMessageSelector);
-      const saveButton = document.getElementById("save-customer-changes");
-      if (edit_customer_props.inputs[input].type !== "select") {
-        field.addEventListener("input", () => {
-          if (!customerInputValidation(edit_customer_props.inputs[input].name, field.value)) {
-            errorField.innerText = edit_customer_props.inputs[input].errorMessage;
-            field.style = "border:1px solid red";
-            saveButton.setAttribute("disabled", "");
-          } else if( _.isEqual(_.omit(currentCustomerState,'date_create'), getEditCustomerInputValues())) {
-            saveButton.setAttribute("disabled", "");
-          } else {
-            errorField.innerText = "";
-            field.style.border = null;
-            let isValid = true;
-            for (let i in edit_customer_props.inputs) {
-              const f = document.getElementById(edit_customer_props.inputs[i].id);
-              if (edit_customer_props.inputs[i].type !== "select" && !customerInputValidation(edit_customer_props.inputs[i].name, f.value)) {
-                isValid = false;
-              }
-            }
-            if (isValid) {
-              saveButton.removeAttribute("disabled");
-            }
-          }
-        });
-      } else {
-        field.addEventListener('change', () => {
-          if( _.isEqual(_.omit(currentCustomerState,'date_create'), getEditCustomerInputValues())) {
-            saveButton.setAttribute("disabled", "");
-          } else {
-            let isValid = true;
-            for (let i in edit_customer_props.inputs) {
-              const f = document.getElementById(edit_customer_props.inputs[i].id);
-              if (edit_customer_props.inputs[i].type !== "select" && !customerInputValidation(edit_customer_props.inputs[i].name, f.value)) {
-                isValid = false;
-              }
-            }
-            if (isValid) {
-              saveButton.removeAttribute("disabled");
-            }
-          }
-        })
-      }
+    EditedCustomerModel = getEditCustomerInputValues();
+
+    edit_customer_props.requestOpts.opts.body = JSON.stringify(Object.assign(EditedCustomerModel));
+    const response = await submitNewCustomer(edit_customer_props.requestOpts);
+    hideSpinner();
+    if (response.isSuccess) {
+      await renderCustomersPage(CustomerProps);
+      renderNotification({ message: SUCCESS_MESSAGES["Customer Successfully Updated"](EditedCustomerModel.name) });
+    } else {
+      renderNotification({ message: response.data.errors ? convertApiErrors(response.data.errors) : ERROR_MESSAGES["Connection Issue"] });
+      document.querySelector(".toast").style["background-color"] = "red";
+      document.querySelector(".toast").classList.add("text-white");
     }
-  
-  
+  });
+
+  //on input validations
+
+  for (let input in edit_customer_props.inputs) {
+    const field = document.getElementById(edit_customer_props.inputs[input].id);
+    const errorField = document.querySelector(edit_customer_props.inputs[input].errorMessageSelector);
+    const saveButton = document.getElementById("save-customer-changes");
+    if (edit_customer_props.inputs[input].type !== "select") {
+      field.addEventListener("input", () => {
+        if (!isValidInput(edit_customer_props.inputs[input].name, field.value)) {
+          errorField.innerText = edit_customer_props.inputs[input].errorMessage;
+          field.style = "border:1px solid red";
+          saveButton.setAttribute("disabled", "");
+        } else if (_.isEqual(_.omit(currentCustomerState, "date_create"), getEditCustomerInputValues())) {
+          saveButton.setAttribute("disabled", "");
+        } else {
+          errorField.innerText = "";
+          field.style.border = null;
+          let isValid = true;
+          for (let i in edit_customer_props.inputs) {
+            const f = document.getElementById(edit_customer_props.inputs[i].id);
+            if (edit_customer_props.inputs[i].type !== "select" && !isValidInput(edit_customer_props.inputs[i].name, f.value)) {
+              isValid = false;
+            }
+          }
+          if (isValid) {
+            saveButton.removeAttribute("disabled");
+          }
+        }
+      });
+    } else {
+      field.addEventListener("change", () => {
+        if (_.isEqual(_.omit(currentCustomerState, "date_create"), getEditCustomerInputValues())) {
+          saveButton.setAttribute("disabled", "");
+        } else {
+          let isValid = true;
+          for (let i in edit_customer_props.inputs) {
+            const f = document.getElementById(edit_customer_props.inputs[i].id);
+            if (edit_customer_props.inputs[i].type !== "select" && !isValidInput(edit_customer_props.inputs[i].name, f.value)) {
+              isValid = false;
+            }
+          }
+          if (isValid) {
+            saveButton.removeAttribute("disabled");
+          }
+        }
+      });
+    }
   }
-  
+}

@@ -13,9 +13,9 @@ async function sideMenuClickHandler(page) {
     //   await renderPages[page](OrderProps);
     //   break;
 
-    // case "Products":
-    //   renderPages[page]({ title: "Products" });
-    //   break;
+    case "Products":
+      renderPages[page](ProductsProps);
+      break;
   
     case "Customers":
       renderPages[page](CustomerProps)

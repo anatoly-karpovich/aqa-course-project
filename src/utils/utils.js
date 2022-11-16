@@ -2,6 +2,16 @@ function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
 }
 
+function showSpinner() {
+  const spinner = document.querySelector(`.overlay`);
+  spinner.style.display = "block";
+}
+
+function hideSpinner() {
+  const spinner = document.querySelector(`.overlay`);
+  spinner.style.display = "none";
+}
+
 function findNodeIndexByInnerText(selector, value) {
   const nodes = document.querySelectorAll(selector);
   const values = [];
@@ -38,8 +48,7 @@ const getDataFromApi = async function (requestOpts = {}) {
       response.status = status;    
     }
   } catch (error) {
-    const spinner = document.querySelector(`.overlay`);
-    spinner.style.display = "none";
+    hideSpinner()
     console.log(error);
     response.isSuccess = false;
   }
@@ -54,19 +63,24 @@ function clearAllInputs(inputs) {
     } else {
         field.value = "";
         field.style.border = null;
-        document.querySelector(add_new_customer_props.inputs[input].errorMessageSelector).innerText = "";
+        document.querySelector(inputs[input].errorMessageSelector).innerText = "";
     }
   }
 }
 
-function customerInputValidation(inputName, value = "") {
-  return REGULAR_EXPRESSIONS[inputName].test(value.trim());
+function isValidInput(inputName, value) {
+  if(typeof value === 'string') {
+    return REGULAR_EXPRESSIONS[inputName].test(value.trim());
+  } else {
+    return REGULAR_EXPRESSIONS[inputName].test(value);
+  }
+
 }
 
-function renderOptions(values = [], name) {
-  return name 
-  ? values.map((el, index) => `<option ${index === values.findIndex(el => el === name) ? "selected" : ""} value="${el}">${el}</option>`).join("")
-  : values.map((el, index) => `<option ${index === values.findIndex(el => el === 'USA') ? "selected" : ""} value="${el}">${el}</option>`).join("")
+function renderOptions(values = [], defaultValue, toBeSelected) {
+  return toBeSelected 
+  ? values.map((el, index) => `<option ${index === values.findIndex(el => el === toBeSelected) ? "selected" : ""} value="${el}">${el}</option>`).join("")
+  : values.map((el, index) => `<option ${index === values.findIndex(el => el === defaultValue) ? "selected" : ""} value="${el}">${el}</option>`).join("")
 }
 
 function convertApiErrors(errors) {
@@ -77,4 +91,44 @@ return Object.keys(errors)
   }
 })
 .join("\n")
+}
+
+async function showNotificationAfterDeleteRequest(response, notificationOprions, pageProps) {
+  hideSpinner()
+  if (response.status === 204) {
+    await renderPages[pageProps.path](pageProps)
+    renderNotification( notificationOprions );
+  } else {
+    renderNotification({ message: response.data ? convertApiErrors(response.data) : ERROR_MESSAGES["Connection Issue"] });
+    document.querySelector(".toast").style["background-color"] = "red";
+    document.querySelector(".toast").classList.add("text-white");
+  }
+}
+
+async function submitEntiti(options, notificationOprions) {
+  showSpinner()
+  const response = await submitNewProduct(options.requestOpts);
+  clearAllInputs(options.inputs);
+  hideSpinner()
+  if (response.isSuccess) {
+    renderNotification( notificationOprions );
+  } else {
+    renderNotification({ message: response.data ? convertApiErrors(response.data) : ERROR_MESSAGES["Connection Issue"] });
+    document.querySelector(".toast").style["background-color"] = "red";
+    document.querySelector(".toast").classList.add("text-white");
+  }
+}
+
+function showErrorMessageForInput(inputOptions, saveButton) {
+  $(`#${inputOptions.id}`).css("border", "1px solid red");
+  $(inputOptions.errorMessageSelector).html(inputOptions.errorMessage);
+  saveButton.prop("disabled", true)
+}
+
+function hideErrorMessageForInput(options, inputName, saveButton) {
+  $(`#${options[inputName].id}`).css("border", "");
+  $(options[inputName].errorMessageSelector).html("");
+  if (validateNewProductInputs(options)) {
+    saveButton.prop("disabled", false)
+  }
 }

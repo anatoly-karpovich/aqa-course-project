@@ -82,6 +82,14 @@ if(modalWrap !== null) {
 }
 
 function generateModalBody(options) {
+  options.data.forEach(row => {
+    `<p class="note note-primary details">
+    <strong class="strong-details">Notes:</strong> 
+      ${row ? row : '-'}
+    </p>`
+  })
+
+  
 return options.data
 }
 

@@ -18,7 +18,7 @@ function renderAddNewCustomerLayout(options = add_new_customer_props) {
       <div class="col-md-6">
         <label for="${options.inputs.country.id}" class="form-label">${options.inputs.country.name}</label>
         <select id="${options.inputs.country.id}" class="${options.inputs.country.classlist}">
-            ${renderOptions(options.inputs.country.options.values)}
+            ${renderOptions(options.inputs.country.options.values, 'USA')}
         </select>
       </div>
       <div class="col-md-6">
@@ -152,8 +152,7 @@ function addListenersToAddNewCustomerPage() {
 
   //save button click
   document.getElementById("save-new-customer").addEventListener("click", async () => {
-    const spinner = document.querySelector(`.overlay`);
-    spinner.style.display = "block";
+    showSpinner()
     document.getElementById("save-new-customer").setAttribute("disabled", "");
 
     newCustomerModel = {
@@ -169,7 +168,7 @@ function addListenersToAddNewCustomerPage() {
     add_new_customer_props.requestOpts.opts.body = JSON.stringify(Object.assign(newCustomerModel));
     const response = await submitNewCustomer(add_new_customer_props.requestOpts);
     clearAllInputs(add_new_customer_props.inputs);
-    spinner.style.display = "none";
+    hideSpinner()
     if (response.isSuccess) {
       renderNotification({ message: SUCCESS_MESSAGES["New Customer Added"] });
     } else {
@@ -187,7 +186,7 @@ function addListenersToAddNewCustomerPage() {
     const saveButton = document.getElementById("save-new-customer");
     if (add_new_customer_props.inputs[input].type !== "select") {
       field.addEventListener("input", () => {
-        if (!customerInputValidation(add_new_customer_props.inputs[input].name, field.value)) {
+        if (!isValidInput(add_new_customer_props.inputs[input].name, field.value)) {
           errorField.innerText = add_new_customer_props.inputs[input].errorMessage;
           field.style = "border:1px solid red";
           saveButton.setAttribute("disabled", "");
@@ -197,7 +196,7 @@ function addListenersToAddNewCustomerPage() {
           let isValid = true;
           for (let i in add_new_customer_props.inputs) {
             const f = document.getElementById(add_new_customer_props.inputs[i].id);
-            if (add_new_customer_props.inputs[i].type !== "select" && !customerInputValidation(add_new_customer_props.inputs[i].name, f.value)) {
+            if (add_new_customer_props.inputs[i].type !== "select" && !isValidInput(add_new_customer_props.inputs[i].name, f.value)) {
               isValid = false;
             }
           }
