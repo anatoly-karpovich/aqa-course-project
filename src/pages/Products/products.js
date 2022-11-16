@@ -88,3 +88,16 @@ async function deleteProduct(id) {
   const response = await getDataFromApi(requestOpts);
   await showNotificationAfterDeleteRequest(response, { message: SUCCESS_MESSAGES["Product Successfully Deleted"]('Product') }, ProductsProps)
 }
+
+const product_details_props = (id) => {
+  return {
+    id,
+    url: ENDPOINTS["Get Product By Id"](id),
+    path: 'Product',
+    buttons: {
+      edit: {
+        onClickFunc: 'renderEditProductPage'
+      }
+    }
+  }
+}

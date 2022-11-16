@@ -40,16 +40,15 @@ function renderAddNewCustomerPage(options = add_new_customer_props) {
 }
 
 async function renderCustomerDetailsModal(id) {
-  const renderOpts = { id };
   showSpinner();
-  await createCustomerDetailsModal(renderOpts);
+  await createDetailsModal(customer_details_props(id)); 
   hideSpinner();
   sideMenuActivateElement("Customers");
 }
 
 async function renderEditCustomerPage(id) {
   if (modalWrap) {
-    removeCustomerDetailsModal();
+    removeDetailsModal();
   }
   const requestOpts = { id: id };
   showSpinner();
@@ -86,6 +85,13 @@ function renderAddNewProductPage(options = add_new_product_props) {
 function renderDeleteProductModal(id) {
   renderConfirmationModal(id, delete_product_confirmation_opts);
 }
+
+async function renderProductDetailsModal(id) {
+    showSpinner();
+    await createDetailsModal(product_details_props(id)); 
+    hideSpinner();
+    sideMenuActivateElement("Products");
+  }
 
 function renderLandingPage(options = {}) {
   document.querySelector("body").innerHTML = renderLandingPageLayout(options);
