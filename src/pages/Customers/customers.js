@@ -70,6 +70,20 @@ const delete_customer_confirmation_opts = {
   },
 };
 
+
+const customer_details_props = (id) => {
+  return {
+    id,
+    url: ENDPOINTS["Get Customer By Id"](id),
+    path: 'Customer',
+    buttons: {
+      edit: {
+        onClickFunc: 'renderEditCustomerPage'
+      }
+    }
+  }
+}
+
 async function deleteCustomer(id) {
   const requestOpts = {
     url: ENDPOINTS["Get Customer By Id"](id),
