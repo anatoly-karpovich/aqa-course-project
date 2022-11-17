@@ -1,4 +1,4 @@
-async function renderEditCustomerLayout(requestOpts, options) {
+async function renderEditCustomerLayout(requestOpts, options = edit_customer_props) {
   edit_customer_props.requestOpts.url = ENDPOINTS["Get Customer By Id"](requestOpts.id);
   edit_customer_props.id = requestOpts.id;
 
@@ -7,6 +7,13 @@ async function renderEditCustomerLayout(requestOpts, options) {
     return renderErrorPageLayout(response.status);
   } else {
     const data = await response.data;
+    options.inputs.email.value = data.email;
+    options.inputs.name.value = data.name;
+    options.inputs.country.value = data.country;
+    options.inputs.city.value = data.city;
+    options.inputs.address.value = data.address;
+    options.inputs.phone.value = data.phone;
+    options.inputs.notes.value = data.note;
     currentCustomerState = data;
 
     return `
@@ -14,49 +21,7 @@ async function renderEditCustomerLayout(requestOpts, options) {
         <h2 class="pageTitle">${options.title} ${data.name}</h2>
     </div>
     <form class="row g-3 form-with-inputs" id="${options.formId}">
-      <div class="col-md-6">
-        <label for="${options.inputs.email.id}" class="form-label">${options.inputs.email.name}</label>
-        <input type="${options.inputs.email.type}" class="${options.inputs.email.classlist}" id="${options.inputs.email.id}" 
-        placeholder="${options.inputs.email.placeholder}" value="${data.email}"> 
-        <strong class="error-message-for-input"></strong>
-        </div>
-      <div class="col-md-6">
-        <label for="${options.inputs.name.id}" class="form-label">${options.inputs.name.name}</label>
-        <input type="${options.inputs.name.type}" class="${options.inputs.name.classlist}" id="${options.inputs.name.id}" 
-        placeholder="${options.inputs.name.placeholder}" value="${data.name}">
-        <strong class="error-message-for-input"></strong>
-      </div>
-      <div class="col-md-6">
-        <label for="${options.inputs.country.id}" class="form-label">${options.inputs.country.name}</label>
-        <select id="${options.inputs.country.id}" class="${options.inputs.country.classlist}">
-            ${renderOptions(options.inputs.country.options.values, data.country)}
-        </select>
-      </div>
-      <div class="col-md-6">
-        <label for="${options.inputs.city.id}" class="form-label">${options.inputs.city.name}</label>
-        <input type="${options.inputs.city.type}" class="${options.inputs.city.classlist}" id="${options.inputs.city.id}" 
-        placeholder="${options.inputs.city.placeholder}" value="${data.city}">
-        <strong class="error-message-for-input"></strong>
-      </div>
-      <div class="col-md-6">
-        <label for="${options.inputs.address.id}" class="form-label">${options.inputs.address.name}</label>
-        <input type="${options.inputs.address.type}" class="${options.inputs.address.classlist}" id="${options.inputs.address.id}" 
-        placeholder="${options.inputs.address.placeholder}" value="${data.address}">
-        <strong class="error-message-for-input"></strong>
-      </div>
-      <div class="col-md-6">
-        <label for="${options.inputs.phone.id}" class="form-label">${options.inputs.phone.name}</label>
-        <input type="${options.inputs.phone.type}" class="${options.inputs.phone.classlist}" id="${options.inputs.phone.id}" 
-        placeholder="${options.inputs.phone.placeholder}" value="${data.phone}">
-        <strong class="error-message-for-input"></strong>
-      </div>
-      <div class="col-md-12">
-        <label for="${options.inputs.notes.id}" class="form-label">${options.inputs.notes.name}</label>
-        <textarea class="${options.inputs.notes.classList}" id="${options.inputs.notes.id}" ${options.inputs.notes.attributes} 
-        placeholder="${options.inputs.notes.placeholder}">${data.note}</textarea>
-        <strong class="error-message-for-input"></strong>
-    </div>
-      
+      ${generateFormInputs( options.inputs)}
       <div class="col-12" style="margin-top: 50px; display: flex; justify-content: space-between;">
         <div>
             <button type="submit" class="btn btn-primary form-buttons" id="save-customer-changes" disabled>Save Changes</button>
@@ -65,7 +30,6 @@ async function renderEditCustomerLayout(requestOpts, options) {
         <div>
             <button class="btn btn-danger" form-buttons" onClick="renderDeleteCustomerModal('${requestOpts.id}');">Delete Customer</button>
         </div>
-      
       </div>
     </form>
     `;
@@ -78,7 +42,7 @@ const edit_customer_props = {
   formId: "edit-customer-form",
   id: "",
   inputs: {
-    ...add_new_customer_props.inputs,
+    ...(_.cloneDeep(add_new_customer_props.inputs)),
   },
   requestOpts: {
     url: "",
@@ -177,3 +141,50 @@ function addListenersToEditCustomerPage() {
     }
   }
 }
+
+
+
+/*
+<div class="col-md-6">
+        <label for="${options.inputs.email.id}" class="form-label">${options.inputs.email.name}</label>
+        <input type="${options.inputs.email.type}" class="${options.inputs.email.classlist}" id="${options.inputs.email.id}" 
+        placeholder="${options.inputs.email.placeholder}" value="${data.email}"> 
+        <strong class="error-message-for-input"></strong>
+        </div>
+      <div class="col-md-6">
+        <label for="${options.inputs.name.id}" class="form-label">${options.inputs.name.name}</label>
+        <input type="${options.inputs.name.type}" class="${options.inputs.name.classlist}" id="${options.inputs.name.id}" 
+        placeholder="${options.inputs.name.placeholder}" value="${data.name}">
+        <strong class="error-message-for-input"></strong>
+      </div>
+      <div class="col-md-6">
+        <label for="${options.inputs.country.id}" class="form-label">${options.inputs.country.name}</label>
+        <select id="${options.inputs.country.id}" class="${options.inputs.country.classlist}">
+            ${renderOptions(options.inputs.country.options.values, data.country)}
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="${options.inputs.city.id}" class="form-label">${options.inputs.city.name}</label>
+        <input type="${options.inputs.city.type}" class="${options.inputs.city.classlist}" id="${options.inputs.city.id}" 
+        placeholder="${options.inputs.city.placeholder}" value="${data.city}">
+        <strong class="error-message-for-input"></strong>
+      </div>
+      <div class="col-md-6">
+        <label for="${options.inputs.address.id}" class="form-label">${options.inputs.address.name}</label>
+        <input type="${options.inputs.address.type}" class="${options.inputs.address.classlist}" id="${options.inputs.address.id}" 
+        placeholder="${options.inputs.address.placeholder}" value="${data.address}">
+        <strong class="error-message-for-input"></strong>
+      </div>
+      <div class="col-md-6">
+        <label for="${options.inputs.phone.id}" class="form-label">${options.inputs.phone.name}</label>
+        <input type="${options.inputs.phone.type}" class="${options.inputs.phone.classlist}" id="${options.inputs.phone.id}" 
+        placeholder="${options.inputs.phone.placeholder}" value="${data.phone}">
+        <strong class="error-message-for-input"></strong>
+      </div>
+      <div class="col-md-12">
+        <label for="${options.inputs.notes.id}" class="form-label">${options.inputs.notes.name}</label>
+        <textarea class="${options.inputs.notes.classList}" id="${options.inputs.notes.id}" ${options.inputs.notes.attributes} 
+        placeholder="${options.inputs.notes.placeholder}">${data.note}</textarea>
+        <strong class="error-message-for-input"></strong>
+    </div>
+    */

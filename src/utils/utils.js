@@ -79,8 +79,11 @@ function isValidInput(inputName, value) {
 
 function renderOptions(values = [], defaultValue, toBeSelected) {
   return toBeSelected 
-  ? values.map((el, index) => `<option ${index === values.findIndex(el => el === toBeSelected) ? "selected" : ""} value="${el}">${el}</option>`).join("")
-  : values.map((el, index) => `<option ${index === values.findIndex(el => el === defaultValue) ? "selected" : ""} value="${el}">${el}</option>`).join("")
+//   ? values.map((el, index) => `<option ${index === values.findIndex(el => el === toBeSelected) ? "selected" : ""} value="${el}">${el}</option>`).join("")
+//   : values.map((el, index) => `<option ${index === values.findIndex(el => el === defaultValue) ? "selected" : ""} value="${el}">${el}</option>`).join("")
+// }
+  ? values.map(el => `<option ${el === toBeSelected ? "selected" : ""} value="${el}">${el}</option>`).join("")
+  : values.map(el => `<option ${el === defaultValue ? "selected" : ""} value="${el}">${el}</option>`).join("")
 }
 
 function convertApiErrors(errors) {
@@ -131,4 +134,54 @@ function hideErrorMessageForInput(options, inputName, saveButton) {
   if (validateNewProductInputs(options)) {
     saveButton.prop("disabled", false)
   }
+}
+
+function generateFormInputs(inputs) {
+  const formInputs = Object.keys(inputs).map(input => {
+    if(inputs[input].type === 'text') 
+      return  ` <div class="${inputs[input].divClasslist}">
+                <label for="${inputs[input].id}" class="form-label">${inputs[input].name}</label>
+                <input type="${inputs[input].type}" class="${inputs[input].classlist}" id="${inputs[input].id}" 
+                placeholder="${inputs[input].placeholder}" ${inputs[input].attributes ? inputs[input].attributes : ""}
+                value="${inputs[input].value}"> 
+                <strong class="error-message-for-input"></strong>
+                </div>`
+    else if(inputs[input].type === 'select') {
+      return  ` <div class="${inputs[input].divClasslist}">
+                <label for="${inputs[input].id}" class="form-label">${inputs[input].name}</label>
+                <select id="${inputs[input].id}" class="${inputs[input].classlist}"
+                ${inputs[input].attributes ? inputs[input].attributes : ""}>
+                ${renderOptions(inputs[input].options.values, inputs[input].defaultValue, inputs[input].value)}
+                </select>
+                </div>`
+    }
+    else if(inputs[input].type === 'textarea') {
+      return   `<div class="${inputs[input].divClasslist}">
+                <label for="${inputs[input].id}" class="form-label">${inputs[input].name}</label>
+                <textarea class="${inputs[input].classList}" id="${inputs[input].id}" ${inputs[input].attributes} 
+                placeholder="${inputs[input].placeholder}" 
+                ${inputs[input].attributes ? inputs[input].attributes : ""}>${inputs[input].value}</textarea>
+                <strong class="error-message-for-input"></strong>
+                </div>`
+    }
+    else if(inputs[input].type === 'email') {
+      return `  <div class="${inputs[input].divClasslist}">
+                <label for="${inputs[input].id}" class="form-label">${inputs[input].name}</label>
+                <input type="${inputs[input].type}" class="${inputs[input].classlist}" id="${inputs[input].id}" 
+                placeholder="${inputs[input].placeholder}" ${inputs[input].attributes ? inputs[input].attributes : ""}
+                value="${inputs[input].value}"> 
+                <strong class="error-message-for-input"></strong>
+                </div>`
+    }
+     
+  })
+  return formInputs.join('')
+}
+
+function getDataFromForm(formSelector) {
+  const data = $(formSelector).serializeArray().reduce((m, o) => {
+    m[o.name] = o.value;
+    return m;
+  }, {});
+  return data
 }

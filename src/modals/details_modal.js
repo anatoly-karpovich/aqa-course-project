@@ -11,7 +11,7 @@ if(modalWrap !== null) {
     modalWrap.id = `${options.path}-details-modal-id`
     modalWrap.insertAdjacentHTML(
         "afterbegin", `
-    <div class="modal show fade" id="customerDetailsModal" tabindex="-1">
+    <div class="modal show fade" id="${options.path}DetailsModal" tabindex="-1">
   <div class="modal-dialog-scrollable modal-dialog show">
     <div class="modal-content">
       <div class="modal-header">
