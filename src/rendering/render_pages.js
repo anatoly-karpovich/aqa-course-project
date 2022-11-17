@@ -93,6 +93,18 @@ async function renderProductDetailsModal(id) {
     sideMenuActivateElement("Products");
   }
 
+  async function renderEditProductPage(id) {
+    if (modalWrap) {
+      removeDetailsModal();
+    }
+    const requestOpts = { id: id };
+    showSpinner();
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderEditProductLayout(requestOpts, edit_product_props);
+    hideSpinner();
+    sideMenuActivateElement("Products");
+    addListenersToEditProductPage();
+  }
+
 function renderLandingPage(options = {}) {
   document.querySelector("body").innerHTML = renderLandingPageLayout(options);
   document.querySelector("#signOut").addEventListener("click", () => {

@@ -18,6 +18,7 @@ const SUCCESS_MESSAGES = {
   ["Customer Successfully Updated"]: (name) => `${name} Successfully Updated`,
   ['New Product Added']: "Product successfully created",
   ['Product Successfully Deleted']: (name) => `${name} Successfully Deleted`,
+  ['Product Successfully Updated']: (name) => `${name} Successfully Updated`,
 };
 
 const ERROR_MESSAGES = {

@@ -4,44 +4,15 @@ function renderAddNewProductLayout(options = add_new_product_props) {
           <h2 class="pageTitle">${options.title}</h2>
       </div>
       <form class="row g-3 form-with-inputs" id="${options.formId}">
-        <div class="col-md-6">
-          <label for="${options.inputs.name.id}" class="form-label">${options.inputs.name.name}</label>
-          <input type="${options.inputs.name.type}" class="${options.inputs.name.classlist}" 
-          id="${options.inputs.name.id}" placeholder="${options.inputs.name.placeholder}" ${options.inputs.name.nameAttribute}>
-          <strong class="error-message-for-input"></strong>
-        </div>
-        <div class="col-md-6">
-          <label for="${options.inputs.manufacturer.id}" class="form-label">${options.inputs.manufacturer.name}</label>
-          <select id="${options.inputs.manufacturer.id}" class="${options.inputs.manufacturer.classlist}" ${options.inputs.manufacturer.nameAttribute}>
-              ${renderOptions(options.inputs.manufacturer.options.values, options.inputs.manufacturer.options.values[0])}
-          </select>
-        </div>
-        <div class="col-md-6">
-          <label for="${options.inputs.price.id}" class="form-label">${options.inputs.price.name}</label>
-          <input type="${options.inputs.price.type}" class="${options.inputs.price.classlist}" 
-          id="${options.inputs.price.id}" placeholder="${options.inputs.price.placeholder}" ${options.inputs.price.nameAttribute}>
-          <strong class="error-message-for-input"></strong>
-        </div>
-        <div class="col-md-6">
-          <label for="${options.inputs.amount.id}" class="form-label">${options.inputs.amount.name}</label>
-          <input type="${options.inputs.amount.type}" class="${options.inputs.amount.classlist}" 
-          id="${options.inputs.amount.id}" placeholder="${options.inputs.amount.placeholder}" ${options.inputs.amount.nameAttribute}>
-          <strong class="error-message-for-input"></strong>
-        </div>
-        <div class="col-md-12">
-          <label for="${options.inputs.notes.id}" class="form-label">${options.inputs.notes.name}</label>
-          <textarea class="${options.inputs.notes.classList}" id="${options.inputs.notes.id}" ${options.inputs.notes.nameAttribute} 
-          ${options.inputs.notes.attributes} placeholder="${options.inputs.notes.placeholder}"></textarea>
-          <strong class="error-message-for-input"></strong>
-      </div>
+      ${generateFormInputs(options.inputs)} 
         
         <div class="col-12" style="margin-top: 50px; display: flex; justify-content: space-between;">
           <div>
-              <button type="submit" class="btn btn-primary form-buttons" id="save-new-product" disabled>Save New Product</button>
-              <button class="btn btn-secondary form-buttons" id="back-to-products-page" onClick="renderProductsPage(ProductsProps)">Back</button>
+              <button type="submit" class="btn btn-primary form-buttons" id="${options.buttons.save.id}" disabled>Save New Product</button>
+              <button class="btn btn-secondary form-buttons" id="${options.buttons.back.id}">Back</button>
           </div>
           <div>
-              <button class="btn btn-link" form-buttons" onClick="clearAllInputs(add_new_product_props.inputs);">Clear all</button>
+              <button class="btn btn-link" form-buttons" id="${options.buttons.clear.id}">Clear all</button>
           </div>
         
         </div>
@@ -65,6 +36,7 @@ const add_new_product_props = {
   },
   inputs: {
     name: {
+      divClasslist: "col-md-6",
       name: "Name",
       type: "text",
       classlist: "form-control",
@@ -72,19 +44,23 @@ const add_new_product_props = {
       id: "inputName",
       errorMessageSelector: "div:has(input#inputName) > strong",
       errorMessage: VALIDATION_ERROR_MESSAGES["Product Name"],
-      nameAttribute: `name="name"`,
+      attributes: `name="name"`,
+      value: ""
     },
     manufacturer: {
+      divClasslist: "col-md-6",
       name: "Manufacturer",
       type: "select",
       classlist: "form-select",
       id: "inputManufacturer",
+      defaultValue: "Apple",
       options: {
         values: ["Apple", "Samsung", "Google", "Microsoft", "Sony", "Xiaomi", "Amazon", "Tesla"],
       },
-      nameAttribute: `name="manufacturer"`,
+      attributes: `name="manufacturer"`
     },
     price: {
+      divClasslist: "col-md-6",
       name: "Price",
       type: "text",
       classlist: "form-control",
@@ -92,9 +68,11 @@ const add_new_product_props = {
       id: "inputPrice",
       errorMessageSelector: "div:has(input#inputPrice) > strong",
       errorMessage: VALIDATION_ERROR_MESSAGES["Price"],
-      nameAttribute: `name="price"`,
+      attributes: `name="price"`,
+      value: ""
     },
     amount: {
+      divClasslist: "col-md-6",
       name: "Amount",
       type: "text",
       classlist: "form-control",
@@ -102,34 +80,60 @@ const add_new_product_props = {
       id: "inputAmount",
       errorMessageSelector: "div:has(input#inputAmount) > strong",
       errorMessage: VALIDATION_ERROR_MESSAGES["Amount"],
-      nameAttribute: `name="amount"`,
+      attributes: `name="amount"`,
+      value: ""
     },
     notes: {
+      divClasslist: "col-md-12",
       name: "Notes",
-      tagName: "textarea",
+      type: "textarea",
       classList: "form-control",
       placeholder: `Enter notes`,
       id: "textareaNotes",
       errorMessageSelector: "div:has(textarea#textareaNotes) > strong",
       errorMessage: VALIDATION_ERROR_MESSAGES["Notes"],
-      attributes: `rows="3"`,
-      nameAttribute: `name="note"`,
+      attributes: `rows="3" name="notes"`,
+      value: ""
     },
   },
+  buttons: {
+    save: {
+      id: 'save-new-product'
+    },
+    back: {
+      id: 'back-to-products-page'
+    },
+    clear: {
+      id: 'clear-inputs'
+    }
+  }
 };
 
 function addEventListelersToAddNewProductPage(options = add_new_product_props.inputs) {
-  const saveChangesBtn = $("#save-new-product");
-  const form = $("#add-new-product-form");
+  const saveChangesBtn = $(`#${add_new_product_props.buttons.save.id}`);
+  const form = $(`#${add_new_product_props.formId}`);
 
-  saveChangesBtn.on("click", async (e) => {
+  form.on("click", async (e) => {
     e.preventDefault();
-    const product = form.serializeArray().reduce((m, o) => {
-      m[o.name] = o.value;
-      return m;
-    }, {});
-    add_new_product_props.requestOpts.opts.body = JSON.stringify(Object.assign(product));
-    await submitEntiti(add_new_product_props, { message: SUCCESS_MESSAGES["New Product Added"] });
+    const elementId = e.target.id;
+    switch (elementId) {
+      case add_new_product_props.buttons.save.id: {
+        const product = getDataFromForm(`#${add_new_product_props.formId}`)
+        add_new_product_props.requestOpts.opts.body = JSON.stringify(Object.assign(product));
+        await submitEntiti(add_new_product_props, { message: SUCCESS_MESSAGES["New Product Added"] });
+        break;
+      }
+
+      case add_new_product_props.buttons.back.id: {
+        await renderProductsPage(ProductsProps);
+        break;
+      }
+
+      case add_new_product_props.buttons.clear.id: {
+        clearAllInputs(add_new_product_props.inputs);
+        break;
+      }
+    }
   });
 
   form.on("input", (event) => {
