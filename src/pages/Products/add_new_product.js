@@ -76,7 +76,7 @@ const add_new_product_props = {
       name: "Amount",
       type: "text",
       classlist: "form-control",
-      placeholder: `Enter products's on-hands amount`,
+      placeholder: `Enter roducts's on-hands amount`,
       id: "inputAmount",
       errorMessageSelector: "div:has(input#inputAmount) > strong",
       errorMessage: VALIDATION_ERROR_MESSAGES["Amount"],

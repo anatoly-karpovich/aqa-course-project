@@ -73,7 +73,7 @@ const add_new_customer_props = {
       name: "City",
       type: "text",
       classlist: "form-control",
-      placeholder: `Enter customer's City`,
+      placeholder: `Enter customer's city`,
       id: "inputCity",
       errorMessageSelector: "div:has(input#inputCity) > strong",
       errorMessage: VALIDATION_ERROR_MESSAGES["City"],
