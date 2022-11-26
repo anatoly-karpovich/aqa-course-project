@@ -55,7 +55,7 @@ const getDataFromApi = async function (requestOpts = {}) {
   return response;
 };
 
-function clearAllInputs(inputs) {
+function clearAllInputs(inputs, buttonsToBeDisabled = []) {
   for (const input in inputs) {
     const field = document.getElementById(inputs[input].id)
     if(inputs[input].type === "select") {
@@ -65,6 +65,9 @@ function clearAllInputs(inputs) {
         field.style.border = null;
         document.querySelector(inputs[input].errorMessageSelector).innerText = "";
     }
+  }
+  if(buttonsToBeDisabled.length) {
+    buttonsToBeDisabled.forEach(btn => btn.prop("disabled", true))
   }
 }
 
@@ -79,9 +82,6 @@ function isValidInput(inputName, value) {
 
 function renderOptions(values = [], defaultValue, toBeSelected) {
   return toBeSelected 
-//   ? values.map((el, index) => `<option ${index === values.findIndex(el => el === toBeSelected) ? "selected" : ""} value="${el}">${el}</option>`).join("")
-//   : values.map((el, index) => `<option ${index === values.findIndex(el => el === defaultValue) ? "selected" : ""} value="${el}">${el}</option>`).join("")
-// }
   ? values.map(el => `<option ${el === toBeSelected ? "selected" : ""} value="${el}">${el}</option>`).join("")
   : values.map(el => `<option ${el === defaultValue ? "selected" : ""} value="${el}">${el}</option>`).join("")
 }

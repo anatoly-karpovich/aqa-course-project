@@ -130,7 +130,7 @@ function addEventListelersToAddNewProductPage(options = add_new_product_props.in
       }
 
       case add_new_product_props.buttons.clear.id: {
-        clearAllInputs(add_new_product_props.inputs);
+        clearAllInputs(add_new_product_props.inputs, [saveChangesBtn]);
         break;
       }
     }
@@ -149,7 +149,7 @@ function addEventListelersToAddNewProductPage(options = add_new_product_props.in
       }
 
       case "inputAmount": {
-        if (!isValidInput("Amount", +$(`#${options.amount.id}`).val())) {
+        if (!isValidInput("Amount", $(`#${options.amount.id}`).val()) || !$(`#${options.amount.id}`).val().length) {
           showErrorMessageForInput(options.amount, saveChangesBtn);
         } else {
           hideErrorMessageForInput(options, "amount", saveChangesBtn);
@@ -158,7 +158,7 @@ function addEventListelersToAddNewProductPage(options = add_new_product_props.in
       }
 
       case "inputPrice": {
-        if (!isValidInput("Price", +$(`#${options.price.id}`).val()) || +$(`#${options.price.id}`).val() == 0) {
+        if (!isValidInput("Price", $(`#${options.price.id}`).val()) || +$(`#${options.price.id}`).val() === 0) {
           showErrorMessageForInput(options.price, saveChangesBtn);
         } else {
           hideErrorMessageForInput(options, "price", saveChangesBtn);

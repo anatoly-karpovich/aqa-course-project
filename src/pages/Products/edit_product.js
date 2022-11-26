@@ -98,7 +98,7 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
       }
 
       case "inputAmount": {
-        if (!isValidInput("Amount", +$(`#${options.amount.id}`).val())) {
+        if (!isValidInput("Amount", $(`#${options.amount.id}`).val()) || !$(`#${options.amount.id}`).val().length) {
           showErrorMessageForInput(options.amount, saveChangesBtn);
         } else if (_.isEqual(_.omit(currentProductstate, "id"), getDataFromForm("#edit-product-form"))) {
           saveChangesBtn.prop("disabled", true);
@@ -109,7 +109,7 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
       }
 
       case "inputPrice": {
-        if (!isValidInput("Price", +$(`#${options.price.id}`).val()) || +$(`#${options.price.id}`).val() == 0) {
+        if (!isValidInput("Price", $(`#${options.price.id}`).val()) || +$(`#${options.price.id}`).val() === 0) {
           showErrorMessageForInput(options.price, saveChangesBtn);
         } else if (_.isEqual(_.omit(currentProductstate, "id"), getDataFromForm("#edit-product-form"))) {
           saveChangesBtn.prop("disabled", true);
