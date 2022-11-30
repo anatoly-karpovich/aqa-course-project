@@ -1,6 +1,5 @@
-body {
-  /* min-height: 100vh;
-  min-height: -webkit-fill-available; */
+#root {
+  width: 100%;
 }
 
 html {
@@ -194,12 +193,37 @@ main {
   margin-right: 15px;
 }
 
-.tableWrapper>thead>tr>th, .tableWrapper>tbody>tr>td{
+.tableWrapper>thead>tr>th,
+.tableWrapper>tbody>tr>td {
   text-align: center;
 }
-.modal-header{
+
+.modal-header {
   padding: 1rem 2.5rem;
 }
-.modal-body{
+
+.modal-body {
   padding: 1rem 2.5rem;
+}
+
+.col-lg-4 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 50px 0px
+}
+
+tr:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* .table-btn-border{
+  border: 1px solid grey;
+} */
+
+.table-btn {
+  width: 80px;
+  margin: 5px 10px;
 }
