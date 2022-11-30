@@ -41,7 +41,7 @@ function renderAddNewCustomerPage(options = add_new_customer_props) {
 
 async function renderCustomerDetailsModal(id) {
   showSpinner();
-  await createDetailsModal(customer_details_props(id)); 
+  await createDetailsModal(customer_details_props(id));
   hideSpinner();
   sideMenuActivateElement("Customers");
 }
@@ -88,7 +88,7 @@ function renderDeleteProductModal(id) {
 
 async function renderProductDetailsModal(id) {
     showSpinner();
-    await createDetailsModal(product_details_props(id)); 
+    await createDetailsModal(product_details_props(id));
     hideSpinner();
     sideMenuActivateElement("Products");
   }
@@ -112,6 +112,7 @@ function renderLandingPage(options = {}) {
     document.querySelector("#sidemenu").parentNode.removeChild(document.querySelector("#sidemenu"));
     renderSignInPage();
   });
+  renderHomePage(homeProps);
 }
 
 function renderHomePage(options = {}) {

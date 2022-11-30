@@ -28,7 +28,7 @@ function generateTableRow(obj = {}, options) {
     .join("");
   let actions = "";
   if (options.tableProps.buttons) {
-    actions = "<td>" + options.tableProps.buttons.map((btn) =>
+    actions = "<td style='width: 200px'>" + options.tableProps.buttons.map((btn) =>
     `<button class="${btn.classlist}" onClick="${btn.onclick}('${obj.Id}')">${btn.name}</button>`).join("") + "</td>";
   }
   return row + actions;

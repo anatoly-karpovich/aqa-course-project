@@ -7,7 +7,7 @@ async function renderProductsPageLayout(options = ProductsProps) {
         return { Id: el.id, Name: el.name, Price: `${el.price}$`, Amount: el.amount};
       });
       ProductsProps.data = await response.data
-  
+
       return `    <div id="${PAGE_TITLE_ID}">
                           <h2 class="pageTitle">${options.title}</h2>
                           ${options.buttons ? options.buttons.map((el) => `<button class="${el.classlist}">${el.text}</button>`) : ""}
@@ -38,17 +38,17 @@ async function renderProductsPageLayout(options = ProductsProps) {
       buttons: [
         {
           name: "Details",
-          classlist: "btn btn-link",
+          classlist: "btn btn-link table-btn table-btn-border",
           onclick: "renderProductDetailsModal",
         },
         {
           name: "Edit",
-          classlist: "btn btn-primary table-action-buttons",
+          classlist: "btn btn-primary table-action-buttons table-btn",
           onclick: "renderEditProductPage"
         },
         {
           name: "Delete",
-          classlist: "btn btn-danger table-action-buttons",
+          classlist: "btn btn-danger table-action-buttons table-btn",
           onclick: "renderDeleteProductModal"
         }
       ],
@@ -58,7 +58,7 @@ async function renderProductsPageLayout(options = ProductsProps) {
   const delete_product_confirmation_opts = {
     title: 'Delete Product',
     body: 'Are you sure you want to delete product?',
-    deleteFunction: 'deleteProduct', 
+    deleteFunction: 'deleteProduct',
     buttons: {
         success: {
             name: 'Yes, Delete',
