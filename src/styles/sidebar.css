@@ -175,11 +175,14 @@ main {
   margin-left: 5px;
   margin-right: 5px;
   word-break: break-word;
+  text-align: right;
 }
 
 .strong-details {
   word-break: normal;
   margin-right: 20px;
+  min-width: 100px;
+  text-align: left;
 }
 
 .center {
@@ -189,4 +192,14 @@ main {
 
 .table-action-buttons {
   margin-right: 15px;
+}
+
+.tableWrapper>thead>tr>th, .tableWrapper>tbody>tr>td{
+  text-align: center;
+}
+.modal-header{
+  padding: 1rem 2.5rem;
+}
+.modal-body{
+  padding: 1rem 2.5rem;
 }

@@ -1,6 +1,6 @@
 async function generateTableBootstrap(data = [], options) {
   const layout = `
-    <table class="table">
+    <table class="table tableWrapper">
         <thead>
             <tr>
                 ${generateTableHeaders(Object.keys(data[0]))}
@@ -28,7 +28,7 @@ function generateTableRow(obj = {}, options) {
     .join("");
   let actions = "";
   if (options.tableProps.buttons) {
-    actions = "<td>" + options.tableProps.buttons.map((btn) => 
+    actions = "<td>" + options.tableProps.buttons.map((btn) =>
     `<button class="${btn.classlist}" onClick="${btn.onclick}('${obj.Id}')">${btn.name}</button>`).join("") + "</td>";
   }
   return row + actions;
