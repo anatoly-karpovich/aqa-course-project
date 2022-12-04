@@ -88,7 +88,7 @@ function addListenersToEditCustomerPage() {
       await renderCustomersPage(CustomerProps);
       renderNotification({ message: SUCCESS_MESSAGES["Customer Successfully Updated"](EditedCustomerModel.name) });
     } else {
-      renderNotification({ message: response.data.errors ? convertApiErrors(response.data.errors) : ERROR_MESSAGES["Connection Issue"] });
+      renderNotification({ message: response.data ? convertApiErrors(response.data) : ERROR_MESSAGES["Connection Issue"] });
       document.querySelector(".toast").style["background-color"] = "red";
       document.querySelector(".toast").classList.add("text-white");
     }
