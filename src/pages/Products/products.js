@@ -8,13 +8,18 @@ async function renderProductsPageLayout(options = ProductsProps) {
       });
       ProductsProps.data = await response.data
 
-      return `    <div id="${PAGE_TITLE_ID}">
-                          <h2 class="pageTitle">${options.title}</h2>
-                          ${options.buttons ? options.buttons.map((el) => `<button class="${el.classlist}">${el.text}</button>`) : ""}
-                      </div>
-                      <div id="${CONTENT_ID}">
-                        ${_.isEmpty(data) ? "" : await generateTableBootstrap(data, options)}
-                      </div>`;
+      return `      
+      <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
+        <div id="${PAGE_TITLE_ID}">  
+          <div class="page-header-flex">
+              <h2 class="page-title-text">${options.title}</h2>
+              ${options.buttons ? options.buttons.map((el) => `<button class="${el.classlist}" onClick="${el.onclick}()">${el.text}</button>`) : ""}
+          </div>
+          <div id="${CONTENT_ID}">
+            ${_.isEmpty(data) ? "" : await generateTableBootstrap(data, options)}
+          </div>
+        </div>
+      </div>`;
     }
   }
 
@@ -29,7 +34,7 @@ async function renderProductsPageLayout(options = ProductsProps) {
     },
     buttons: [
       {
-        classlist: "btn btn-primary pageTitle",
+        classlist: "btn btn-primary page-title-header",
         text: "Add New Product",
         onclick: "renderAddNewProductPage"
       },

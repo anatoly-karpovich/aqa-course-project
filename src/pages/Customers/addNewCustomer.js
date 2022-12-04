@@ -1,22 +1,22 @@
-//TODO: Prepare renderInputs function
 function renderAddNewCustomerLayout(options = add_new_customer_props) {
   return `
-    <div id="${PAGE_TITLE_ID}">
-        <h2 class="pageTitle">${options.title}</h2>
+  <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
+    <div id="${PAGE_TITLE_ID}" class="page-header">
+        <h2 class="page-title-text">${options.title}</h2>
     </div>
     <form class="row g-3 form-with-inputs" id="${options.formId}">
      ${generateFormInputs(options.inputs)}      
-      <div class="col-12" style="margin-top: 50px; display: flex; justify-content: space-between;">
+      <div class="col-12 form-action-section">
         <div>
             <button type="submit" class="btn btn-primary form-buttons" id="save-new-customer" disabled>Save New Customer</button>
             <button class="btn btn-secondary form-buttons" id="back-to-customers-page" onClick="renderCustomersPage(CustomerProps)">Back</button>
         </div>
         <div>
-            <button class="btn btn-link" form-buttons" onClick="clearAllInputs(add_new_customer_props.inputs);">Clear all</button>
+            <button class="btn btn-link clear-btn" form-buttons" onClick="clearAllInputs(add_new_customer_props.inputs);">Clear all</button>
         </div>
-      
       </div>
     </form>
+    </div>
     `;
 }
 

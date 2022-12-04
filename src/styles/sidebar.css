@@ -1,9 +1,11 @@
 #root {
   width: 100%;
+  margin-left: 221px;
 }
 
 html {
   height: -webkit-fill-available;
+  background-color: rgb(241, 237, 237);
 }
 
 main {
@@ -19,6 +21,10 @@ main {
 #sidebar {
   height: 100vh;
   position: fixed;
+}
+
+#sidemenu {
+  background-color: rgb(241, 237, 237);
 }
 
 .b-example-divider {
@@ -125,9 +131,9 @@ main {
   display: none;
 }
 
-.pageTitle {
+/* .pageTitle {
   margin: 13px 20px 20px 20px
-}
+} */
 
 .form-buttons {
   margin: 0px 20px 0px 0px;
@@ -141,9 +147,6 @@ main {
   margin: 20px;
 }
 
-#root {
-  margin-left: 230px;
-}
 
 .notification-wrapper {
   position: fixed;
@@ -177,6 +180,17 @@ main {
   text-align: right;
 }
 
+.page-header-flex {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 60px 0px 0px !important
+}
+
+.page-header {
+  justify-content: space-between;
+  margin-top: 20px !important
+}
+
 .strong-details {
   word-break: normal;
   margin-right: 20px;
@@ -196,6 +210,8 @@ main {
 .tableWrapper>thead>tr>th,
 .tableWrapper>tbody>tr>td {
   text-align: center;
+  vertical-align: middle;
+  word-break: break-word;
 }
 
 .modal-header {
@@ -226,4 +242,37 @@ tr:hover {
 .table-btn {
   width: 80px;
   margin: 5px 10px;
+}
+
+.page-title-button {
+  margin-right: 50px;
+}
+
+.form-margin {
+  margin: 0px 20px 0px 20px
+}
+
+.page-title-margin {
+  margin: 20px !important
+}
+
+.page-title-text {
+  margin-left: 30px;
+  font-weight: bold;
+}
+
+.page-title-border {
+  border-bottom: 2px solid black; 
+  padding-bottom: 5px; 
+  margin-right:25px
+}
+
+.clear-btn {
+  margin-right: -12px;
+}
+
+.form-action-section {
+  margin-top: 35px; 
+  display: flex; 
+  justify-content: space-between;
 }
