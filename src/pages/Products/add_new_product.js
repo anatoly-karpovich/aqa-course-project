@@ -1,22 +1,23 @@
 function renderAddNewProductLayout(options = add_new_product_props) {
   return `
-      <div id="${PAGE_TITLE_ID}">
-          <h2 class="pageTitle">${options.title}</h2>
-      </div>
-      <form class="row g-3 form-with-inputs" id="${options.formId}">
+  <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
+  <div id="${PAGE_TITLE_ID}" class="page-header">
+      <h2 class="page-title-text">${options.title}</h2>
+  </div>
+  <form class="row g-3 form-with-inputs" id="${options.formId}">
       ${generateFormInputs(options.inputs)} 
         
-        <div class="col-12" style="margin-top: 50px; display: flex; justify-content: space-between;">
+        <div class="col-12 form-action-section">
           <div>
               <button type="submit" class="btn btn-primary form-buttons" id="${options.buttons.save.id}" disabled>Save New Product</button>
               <button class="btn btn-secondary form-buttons" id="${options.buttons.back.id}">Back</button>
           </div>
           <div>
-              <button class="btn btn-link" form-buttons" id="${options.buttons.clear.id}">Clear all</button>
-          </div>
-        
-        </div>
-      </form>
+              <button class="btn btn-link clear-btn" form-buttons" id="${options.buttons.clear.id}">Clear all</button>
+              </div>
+              </div>
+            </form>
+            </div>
       `;
 }
 
@@ -76,7 +77,7 @@ const add_new_product_props = {
       name: "Amount",
       type: "text",
       classlist: "form-control",
-      placeholder: `Enter roducts's on-hands amount`,
+      placeholder: `Enter products's on-hands amount`,
       id: "inputAmount",
       errorMessageSelector: "div:has(input#inputAmount) > strong",
       errorMessage: VALIDATION_ERROR_MESSAGES["Amount"],

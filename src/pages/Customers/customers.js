@@ -8,13 +8,18 @@ async function renderCustomersPageLayout(options = CustomerProps) {
     });
     CustomerProps.data = await response.data;
 
-    return `    <div id="${PAGE_TITLE_ID}">
-                        <h2 class="pageTitle">${options.title}</h2>
-                        ${options.buttons ? options.buttons.map((el) => `<button class="${el.classlist}">${el.text}</button>`) : ""}
-                    </div>
-                    <div id="${CONTENT_ID}">
-                      ${_.isEmpty(data) ? "" : await generateTableBootstrap(data, options)}
-                    </div>`;
+    return `      
+    <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
+      <div id="${PAGE_TITLE_ID}">
+        <div class="page-header-flex">
+          <h2 class="page-title-text">${options.title}</h2>
+          ${options.buttons ? options.buttons.map((el) => `<button class="${el.classlist}">${el.text}</button>`) : ""}
+        </div>
+        <div id="${CONTENT_ID}">
+          ${_.isEmpty(data) ? "" : await generateTableBootstrap(data, options)}
+        </div>
+      </div>
+    </div>`;
   }
 }
 
@@ -29,7 +34,7 @@ const CustomerProps = {
   },
   buttons: [
     {
-      classlist: "btn btn-primary pageTitle",
+      classlist: "btn btn-primary pageTitle page-title-header",
       text: "Add New Customer",
     },
   ],
@@ -37,20 +42,25 @@ const CustomerProps = {
     buttons: [
       {
         name: "Details",
-        classlist: "btn btn-link",
+        classlist: "btn btn-link table-btn",
         onclick: "renderCustomerDetailsModal",
       },
       {
         name: "Edit",
-        classlist: "btn btn-primary table-action-buttons",
+        classlist: "btn btn-primary table-action-buttons table-btn",
         onclick: "renderEditCustomerPage",
       },
       {
         name: "Delete",
-        classlist: "btn btn-danger table-action-buttons",
+        classlist: "btn btn-danger table-action-buttons table-btn",
         onclick: "renderDeleteCustomerModal",
       },
     ],
+    active: {
+      name: "active",
+      btnClasslist: "",
+      headerClasslist: ""
+    }
   },
 };
 

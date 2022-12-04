@@ -24,16 +24,20 @@ function generateTableBody(arr = [], options) {
 
 function generateTableRow(obj = {}, options) {
   const row = Object.keys(obj)
-    .map((key) => `<td style="word-break: break-word; width: ${key === "Id" ? 70 : 200}px;">${key === "Registration Date" ? moment(obj[key]).format("MM/DD/YYYY") || "-" : obj[key] || "-"}</td>`)
+    .map((key) => `<td style="width: ${widthForColumns[key]  ? widthForColumns[key] : "150px"};">${key === "Registration Date" ? moment(obj[key]).format("MM/DD/YYYY") || "-" : obj[key] || "-"}</td>`)
     .join("");
   let actions = "";
   if (options.tableProps.buttons) {
-    actions = "<td style='width: 200px'>" + options.tableProps.buttons.map((btn) =>
+    actions = "<td style='width: 250px'>" + options.tableProps.buttons.map((btn) =>
     `<button class="${btn.classlist}" onClick="${btn.onclick}('${obj.Id}')">${btn.name}</button>`).join("") + "</td>";
   }
   return row + actions;
 }
 
+const widthForColumns = {
+  Id: '70px',
+  Email: "200px",
+}
 // `<td>
 // <button class="btn btn-link" onClick="renderCustomerDetailsModal('${obj.Id}')">Details</button>
 // <button class="btn btn-primary table-action-buttons" onClick="renderEditCustomerPage('${obj.Id}')">Edit</button>

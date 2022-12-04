@@ -17,8 +17,9 @@ async function renderEditCustomerLayout(requestOpts, options = edit_customer_pro
     currentCustomerState = data;
 
     return `
-    <div id="${PAGE_TITLE_ID}">
-        <h2 class="pageTitle">${options.title} ${data.name}</h2>
+    <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
+    <div id="${PAGE_TITLE_ID}" class="page-header">
+        <h2 class="page-title-text">${options.title} ${data.name}</h2>
     </div>
     <form class="row g-3 form-with-inputs" id="${options.formId}">
       ${generateFormInputs( options.inputs)}
@@ -32,6 +33,7 @@ async function renderEditCustomerLayout(requestOpts, options = edit_customer_pro
         </div>
       </div>
     </form>
+  </div>
     `;
   }
 }

@@ -43,6 +43,7 @@ if(modalWrap !== null) {
 
 function generateModalBody(options) {
   const modalBody = Object.keys(options.data).map(key => {
+    console.log(options.data)
    return key === 'date_create'
     ? `<p class="note note-primary details">
       <strong class="strong-details">${replaceApiToFeKeys[key]}:</strong> 
@@ -51,13 +52,19 @@ function generateModalBody(options) {
 
     : `<p class="note note-primary details">
     <strong class="strong-details">${replaceApiToFeKeys[key]}:</strong> 
-      ${options.data[key] ? options.data[key] : '-'}
+      ${options.data[key].toString() ? replaceBooleanToYesNo(options.data[key]) : '-'}
       </p>`
       
   })
 
   
 return modalBody.join('')
+}
+
+function replaceBooleanToYesNo(value) {
+if(typeof value === 'boolean') {
+  return value ? 'Yes' : 'No'
+} else return value
 }
 
 const replaceApiToFeKeys = {
@@ -73,7 +80,8 @@ const replaceApiToFeKeys = {
   "notes": "Notes",
   "manufacturer": "Manufacturer",
   "price": "Price",
-  "amount": "Amount"
+  "amount": "Amount",
+  "active": "Active"
 }
 
 function removeDetailsModal() {

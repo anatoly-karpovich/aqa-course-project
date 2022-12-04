@@ -9,10 +9,6 @@ async function sideMenuClickHandler(page) {
       renderPages[page](homeProps);
       break;
 
-    // case "Orders":
-    //   await renderPages[page](OrderProps);
-    //   break;
-
     case "Products":
       renderPages[page](ProductsProps);
       break;
@@ -21,20 +17,5 @@ async function sideMenuClickHandler(page) {
       renderPages[page](CustomerProps)
       break;
     }
-}
-
-
-function createData() {
-  const data = document.createElement("div");
-  data.classList.add("zalupa");
-  data.insertAdjacentHTML(
-    "afterbegin",
-    `
-        <div>
-            <h4>Home content</h4>
-        </div>
-      `
-  );
-  document.querySelector("#contentInner").prepend(data);
 }
 
