@@ -1,4 +1,5 @@
 function renderAddNewCustomerLayout(options = add_new_customer_props) {
+  add_new_customer_props.requestOpts.opts['headers']['Authorization'] = getAuthorizationCookie()
   return `
   <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
     <div id="${PAGE_TITLE_ID}" class="page-header">
@@ -8,11 +9,11 @@ function renderAddNewCustomerLayout(options = add_new_customer_props) {
      ${generateFormInputs(options.inputs)}      
       <div class="col-12 form-action-section">
         <div>
-            <button type="submit" class="btn btn-primary form-buttons" id="save-new-customer" disabled>Save New Customer</button>
-            <button class="btn btn-secondary form-buttons" id="back-to-customers-page" onClick="renderCustomersPage(CustomerProps)">Back</button>
+          <button type="submit" class="btn btn-primary form-buttons" id="${options.buttons.save.id}" disabled>Save New Customer</button>
+          <button class="btn btn-secondary form-buttons" id="${options.buttons.back.id}">Back</button>
         </div>
         <div>
-            <button class="btn btn-link clear-btn" form-buttons" onClick="clearAllInputs(add_new_customer_props.inputs);">Clear all</button>
+          <button class="btn btn-link clear-btn form-buttons" id="${options.buttons.clear.id}">Clear all</button>
         </div>
       </div>
     </form>
@@ -44,6 +45,7 @@ const add_new_customer_props = {
       id: "inputEmail",
       errorMessageSelector: "div:has(input#inputEmail) > strong",
       errorMessage: VALIDATION_ERROR_MESSAGES["Email"],
+      attributes: `name="email"`,
       value: ""
     },
     name: {
@@ -55,6 +57,7 @@ const add_new_customer_props = {
       id: "inputName",
       errorMessageSelector: "div:has(input#inputName) > strong",
       errorMessage: VALIDATION_ERROR_MESSAGES["Customer Name"],
+      attributes: `name="name"`,
       value: ""
     },
     country: {
@@ -67,6 +70,8 @@ const add_new_customer_props = {
       options: {
         values: ["USA", "Canada", "Belarus", "Ukraine", "Germany", "France", "Great Britain", "Russia"],
       },
+      attributes: `name="country"`,
+
     },
     city: {
       divClasslist: "col-md-6",
@@ -77,17 +82,43 @@ const add_new_customer_props = {
       id: "inputCity",
       errorMessageSelector: "div:has(input#inputCity) > strong",
       errorMessage: VALIDATION_ERROR_MESSAGES["City"],
+      attributes: `name="city"`,
       value: ""
     },
-    address: {
+    street: {
       divClasslist: "col-md-6",
-      name: "Address",
+      name: "Street",
       type: "text",
       classlist: "form-control",
-      placeholder: `Enter customer's address`,
-      id: "inputAddress",
-      errorMessageSelector: "div:has(input#inputAddress) > strong",
-      errorMessage: VALIDATION_ERROR_MESSAGES["Address"],
+      placeholder: `Enter customer's street`,
+      id: "inputStreet",
+      errorMessageSelector: "div:has(input#inputStreet) > strong",
+      errorMessage: VALIDATION_ERROR_MESSAGES["Street"],
+      attributes: `name="street"`,
+      value: ""
+    },
+    house: {
+      divClasslist: "col-md-6",
+      name: "House",
+      type: "text",
+      classlist: "form-control",
+      placeholder: `Enter customer's house`,
+      id: "inputHouse",
+      errorMessageSelector: "div:has(input#inputHouse) > strong",
+      errorMessage: VALIDATION_ERROR_MESSAGES["House"],
+      attributes: `name="house"`,
+      value: ""
+    },
+    flat: {
+      divClasslist: "col-md-6",
+      name: "Flat",
+      type: "text",
+      classlist: "form-control",
+      placeholder: `Enter customer's flat`,
+      id: "inputFlat",
+      errorMessageSelector: "div:has(input#inputFlat) > strong",
+      errorMessage: VALIDATION_ERROR_MESSAGES["Flat"],
+      attributes: `name="flat"`,
       value: ""
     },
     phone: {
@@ -99,6 +130,7 @@ const add_new_customer_props = {
       id: "inputPhone",
       errorMessageSelector: "div:has(input#inputPhone) > strong",
       errorMessage: VALIDATION_ERROR_MESSAGES["Phone"],
+      attributes: `name="phone"`,
       value: ""
     },
     notes: {
@@ -110,10 +142,21 @@ const add_new_customer_props = {
       id: "textareaNotes",
       errorMessageSelector: "div:has(textarea#textareaNotes) > strong",
       errorMessage: VALIDATION_ERROR_MESSAGES['Notes'],
-      attributes: `rows="3"`,
+      attributes: `rows="3" name="notes"`,
       value: ""
     }
   },
+  buttons: {
+    save: {
+      id: 'save-new-customer'
+    },
+    back: {
+      id: 'back-to-customers-page'
+    },
+    clear: {
+      id: 'clear-inputs'
+    }
+  }
 };
 
 let newCustomerModel = {};
@@ -123,65 +166,133 @@ async function submitNewCustomer(requestOpts) {
   return response;
 }
 
+function addEventListelersToAddNewCustomerPage(options = add_new_customer_props.inputs) {
+  const saveChangesBtn = $(`#${add_new_customer_props.buttons.save.id}`);
+  const form = $(`#${add_new_customer_props.formId}`);
 
+  form.on("click", async (e) => {
+    e.preventDefault();
+    const elementId = e.target.id;
+    switch (elementId) {
+      case add_new_customer_props.buttons.save.id: {
+        const customer = getDataFromForm(`#${add_new_customer_props.formId}`)
+        add_new_customer_props.requestOpts.opts.body = JSON.stringify(customer);
+        await submitEntiti(add_new_customer_props, { message: SUCCESS_MESSAGES["New Customer Added"] });
+        saveChangesBtn.prop("disabled", true);
+        break;
+      }
 
-function addListenersToAddNewCustomerPage() {
+      case add_new_customer_props.buttons.back.id: {
+        await renderCustomersPage(CustomerProps);
+        break;
+      }
 
-  //save button click
-  document.getElementById("save-new-customer").addEventListener("click", async () => {
-    showSpinner()
-    document.getElementById("save-new-customer").setAttribute("disabled", "");
-
-    newCustomerModel = {
-      email: document.getElementById("inputEmail").value.trim(),
-      name: document.getElementById("inputName").value.trim(),
-      country: document.getElementById("inputCountry").value.trim(),
-      city: document.getElementById("inputCity").value.trim(),
-      address: document.getElementById("inputAddress").value.trim(),
-      phone: document.getElementById("inputPhone").value.trim(),
-      note: document.getElementById('textareaNotes').value.trim()
-    };
-
-    add_new_customer_props.requestOpts.opts.body = JSON.stringify(Object.assign(newCustomerModel));
-    const response = await submitNewCustomer(add_new_customer_props.requestOpts);
-    clearAllInputs(add_new_customer_props.inputs);
-    hideSpinner()
-    if (response.isSuccess) {
-      renderNotification({ message: SUCCESS_MESSAGES["New Customer Added"] });
-    } else {
-      renderNotification({ message: response.data ? convertApiErrors(response.data) : ERROR_MESSAGES["Connection Issue"] });
-      document.querySelector(".toast").style["background-color"] = "red";
-      document.querySelector(".toast").classList.add("text-white");
+      case add_new_customer_props.buttons.clear.id: {
+        clearAllInputs(add_new_customer_props.inputs, [saveChangesBtn]);
+        break;
+      }
     }
   });
 
-  //on input validations
-
-  for (let input in add_new_customer_props.inputs) {
-    const field = document.getElementById(add_new_customer_props.inputs[input].id);
-    const errorField = document.querySelector(add_new_customer_props.inputs[input].errorMessageSelector);
-    const saveButton = document.getElementById("save-new-customer");
-    if (add_new_customer_props.inputs[input].type !== "select") {
-      field.addEventListener("input", () => {
-        if (!isValidInput(add_new_customer_props.inputs[input].name, field.value)) {
-          errorField.innerText = add_new_customer_props.inputs[input].errorMessage;
-          field.style = "border:1px solid red";
-          saveButton.setAttribute("disabled", "");
+  form.on("input", (event) => {
+    const elementId = event.target.id;
+    switch (elementId) {
+      case options.name.id: {
+        if (!isValidInput("Customer Name", $(`#${options.name.id}`).val())) {
+          showErrorMessageForInput(options.name, saveChangesBtn);
         } else {
-          errorField.innerText = "";
-          field.style.border = null;
-          let isValid = true;
-          for (let i in add_new_customer_props.inputs) {
-            const f = document.getElementById(add_new_customer_props.inputs[i].id);
-            if (add_new_customer_props.inputs[i].type !== "select" && !isValidInput(add_new_customer_props.inputs[i].name, f.value)) {
-              isValid = false;
-            }
-          }
-          if (isValid) {
-            saveButton.removeAttribute("disabled");
-          }
+          hideErrorMessageForInput(options, "name", saveChangesBtn, add_new_customer_props.path);
         }
-      });
+        break;
+      }
+
+      case options.email.id: {
+        if (!isValidInput("Email", $(`#${options.email.id}`).val())) {
+          showErrorMessageForInput(options.email, saveChangesBtn);
+        } else {
+          hideErrorMessageForInput(options, "email", saveChangesBtn, add_new_customer_props.path);
+        }
+        break;
+      }
+
+      case options.city.id: {
+        if (!isValidInput("City", $(`#${options.city.id}`).val())) {
+          showErrorMessageForInput(options.city, saveChangesBtn);
+        } else {
+          hideErrorMessageForInput(options, "city", saveChangesBtn, add_new_customer_props.path);
+        }
+        break;
+      }
+
+      case options.street.id: {
+        if (!isValidInput("Street", $(`#${options.street.id}`).val())) {
+          showErrorMessageForInput(options.street, saveChangesBtn);
+        } else {
+          hideErrorMessageForInput(options, "street", saveChangesBtn, add_new_customer_props.path);
+        }
+        break;
+      }
+
+      case options.house.id: {
+        if (!isValidInput("House", $(`#${options.house.id}`).val()) || +$(`#${options.house.id}`).val() === 0) {
+          showErrorMessageForInput(options.house, saveChangesBtn);
+        } else {
+          hideErrorMessageForInput(options, "house", saveChangesBtn, add_new_customer_props.path);
+        }
+        break;
+      }
+
+      case options.flat.id: {
+        if (!isValidInput("Flat", $(`#${options.flat.id}`).val()) || +$(`#${options.flat.id}`).val() === 0) {
+          showErrorMessageForInput(options.flat, saveChangesBtn);
+        } else {
+          hideErrorMessageForInput(options, "flat", saveChangesBtn, add_new_customer_props.path);
+        }
+        break;
+      }
+
+      case options.phone.id: {
+        if (!isValidInput("Phone", $(`#${options.phone.id}`).val())) {
+          showErrorMessageForInput(options.phone, saveChangesBtn);
+        } else {
+          hideErrorMessageForInput(options, "phone", saveChangesBtn, add_new_customer_props.path);
+        }
+        break;
+      }
+      
+      case options.notes.id: {
+        if (!isValidInput("Notes", $(`#${options.notes.id}`).val())) {
+          showErrorMessageForInput(options.notes, saveChangesBtn);
+        } else {
+          hideErrorMessageForInput(options, "notes", saveChangesBtn, add_new_customer_props.path);
+        }
+        break;
+      }
     }
-  }
+  });
+}
+
+function validateNewCustomerInputs(options = add_new_customer_props.inputs) {
+  return (
+    isValidInput("Notes", $(`#${options.notes.id}`).val()) &&
+
+    (($(`#${options.flat.id}`).val().length && isValidInput("Flat", +$(`#${options.flat.id}`).val())) || +$(`#${options.flat.id}`).val() > 0) &&
+
+    (($(`#${options.house.id}`).val().length && isValidInput("House", +$(`#${options.house.id}`).val())) || +$(`#${options.house.id}`).val() > 0) &&
+
+    $(`#${options.name.id}`).val().length &&
+    isValidInput("Customer Name", $(`#${options.name.id}`).val()) &&
+
+    $(`#${options.email.id}`).val().length &&
+    isValidInput("Email", $(`#${options.email.id}`).val()) &&
+
+    $(`#${options.street.id}`).val().length &&
+    isValidInput("Street", $(`#${options.street.id}`).val()) &&
+    
+    $(`#${options.city.id}`).val().length &&
+    isValidInput("City", $(`#${options.city.id}`).val()) &&
+    
+    $(`#${options.phone.id}`).val().length &&
+    isValidInput("Phone", $(`#${options.phone.id}`).val())
+  );
 }

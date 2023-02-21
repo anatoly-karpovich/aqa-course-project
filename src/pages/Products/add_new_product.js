@@ -1,4 +1,5 @@
 function renderAddNewProductLayout(options = add_new_product_props) {
+  add_new_product_props.requestOpts.opts.headers['Authorization'] = getAuthorizationCookie()
   return `
   <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
   <div id="${PAGE_TITLE_ID}" class="page-header">
@@ -13,7 +14,7 @@ function renderAddNewProductLayout(options = add_new_product_props) {
               <button class="btn btn-secondary form-buttons" id="${options.buttons.back.id}">Back</button>
           </div>
           <div>
-              <button class="btn btn-link clear-btn" form-buttons" id="${options.buttons.clear.id}">Clear all</button>
+              <button class="btn btn-link clear-btn form-buttons" id="${options.buttons.clear.id}">Clear all</button>
               </div>
               </div>
             </form>
@@ -120,8 +121,9 @@ function addEventListelersToAddNewProductPage(options = add_new_product_props.in
     switch (elementId) {
       case add_new_product_props.buttons.save.id: {
         const product = getDataFromForm(`#${add_new_product_props.formId}`)
-        add_new_product_props.requestOpts.opts.body = JSON.stringify(Object.assign(product));
+        add_new_product_props.requestOpts.opts.body = JSON.stringify(product);
         await submitEntiti(add_new_product_props, { message: SUCCESS_MESSAGES["New Product Added"] });
+        saveChangesBtn.prop("disabled", true);
         break;
       }
 
@@ -144,7 +146,7 @@ function addEventListelersToAddNewProductPage(options = add_new_product_props.in
         if (!isValidInput("Product Name", $(`#${options.name.id}`).val())) {
           showErrorMessageForInput(options.name, saveChangesBtn);
         } else {
-          hideErrorMessageForInput(options, "name", saveChangesBtn);
+          hideErrorMessageForInput(options, "name", saveChangesBtn, add_new_product_props.path);
         }
         break;
       }
@@ -153,7 +155,7 @@ function addEventListelersToAddNewProductPage(options = add_new_product_props.in
         if (!isValidInput("Amount", $(`#${options.amount.id}`).val()) || !$(`#${options.amount.id}`).val().length) {
           showErrorMessageForInput(options.amount, saveChangesBtn);
         } else {
-          hideErrorMessageForInput(options, "amount", saveChangesBtn);
+          hideErrorMessageForInput(options, "amount", saveChangesBtn, add_new_product_props.path);
         }
         break;
       }
@@ -162,7 +164,7 @@ function addEventListelersToAddNewProductPage(options = add_new_product_props.in
         if (!isValidInput("Price", $(`#${options.price.id}`).val()) || +$(`#${options.price.id}`).val() === 0) {
           showErrorMessageForInput(options.price, saveChangesBtn);
         } else {
-          hideErrorMessageForInput(options, "price", saveChangesBtn);
+          hideErrorMessageForInput(options, "price", saveChangesBtn, add_new_product_props.path);
         }
         break;
       }
@@ -171,7 +173,7 @@ function addEventListelersToAddNewProductPage(options = add_new_product_props.in
         if (!isValidInput("Notes", $(`#${options.notes.id}`).val())) {
           showErrorMessageForInput(options.notes, saveChangesBtn);
         } else {
-          hideErrorMessageForInput(options, "notes", saveChangesBtn);
+          hideErrorMessageForInput(options, "notes", saveChangesBtn, add_new_product_props.path);
         }
         break;
       }

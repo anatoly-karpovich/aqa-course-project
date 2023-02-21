@@ -1,18 +1,31 @@
-async function renderEditProductLayout(requestOpts, options = edit_product_props) {
-  edit_product_props.requestOpts.url = ENDPOINTS["Get Product By Id"](requestOpts.id);
-  edit_product_props.id = requestOpts.id;
+async function renderEditProductLayout(id, options = edit_product_props) {
+  // edit_product_props.requestOpts.url = ENDPOINTS["Get Product By Id"](requestOpts.id);
+  const requestOptions = {
+    url: ENDPOINTS["Get Product By Id"](id),
+    opts: {
+      method: "GET",
+      headers: {
+        ["Content-Type"]: "application/json",
+        Authorization: getAuthorizationCookie()
+      },
+    },
+  }
+  edit_product_props.requestOpts.url = ENDPOINTS.Products;
+  edit_product_props.id = id;
 
-  const response = await getDataFromApi({ url: ENDPOINTS["Get Product By Id"](requestOpts.id) });
-  if (!response.isSuccess) {
+  // const response = await getDataFromApi({ url: ENDPOINTS["Get Product By Id"](requestOpts.id) });
+  const response = await getDataFromApi(requestOptions);
+  if (!response.data.IsSuccess) {
     return renderErrorPageLayout(response.status);
   } else {
-    const data = await response.data;
+    const data = response.data.Product;
     options.inputs.name.value = data.name;
     options.inputs.manufacturer.value = data.manufacturer;
     options.inputs.price.value = data.price;
     options.inputs.amount.value = data.amount;
-    options.inputs.notes.value = data.notes;
+    options.inputs.notes.value = data.notes ? data.notes : "";
     currentProductstate = data;
+    currentProductstate.notes = data.notes ? data.notes : "";
 
     return `
     <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
@@ -45,7 +58,7 @@ const edit_product_props = {
     ..._.cloneDeep(add_new_product_props.inputs),
   },
   requestOpts: {
-    url: "",
+    url: ENDPOINTS.Products,
     opts: {
       method: "PUT",
       body: "",
@@ -68,7 +81,11 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
     switch (elementId) {
       case "save-product-changes": {
         const product = getDataFromForm("#edit-product-form");
-        edit_product_props.requestOpts.opts.body = JSON.stringify(Object.assign(product));
+        edit_product_props.requestOpts.opts.body = JSON.stringify({
+          _id: edit_product_props.id,
+          ...product
+        });
+        edit_product_props.requestOpts.opts.headers["Authorization"] = getAuthorizationCookie();
         await submitEntiti(edit_product_props, { message: SUCCESS_MESSAGES["Product Successfully Updated"](options.name.value) });
         await renderProductsPage(ProductsProps);
         break;
@@ -91,10 +108,10 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
       case "inputName": {
         if (!isValidInput("Product Name", $(`#${options.name.id}`).val())) {
           showErrorMessageForInput(options.name, saveChangesBtn);
-        } else if (_.isEqual(_.omit(currentProductstate, "id"), getDataFromForm("#edit-product-form"))) {
+        } else if (_.isEqual(_.omit(currentProductstate, "_id"), getDataFromForm("#edit-product-form"))) {
           saveChangesBtn.prop("disabled", true);
         } else {
-          hideErrorMessageForInput(options, "name", saveChangesBtn);
+          hideErrorMessageForInput(options, "name", saveChangesBtn, edit_product_props.path);
         }
         break;
       }
@@ -102,10 +119,10 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
       case "inputAmount": {
         if (!isValidInput("Amount", $(`#${options.amount.id}`).val()) || !$(`#${options.amount.id}`).val().length) {
           showErrorMessageForInput(options.amount, saveChangesBtn);
-        } else if (_.isEqual(_.omit(currentProductstate, "id"), getDataFromForm("#edit-product-form"))) {
+        } else if (_.isEqual(_.omit(currentProductstate, "_id"), getDataFromForm("#edit-product-form"))) {
           saveChangesBtn.prop("disabled", true);
         } else {
-          hideErrorMessageForInput(options, "amount", saveChangesBtn);
+          hideErrorMessageForInput(options, "amount", saveChangesBtn, edit_product_props.path);
         }
         break;
       }
@@ -113,10 +130,10 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
       case "inputPrice": {
         if (!isValidInput("Price", $(`#${options.price.id}`).val()) || +$(`#${options.price.id}`).val() === 0) {
           showErrorMessageForInput(options.price, saveChangesBtn);
-        } else if (_.isEqual(_.omit(currentProductstate, "id"), getDataFromForm("#edit-product-form"))) {
+        } else if (_.isEqual(_.omit(currentProductstate, "_id"), getDataFromForm("#edit-product-form"))) {
           saveChangesBtn.prop("disabled", true);
         } else {
-          hideErrorMessageForInput(options, "price", saveChangesBtn);
+          hideErrorMessageForInput(options, "price", saveChangesBtn, edit_product_props.path);
         }
         break;
       }
@@ -124,16 +141,16 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
       case "textareaNotes": {
         if (!isValidInput("Notes", $(`#${options.notes.id}`).val())) {
           showErrorMessageForInput(options.notes, saveChangesBtn);
-        } else if (_.isEqual(_.omit(currentProductstate, "id"), getDataFromForm("#edit-product-form"))) {
+        } else if (_.isEqual(_.omit(currentProductstate, "_id"), getDataFromForm("#edit-product-form"))) {
           saveChangesBtn.prop("disabled", true);
         } else {
-          hideErrorMessageForInput(options, "notes", saveChangesBtn);
+          hideErrorMessageForInput(options, "notes", saveChangesBtn, edit_product_props.path);
         }
         break;
       }
 
       case "inputManufacturer": {
-        if (_.isEqual(_.omit(currentProductstate, "id"), getDataFromForm("#edit-product-form"))) {
+        if (_.isEqual(_.omit(currentProductstate, "_id"), getDataFromForm("#edit-product-form"))) {
           saveChangesBtn.prop("disabled", true);
         } else {
           saveChangesBtn.prop("disabled", false);

@@ -1,12 +1,11 @@
 let modalWrap = null
 //TODO: Create generateModalLayout and generateModalRaws functions
 async function createDetailsModal(options = {}) {
-    
 if(modalWrap !== null) {
     modalWrap.remove()
 }
-
-    options.data = (await getDataFromApi({url: options.url})).data
+    options.opts.headers["Authorization"] = getAuthorizationCookie()
+    options.data = (await getDataFromApi({url: options.url, opts: options.opts})).data
     modalWrap = document.createElement("div");
     modalWrap.id = `${options.path}-details-modal-id`
     modalWrap.insertAdjacentHTML(
@@ -15,7 +14,7 @@ if(modalWrap !== null) {
   <div class="modal-dialog-scrollable modal-dialog show">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">${options.data.name}'s Details</h5>
+        <h5 class="modal-title">${options.data[options.path].name}'s Details</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick="removeDetailsModal();"></button>
       </div>
       <div class="modal-body">
@@ -42,17 +41,16 @@ if(modalWrap !== null) {
 }
 
 function generateModalBody(options) {
-  const modalBody = Object.keys(options.data).map(key => {
-    console.log(options.data)
+  const modalBody = Object.keys(_.omit(options.data[options.path], '_id', '__v')).map(key => {
    return key === 'date_create'
     ? `<p class="note note-primary details">
       <strong class="strong-details">${replaceApiToFeKeys[key]}:</strong> 
-        ${options.data[key] ? moment(options.data[key]).format('LLL') : '-'}
+        ${options.data[options.path][key] ? moment(options.data[options.path][key]).format('LLL') : '-'}
       </p>`
 
     : `<p class="note note-primary details">
     <strong class="strong-details">${replaceApiToFeKeys[key]}:</strong> 
-      ${options.data[key].toString() ? replaceBooleanToYesNo(options.data[key]) : '-'}
+      ${options.data[options.path][key].toString() ? replaceBooleanToYesNo(options.data[options.path][key]) : '-'}
       </p>`
       
   })
@@ -68,7 +66,7 @@ if(typeof value === 'boolean') {
 }
 
 const replaceApiToFeKeys = {
-  "id": 'Id',
+  "_id": 'Id',
   "email": "Email",
   "name": "Name",
   "country": "Country",
@@ -87,6 +85,8 @@ const replaceApiToFeKeys = {
 function removeDetailsModal() {
     modalWrap.remove()
     modalWrap = null
+    $('body').removeClass('modal-open')
+    $('body').removeAttr('style')
     if(document.querySelector('.modal-backdrop')) {
       document.querySelector('.modal-backdrop').parentNode.removeChild(document.querySelector('.modal-backdrop'))
   }

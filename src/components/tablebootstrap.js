@@ -3,7 +3,7 @@ async function generateTableBootstrap(data = [], options) {
     <table class="table tableWrapper">
         <thead>
             <tr>
-                ${generateTableHeaders(Object.keys(data[0]))}
+                ${generateTableHeaders(Object.keys(_.omit(data[0], 'Id')))}
             </tr>
         </thead>
         <tbody>
@@ -24,8 +24,12 @@ function generateTableBody(arr = [], options) {
 
 function generateTableRow(obj = {}, options) {
   const row = Object.keys(obj)
-    .map((key) => `<td style="width: ${widthForColumns[key]  ? widthForColumns[key] : "150px"};">${key === "Registration Date" ? moment(obj[key]).format("MM/DD/YYYY") || "-" : obj[key] || "-"}</td>`)
-    .join("");
+    .map((key) => {if(key!=='Id'){ 
+      return `<td style="width: ${widthForColumns[key]  ? widthForColumns[key] : "150px"};">${key === "Registration Date" 
+      ? moment(obj[key]).format("MM/DD/YYYY") || "-" : obj[key] || "-"}</td>`
+   }}
+    ).join("");
+      
   let actions = "";
   if (options.tableProps.buttons) {
     actions = "<td style='width: 250px'>" + options.tableProps.buttons.map((btn) =>

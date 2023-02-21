@@ -3,11 +3,15 @@ const CONTENT_CONTAINER_ID = "root";
 const CONTENT_ID = "contentInner";
 const PAGE_TITLE_ID = "title";
 
-const BASE_URL = "https://4635-95-73-146-161.ngrok.io";
+const BASE_URL = "https://5e96-2a02-a311-363-ec00-3deb-8e9d-4d93-d84e.eu.ngrok.io";
+// const BASE_URL = "http://localhost:5000";
+
+const NUMBER_KEYS = ["amount", "price", "flat", "house"]
 
 const ENDPOINTS = {
-  ["Customers"]: `${BASE_URL}/api/costumers/`,
-  ["Get Customer By Id"]: (id) => `${BASE_URL}/api/costumers/${id}/`,
+  ['Login']: `${BASE_URL}/api/login/`,
+  ["Customers"]: `${BASE_URL}/api/customers/`,
+  ["Get Customer By Id"]: (id) => `${BASE_URL}/api/customers/${id}/`,
   ['Products']: `${BASE_URL}/api/products/`,
   ['Get Product By Id']: (id) => `${BASE_URL}/api/products/${id}/`
 };
@@ -29,6 +33,9 @@ const VALIDATION_ERROR_MESSAGES = {
   ["Customer Name"]: `Customer's name should contain only 1-40 alphabetical characters and one space between`,
   ["City"]: `City's name should contain only 1-20 alphabetical characters and one space between`,
   ["Address"]: `Address should contain only 1-20 alphanumerical characters and one space between`,
+  ["Street"]: `Street should contain only 1-40 alphanumerical characters and one space between`,
+  ["House"]: "House number should be in range 1-999",
+  ["Flat"]: "Flat number should be in range 1-9999",
   ["Email"]: "Invalid Email Address",
   ["Phone"]: "Mobile Number should be at least 10 characters and start with a +",
   ["Notes"]: "Notes should be in range 0-250 and without < or > symbols",
@@ -38,10 +45,13 @@ const VALIDATION_ERROR_MESSAGES = {
 };
 
 const REGULAR_EXPRESSIONS = {
-  ["Name"]: /^\b(?!.*?\s{2})[A-Za-z ]{1,40}\b$/m,
+  ["Customer Name"]: /^\b(?!.*?\s{2})[A-Za-z ]{1,40}\b$/m,
   ["City"]: /^\b(?!.*?\s{2})[A-Za-z ]{1,20}\b$/m,
   ["Phone"]: /^\+[0-9]{10,20}$/m,
   ["Address"]: /^\b(?!.*?\s{2})[A-Za-z0-9 ]{1,20}\b$/m,
+  ["Street"]: /^\b(?!.*?\s{2})[A-Za-z0-9 ]{1,40}\b$/m,
+  ["House"]: /^[0-9]{1,3}$/m,
+  ["Flat"]: /^[0-9]{1,4}$/m,
   ["Email"]: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/m,
   ["Notes"]: /^[^<>]{0,250}$/m,
   ['Product Name']: /^\b(?!.*?\s{2})[A-Za-z0-9 ]{3,40}\b$/m,

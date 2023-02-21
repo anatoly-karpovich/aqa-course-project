@@ -110,24 +110,31 @@ function renderSignInPage() {
       const password = signIn.querySelector('#passwordinput')
 
       const submit = signIn.querySelector(`.btn-lg`)
-      submit.addEventListener('click', () => {
-        if(validateSignIn(email.value, password.value)) {
+      submit.addEventListener('click', async () => {
+        const response = await getDataFromApi( {url: ENDPOINTS["Login"], opts: {  method: "POST",
+        body: JSON.stringify({"username": email.value,"password": password.value}),
+        headers: {
+          ["Content-Type"]: "application/json",
+        },
+      },});
+      if(response.status === 200) {
+        document.cookie = `Authorization=${response.data.token}`
             const spinner = document.querySelector(`.overlay`)
             signIn.classList.add('disabled')
             spinner.style.display = 'block'
-            setTimeout(() => {
+            // setTimeout(() => {
             spinner.style.display = 'none'
                 
                 const token = '4fb18062-435d-11ed-b878-0242ac120002'
                 localStorage.setItem('token', token)
                 signIn.parentNode.removeChild(signIn)
                 renderLandingPage(landingProps)
-            }, 1000)
+            // }, 1000)
            
         } else {
             const message = signIn.querySelector('#errorMessage')
             message.style.display = 'block'
-            message.innerText = 'Credentials are required'
+            message.innerText = 'Invalid Credentials'
         }
     })
     email.addEventListener('input', onInput)

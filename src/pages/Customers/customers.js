@@ -1,12 +1,13 @@
 async function renderCustomersPageLayout(options = CustomerProps) {
+  options.requestOpts.opts['headers']['Authorization'] = getAuthorizationCookie()
   const response = await getDataFromApi(options.requestOpts);
-  if (!response.isSuccess) {
+  if (!response.data.IsSuccess) {
     return renderErrorPageLayout(response.status);
   } else {
-    const data = await response.data.map((el) => {
-      return { Id: el.id, Email: el.email, Name: el.name, Country: el.country };
+    const data = await response.data.Customers.map((el) => {
+      return { Id: el._id, Email: el.email, Name: el.name, Country: el.country };
     });
-    CustomerProps.data = await response.data;
+    CustomerProps.data = await response.data.Customers;
 
     return `      
     <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
@@ -30,6 +31,7 @@ const CustomerProps = {
     url: ENDPOINTS["Customers"],
     opts: {
       method: "GET",
+      headers: {}
     },
   },
   buttons: [
@@ -85,6 +87,10 @@ const customer_details_props = (id) => {
   return {
     id,
     url: ENDPOINTS["Get Customer By Id"](id),
+    opts: {
+      method: "GET",
+      headers: {}
+    },
     path: 'Customer',
     buttons: {
       edit: {
@@ -107,11 +113,7 @@ async function deleteCustomer(id) {
   };
   removeConfimationModal();
   showSpinner();
+  requestOpts.opts.headers['Authorization'] = getAuthorizationCookie()
   const response = await getDataFromApi(requestOpts);
-  if (response.status === 204) {
-    await renderCustomersPage(CustomerProps);
-    renderNotification({ message: SUCCESS_MESSAGES["Customer Successfully Deleted"]("Customer") });
-  } else {
-    renderNotification({ message: response.data.errors ? convertApiErrors(response.data.errors) : `Connection issue. Customer wasn't updated.` });
-  }
+  await showNotificationAfterDeleteRequest(response, { message: SUCCESS_MESSAGES["Customer Successfully Deleted"]('Customer') }, CustomerProps)
 }

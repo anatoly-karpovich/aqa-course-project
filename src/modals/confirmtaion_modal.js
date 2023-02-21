@@ -35,6 +35,8 @@ function renderConfirmationModal(id, options) {
 function removeConfimationModal() {
     confirmationModalWrap.remove()
     confirmationModalWrap = null
+    $('body').removeClass('modal-open')
+    $('body').removeAttr('style')
     if(document.querySelector('.modal-backdrop')) {
         document.querySelector('.modal-backdrop').parentNode.removeChild(document.querySelector('.modal-backdrop'))
     }

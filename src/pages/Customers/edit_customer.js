@@ -1,20 +1,33 @@
-async function renderEditCustomerLayout(requestOpts, options = edit_customer_props) {
-  edit_customer_props.requestOpts.url = ENDPOINTS["Get Customer By Id"](requestOpts.id);
-  edit_customer_props.id = requestOpts.id;
+async function renderEditCustomerLayout(id, options = edit_customer_props) {
+  const requestOptions = {
+    url: ENDPOINTS["Get Customer By Id"](id),
+    opts: {
+      method: "GET",
+      headers: {
+        ["Content-Type"]: "application/json",
+        Authorization: getAuthorizationCookie()
+      },
+    },
+  }
+  edit_customer_props.requestOpts.url = ENDPOINTS["Get Customer By Id"](id);
+  edit_customer_props.id = id;
 
-  const response = await getDataFromApi({ url: ENDPOINTS["Get Customer By Id"](requestOpts.id) });
-  if (!response.isSuccess) {
+  const response = await getDataFromApi(requestOptions);
+  if (!response.data.IsSuccess) {
     return renderErrorPageLayout(response.status);
   } else {
-    const data = await response.data;
+    const data = await response.data.Customer;
     options.inputs.email.value = data.email;
     options.inputs.name.value = data.name;
     options.inputs.country.value = data.country;
     options.inputs.city.value = data.city;
-    options.inputs.address.value = data.address;
+    options.inputs.street.value = data.street;
+    options.inputs.house.value = data.house;
+    options.inputs.flat.value = data.flat;
     options.inputs.phone.value = data.phone;
-    options.inputs.notes.value = data.note;
+    options.inputs.notes.value = data.notes ? data.notes : "";
     currentCustomerState = data;
+    currentCustomerState.notes = data.notes ? data.notes : "";
 
     return `
     <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
@@ -25,11 +38,11 @@ async function renderEditCustomerLayout(requestOpts, options = edit_customer_pro
       ${generateFormInputs( options.inputs)}
       <div class="col-12" style="margin-top: 50px; display: flex; justify-content: space-between;">
         <div>
-            <button type="submit" class="btn btn-primary form-buttons" id="save-customer-changes" disabled>Save Changes</button>
-            <button class="btn btn-secondary form-buttons" id="back-to-customers-page" onClick="renderCustomersPage(CustomerProps)">Back</button>
+          <button type="submit" class="btn btn-primary form-buttons" id="${options.buttons.save.id}" disabled>Save New Customer</button>
+          <button class="btn btn-secondary form-buttons" id="${options.buttons.back.id}">Back</button>
         </div>
         <div>
-            <button class="btn btn-danger" form-buttons" onClick="renderDeleteCustomerModal('${requestOpts.id}');">Delete Customer</button>
+          <button class="btn btn-link clear-btn form-buttons" id="${options.buttons.clear.id}">Clear all</button>
         </div>
       </div>
     </form>
@@ -56,137 +69,180 @@ const edit_customer_props = {
       },
     },
   },
+  buttons: {
+    save: {
+      id: 'save-customer-changes'
+    },
+    back: {
+      id: 'back-to-customers-page'
+    },
+    clear: {
+      id: 'clear-inputs'
+    }
+  }
 };
 let currentCustomerState = {};
 let EditedCustomerModel = {};
 
 function getEditCustomerInputValues() {
   return {
-    id: +edit_customer_props.id,
+    id: edit_customer_props.id,
     email: document.getElementById("inputEmail").value.trim(),
     name: document.getElementById("inputName").value.trim(),
     country: document.getElementById("inputCountry").value.trim(),
     city: document.getElementById("inputCity").value.trim(),
-    address: document.getElementById("inputAddress").value.trim(),
+    street: document.getElementById("inputStreet").value.trim(),
+    house: document.getElementById("inputHouse").value,
+    flat: document.getElementById("inputFlat").value,
     phone: document.getElementById("inputPhone").value.trim(),
     note: document.getElementById("textareaNotes").value.trim(),
   };
 }
 
-function addListenersToEditCustomerPage() {
-  //save button click
-  document.getElementById("save-customer-changes").addEventListener("click", async () => {
-    showSpinner();
-    document.getElementById("save-customer-changes").setAttribute("disabled", "");
+function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
+  const saveChangesBtn = $(`#${edit_customer_props.buttons.save.id}`);
+  const form = $(`#${edit_customer_props.formId}`);
 
-    EditedCustomerModel = getEditCustomerInputValues();
+  form.on("click", async (e) => {
+    e.preventDefault();
+    const elementId = e.target.id;
+    switch (elementId) {
+      case edit_customer_props.buttons.save.id: {
+        const customer = getDataFromForm(`#${edit_customer_props.formId}`)
+        edit_customer_props.requestOpts.opts.body = JSON.stringify({
+          _id: edit_customer_props.id,
+          customer});
+        await submitEntiti(edit_customer_props, { message: SUCCESS_MESSAGES["Customer Successfully Updated"] });
+        break;
+      }
 
-    edit_customer_props.requestOpts.opts.body = JSON.stringify(Object.assign(EditedCustomerModel));
-    const response = await submitNewCustomer(edit_customer_props.requestOpts);
-    hideSpinner();
-    if (response.isSuccess) {
-      await renderCustomersPage(CustomerProps);
-      renderNotification({ message: SUCCESS_MESSAGES["Customer Successfully Updated"](EditedCustomerModel.name) });
-    } else {
-      renderNotification({ message: response.data ? convertApiErrors(response.data) : ERROR_MESSAGES["Connection Issue"] });
-      document.querySelector(".toast").style["background-color"] = "red";
-      document.querySelector(".toast").classList.add("text-white");
+      case edit_customer_props.buttons.back.id: {
+        await renderCustomersPage(CustomerProps);
+        break;
+      }
+
+      case edit_customer_props.buttons.clear.id: {
+        clearAllInputs(edit_customer_props.inputs, [saveChangesBtn]);
+        break;
+      }
     }
   });
 
-  //on input validations
+  form.on("input", (event) => {
+    const elementId = event.target.id;
+    switch (elementId) {
+      case options.name.id: {
+        if (!isValidInput("Customer Name", $(`#${options.name.id}`).val())) {
+          showErrorMessageForInput(options.name, saveChangesBtn);
+        } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+          saveChangesBtn.prop("disabled", true);
+        } else {
+          hideErrorMessageForInput(options, "name", saveChangesBtn, edit_customer_props.path);
+        }
+        break;
+      }
 
-  for (let input in edit_customer_props.inputs) {
-    const field = document.getElementById(edit_customer_props.inputs[input].id);
-    const errorField = document.querySelector(edit_customer_props.inputs[input].errorMessageSelector);
-    const saveButton = document.getElementById("save-customer-changes");
-    if (edit_customer_props.inputs[input].type !== "select") {
-      field.addEventListener("input", () => {
-        if (!isValidInput(edit_customer_props.inputs[input].name, field.value)) {
-          errorField.innerText = edit_customer_props.inputs[input].errorMessage;
-          field.style = "border:1px solid red";
-          saveButton.setAttribute("disabled", "");
-        } else if (_.isEqual(_.omit(currentCustomerState, "date_create"), getEditCustomerInputValues())) {
-          saveButton.setAttribute("disabled", "");
+      case options.email.id: {
+        if (!isValidInput("Email", $(`#${options.email.id}`).val())) {
+          showErrorMessageForInput(options.email, saveChangesBtn);
+        } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+          saveChangesBtn.prop("disabled", true);
         } else {
-          errorField.innerText = "";
-          field.style.border = null;
-          let isValid = true;
-          for (let i in edit_customer_props.inputs) {
-            const f = document.getElementById(edit_customer_props.inputs[i].id);
-            if (edit_customer_props.inputs[i].type !== "select" && !isValidInput(edit_customer_props.inputs[i].name, f.value)) {
-              isValid = false;
-            }
-          }
-          if (isValid) {
-            saveButton.removeAttribute("disabled");
-          }
+          hideErrorMessageForInput(options, "email", saveChangesBtn, edit_customer_props.path);
         }
-      });
-    } else {
-      field.addEventListener("change", () => {
-        if (_.isEqual(_.omit(currentCustomerState, "date_create"), getEditCustomerInputValues())) {
-          saveButton.setAttribute("disabled", "");
+        break;
+      }
+
+      case options.city.id: {
+        if (!isValidInput("City", $(`#${options.city.id}`).val())) {
+          showErrorMessageForInput(options.city, saveChangesBtn);
+        } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+          saveChangesBtn.prop("disabled", true);
         } else {
-          let isValid = true;
-          for (let i in edit_customer_props.inputs) {
-            const f = document.getElementById(edit_customer_props.inputs[i].id);
-            if (edit_customer_props.inputs[i].type !== "select" && !isValidInput(edit_customer_props.inputs[i].name, f.value)) {
-              isValid = false;
-            }
-          }
-          if (isValid) {
-            saveButton.removeAttribute("disabled");
-          }
+          hideErrorMessageForInput(options, "city", saveChangesBtn, edit_customer_props.path);
         }
-      });
+        break;
+      }
+
+      case options.street.id: {
+        if (!isValidInput("Street", $(`#${options.street.id}`).val())) {
+          showErrorMessageForInput(options.street, saveChangesBtn);
+        } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+          saveChangesBtn.prop("disabled", true);
+        } else {
+          hideErrorMessageForInput(options, "street", saveChangesBtn, edit_customer_props.path);
+        }
+        break;
+      }
+
+      case options.house.id: {
+        if (!isValidInput("House", $(`#${options.house.id}`).val()) || +$(`#${options.house.id}`).val() === 0) {
+          showErrorMessageForInput(options.house, saveChangesBtn);
+        } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+          saveChangesBtn.prop("disabled", true);
+        } else {
+          hideErrorMessageForInput(options, "house", saveChangesBtn, edit_customer_props.path);
+        }
+        break;
+      }
+
+      case options.flat.id: {
+        if (!isValidInput("Flat", $(`#${options.flat.id}`).val()) || +$(`#${options.flat.id}`).val() === 0) {
+          showErrorMessageForInput(options.flat, saveChangesBtn);
+        } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+          saveChangesBtn.prop("disabled", true);
+        } else {
+          hideErrorMessageForInput(options, "flat", saveChangesBtn, edit_customer_props.path);
+        }
+        break;
+      }
+
+      case options.phone.id: {
+        if (!isValidInput("Phone", $(`#${options.phone.id}`).val())) {
+          showErrorMessageForInput(options.phone, saveChangesBtn);
+        } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+          saveChangesBtn.prop("disabled", true);
+        } else {
+          hideErrorMessageForInput(options, "phone", saveChangesBtn, edit_customer_props.path);
+        }
+        break;
+      }
+      
+      case options.notes.id: {
+        if (!isValidInput("Notes", $(`#${options.notes.id}`).val())) {
+          showErrorMessageForInput(options.notes, saveChangesBtn);
+        } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+          saveChangesBtn.prop("disabled", true);
+        } else {
+          hideErrorMessageForInput(options, "notes", saveChangesBtn, edit_customer_props.path);
+        }
+        break;
+      }
     }
-  }
+  });
 }
 
+function validateNewCustomerInputs(options = edit_customer_props.inputs) {
+  return (
+    isValidInput("Notes", $(`#${options.notes.id}`).val()) &&
 
+    (($(`#${options.flat.id}`).val().length && isValidInput("Flat", +$(`#${options.flat.id}`).val())) || +$(`#${options.flat.id}`).val() > 0) &&
 
-/*
-<div class="col-md-6">
-        <label for="${options.inputs.email.id}" class="form-label">${options.inputs.email.name}</label>
-        <input type="${options.inputs.email.type}" class="${options.inputs.email.classlist}" id="${options.inputs.email.id}" 
-        placeholder="${options.inputs.email.placeholder}" value="${data.email}"> 
-        <strong class="error-message-for-input"></strong>
-        </div>
-      <div class="col-md-6">
-        <label for="${options.inputs.name.id}" class="form-label">${options.inputs.name.name}</label>
-        <input type="${options.inputs.name.type}" class="${options.inputs.name.classlist}" id="${options.inputs.name.id}" 
-        placeholder="${options.inputs.name.placeholder}" value="${data.name}">
-        <strong class="error-message-for-input"></strong>
-      </div>
-      <div class="col-md-6">
-        <label for="${options.inputs.country.id}" class="form-label">${options.inputs.country.name}</label>
-        <select id="${options.inputs.country.id}" class="${options.inputs.country.classlist}">
-            ${renderOptions(options.inputs.country.options.values, data.country)}
-        </select>
-      </div>
-      <div class="col-md-6">
-        <label for="${options.inputs.city.id}" class="form-label">${options.inputs.city.name}</label>
-        <input type="${options.inputs.city.type}" class="${options.inputs.city.classlist}" id="${options.inputs.city.id}" 
-        placeholder="${options.inputs.city.placeholder}" value="${data.city}">
-        <strong class="error-message-for-input"></strong>
-      </div>
-      <div class="col-md-6">
-        <label for="${options.inputs.address.id}" class="form-label">${options.inputs.address.name}</label>
-        <input type="${options.inputs.address.type}" class="${options.inputs.address.classlist}" id="${options.inputs.address.id}" 
-        placeholder="${options.inputs.address.placeholder}" value="${data.address}">
-        <strong class="error-message-for-input"></strong>
-      </div>
-      <div class="col-md-6">
-        <label for="${options.inputs.phone.id}" class="form-label">${options.inputs.phone.name}</label>
-        <input type="${options.inputs.phone.type}" class="${options.inputs.phone.classlist}" id="${options.inputs.phone.id}" 
-        placeholder="${options.inputs.phone.placeholder}" value="${data.phone}">
-        <strong class="error-message-for-input"></strong>
-      </div>
-      <div class="col-md-12">
-        <label for="${options.inputs.notes.id}" class="form-label">${options.inputs.notes.name}</label>
-        <textarea class="${options.inputs.notes.classList}" id="${options.inputs.notes.id}" ${options.inputs.notes.attributes} 
-        placeholder="${options.inputs.notes.placeholder}">${data.note}</textarea>
-        <strong class="error-message-for-input"></strong>
-    </div>
-    */
+    (($(`#${options.house.id}`).val().length && isValidInput("House", +$(`#${options.house.id}`).val())) || +$(`#${options.house.id}`).val() > 0) &&
+
+    $(`#${options.name.id}`).val().length &&
+    isValidInput("Customer Name", $(`#${options.name.id}`).val()) &&
+
+    $(`#${options.email.id}`).val().length &&
+    isValidInput("Email", $(`#${options.email.id}`).val()) &&
+
+    $(`#${options.street.id}`).val().length &&
+    isValidInput("Street", $(`#${options.street.id}`).val()) &&
+    
+    $(`#${options.city.id}`).val().length &&
+    isValidInput("City", $(`#${options.city.id}`).val()) &&
+    
+    $(`#${options.phone.id}`).val().length &&
+    isValidInput("Phone", $(`#${options.phone.id}`).val())
+  );
+}

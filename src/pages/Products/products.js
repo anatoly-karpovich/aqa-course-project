@@ -1,10 +1,11 @@
 async function renderProductsPageLayout(options = ProductsProps) {
+  options.requestOpts.opts['headers']['Authorization'] = getAuthorizationCookie()
     const response = await getDataFromApi(options.requestOpts);
-    if (!response.isSuccess) {
+    if (!response.data.IsSuccess) {
       return renderErrorPageLayout(response.status);
     } else {
-      const data = await response.data.map((el) => {
-        return { Id: el.id, Name: el.name, Price: `${el.price}$`, Amount: el.amount};
+      const data = await response.data.Products.map((el) => {
+        return { Id: el._id, Name: el.name, Price: `${el.price}$`, Amount: el.amount};
       });
       ProductsProps.data = await response.data
 
@@ -30,6 +31,7 @@ async function renderProductsPageLayout(options = ProductsProps) {
       url: ENDPOINTS["Products"],
       opts: {
         method: "GET",
+        headers: {}
       },
     },
     buttons: [
@@ -84,6 +86,7 @@ async function deleteProduct(id) {
       body: "",
       headers: {
         ["Content-Type"]: "application/json",
+        ['Authorization']: getAuthorizationCookie()
       },
     },
   };
@@ -94,14 +97,24 @@ async function deleteProduct(id) {
   await showNotificationAfterDeleteRequest(response, { message: SUCCESS_MESSAGES["Product Successfully Deleted"]('Product') }, ProductsProps)
 }
 
+function renderEditProductPageFromModal(id) {
+  removeDetailsModal();
+  renderEditProductPage(id)
+}
+
 const product_details_props = (id) => {
   return {
     id,
     url: ENDPOINTS["Get Product By Id"](id),
+    opts: {
+      method: "GET",
+      headers: {}
+    },
     path: 'Product',
     buttons: {
       edit: {
-        onClickFunc: 'renderEditProductPage'
+        // onClickFunc: 'renderEditProductPage'
+        onClickFunc: 'renderEditProductPageFromModal'
       }
     }
   }

@@ -36,7 +36,8 @@ function renderAddNewCustomerPage(options = add_new_customer_props) {
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderAddNewCustomerLayout(options);
   hideSpinner();
   sideMenuActivateElement(options.path);
-  addListenersToAddNewCustomerPage();
+  // addListenersToAddNewCustomerPage();
+  addEventListelersToAddNewCustomerPage()
 }
 
 async function renderCustomerDetailsModal(id) {
@@ -50,9 +51,8 @@ async function renderEditCustomerPage(id) {
   if (modalWrap) {
     removeDetailsModal();
   }
-  const requestOpts = { id: id };
   showSpinner();
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderEditCustomerLayout(requestOpts, edit_customer_props);
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderEditCustomerLayout(id, edit_customer_props);
   hideSpinner();
   sideMenuActivateElement("Customers");
   addListenersToEditCustomerPage();
@@ -97,9 +97,9 @@ async function renderProductDetailsModal(id) {
     if (modalWrap) {
       removeDetailsModal();
     }
-    const requestOpts = { id: id };
+    const requestOpts = { id };
     showSpinner();
-    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderEditProductLayout(requestOpts, edit_product_props);
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderEditProductLayout(id, edit_product_props);
     hideSpinner();
     sideMenuActivateElement("Products");
     addListenersToEditProductPage();
