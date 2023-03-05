@@ -1,6 +1,6 @@
-async function generateTableBootstrap(data = [], options) {
+function generateTableBootstrap(data = [], options) {
   const layout = `
-    <table class="table tableWrapper">
+    <table class="table table-striped tableWrapper">
         <thead>
             <tr>
                 ${generateTableHeaders(Object.keys(_.omit(data[0], 'Id')))}
@@ -33,17 +33,14 @@ function generateTableRow(obj = {}, options) {
   let actions = "";
   if (options.tableProps.buttons) {
     actions = "<td style='width: 250px'>" + options.tableProps.buttons.map((btn) =>
-    `<button class="${btn.classlist}" onClick="${btn.onclick}('${obj.Id}')">${btn.name}</button>`).join("") + "</td>";
+    generateButton(btn, obj.Id)).join("") + "</td>";
   }
   return row + actions;
 }
+
+// `<button class="${btn.classlist}" onClick="${btn.onclick}('${obj.Id}')">${btn.name}</button>`
 
 const widthForColumns = {
   Id: '70px',
   Email: "200px",
 }
-// `<td>
-// <button class="btn btn-link" onClick="renderCustomerDetailsModal('${obj.Id}')">Details</button>
-// <button class="btn btn-primary table-action-buttons" onClick="renderEditCustomerPage('${obj.Id}')">Edit</button>
-// <button class="btn btn-danger table-action-buttons" onClick="renderDeleteCustomerModal('${obj.Id}')">Delete</button>
-// </td>`

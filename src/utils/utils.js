@@ -29,41 +29,6 @@ function renderButtons(buttons = []) {
   buttons.map((el) => `<button class="${el.classlist}" ${el.type ? "type=" : ""}${el.type ? el.type : ""}>${el.text}</button>`);
 }
 
-function getAuthorizationCookie() {
-  const cookieValue = document.cookie.split("; ").find((row) => row.startsWith("Authorization="));
-  return `Bearer ${cookieValue?.split("=")[1]}`;
-}
-
-const getDataFromApi = async function (requestOpts = {}) {
-  let response = {};
-  try {
-    response = await fetch(requestOpts.url, { ...requestOpts.opts });
-    const status = response.status;
-    if (response.ok) {
-      try {
-        response.data = await response.json();
-      } catch (e) {
-        console.log(e);
-        response.data = {};
-      }
-      response.isSuccess = true;
-      response["status"] = status;
-    } else {
-      response.data = await response.json();
-      // response.isSuccess = false;
-      response["status"] = status;
-    }
-  } catch (error) {
-    hideSpinner();
-    console.log(error);
-    response.data = {};
-    response.data["IsSuccess"] = false;
-  } finally {
-    hideSpinner();
-  }
-  return response;
-};
-
 function clearAllInputs(inputs, buttonsToBeDisabled = []) {
   for (const input in inputs) {
     const field = document.getElementById(inputs[input].id);
@@ -94,16 +59,6 @@ function renderOptions(values = [], defaultValue, toBeSelected) {
     : values.map((el) => `<option ${el === defaultValue ? "selected" : ""} value="${el}">${el}</option>`).join("");
 }
 
-function convertApiErrors(errors) {
-  return Object.keys(errors)
-    .map((key) => {
-      if (key !== "isSuccess" && key !== "status") {
-        return `Errors in ${key}: ${errors[key].join("\n")}`;
-      }
-    })
-    .join("\n");
-}
-
 async function showNotificationAfterDeleteRequest(response, notificationOptions, pageProps) {
   hideSpinner();
   if (response.status === 204) {
@@ -112,14 +67,13 @@ async function showNotificationAfterDeleteRequest(response, notificationOptions,
   } else {
     renderNotification({ message: response.data.ErrorMessage ? response.data.ErrorMessage : `Connection issue. Customer wasn't updated.` });
 
-    document.querySelector(".toast").style["background-color"] = "red";
+    document.querySelector(".toast").classList.add("bg-danger");
     document.querySelector(".toast").classList.add("text-white");
   }
 }
 
 async function submitEntiti(options, notificationOprions) {
   showSpinner();
-  options.requestOpts.opts.headers["Authorization"] = getAuthorizationCookie();
   const response = await getDataFromApi(options.requestOpts);
   clearAllInputs(options.inputs);
   hideSpinner();
@@ -128,7 +82,7 @@ async function submitEntiti(options, notificationOprions) {
   } else {
     renderNotification({ message: response.data.ErrorMessage ? response.data.ErrorMessage : ERROR_MESSAGES["Connection Issue"] });
     // document.querySelector(".toast").style["background-color"] = "red";
-    document.querySelector(".toast").classList.add(".bg-danger");
+    document.querySelector(".toast").classList.add("bg-danger");
     document.querySelector(".toast").classList.add("text-white");
   }
 }

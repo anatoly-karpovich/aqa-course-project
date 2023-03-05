@@ -1,27 +1,21 @@
-async function renderProductsPageLayout(options = ProductsProps) {
-  options.requestOpts.opts['headers']['Authorization'] = getAuthorizationCookie()
-    const response = await getDataFromApi(options.requestOpts);
-    if (!response.data.IsSuccess) {
-      return renderErrorPageLayout(response.status);
-    } else {
-      const data = await response.data.Products.map((el) => {
+function renderProductsPageLayout(options = ProductsProps, response = {}) {
+      const data = response.data.Products.map((el) => {
         return { Id: el._id, Name: el.name, Price: `${el.price}$`, Amount: el.amount};
       });
-      ProductsProps.data = await response.data
+      ProductsProps.data = response.data
 
       return `      
       <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
         <div id="${PAGE_TITLE_ID}">  
           <div class="page-header-flex">
-              <h2 class="page-title-text">${options.title}</h2>
-              ${options.buttons ? options.buttons.map((el) => `<button class="${el.classlist}" onClick="${el.onclick}()">${el.text}</button>`) : ""}
+            ${generatePageTitle(options.title)}
           </div>
+            ${generateSearchBar(options.buttons)}
           <div id="${CONTENT_ID}">
-            ${_.isEmpty(data) ? "" : await generateTableBootstrap(data, options)}
+            ${_.isEmpty(data) ? "" : generateTableBootstrap(data, options)}
           </div>
         </div>
       </div>`;
-    }
   }
 
   const ProductsProps = {
@@ -36,8 +30,8 @@ async function renderProductsPageLayout(options = ProductsProps) {
     },
     buttons: [
       {
-        classlist: "btn btn-primary page-title-header",
-        text: "Add New Product",
+        classlist: "btn btn-primary page-title-header page-title-button",
+        name: "+ Add Product",
         onclick: "renderAddNewProductPage"
       },
     ],

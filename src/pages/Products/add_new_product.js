@@ -1,20 +1,19 @@
 function renderAddNewProductLayout(options = add_new_product_props) {
-  add_new_product_props.requestOpts.opts.headers['Authorization'] = getAuthorizationCookie()
   return `
   <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
   <div id="${PAGE_TITLE_ID}" class="page-header">
-      <h2 class="page-title-text">${options.title}</h2>
+      ${generatePageTitle(options.title)}
   </div>
   <form class="row g-3 form-with-inputs" id="${options.formId}">
       ${generateFormInputs(options.inputs)} 
         
         <div class="col-12 form-action-section">
           <div>
-              <button type="submit" class="btn btn-primary form-buttons" id="${options.buttons.save.id}" disabled>Save New Product</button>
-              <button class="btn btn-secondary form-buttons" id="${options.buttons.back.id}">Back</button>
+              ${saveButton(options.buttons.save.id, options.buttons.save.name)}
+              ${backButton(options.buttons.back.id, options.buttons.back.name)}
           </div>
           <div>
-              <button class="btn btn-link clear-btn form-buttons" id="${options.buttons.clear.id}">Clear all</button>
+            ${clearInputsButton(options.buttons.clear.id, options.buttons.clear.name)}
               </div>
               </div>
             </form>
@@ -100,13 +99,17 @@ const add_new_product_props = {
   },
   buttons: {
     save: {
-      id: 'save-new-product'
+      id: 'save-new-product',
+      name: "Save New Product",
     },
     back: {
-      id: 'back-to-products-page'
+      id: 'back-to-products-page',
+      name: 'Back'
+
     },
     clear: {
-      id: 'clear-inputs'
+      id: 'clear-inputs',
+      name: "Clear all"
     }
   }
 };

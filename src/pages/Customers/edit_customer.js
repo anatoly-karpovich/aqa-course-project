@@ -5,7 +5,6 @@ async function renderEditCustomerLayout(id, options = edit_customer_props) {
       method: "GET",
       headers: {
         ["Content-Type"]: "application/json",
-        Authorization: getAuthorizationCookie()
       },
     },
   }
@@ -32,18 +31,18 @@ async function renderEditCustomerLayout(id, options = edit_customer_props) {
     return `
     <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
     <div id="${PAGE_TITLE_ID}" class="page-header">
-        <h2 class="page-title-text">${options.title} ${data.name}</h2>
+        ${generatePageTitle(options.title, data.name)}
     </div>
     <form class="row g-3 form-with-inputs" id="${options.formId}">
       ${generateFormInputs( options.inputs)}
       <div class="col-12" style="margin-top: 50px; display: flex; justify-content: space-between;">
         <div>
-          <button type="submit" class="btn btn-primary form-buttons" id="${options.buttons.save.id}" disabled>Save New Customer</button>
-          <button class="btn btn-secondary form-buttons" id="${options.buttons.back.id}">Back</button>
+          ${saveButton(options.buttons.save.id, options.buttons.save.name)}
+          ${backButton(options.buttons.back.id, options.buttons.back.name)}
         </div>
         <div>
-          <button class="btn btn-link clear-btn form-buttons" id="${options.buttons.clear.id}">Clear all</button>
-        </div>
+          ${deleteButton(options.buttons.delete.id, options.buttons.delete.name)}
+       </div>
       </div>
     </form>
   </div>
@@ -71,16 +70,20 @@ const edit_customer_props = {
   },
   buttons: {
     save: {
-      id: 'save-customer-changes'
+      id: 'save-customer-changes',
+      name: "Save Changes",
     },
     back: {
-      id: 'back-to-customers-page'
+      id: 'back-to-customers-page',
+      name: "Back",
     },
-    clear: {
-      id: 'clear-inputs'
+    delete: {
+      id: 'delete-customer-btn',
+      name: "Delete Customer",
     }
   }
 };
+
 let currentCustomerState = {};
 let EditedCustomerModel = {};
 
@@ -121,8 +124,8 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
         break;
       }
 
-      case edit_customer_props.buttons.clear.id: {
-        clearAllInputs(edit_customer_props.inputs, [saveChangesBtn]);
+      case edit_customer_props.buttons.delete.id: {
+        renderDeleteProductModal(edit_product_props.id);
         break;
       }
     }

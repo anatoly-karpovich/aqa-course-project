@@ -6,7 +6,6 @@ async function renderEditProductLayout(id, options = edit_product_props) {
       method: "GET",
       headers: {
         ["Content-Type"]: "application/json",
-        Authorization: getAuthorizationCookie()
       },
     },
   }
@@ -30,17 +29,17 @@ async function renderEditProductLayout(id, options = edit_product_props) {
     return `
     <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
     <div id="${PAGE_TITLE_ID}" class="page-header">
-        <h2 class="page-title-text">${options.title} ${data.name}</h2>
+      ${generatePageTitle(options.title, data.name)}
     </div>
     <form class="row g-3 form-with-inputs" id="${options.formId}">
         ${generateFormInputs(options.inputs)}
         <div class="col-12" style="margin-top: 50px; display: flex; justify-content: space-between;">
           <div>
-              <button type="submit" class="btn btn-primary form-buttons" id="save-product-changes" disabled>Save Changes</button>
-              <button class="btn btn-secondary form-buttons" id="back-to-products-page" onClick="renderProductsPage(ProductsProps)">Back</button>
+            ${saveButton(options.buttons.save.id, options.buttons.save.name)}
+            ${backButton(options.buttons.back.id, options.buttons.back.name)}
           </div>
           <div>
-              <button class="btn btn-danger" id="delete-product-btn" form-buttons">Delete Product</button>
+            ${deleteButton(options.buttons.delete.id, options.buttons.delete.name)}
           </div>
         </div>
       </form>
@@ -67,6 +66,20 @@ const edit_product_props = {
       },
     },
   },
+  buttons: {
+    save: {
+      id: 'save-product-changes',
+      name: "Save Changes",
+    },
+    back: {
+      id: 'back-to-products-page',
+      name: "Back",
+    },
+    delete: {
+      id: 'delete-product-btn',
+      name: "Delete Product",
+    }
+  }
 };
 
 let currentProductstate = {};
@@ -85,7 +98,6 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
           _id: edit_product_props.id,
           ...product
         });
-        edit_product_props.requestOpts.opts.headers["Authorization"] = getAuthorizationCookie();
         await submitEntiti(edit_product_props, { message: SUCCESS_MESSAGES["Product Successfully Updated"](options.name.value) });
         await renderProductsPage(ProductsProps);
         break;

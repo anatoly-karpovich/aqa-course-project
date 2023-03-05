@@ -3,7 +3,7 @@ const CONTENT_CONTAINER_ID = "root";
 const CONTENT_ID = "contentInner";
 const PAGE_TITLE_ID = "title";
 
-const BASE_URL = "https://5e96-2a02-a311-363-ec00-3deb-8e9d-4d93-d84e.eu.ngrok.io";
+const BASE_URL = "http://3.76.183.253";
 // const BASE_URL = "http://localhost:5000";
 
 const NUMBER_KEYS = ["amount", "price", "flat", "house"]
@@ -13,7 +13,11 @@ const ENDPOINTS = {
   ["Customers"]: `${BASE_URL}/api/customers/`,
   ["Get Customer By Id"]: (id) => `${BASE_URL}/api/customers/${id}/`,
   ['Products']: `${BASE_URL}/api/products/`,
-  ['Get Product By Id']: (id) => `${BASE_URL}/api/products/${id}/`
+  ['Get Product By Id']: (id) => `${BASE_URL}/api/products/${id}/`,
+  ['Orders']: `${BASE_URL}/api/orders/`,
+  ['Get Order By Id']: (id) => `${BASE_URL}/api/orders/${id}/`,
+  ['Order Delivery']: `${BASE_URL}/api/orders/delivery/`,
+  ['Order Receive']: `${BASE_URL}/api/orders/receive/`,
 };
 
 const SUCCESS_MESSAGES = {

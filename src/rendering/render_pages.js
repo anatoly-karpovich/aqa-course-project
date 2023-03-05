@@ -6,28 +6,20 @@ const renderPages = {
   Products: renderProductsPage,
 };
 
-// function renderNewOrderPage(options) {
-//     deleteContent()
-//     clickOnSideMenuAsync(renderNewOrderLoyaut, options)
-// }
-
-// async function renderOrdersPage(options = {}) {
-//     const spinner = document.querySelector(`.overlay`);
-//     spinner.style.display = "block";
-//     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderOrderPageLayout(options)
-//     spinner.style.display = "none";
-//     sideMenuActivateElement(options.path);
-// }
-
 //Customers Section
 async function renderCustomersPage(options = {}) {
   showSpinner();
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderCustomersPageLayout(options);
-  hideSpinner();
-  sideMenuActivateElement(options.path);
-  const addCustomerBtn = document.querySelector("button.pageTitle");
-  if (addCustomerBtn) {
-    addCustomerBtn.addEventListener("click", () => renderAddNewCustomerPage());
+  const response = await getDataFromApi(CustomerProps.requestOpts);
+  if(response.status === 200) {
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderCustomersPageLayout(options, response);
+    hideSpinner();
+    sideMenuActivateElement(options.path);
+    const addCustomerBtn = document.querySelector("button.page-title-button");
+    if (addCustomerBtn) {
+      addCustomerBtn.addEventListener("click", () => renderAddNewCustomerPage());
+    }
+  } else {
+    handleApiErrors(response)
   }
 }
 
@@ -65,13 +57,19 @@ function renderDeleteCustomerModal(id) {
 //Products Section
 async function renderProductsPage(options = {}) {
   showSpinner();
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderProductsPageLayout(options);
-  hideSpinner();
-  sideMenuActivateElement(options.path);
-  const addCustomerBtn = document.querySelector("button.pageTitle");
-  if (addCustomerBtn) {
-    addCustomerBtn.addEventListener("click", () => renderAddNewProductPage());
+  const response = await getDataFromApi(options.requestOpts);
+  if(response.status === 200) {
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderProductsPageLayout(options, response);
+    hideSpinner();
+    sideMenuActivateElement(options.path);
+    const addCustomerBtn = document.querySelector("button.page-title-button");
+    if (addCustomerBtn) {
+      addCustomerBtn.addEventListener("click", () => renderAddNewProductPage());
+    }
+  } else {
+    handleApiErrors(response)
   }
+  
 }
 
 function renderAddNewProductPage(options = add_new_product_props) {
@@ -97,7 +95,6 @@ async function renderProductDetailsModal(id) {
     if (modalWrap) {
       removeDetailsModal();
     }
-    const requestOpts = { id };
     showSpinner();
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderEditProductLayout(id, edit_product_props);
     hideSpinner();
@@ -122,32 +119,6 @@ function renderHomePage(options = {}) {
   hideSpinner();
 }
 
-//Remove after refactor finishing
-function renderTitle(options) {
-  const title = document.querySelector(".pageTitle");
-  title.innerText = options.title;
-
-  // if(options.buttons) {
-  const titleDiv = document.querySelector("#title");
-  const addButton = document.createElement("button");
-  addButton.classList.add("btn");
-  addButton.classList.add("btn-primary");
-  addButton.classList.add("pageTitle");
-  addButton.innerText = "Add new Order";
-
-  addButton.appendAfter(titleDiv);
-
-  addButton.addEventListener("click", renderNewOrderPage);
-  // }
-}
-
-async function clickOnSideMenuAsync(handler, options = {}) {
-  const spinner = document.querySelector(`.overlay`);
-  spinner.style.display = "block";
-  await handler(options);
-  spinner.style.display = "none";
-}
-
 function sideMenuActivateElement(value) {
   const li = document.querySelectorAll(`ul.nav a`);
   li.forEach((el) => {
@@ -155,13 +126,4 @@ function sideMenuActivateElement(value) {
   });
   const index = findNodeIndexByInnerText(`ul.nav a`, value);
   li[index].classList.add("active");
-}
-
-//to be deleted after Products Page implementation
-function deleteContent() {
-  document.querySelector("#contentInner").innerHTML = "";
-  // document.querySelector("#contentInner").removeChilds()
-
-  const button = document.querySelector("button.pageTitle");
-  if (button) button.parentNode.removeChild(button);
 }

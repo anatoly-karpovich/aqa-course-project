@@ -1,4 +1,4 @@
-const token = localStorage.getItem("token");
+const token = getAuthorizationCookie();
 token ? renderPages['Landing'](landingProps) : renderPages['Sign In']();
 
 

@@ -184,7 +184,7 @@ main {
 .page-header-flex {
   display: flex;
   justify-content: space-between;
-  margin: 20px 60px 0px 0px !important
+  margin: 20px 60px 20px 0px !important
 }
 
 .page-header {
@@ -276,4 +276,22 @@ tr:hover {
   margin-top: 35px; 
   display: flex; 
   justify-content: space-between;
+}
+
+.search-bar {
+  margin-left: 20px;
+  width: 500px;
+}
+
+.search-bg {
+  background-color: #f2f4f6;
+}
+
+.navbar-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }

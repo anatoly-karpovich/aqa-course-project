@@ -1,74 +1,57 @@
-async function _createTableBootstrap(options) {
-  const posts = await fetch("https://jsonplaceholder.typicode.com/posts");
-  const data = await posts.json();
-
-  const content = document.querySelector("#contentInner");
-  const tableForContent = document.createElement("div");
-  tableForContent.id = "table-for-content";
-  tableForContent.insertAdjacentHTML(
-    "afterbegin",
-    `
-    <table class="table">
-        <thead>
-            <tr>
-            ${generateTableHeaders(Object.keys(data[0]))}
-            </tr>
-        </thead>
-        <tbody>
-            ${generateTableBody(data)}
-        </tbody>
-    </table>
-    `
-  );
-  content.prepend(tableForContent);
+function generateButton(options, id) {
+  return `
+    <button 
+    ${options?.type ? "type=" + '"' + options.type + '" ' : ""}
+    ${options?.id ? "id=" + '"' + options.id + '" ' : ""}
+    ${options?.classlist ? "class=" + '"' + options.classlist + '" ' : ""}
+    ${options?.onclick ? "onClick=" + '"' + options.onclick + "(" + (id ? "'" + id + "'" : "") + ")" + '" ' : ""}
+    ${options?.disabled ? "disabled " : ""}
+    >${options?.name}</button>
+    `;
 }
 
-function generateTableHeaders(titles = []) {
-  return titles.map((title) => `<th scope="col" onClick="tableOnClickSort('${title}');">${title}</th>`).join("");
+function saveButton(id, name) {
+  return `
+  <button type="submit" id="${id}" class="btn btn-primary form-buttons" disabled="">${name}</button>
+  `;
 }
 
-function generateTableBody(arr = []) {
-  return arr.map((data) => `<tr>${generateTableRow(data)}</tr>`).join('');
+function backButton(id, name) {
+  return `
+  <button id="${id}" class="btn btn-secondary form-buttons">${name}</button>
+  `;
 }
 
-function generateTableRow(obj = {}) {
-  return Object.values(obj)
-    .map((value) => `<td>${value}</td>`)
-    .join("");
+function clearInputsButton(id, name) {
+  return `
+  <button id="${id}" class="btn btn-link clear-btn form-buttons">${name}</button>
+  `;
 }
 
-function tableOnClickSort(header) {
-    alert(header)
+function deleteButton(id, name) {
+  return `
+  <button id="${id}" class="btn btn-danger">${name}</button>
+  `;
 }
-/* 
- <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-</table>
-*/
+
+function generateSearchBar(buttons) {
+  return `
+  <nav class="navbar navbar-light search-bg rounded">
+    <div class="container-fluid">
+      <div class="page-header-flex">
+        <form class="d-flex search-bar">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+      </div>
+      ${buttons ? buttons.map((el) => generateButton(el)) : ""}
+    </div>
+  </nav>
+  `;
+}
+
+function generatePageTitle(title, entitiName) {
+  return `
+  <h2 class="page-title-text">${title} ${entitiName ? entitiName : ""}</h2>
+  `;
+}
