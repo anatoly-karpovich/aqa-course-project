@@ -97,59 +97,35 @@ const layout = `
   </div>
   <!-- Right -->
 </div>
-</section>`
-
+</section>`;
 
 function renderSignInPage() {
-  if(document.querySelector("#sidemenu")) {
+  if (document.querySelector("#sidemenu")) {
     document.querySelector("#sidemenu").parentNode.removeChild(document.querySelector("#sidemenu"));
   }
-    const signIn = document.createElement('div')
-    signIn.insertAdjacentHTML(
-      "afterbegin", layout)
-      document.body.prepend(signIn)
+  const signIn = document.createElement("div");
+  signIn.insertAdjacentHTML("afterbegin", layout);
+  document.body.prepend(signIn);
 
-      const email = signIn.querySelector('#emailinput')
-      const password = signIn.querySelector('#passwordinput')
+  const email = signIn.querySelector("#emailinput");
+  const password = signIn.querySelector("#passwordinput");
 
-      const submit = signIn.querySelector(`.btn-lg`)
-      submit.addEventListener('click', async () => {
-        const response = await getDataFromApi( {url: ENDPOINTS["Login"], opts: {  method: "POST",
-        body: JSON.stringify({"username": email.value,"password": password.value}),
-        headers: {
-          ["Content-Type"]: "application/json",
-        },
-      },});
-      if(response.status === 200) {
-        document.cookie = `Authorization=${response.data.token}`
-            const spinner = document.querySelector(`.overlay`)
-            signIn.classList.add('disabled')
-            spinner.style.display = 'block'
-            // setTimeout(() => {
-            spinner.style.display = 'none'
-                
-                const token = '4fb18062-435d-11ed-b878-0242ac120002'
-                localStorage.setItem('token', token)
-                signIn.parentNode.removeChild(signIn)
-                renderLandingPage(landingProps)
-            // }, 1000)
-           
-        } else {
-            const message = signIn.querySelector('#errorMessage')
-            message.style.display = 'block'
-            message.innerText = 'Invalid Credentials'
-        }
-    })
-    email.addEventListener('input', onInput)
-    password.addEventListener('input', onInput)
-}
-
-function validateSignIn(email, password) {
- 
-    return email === 'aqacourse@gmail.com' && password === 'password'
-}
-
-function onInput() {
-    const errorMessage = document.querySelector('#errorMessage')
-    errorMessage.style.display = 'none'
+  const submit = signIn.querySelector(`.btn-lg`);
+  submit.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const credentials = { username: email.value, password: password.value };
+    showSpinner();
+    const response = await SignInService.signIn(credentials);
+    if (response.status === 200) {
+      document.cookie = `Authorization=${response.data.token}`;
+      signIn.classList.add("disabled");
+      signIn.parentNode.removeChild(signIn);
+      renderLandingPage(landingProps);
+    } else {
+      renderNotification({ message: response.data.ErrorMessage ? response.data.ErrorMessage : ERROR_MESSAGES["Connection Issue"] });
+      document.querySelector(".toast").classList.add("bg-danger");
+      document.querySelector(".toast").classList.add("text-white");
+    }
+    hideSpinner();
+  });
 }

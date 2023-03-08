@@ -1,21 +1,5 @@
-async function renderEditCustomerLayout(id, options = edit_customer_props) {
-  const requestOptions = {
-    url: ENDPOINTS["Get Customer By Id"](id),
-    opts: {
-      method: "GET",
-      headers: {
-        ["Content-Type"]: "application/json",
-      },
-    },
-  }
-  edit_customer_props.requestOpts.url = ENDPOINTS["Get Customer By Id"](id);
-  edit_customer_props.id = id;
-
-  const response = await getDataFromApi(requestOptions);
-  if (!response.data.IsSuccess) {
-    return renderErrorPageLayout(response.status);
-  } else {
-    const data = await response.data.Customer;
+async function renderEditCustomerLayout(options = edit_customer_props, data = {}) {
+    edit_customer_props.id = data._id;
     options.inputs.email.value = data.email;
     options.inputs.name.value = data.name;
     options.inputs.country.value = data.country;
@@ -48,7 +32,7 @@ async function renderEditCustomerLayout(id, options = edit_customer_props) {
   </div>
     `;
   }
-}
+// }
 
 const edit_customer_props = {
   path: "Customers",
@@ -59,14 +43,8 @@ const edit_customer_props = {
     ...(_.cloneDeep(add_new_customer_props.inputs)),
   },
   requestOpts: {
-    url: "",
-    opts: {
-      method: "PUT",
-      body: "",
-      headers: {
-        ["Content-Type"]: "application/json",
-      },
-    },
+      method: "put",
+      body: {},
   },
   buttons: {
     save: {
@@ -112,10 +90,10 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
     switch (elementId) {
       case edit_customer_props.buttons.save.id: {
         const customer = getDataFromForm(`#${edit_customer_props.formId}`)
-        edit_customer_props.requestOpts.opts.body = JSON.stringify({
+        edit_customer_props.requestOpts.body = {
           _id: edit_customer_props.id,
-          customer});
-        await submitEntiti(edit_customer_props, { message: SUCCESS_MESSAGES["Customer Successfully Updated"] });
+          ...customer};
+        await submitEntiti(edit_customer_props, { message: SUCCESS_MESSAGES["Customer Successfully Updated"]('Customer') });
         break;
       }
 

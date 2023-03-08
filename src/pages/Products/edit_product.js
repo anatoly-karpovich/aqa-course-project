@@ -1,23 +1,5 @@
-async function renderEditProductLayout(id, options = edit_product_props) {
-  // edit_product_props.requestOpts.url = ENDPOINTS["Get Product By Id"](requestOpts.id);
-  const requestOptions = {
-    url: ENDPOINTS["Get Product By Id"](id),
-    opts: {
-      method: "GET",
-      headers: {
-        ["Content-Type"]: "application/json",
-      },
-    },
-  }
-  edit_product_props.requestOpts.url = ENDPOINTS.Products;
-  edit_product_props.id = id;
-
-  // const response = await getDataFromApi({ url: ENDPOINTS["Get Product By Id"](requestOpts.id) });
-  const response = await getDataFromApi(requestOptions);
-  if (!response.data.IsSuccess) {
-    return renderErrorPageLayout(response.status);
-  } else {
-    const data = response.data.Product;
+async function renderEditProductLayout(options = edit_product_props, data = {}) {
+    edit_product_props.id = data._id;
     options.inputs.name.value = data.name;
     options.inputs.manufacturer.value = data.manufacturer;
     options.inputs.price.value = data.price;
@@ -45,7 +27,6 @@ async function renderEditProductLayout(id, options = edit_product_props) {
       </form>
       </div>
       `;
-  }
 }
 
 const edit_product_props = {
@@ -57,14 +38,8 @@ const edit_product_props = {
     ..._.cloneDeep(add_new_product_props.inputs),
   },
   requestOpts: {
-    url: ENDPOINTS.Products,
-    opts: {
-      method: "PUT",
-      body: "",
-      headers: {
-        ["Content-Type"]: "application/json",
-      },
-    },
+      method: "put",
+      body: {},
   },
   buttons: {
     save: {
@@ -85,8 +60,9 @@ const edit_product_props = {
 let currentProductstate = {};
 
 function addListenersToEditProductPage(options = edit_product_props.inputs) {
+
   const saveChangesBtn = $("#save-product-changes");
-  const form = $("#edit-product-form");
+  const form = $(`#${edit_product_props.formId}`);
 
   form.on("click", async (e) => {
     e.preventDefault();
@@ -94,12 +70,11 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
     switch (elementId) {
       case "save-product-changes": {
         const product = getDataFromForm("#edit-product-form");
-        edit_product_props.requestOpts.opts.body = JSON.stringify({
+        edit_product_props.requestOpts.body = {
           _id: edit_product_props.id,
           ...product
-        });
-        await submitEntiti(edit_product_props, { message: SUCCESS_MESSAGES["Product Successfully Updated"](options.name.value) });
-        await renderProductsPage(ProductsProps);
+        };
+        await submitEntiti(edit_product_props, { message: SUCCESS_MESSAGES["Product Successfully Updated"]('Product') });
         break;
       }
 
