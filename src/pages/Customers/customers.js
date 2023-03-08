@@ -76,7 +76,7 @@ const customer_details_props = (id) => {
     path: 'Customer',
     buttons: {
       edit: {
-        onClickFunc: 'renderEditCustomerPage'
+        onClickFunc: `renderEditCustomerPage`
       }
     }
   }

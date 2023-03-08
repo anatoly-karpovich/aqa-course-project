@@ -4,6 +4,7 @@ async function createDetailsModal(options = {}, data = {}) {
 if(modalWrap !== null) {
     modalWrap.remove()
 }
+console.log(data)
     modalWrap = document.createElement("div");
     modalWrap.id = `${options.path}-details-modal-id`
     modalWrap.insertAdjacentHTML(
@@ -25,7 +26,7 @@ if(modalWrap !== null) {
           
       </div>
       <div class="modal-footer">
-        <button type="button" style="margin-right: 10px" class="btn btn-primary" onClick="${options.buttons.edit.onClickFunc}('${data._id}');">Edit ${options.path}</button>
+        <button type="button" style="margin-right: 10px" class="btn btn-primary" onClick="${options.buttons.edit.onClickFunc}('${data[options.path]._id}');">Edit ${options.path}</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="removeDetailsModal();">Cancel</button>
       </div>
     </div>
@@ -69,6 +70,9 @@ const replaceApiToFeKeys = {
   "country": "Country",
   "city": "City",
   "address": "Address",
+  "house": "House",
+  "flat": "Flat",
+  "street": "Street",
   "phone": "Phone",
   "date_create": "Registered",
   "note": "Notes",

@@ -1,4 +1,4 @@
-async function renderEditCustomerLayout(options = edit_customer_props, data = {}) {
+function renderEditCustomerLayout(options = edit_customer_props, data = {}) {
     edit_customer_props.id = data._id;
     options.inputs.email.value = data.email;
     options.inputs.name.value = data.name;
@@ -103,7 +103,8 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
       }
 
       case edit_customer_props.buttons.delete.id: {
-        renderDeleteProductModal(edit_product_props.id);
+        const id = getEditCustomerInputValues().id
+        renderDeleteCustomerModal(id);
         break;
       }
     }

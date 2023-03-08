@@ -50,7 +50,7 @@ async function renderEditCustomerPage(id) {
   showSpinner();
   const response = await CustomersService.getCustomers(id)
   if(response.status === 200) {
-    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderEditCustomerLayout(edit_customer_props, response.data.Customer);
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditCustomerLayout(edit_customer_props, response.data.Customer);
     hideSpinner();
     sideMenuActivateElement("Customers");
     addListenersToEditCustomerPage();

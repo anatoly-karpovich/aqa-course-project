@@ -232,7 +232,7 @@ main {
   margin: 50px 0px
 }
 
-tr:hover {
+tr:has(td):hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
