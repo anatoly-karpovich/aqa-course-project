@@ -7,9 +7,9 @@ const renderPages = {
 };
 
 //Customers Section
-async function renderCustomersPage(options = {}) {
+async function renderCustomersPage(options = CustomerProps) {
   showSpinner();
-  const response = await getDataFromApi(CustomerProps.requestOpts);
+  const response = await CustomersService.getCustomers()
   if(response.status === 200) {
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderCustomersPageLayout(options, response);
     hideSpinner();
@@ -28,15 +28,19 @@ function renderAddNewCustomerPage(options = add_new_customer_props) {
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderAddNewCustomerLayout(options);
   hideSpinner();
   sideMenuActivateElement(options.path);
-  // addListenersToAddNewCustomerPage();
   addEventListelersToAddNewCustomerPage()
 }
 
 async function renderCustomerDetailsModal(id) {
   showSpinner();
-  await createDetailsModal(customer_details_props(id));
-  hideSpinner();
-  sideMenuActivateElement("Customers");
+  const response = await CustomersService.getCustomers(id);
+  if(response.status === 200) {
+    await createDetailsModal(customer_details_props(id), response.data);
+    hideSpinner();
+    sideMenuActivateElement("Customers");
+  } else {
+    handleApiErrors(response)
+  }
 }
 
 async function renderEditCustomerPage(id) {
@@ -44,10 +48,15 @@ async function renderEditCustomerPage(id) {
     removeDetailsModal();
   }
   showSpinner();
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderEditCustomerLayout(id, edit_customer_props);
-  hideSpinner();
-  sideMenuActivateElement("Customers");
-  addListenersToEditCustomerPage();
+  const response = await CustomersService.getCustomers(id)
+  if(response.status === 200) {
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderEditCustomerLayout(edit_customer_props, response.data.Customer);
+    hideSpinner();
+    sideMenuActivateElement("Customers");
+    addListenersToEditCustomerPage();
+  } else {
+    handleApiErrors(response)
+  }
 }
 
 function renderDeleteCustomerModal(id) {
@@ -55,9 +64,9 @@ function renderDeleteCustomerModal(id) {
 }
 
 //Products Section
-async function renderProductsPage(options = {}) {
+async function renderProductsPage(options = ProductsProps) {
   showSpinner();
-  const response = await getDataFromApi(options.requestOpts);
+  const response = await ProductsService.getProducts()
   if(response.status === 200) {
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderProductsPageLayout(options, response);
     hideSpinner();
@@ -69,7 +78,6 @@ async function renderProductsPage(options = {}) {
   } else {
     handleApiErrors(response)
   }
-  
 }
 
 function renderAddNewProductPage(options = add_new_product_props) {
@@ -86,9 +94,14 @@ function renderDeleteProductModal(id) {
 
 async function renderProductDetailsModal(id) {
     showSpinner();
-    await createDetailsModal(product_details_props(id));
-    hideSpinner();
-    sideMenuActivateElement("Products");
+    const response = await ProductsService.getProducts(id);
+    if(response.status === 200) {
+      await createDetailsModal(product_details_props(id), response.data);
+      hideSpinner();
+      sideMenuActivateElement("Products");
+    } else {
+      handleApiErrors(response)
+    }
   }
 
   async function renderEditProductPage(id) {
@@ -96,10 +109,15 @@ async function renderProductDetailsModal(id) {
       removeDetailsModal();
     }
     showSpinner();
-    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderEditProductLayout(id, edit_product_props);
-    hideSpinner();
-    sideMenuActivateElement("Products");
-    addListenersToEditProductPage();
+    const response = await ProductsService.getProducts(id)
+    if(response && response.status === 200) {
+      hideSpinner();
+      sideMenuActivateElement("Products");
+      document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderEditProductLayout(edit_product_props, response.data.Product);
+      addListenersToEditProductPage();
+    } else {
+      handleApiErrors(response)
+    }
   }
 
 function renderLandingPage(options = {}) {

@@ -65,25 +65,7 @@ async function showNotificationAfterDeleteRequest(response, notificationOptions,
     await renderPages[pageProps.path](pageProps);
     renderNotification(notificationOptions);
   } else {
-    renderNotification({ message: response.data.ErrorMessage ? response.data.ErrorMessage : `Connection issue. Customer wasn't updated.` });
-
-    document.querySelector(".toast").classList.add("bg-danger");
-    document.querySelector(".toast").classList.add("text-white");
-  }
-}
-
-async function submitEntiti(options, notificationOprions) {
-  showSpinner();
-  const response = await getDataFromApi(options.requestOpts);
-  clearAllInputs(options.inputs);
-  hideSpinner();
-  if (response.data.IsSuccess) {
-    renderNotification(notificationOprions);
-  } else {
-    renderNotification({ message: response.data.ErrorMessage ? response.data.ErrorMessage : ERROR_MESSAGES["Connection Issue"] });
-    // document.querySelector(".toast").style["background-color"] = "red";
-    document.querySelector(".toast").classList.add("bg-danger");
-    document.querySelector(".toast").classList.add("text-white");
+    handleApiErrors(response, true)
   }
 }
 

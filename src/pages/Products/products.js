@@ -21,13 +21,6 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
   const ProductsProps = {
     path: "Products",
     title: "Products List",
-    requestOpts: {
-      url: ENDPOINTS["Products"],
-      opts: {
-        method: "GET",
-        headers: {}
-      },
-    },
     buttons: [
       {
         classlist: "btn btn-primary page-title-header page-title-button",
@@ -73,21 +66,9 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
 }
 
 async function deleteProduct(id) {
-  const requestOpts = {
-    url: ENDPOINTS["Get Product By Id"](id),
-    opts: {
-      method: "DELETE",
-      body: "",
-      headers: {
-        ["Content-Type"]: "application/json",
-        ['Authorization']: getAuthorizationCookie()
-      },
-    },
-  };
   removeConfimationModal()
-
   showSpinner()
-  const response = await getDataFromApi(requestOpts);
+  const response = await ProductsService.deleteProduct(id);
   await showNotificationAfterDeleteRequest(response, { message: SUCCESS_MESSAGES["Product Successfully Deleted"]('Product') }, ProductsProps)
 }
 
@@ -99,15 +80,9 @@ function renderEditProductPageFromModal(id) {
 const product_details_props = (id) => {
   return {
     id,
-    url: ENDPOINTS["Get Product By Id"](id),
-    opts: {
-      method: "GET",
-      headers: {}
-    },
     path: 'Product',
     buttons: {
       edit: {
-        // onClickFunc: 'renderEditProductPage'
         onClickFunc: 'renderEditProductPageFromModal'
       }
     }

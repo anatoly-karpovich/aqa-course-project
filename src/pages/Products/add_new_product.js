@@ -26,14 +26,8 @@ const add_new_product_props = {
   title: "Add New Product",
   formId: "add-new-product-form",
   requestOpts: {
-    url: ENDPOINTS.Products,
-    opts: {
-      method: "POST",
-      body: "",
-      headers: {
-        ["Content-Type"]: "application/json",
-      },
-    },
+      method: "post",
+      body: {},
   },
   inputs: {
     name: {
@@ -124,7 +118,7 @@ function addEventListelersToAddNewProductPage(options = add_new_product_props.in
     switch (elementId) {
       case add_new_product_props.buttons.save.id: {
         const product = getDataFromForm(`#${add_new_product_props.formId}`)
-        add_new_product_props.requestOpts.opts.body = JSON.stringify(product);
+        add_new_product_props.requestOpts.body = product;
         await submitEntiti(add_new_product_props, { message: SUCCESS_MESSAGES["New Product Added"] });
         saveChangesBtn.prop("disabled", true);
         break;
@@ -193,9 +187,4 @@ function validateNewProductInputs(options = add_new_product_props.inputs) {
     $(`#${options.name.id}`).val().length &&
     isValidInput("Product Name", $(`#${options.name.id}`).val())
   );
-}
-
-async function submitNewProduct(requestOpts) {
-  const response = await getDataFromApi(requestOpts);
-  return response;
 }
