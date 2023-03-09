@@ -1,7 +1,10 @@
 function renderProductsPageLayout(options = ProductsProps, response = {}) {
-      const data = response.data.Products.map((el) => {
-        return { Id: el._id, Name: el.name, Price: `${el.price}$`, Manufacturer: el.manufacturer};
-      });
+      let data 
+      if(!_.isEmpty(response.data.Products)) {
+        data = response.data.Products.map((el) => {
+          return { Id: el._id, Name: el.name, Price: `${el.price}$`, Manufacturer: el.manufacturer};
+        });
+      }
       ProductsProps.data = response.data
 
       return `      
@@ -12,7 +15,7 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
           </div>
             ${searchBar(options.buttons)}
           <div id="${CONTENT_ID}">
-            ${_.isEmpty(data) ? "" : generateTableBootstrap(data, options)}
+            ${generateTableBootstrap(data, options)}
           </div>
         </div>
       </div>`;
@@ -28,12 +31,14 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
       },
       search: {
         classlist: "btn btn-primary",
-        name: "Search",
-        id: "search-customer"
+        name: `<i class="fa-solid fa-magnifying-glass"></i>`,
+        id: "search-products",
+        type: "submit"
       }
     },
     tableProps: {
       id: "table-products",
+      defaultHeaders: ['Name, Price, Manufacturer'],
       buttons: [
         {
           name: "Details",
