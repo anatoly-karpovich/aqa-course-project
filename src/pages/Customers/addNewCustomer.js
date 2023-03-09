@@ -179,7 +179,7 @@ function addEventListelersToAddNewCustomerPage(options = add_new_customer_props.
     switch (elementId) {
       case add_new_customer_props.buttons.save.id: {
         const customer = getDataFromForm(`#${add_new_customer_props.formId}`)
-        add_new_customer_props.requestOpts.opts.body = JSON.stringify(customer);
+        add_new_customer_props.requestOpts.body = customer;
         await submitEntiti(add_new_customer_props, { message: SUCCESS_MESSAGES["New Customer Added"] });
         saveChangesBtn.prop("disabled", true);
         break;
