@@ -10,7 +10,7 @@ async function renderCustomersPageLayout(options = CustomerProps, response) {
         <div class="page-header-flex">
           ${generatePageTitle(options.title)}
         </div>
-          ${generateSearchBar(options.buttons)}
+          ${searchBar(options.buttons)}
         <div id="${CONTENT_ID}">
           ${_.isEmpty(data) ? "" : generateTableBootstrap(data, options)}
         </div>
@@ -21,13 +21,19 @@ async function renderCustomersPageLayout(options = CustomerProps, response) {
 const CustomerProps = {
   path: "Customers",
   title: "Customers List",
-  buttons: [
-    {
+  buttons: {
+    add: {
       classlist: "btn btn-primary pageTitle page-title-header page-title-button",
       name: "+ Add Customer",
     },
-  ],
+    search: {
+      classlist: "btn btn-primary",
+      name: "Search",
+      id: "search-customer"
+    }
+  },    
   tableProps: {
+    id: "table-customers",
     buttons: [
       {
         name: "Details",
@@ -87,4 +93,12 @@ async function deleteCustomer(id) {
   showSpinner();
   const response = await CustomersService.deleteCustomer(id);
     await showNotificationAfterDeleteRequest(response, { message: SUCCESS_MESSAGES["Customer Successfully Deleted"]('Customer') }, CustomerProps);
+}
+
+function addEventListelersToCustomersPage() {
+  $("button.page-title-button").on("click", () => renderAddNewCustomerPage());
+  $(`#${CustomerProps.buttons.search.id}`).on('click', (event) => {
+    event.preventDefault();
+    searchInTable($(`input[type="search"]`).val())
+  })
 }

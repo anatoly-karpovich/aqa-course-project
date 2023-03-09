@@ -1,6 +1,6 @@
 function generateTableBootstrap(data = [], options) {
   const layout = `
-    <table class="table table-striped tableWrapper">
+    <table class="table table-striped tableWrapper" id="${options.tableProps.id}">
         <thead>
             <tr>
                 ${generateTableHeaders(Object.keys(_.omit(data[0], 'Id')))}
@@ -26,7 +26,7 @@ function generateTableRow(obj = {}, options) {
   const row = Object.keys(obj)
     .map((key) => {if(key!=='Id'){ 
       return `<td style="width: ${widthForColumns[key]  ? widthForColumns[key] : "150px"};">${key === "Registration Date" 
-      ? moment(obj[key]).format("MM/DD/YYYY") || "-" : obj[key] || "-"}</td>`
+      ? moment(obj[key]).format("MM/DD/YYYY") || "-" : obj[key] || obj[key] === 0 ? obj[key] : "-"}</td>`
    }}
     ).join("");
       

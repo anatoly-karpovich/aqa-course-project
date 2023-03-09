@@ -21,12 +21,12 @@ const ENDPOINTS = {
 };
 
 const SUCCESS_MESSAGES = {
-  ["New Customer Added"]: "Customer successfully created",
-  ["Customer Successfully Deleted"]: (name) => `${name} successfully deleted`,
-  ["Customer Successfully Updated"]: (name) => `${name} successfully updated`,
-  ['New Product Added']: "Product successfully created",
-  ['Product Successfully Deleted']: (name) => `${name} successfully deleted`,
-  ['Product Successfully Updated']: (name) => `${name} successfully updated`,
+  ["New Customer Added"]: "Customer was successfully created",
+  ["Customer Successfully Deleted"]: (name) => `${name} was successfully deleted`,
+  ["Customer Successfully Updated"]: (name) => `${name} was successfully updated`,
+  ['New Product Added']: "Product was successfully created",
+  ['Product Successfully Deleted']: (name) => `${name} was successfully deleted`,
+  ['Product Successfully Updated']: (name) => `${name} was successfully updated`,
 };
 
 const ERROR_MESSAGES = {

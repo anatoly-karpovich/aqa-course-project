@@ -94,7 +94,7 @@ function generateFormInputs(inputs) {
   const formInputs = Object.keys(inputs).map((input) => {
     if (inputs[input].type === "text")
       return ` <div class="${inputs[input].divClasslist}">
-                <label for="${inputs[input].id}" class="form-label">${inputs[input].name}*</label>
+                <label for="${inputs[input].id}" class="form-label">${inputs[input].name}</label>
                 <input type="${inputs[input].type}" class="${inputs[input].classlist}" id="${inputs[input].id}" 
                 placeholder="${inputs[input].placeholder}" ${inputs[input].attributes ? inputs[input].attributes : ""}
                 value="${inputs[input].value}"> 
@@ -102,7 +102,7 @@ function generateFormInputs(inputs) {
                 </div>`;
     else if (inputs[input].type === "select") {
       return ` <div class="${inputs[input].divClasslist}">
-                <label for="${inputs[input].id}" class="form-label">${inputs[input].name}*</label>
+                <label for="${inputs[input].id}" class="form-label">${inputs[input].name}</label>
                 <select id="${inputs[input].id}" class="${inputs[input].classlist}"
                 ${inputs[input].attributes ? inputs[input].attributes : ""}>
                 ${renderOptions(inputs[input].options.values, inputs[input].defaultValue, inputs[input].value)}
@@ -118,7 +118,7 @@ function generateFormInputs(inputs) {
                 </div>`;
     } else if (inputs[input].type === "email") {
       return `  <div class="${inputs[input].divClasslist}">
-                <label for="${inputs[input].id}" class="form-label">${inputs[input].name}*</label>
+                <label for="${inputs[input].id}" class="form-label">${inputs[input].name}</label>
                 <input type="${inputs[input].type}" class="${inputs[input].classlist}" id="${inputs[input].id}" 
                 placeholder="${inputs[input].placeholder}" ${inputs[input].attributes ? inputs[input].attributes : ""}
                 value="${inputs[input].value}"> 
@@ -137,4 +137,15 @@ function getDataFromForm(formSelector) {
       return m;
     }, {});
   return data;
+}
+
+function searchInTable(value) {
+  const rows = [...$(`tr:has(td)`)];
+  rows.forEach((r) => {
+    if ([...r.querySelectorAll(`td`)].map((c) => c.innerText).some((c) => c.includes(value))) {
+      r.style.display = "";
+    } else {
+      r.style.display = "none";
+    }
+  });
 }
