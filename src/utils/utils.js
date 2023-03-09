@@ -133,13 +133,14 @@ function getDataFromForm(formSelector) {
   const data = $(formSelector)
     .serializeArray()
     .reduce((m, o) => {
-      m[o.name] = NUMBER_KEYS.includes(o.name) ? +o.value : o.value;
+      m[o.name] = NUMBER_KEYS.includes(o.name) ? +o.value : o.value.trim();
       return m;
     }, {});
   return data;
 }
 
-function searchInTable(value) {
+function searchInTable() {
+  const value = $(`input[type="search"]`).val();
   const rows = [...$(`tr:has(td)`)];
   if(rows.length > 1) {
     rows.forEach((r) => {

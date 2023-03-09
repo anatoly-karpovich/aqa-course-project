@@ -106,6 +106,6 @@ function addEventListelersToCustomersPage() {
   $("button.page-title-button").on("click", () => renderAddNewCustomerPage());
   $(`#${CustomerProps.buttons.search.id}`).on('click', (event) => {
     event.preventDefault();
-    searchInTable($(`input[type="search"]`).val())
+    searchInTable()
   })
 }

@@ -104,6 +104,6 @@ function addEventListelersToProductsPage() {
   $("button.page-title-button").on("click", () => renderAddNewProductPage());
   $(`#${ProductsProps.buttons.search.id}`).on('click', (event) => {
     event.preventDefault();
-    searchInTable($(`input[type="search"]`).val())
+    searchInTable()
   })
 }
