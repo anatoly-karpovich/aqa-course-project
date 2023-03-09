@@ -2,7 +2,7 @@ function renderAddNewCustomerLayout(options = add_new_customer_props) {
   return `
   <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
     <div id="${PAGE_TITLE_ID}" class="page-header">
-      ${generatePageTitle(options.title)}
+      ${generatePageTitle(options)}
     </div>
     <form class="row g-3 form-with-inputs" id="${options.formId}">
      ${generateFormInputs(options.inputs)}      
@@ -25,8 +25,14 @@ const add_new_customer_props = {
   title: "Add New Customer",
   formId: "add-new-customer-form",
   requestOpts: {
-      method: "post",
-      body: {},
+    url: ENDPOINTS["Customers"],
+    opts: {
+      method: "POST",
+      body: "",
+      headers: {
+        ["Content-Type"]: "application/json",
+      },
+    },
   },
   inputs: {
     email: {
@@ -158,6 +164,10 @@ const add_new_customer_props = {
 
 let newCustomerModel = {};
 
+async function submitNewCustomer(requestOpts) {
+  const response = await getDataFromApi(requestOpts);
+  return response;
+}
 
 function addEventListelersToAddNewCustomerPage(options = add_new_customer_props.inputs) {
   const saveChangesBtn = $(`#${add_new_customer_props.buttons.save.id}`);
@@ -169,7 +179,7 @@ function addEventListelersToAddNewCustomerPage(options = add_new_customer_props.
     switch (elementId) {
       case add_new_customer_props.buttons.save.id: {
         const customer = getDataFromForm(`#${add_new_customer_props.formId}`)
-        add_new_customer_props.requestOpts.body = customer;
+        add_new_customer_props.requestOpts.opts.body = JSON.stringify(customer);
         await submitEntiti(add_new_customer_props, { message: SUCCESS_MESSAGES["New Customer Added"] });
         saveChangesBtn.prop("disabled", true);
         break;
