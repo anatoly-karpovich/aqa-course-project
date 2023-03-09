@@ -62,18 +62,8 @@ return `
 `
 }
 
-function generatePageTitle(title, entitiName) {
+function generatePageTitle(options, entitiName) {
   return `
-  <h2 class="page-title-text">${title} ${entitiName ? entitiName : ""}</h2>
+  <h2 class="${options.classlist ? options.classlist : 'page-title-text'}">${options.title} ${entitiName ? entitiName : ""}</h2>
   `;
 }
-
-{/* <div class="input-group">
-  <div class="form-outline">
-    <input type="search" id="form1" class="form-control" />
-    <label class="form-label" for="form1">Search</label>
-  </div>
-  <button type="button" class="btn btn-primary">
-    <i class="fas fa-search"></i>
-  </button>
-</div> */}

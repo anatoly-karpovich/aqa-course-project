@@ -12,7 +12,7 @@ async function renderCustomersPageLayout(options = CustomerProps, response) {
     <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
       <div id="${PAGE_TITLE_ID}">
         <div class="page-header-flex">
-          ${generatePageTitle(options.title)}
+          ${generatePageTitle(options)}
         </div>
           ${searchBar(options.buttons)}
         <div id="${CONTENT_ID}">
@@ -25,6 +25,7 @@ async function renderCustomersPageLayout(options = CustomerProps, response) {
 const CustomerProps = {
   path: "Customers",
   title: "Customers List",
+  classlist: "ml-20 fw-bold",
   buttons: {
     add: {
       classlist: "btn btn-primary pageTitle page-title-header page-title-button",

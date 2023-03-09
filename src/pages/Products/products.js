@@ -11,7 +11,7 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
       <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
         <div id="${PAGE_TITLE_ID}">  
           <div class="page-header-flex">
-            ${generatePageTitle(options.title)}
+            ${generatePageTitle(options)}
           </div>
             ${searchBar(options.buttons)}
           <div id="${CONTENT_ID}">
@@ -24,6 +24,7 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
   const ProductsProps = {
     path: "Products",
     title: "Products List",
+    classlist: "ml-20 fw-bold",
     buttons: {
       add: {
         classlist: "btn btn-primary page-title-header page-title-button",
