@@ -14,10 +14,7 @@ async function renderCustomersPage(options = CustomerProps) {
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderCustomersPageLayout(options, response);
     hideSpinner();
     sideMenuActivateElement(options.path);
-    const addCustomerBtn = document.querySelector("button.page-title-button");
-    if (addCustomerBtn) {
-      addCustomerBtn.addEventListener("click", () => renderAddNewCustomerPage());
-    }
+    addEventListelersToCustomersPage()
   } else {
     handleApiErrors(response)
   }
@@ -71,10 +68,11 @@ async function renderProductsPage(options = ProductsProps) {
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderProductsPageLayout(options, response);
     hideSpinner();
     sideMenuActivateElement(options.path);
-    const addCustomerBtn = document.querySelector("button.page-title-button");
-    if (addCustomerBtn) {
-      addCustomerBtn.addEventListener("click", () => renderAddNewProductPage());
-    }
+    // const addCustomerBtn = document.querySelector("button.page-title-button");
+    // if (addCustomerBtn) {
+    //   addCustomerBtn.addEventListener("click", () => renderAddNewProductPage());
+    // }
+    addEventListelersToProductsPage()
   } else {
     handleApiErrors(response)
   }

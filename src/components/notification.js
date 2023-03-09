@@ -6,6 +6,11 @@ function renderNotification(options) {
     document.querySelector('[data-bs-dismiss="toast"]').addEventListener('click', () => {
         document.body.removeChild(notification)
     })
+    setTimeout(() => {
+        if($('notification-wrapper')) {
+        document.body.removeChild(notification)
+        }
+    }, 10000)
 }
 
 function generateNofificationLayout(options) {

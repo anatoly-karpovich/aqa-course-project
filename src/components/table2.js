@@ -50,6 +50,18 @@ function generateSearchBar(buttons) {
   `;
 }
 
+function searchBar(buttons) {
+return `
+  <div class="dis-flex mt-50">
+    <form class="d-flex search-bar">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+      ${buttons.search ? generateButton(buttons.search) : ""}
+    </form>
+      ${buttons.add ? generateButton(buttons.add) : ""}
+  </div>
+`
+}
+
 function generatePageTitle(title, entitiName) {
   return `
   <h2 class="page-title-text">${title} ${entitiName ? entitiName : ""}</h2>

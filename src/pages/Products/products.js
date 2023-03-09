@@ -1,6 +1,6 @@
 function renderProductsPageLayout(options = ProductsProps, response = {}) {
       const data = response.data.Products.map((el) => {
-        return { Id: el._id, Name: el.name, Price: `${el.price}$`, Amount: el.amount};
+        return { Id: el._id, Name: el.name, Price: `${el.price}$`, Manufacturer: el.manufacturer};
       });
       ProductsProps.data = response.data
 
@@ -10,7 +10,7 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
           <div class="page-header-flex">
             ${generatePageTitle(options.title)}
           </div>
-            ${generateSearchBar(options.buttons)}
+            ${searchBar(options.buttons)}
           <div id="${CONTENT_ID}">
             ${_.isEmpty(data) ? "" : generateTableBootstrap(data, options)}
           </div>
@@ -21,14 +21,19 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
   const ProductsProps = {
     path: "Products",
     title: "Products List",
-    buttons: [
-      {
+    buttons: {
+      add: {
         classlist: "btn btn-primary page-title-header page-title-button",
         name: "+ Add Product",
-        onclick: "renderAddNewProductPage"
       },
-    ],
+      search: {
+        classlist: "btn btn-primary",
+        name: "Search",
+        id: "search-customer"
+      }
+    },
     tableProps: {
+      id: "table-products",
       buttons: [
         {
           name: "Details",
@@ -87,4 +92,12 @@ const product_details_props = (id) => {
       }
     }
   }
+}
+
+function addEventListelersToProductsPage() {
+  $("button.page-title-button").on("click", () => renderAddNewProductPage());
+  $(`#${ProductsProps.buttons.search.id}`).on('click', (event) => {
+    event.preventDefault();
+    searchInTable($(`input[type="search"]`).val())
+  })
 }
