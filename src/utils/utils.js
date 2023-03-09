@@ -142,9 +142,13 @@ function getDataFromForm(formSelector) {
 function searchInTable() {
   const value = $(`input[type="search"]`).val();
   const rows = [...$(`tr:has(td)`)];
-  if(rows.length > 1) {
+  if(rows[0].querySelector(`td`).innerText !== 'No records created yet') {
     rows.forEach((r) => {
-      if ([...r.querySelectorAll(`td`)].map((c) => c.innerText).some((c) => c.includes(value))) {
+      const ths = [...document.querySelectorAll('th')]
+      const tds = ths[ths.length - 1].innerText === 'Actions'
+      ? [...r.querySelectorAll(`td`)].slice(0,[...r.querySelectorAll(`td`)].length-1)
+      : [...r.querySelectorAll(`td`)]
+      if (tds.some((c) => c.innerText.toLowerCase().includes(value.toLowerCase()))) {
         r.style.display = "";
       } else {
         r.style.display = "none";
