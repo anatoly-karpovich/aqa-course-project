@@ -200,6 +200,15 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
         }
         break;
       }
+
+      case options.country.id: {
+        if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+          saveChangesBtn.prop("disabled", true);
+        } else {
+          saveChangesBtn.prop("disabled", false);
+        }
+        break;
+      }
     }
   });
 }
