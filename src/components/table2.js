@@ -55,9 +55,9 @@ return `
   <div class="dis-flex mt-50">
     <form class="d-flex search-bar">
       <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-      ${buttons.search ? generateButton(buttons.search) : ""}
+      ${generateButton(buttons.search)}
     </form>
-      ${buttons.add ? generateButton(buttons.add) : ""}
+      ${generateButton(buttons.add)}
   </div>
 `
 }
@@ -67,3 +67,13 @@ function generatePageTitle(title, entitiName) {
   <h2 class="page-title-text">${title} ${entitiName ? entitiName : ""}</h2>
   `;
 }
+
+{/* <div class="input-group">
+  <div class="form-outline">
+    <input type="search" id="form1" class="form-control" />
+    <label class="form-label" for="form1">Search</label>
+  </div>
+  <button type="button" class="btn btn-primary">
+    <i class="fas fa-search"></i>
+  </button>
+</div> */}

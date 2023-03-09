@@ -141,11 +141,13 @@ function getDataFromForm(formSelector) {
 
 function searchInTable(value) {
   const rows = [...$(`tr:has(td)`)];
-  rows.forEach((r) => {
-    if ([...r.querySelectorAll(`td`)].map((c) => c.innerText).some((c) => c.includes(value))) {
-      r.style.display = "";
-    } else {
-      r.style.display = "none";
-    }
-  });
+  if(rows.length > 1) {
+    rows.forEach((r) => {
+      if ([...r.querySelectorAll(`td`)].map((c) => c.innerText).some((c) => c.includes(value))) {
+        r.style.display = "";
+      } else {
+        r.style.display = "none";
+      }
+    });
+  }
 }

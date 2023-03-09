@@ -1,8 +1,12 @@
 async function renderCustomersPageLayout(options = CustomerProps, response) {
-    const data = response.data.Customers.map((el) => {
+  const defaultHeaders = ["Email", "Name", "Country"];
+  let data;
+  if (!_.isEmpty(response.data.Customers)) {
+    data = response.data.Customers.map((el) => {
       return { Id: el._id, Email: el.email, Name: el.name, Country: el.country };
     });
-    CustomerProps.data = response.data.Customers;
+  }
+  CustomerProps.data = response.data.Customers;
 
     return `      
     <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
@@ -12,7 +16,7 @@ async function renderCustomersPageLayout(options = CustomerProps, response) {
         </div>
           ${searchBar(options.buttons)}
         <div id="${CONTENT_ID}">
-          ${_.isEmpty(data) ? "" : generateTableBootstrap(data, options)}
+          ${generateTableBootstrap(data, options)}
         </div>
       </div>
     </div>`;
@@ -28,12 +32,14 @@ const CustomerProps = {
     },
     search: {
       classlist: "btn btn-primary",
-      name: "Search",
-      id: "search-customer"
+      name: `<i class="fa-solid fa-magnifying-glass"></i>`,
+      id: "search-customer",
+      type: "submit"
     }
   },    
   tableProps: {
     id: "table-customers",
+    defaultHeaders: ["Email", "Name", "Country"],
     buttons: [
       {
         name: "Details",

@@ -279,6 +279,10 @@ tr:has(td):hover {
   margin-left: 20px;
 }
 
+.fs-italic {
+  font-style: italic;
+}
+
 .page-title-border {
   border-bottom: 2px solid black; 
   padding-bottom: 5px; 
