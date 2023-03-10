@@ -43,18 +43,21 @@ const CustomerProps = {
     defaultHeaders: ["Email", "Name", "Country"],
     buttons: [
       {
-        name: "Details",
+        nestedItems: `<i class="bi bi-card-text"></i>`,
+        title: 'Details',
         classlist: "btn btn-link table-btn",
         onclick: "renderCustomerDetailsModal",
       },
       {
-        name: "Edit",
-        classlist: "btn btn-primary table-action-buttons table-btn",
+        nestedItems: `<i class="bi bi-pencil"></i>`,
+        title: 'Edit',
+        classlist: "btn btn-link table-btn",
         onclick: "renderEditCustomerPage",
       },
       {
-        name: "Delete",
-        classlist: "btn btn-danger table-action-buttons table-btn",
+        nestedItems: `<i class="bi bi-trash-fill"></i>`,
+        title: 'Delete',
+        classlist: "btn btn-link text-danger table-btn",
         onclick: "renderDeleteCustomerModal",
       },
     ],

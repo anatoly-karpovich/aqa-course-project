@@ -4,7 +4,6 @@ async function createDetailsModal(options = {}, data = {}) {
 if(modalWrap !== null) {
     modalWrap.remove()
 }
-console.log(data)
     modalWrap = document.createElement("div");
     modalWrap.id = `${options.path}-details-modal-id`
     modalWrap.insertAdjacentHTML(

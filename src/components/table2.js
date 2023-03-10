@@ -4,9 +4,12 @@ function generateButton(options, id) {
     ${options?.type ? "type=" + '"' + options.type + '" ' : ""}
     ${options?.id ? "id=" + '"' + options.id + '" ' : ""}
     ${options?.classlist ? "class=" + '"' + options.classlist + '" ' : ""}
+    ${options?.title ? "title=" + '"' + options.title + '" ' : ""}
     ${options?.onclick ? "onClick=" + '"' + options.onclick + "(" + (id ? "'" + id + "'" : "") + ")" + '" ' : ""}
     ${options?.disabled ? "disabled " : ""}
-    >${options?.name}</button>
+    >${options?.name ?  options.name : ""}
+    ${options?.nestedItems ? options.nestedItems : ""}
+    </button>
     `;
 }
 

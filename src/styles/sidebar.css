@@ -247,8 +247,7 @@ tr:has(td):hover {
 } */
 
 .table-btn {
-  width: 80px;
-  margin: 5px 10px;
+  margin: 5px 5px; 
 }
 
 .page-title-button {

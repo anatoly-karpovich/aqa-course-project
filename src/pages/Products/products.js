@@ -42,19 +42,22 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
       defaultHeaders: ['Name, Price, Manufacturer'],
       buttons: [
         {
-          name: "Details",
-          classlist: "btn btn-link table-btn table-btn-border",
+          nestedItems: `<i class="bi bi-card-text"></i>`,
+          title: 'Details',
+          classlist: "btn btn-link table-btn",
           onclick: "renderProductDetailsModal",
         },
         {
-          name: "Edit",
-          classlist: "btn btn-primary table-action-buttons table-btn",
-          onclick: "renderEditProductPage"
+          nestedItems: `<i class="bi bi-pencil"></i>`,
+          title: 'Edit',
+          classlist: "btn btn-link table-btn",
+          onclick: "renderEditProductPage",
         },
         {
-          name: "Delete",
-          classlist: "btn btn-danger table-action-buttons table-btn",
-          onclick: "renderDeleteProductModal"
+          nestedItems: `<i class="bi bi-trash-fill"></i>`,
+          title: 'Delete',
+          classlist: "btn btn-link text-danger table-btn",
+          onclick: "renderDeleteProductModal",
         }
       ],
     },
