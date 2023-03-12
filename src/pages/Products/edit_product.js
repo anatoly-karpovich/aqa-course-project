@@ -38,7 +38,6 @@ const edit_product_props = {
     ..._.cloneDeep(add_new_product_props.inputs),
   },
   requestOpts: {
-      method: "put",
       body: {},
   },
   buttons: {

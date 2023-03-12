@@ -225,8 +225,12 @@ main {
   padding: 1rem 2.5rem;
 }
 
-.modal-body {
+/* .modal-body {
   padding: 1rem 2.5rem;
+} */
+
+.modal-footer {
+  margin-right: 25px;
 }
 
 .col-lg-4 {

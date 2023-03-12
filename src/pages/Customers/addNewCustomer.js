@@ -27,7 +27,6 @@ const add_new_customer_props = {
   requestOpts: {
     url: ENDPOINTS["Customers"],
     opts: {
-      method: "POST",
       body: "",
       headers: {
         ["Content-Type"]: "application/json",

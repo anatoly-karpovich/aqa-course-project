@@ -26,7 +26,6 @@ const add_new_product_props = {
   title: "Add New Product",
   formId: "add-new-product-form",
   requestOpts: {
-      method: "post",
       body: {},
   },
   inputs: {

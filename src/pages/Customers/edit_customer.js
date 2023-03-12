@@ -1,6 +1,6 @@
 function renderEditCustomerLayout(options = edit_customer_props, data = {}) {
     edit_customer_props.id = data._id;
-    options.inputs.email.value = data.email;
+    options.inputs.email.value = String(data.email);
     options.inputs.name.value = data.name;
     options.inputs.country.value = data.country;
     options.inputs.city.value = data.city;
@@ -43,7 +43,6 @@ const edit_customer_props = {
     ...(_.cloneDeep(add_new_customer_props.inputs)),
   },
   requestOpts: {
-      method: "put",
       body: {},
   },
   buttons: {

@@ -47,13 +47,13 @@ async function submitEntiti(options, notificationOprions) {
   let response;
   switch (options.path) {
     case "Products":
-      response = options.requestOpts.method === 'put'
+      response = options.requestOpts.body._id
       ? await ProductsService.editProduct(options.requestOpts.body)
       : await ProductsService.createProduct(options.requestOpts.body)
       break;
 
     case "Customers":
-      response = options.requestOpts.method === 'put'
+      response = options.requestOpts.body._id
       ? await CustomersService.editCustomer(options.requestOpts.body)
       : await CustomersService.createCustomer(options.requestOpts.body)
       break;

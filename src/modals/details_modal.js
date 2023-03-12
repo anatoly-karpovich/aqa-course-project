@@ -18,7 +18,7 @@ if(modalWrap !== null) {
       <div class="modal-body">
 
         <div class="bg-white rounded-5">
-          <section section class="w-100 p-4 mb-4">
+          <section section class="w-100 p-4">
             ${generateModalBody(options, data)}
           </section>
         </div>
