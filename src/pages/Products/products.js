@@ -54,7 +54,7 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
           onclick: "renderEditProductPage",
         },
         {
-          nestedItems: `<i class="bi bi-trash-fill"></i>`,
+          nestedItems: `<i class="bi bi-trash"></i>`,
           title: 'Delete',
           classlist: "btn btn-link text-danger table-btn",
           onclick: "renderDeleteProductModal",
