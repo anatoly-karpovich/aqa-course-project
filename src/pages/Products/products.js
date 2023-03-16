@@ -111,6 +111,6 @@ function addEventListelersToProductsPage() {
   })
   $(`#filter`).on('click', (event) => {
     event.preventDefault();
-    renderFiltersModal('customers')
+    renderFiltersModal('products')
   })
 }
