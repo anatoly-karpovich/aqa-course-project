@@ -109,4 +109,8 @@ function addEventListelersToProductsPage() {
     event.preventDefault();
     searchInTable('products')
   })
+  $(`#filter`).on('click', (event) => {
+    event.preventDefault();
+    renderFiltersModal('customers')
+  })
 }

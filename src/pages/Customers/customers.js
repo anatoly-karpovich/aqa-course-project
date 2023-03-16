@@ -111,4 +111,8 @@ function addEventListelersToCustomersPage() {
     event.preventDefault();
     searchInTable('customers')
   })
+  $(`#filter`).on('click', (event) => {
+    event.preventDefault();
+    renderFiltersModal('customers')
+  })
 }
