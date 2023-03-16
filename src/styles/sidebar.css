@@ -216,22 +216,42 @@ main {
 
 .tableWrapper>thead>tr>th,
 .tableWrapper>tbody>tr>td {
-  text-align: center;
+  text-align: left;
   vertical-align: middle;
   word-break: break-word;
 }
+
 
 .modal-header {
   padding: 1rem 2.5rem;
 }
 
-/* .modal-body {
+.modal-body-text {
   padding: 1rem 2.5rem;
-} */
+}
 
 .modal-footer {
   margin-right: 25px;
 }
+
+.modal-filters-body {
+  flex-wrap: wrap;
+  display: flex;
+}
+
+.modal-filters-wrapper {
+  width: 400px
+}
+
+.d-width {
+  width: 50%;
+}
+
+.ml-5 {
+  margin-left: 5px;
+}
+
+
 
 .col-lg-4 {
   display: flex;
@@ -251,7 +271,16 @@ tr:has(td):hover {
 } */
 
 .table-btn {
-  margin: 5px 5px; 
+  margin: 5px -5px; 
+}
+
+.tableWrapper > tbody > tr > td:last-child {
+  width: 150px;
+  text-align: center;
+}
+
+.tableWrapper > tbody > tr > td:first-child {
+  width: 400px;
 }
 
 .page-title-button {

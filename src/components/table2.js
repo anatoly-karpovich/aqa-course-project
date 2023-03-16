@@ -59,6 +59,9 @@ return `
     <form class="d-flex search-bar">
       <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
       ${generateButton(buttons.search)}
+      <button class="btn btn-outline-primary ml-5" onClick="renderFiltersModal()">
+        <i class="bi bi-funnel"></i>
+      </button>
     </form>
       ${generateButton(buttons.add)}
   </div>

@@ -29,14 +29,15 @@ function generateTableBody(arr = [], options) {
 function generateTableRow(obj = {}, options) {
   const row = Object.keys(obj)
     .map((key) => {if(key!=='Id'){ 
-      return `<td style="width: ${widthForColumns[key]  ? widthForColumns[key] : "150px"};">${key === "Registration Date" 
-      ? moment(obj[key]).format("MM/DD/YYYY") || "-" : obj[key] || obj[key] === 0 ? obj[key] : "-"}</td>`
+      return `<td>${key === "Registration Date" 
+      ? moment(obj[key]).format("MM/DD/YYYY") || "-" 
+      : obj[key] || obj[key] === 0 ? obj[key] : "-"}</td>`
    }}
     ).join("");
       
   let actions = "";
   if (options.tableProps.buttons) {
-    actions = "<td style='width: 250px'>" + options.tableProps.buttons.map((btn) =>
+    actions = "<td>" + options.tableProps.buttons.map((btn) =>
     generateButton(btn, obj.Id)).join("") + "</td>";
   }
   return row + actions;

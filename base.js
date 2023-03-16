@@ -8,6 +8,8 @@ const BASE_URL = "https://aqa-course-project.app/";
 
 const NUMBER_KEYS = ["amount", "price", "flat", "house"]
 
+const COUNTRIES = ["USA","Canada","Belarus","Ukraine","Germany","France","Great Britain","Russia"]
+
 const ENDPOINTS = {
   ['Login']: `${BASE_URL}/api/login/`,
   ["Customers"]: `${BASE_URL}/api/customers/`,

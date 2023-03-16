@@ -1,6 +1,7 @@
 const token = getAuthorizationCookie();
 token ? renderPages['Landing'](landingProps) : renderPages['Sign In']();
 
+let filtersInitialState
 
 
 async function sideMenuClickHandler(page) {
