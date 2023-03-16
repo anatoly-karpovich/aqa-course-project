@@ -1,11 +1,12 @@
 let filtersModalWrap = null
-let countryFilters = COUNTRIES.reduce((acc, value) => {acc[value] = false; return acc}, {})
 let filters = {
-  countries: COUNTRIES.reduce((acc, value) => {acc[value] = false; return acc}, {})
+  customers: FILTER_VALUES.customers.reduce((acc, value) => {acc[value] = false; return acc}, {}),
+  products: FILTER_VALUES.products.reduce((acc, value) => {acc[value] = false; return acc}, {}),
+  orders: FILTER_VALUES.products.reduce((acc, value) => {acc[value] = false; return acc}, {})
 } 
 
-function renderFiltersModal() {
-    filtersInitialState = _.cloneDeep(countryFilters)
+function renderFiltersModal(page) {
+    filtersInitialState[page] = _.cloneDeep(filters[page])
     if(filtersModalWrap !== null) {
         filtersModalWrap.remove()
     }
@@ -20,10 +21,10 @@ function renderFiltersModal() {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick="removeFiltersModal()"></button>
               </div>
                 <div class="modal-body modal-body-text modal-filters-body">
-                    ${COUNTRIES.map(countryName => createFilterCheckboxes(countryName)).join('')}
+                    ${createFilterCheckboxes(page)}
                 </div>
               <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" onClick="submitFilters()">Apply</button>
+                <button type="submit" class="btn btn-primary" onClick="submitFilters('${page}')">Apply</button>
               </div>
             </div>
           </div>
@@ -36,21 +37,26 @@ function renderFiltersModal() {
     $filtersModalWrap.show();
 }
 
-function submitFilters() {
-    countryFilters = _.cloneDeep(filtersInitialState)
-    removeFiltersModal()
+function submitFilters(page) {
+  filters[page] = _.cloneDeep(filtersInitialState[page])
+  searchInTable(page)
+  removeFiltersModal()
 }
 
-function applyFilter(name) {
-    filtersInitialState[name] = !filtersInitialState[name]
+function applyFilter(page, name) {
+    filtersInitialState[page][name] = !filtersInitialState[page][name]
     const checkbox = $(`input#${name}-filter`)
-    checkbox.prop("checked", filtersInitialState[name])
+    checkbox.prop("checked", filtersInitialState[page][name])
 }
 
-function createFilterCheckboxes(name) {
+function createFilterCheckboxes(page) {
+  return FILTER_VALUES[page].map(name => createFilterCheckbox(page, name)).join('')
+}
+function createFilterCheckbox(page, name) {
     return `
         <div class="form-check mb-0 d-width">
-            <input class="form-check-input me-2 ml-5" type="checkbox" ${filtersInitialState[name] ? "checked" : ""} value="${name}" id="${name}-filter" onClick="applyFilter('${name}')">
+            <input class="form-check-input me-2 ml-5" type="checkbox" ${filtersInitialState[page][name] ? "checked" : ""} 
+            value="${name}" id="${name}-filter" onClick="applyFilter('${page}', '${name}')">
             <label class="form-check-label" for="${name}-filter">
                 ${name}
             </label>

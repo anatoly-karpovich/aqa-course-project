@@ -53,13 +53,13 @@ function generateSearchBar(buttons) {
   `;
 }
 
-function searchBar(buttons) {
+function searchBar(buttons, page) {
 return `
   <div class="dis-flex mt-50">
     <form class="d-flex search-bar">
       <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
       ${generateButton(buttons.search)}
-      <button class="btn btn-outline-primary ml-5" onClick="renderFiltersModal()">
+      <button class="btn btn-outline-primary ml-5" onClick="renderFiltersModal('${page}')">
         <i class="bi bi-funnel"></i>
       </button>
     </form>

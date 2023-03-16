@@ -13,7 +13,7 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
           <div class="page-header-flex">
             ${generatePageTitle(options)}
           </div>
-            ${searchBar(options.buttons)}
+            ${searchBar(options.buttons, 'products')}
           <div id="${CONTENT_ID}">
             ${generateTableBootstrap(data, options)}
           </div>
@@ -107,6 +107,6 @@ function addEventListelersToProductsPage() {
   $("button.page-title-button").on("click", () => renderAddNewProductPage());
   $(`#${ProductsProps.buttons.search.id}`).on('click', (event) => {
     event.preventDefault();
-    searchInTable()
+    searchInTable('products')
   })
 }

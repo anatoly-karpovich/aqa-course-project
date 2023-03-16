@@ -8,7 +8,11 @@ const BASE_URL = "https://aqa-course-project.app/";
 
 const NUMBER_KEYS = ["amount", "price", "flat", "house"]
 
-const COUNTRIES = ["USA","Canada","Belarus","Ukraine","Germany","France","Great Britain","Russia"]
+const FILTER_VALUES = {
+  customers: ["USA","Canada","Belarus","Ukraine","Germany","France","Great Britain","Russia"],
+  products: ['Apple', 'Samsung', 'Google', 'Microsoft', 'Sony', 'Xiaomi', 'Amazon', 'Tesla'],
+  orders: ['Draft', 'In Process', 'Partially Received', 'Received', 'Canceled']
+}
 
 const ENDPOINTS = {
   ['Login']: `${BASE_URL}/api/login/`,

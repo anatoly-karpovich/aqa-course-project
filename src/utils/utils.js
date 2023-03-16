@@ -143,19 +143,36 @@ function getDataFromForm(formSelector) {
   return data;
 }
 
-function searchInTable() {
+function searchInTable(page) {
   const value = $(`input[type="search"]`).val();
+  const filterOnPage = [...Object.keys(filtersInitialState[page]).filter((c) => filtersInitialState[page][c])];
+  searchState[page] = value;
   const rows = [...$(`tr:has(td)`)];
-  if(rows[0].querySelector(`td`).innerText !== 'No records created yet') {
+  if (rows[0].querySelector(`td`).innerText !== "No records created yet") {
     rows.forEach((r) => {
-      const ths = [...document.querySelectorAll('th')]
-      const tds = ths[ths.length - 1].innerText === 'Actions'
-      ? [...r.querySelectorAll(`td`)].slice(0,[...r.querySelectorAll(`td`)].length-1)
-      : [...r.querySelectorAll(`td`)]
-      if (tds.some((c) => c.innerText.toLowerCase().includes(value.toLowerCase()))) {
-        r.style.display = "";
+      const ths = [...document.querySelectorAll("th")];
+      const tds = ths[ths.length - 1].innerText === "Actions" ? [...r.querySelectorAll(`td`)].slice(0, [...r.querySelectorAll(`td`)].length - 1) : [...r.querySelectorAll(`td`)];
+
+      if (value && filterOnPage.length) {
+        if (tds.some((c) => c.innerText.toLowerCase().includes(value.toLowerCase())) && filterOnPage.includes(tds[tds.length - 1].innerText)) {
+          r.style.display = "";
+        } else {
+          r.style.display = "none";
+        }
+      } else if (value) {
+        if (tds.some((c) => c.innerText.toLowerCase().includes(value.toLowerCase()))) {
+          r.style.display = "";
+        } else {
+          r.style.display = "none";
+        }
+      } else if (filterOnPage.length) {      
+        if (filterOnPage.includes(tds[tds.length - 1].innerText)) {
+          r.style.display = "";
+        } else {
+          r.style.display = "none";
+        }
       } else {
-        r.style.display = "none";
+        r.style.display = "";
       }
     });
   }

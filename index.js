@@ -1,7 +1,13 @@
 const token = getAuthorizationCookie();
 token ? renderPages['Landing'](landingProps) : renderPages['Sign In']();
 
-let filtersInitialState
+let filtersInitialState = _.cloneDeep(filters)
+
+let searchState = {
+  customers: "",
+  products: "",
+  orders: ""
+}
 
 
 async function sideMenuClickHandler(page) {

@@ -14,7 +14,7 @@ async function renderCustomersPageLayout(options = CustomerProps, response) {
         <div class="page-header-flex">
           ${generatePageTitle(options)}
         </div>
-          ${searchBar(options.buttons)}
+          ${searchBar(options.buttons, 'customers')}
         <div id="${CONTENT_ID}">
           ${generateTableBootstrap(data, options)}
         </div>
@@ -36,7 +36,7 @@ const CustomerProps = {
       name: `<i class="fa-solid fa-magnifying-glass"></i>`,
       id: "search-customer",
       type: "submit"
-    }
+    },
   },    
   tableProps: {
     id: "table-customers",
@@ -109,6 +109,6 @@ function addEventListelersToCustomersPage() {
   $("button.page-title-button").on("click", () => renderAddNewCustomerPage());
   $(`#${CustomerProps.buttons.search.id}`).on('click', (event) => {
     event.preventDefault();
-    searchInTable()
+    searchInTable('customers')
   })
 }
