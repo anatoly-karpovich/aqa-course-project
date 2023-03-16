@@ -271,11 +271,11 @@ button[title='Delete']:focus {
 }
 
 .table-btn {
-  margin: 5px -5px; 
+  margin: 5px 3px; 
 }
 
 .tableWrapper > tbody > tr > td:last-child {
-  width: 150px;
+  width: 175px;
   text-align: center;
 }
 

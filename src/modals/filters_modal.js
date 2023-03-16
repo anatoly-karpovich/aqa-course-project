@@ -24,7 +24,7 @@ function renderFiltersModal(page) {
                     ${createFilterCheckboxes(page)}
                 </div>
               <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" onClick="submitFilters('${page}')">Apply</button>
+                <button type="submit" class="btn btn-primary" id="apply-filters">Apply</button>
               </div>
             </div>
           </div>
@@ -35,6 +35,10 @@ function renderFiltersModal(page) {
     
     const $filtersModalWrap = new bootstrap.Modal(filtersModalWrap.querySelector('.modal'));
     $filtersModalWrap.show();
+    $('#apply-filters').on('click', (e) => {
+      e.preventDefault();
+      submitFilters(page)
+    })
 }
 
 function submitFilters(page) {

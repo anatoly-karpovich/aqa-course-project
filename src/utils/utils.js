@@ -148,7 +148,7 @@ function searchInTable(page) {
   const filterOnPage = [...Object.keys(filtersInitialState[page]).filter((c) => filtersInitialState[page][c])];
   searchState[page] = value;
   const rows = [...$(`tr:has(td)`)];
-  if (rows[0].querySelector(`td`).innerText !== "No records created yet") {
+  if (rows[0].querySelector(`td`).innerText !== NO_RECORDS_IN_TABLE) {
     rows.forEach((r) => {
       const ths = [...document.querySelectorAll("th")];
       const tds = ths[ths.length - 1].innerText === "Actions" ? [...r.querySelectorAll(`td`)].slice(0, [...r.querySelectorAll(`td`)].length - 1) : [...r.querySelectorAll(`td`)];

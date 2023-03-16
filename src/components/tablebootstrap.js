@@ -23,7 +23,7 @@ function generateTableHeaders(titles = [], options) {
 function generateTableBody(arr = [], options) {
   return arr.length
   ? arr.map((data) => `<tr>${generateTableRow(data, options)}</tr>`).join("")
-  : `<tr><td colspan="${options.tableProps.defaultHeaders.length + 1}" class="fs-italic">No records created yet</td></tr>`
+  : `<tr><td colspan="${options.tableProps.defaultHeaders.length + 1}" class="fs-italic">${NO_RECORDS_IN_TABLE}</td></tr>`
 }
 
 function generateTableRow(obj = {}, options) {

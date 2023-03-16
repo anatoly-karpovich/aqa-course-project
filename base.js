@@ -8,6 +8,8 @@ const BASE_URL = "https://aqa-course-project.app/";
 
 const NUMBER_KEYS = ["amount", "price", "flat", "house"]
 
+const NO_RECORDS_IN_TABLE = 'No records created yet'
+
 const FILTER_VALUES = {
   customers: ["USA","Canada","Belarus","Ukraine","Germany","France","Great Britain","Russia"],
   products: ['Apple', 'Samsung', 'Google', 'Microsoft', 'Sony', 'Xiaomi', 'Amazon', 'Tesla'],
@@ -47,7 +49,7 @@ const VALIDATION_ERROR_MESSAGES = {
   ["House"]: "House number should be in range 1-999",
   ["Flat"]: "Flat number should be in range 1-9999",
   ["Email"]: "Invalid Email Address",
-  ["Phone"]: "Mobile Number should be at least 10 characters and start with a +",
+  ["Phone"]: "Mobile Number should be at least 10 characters (max 20) and start with a +",
   ["Notes"]: "Notes should be in range 0-250 and without < or > symbols",
   ["Product Name"]: "Products's name should contain only 3-40 alphanumerical characters and one space between",
   ['Amount']: "Amount should be in range 0-999",
