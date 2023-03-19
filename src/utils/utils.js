@@ -151,7 +151,7 @@ function searchInTable(page) {
   if (rows[0].querySelector(`td`).innerText !== NO_RECORDS_IN_TABLE) {
     rows.forEach((r) => {
       const ths = [...document.querySelectorAll("th")];
-      const tds = ths[ths.length - 1].innerText === "Actions" ? [...r.querySelectorAll(`td`)].slice(0, [...r.querySelectorAll(`td`)].length - 1) : [...r.querySelectorAll(`td`)];
+      const tds = ths[ths.length - 1].innerText === "Actions" ? [...r.querySelectorAll(`td`)].slice(0, [...r.querySelectorAll(`td`)].length - 2) : [...r.querySelectorAll(`td`)];
 
       if (value && filterOnPage.length) {
         if (tds.some((c) => c.innerText.toLowerCase().includes(value.toLowerCase())) && filterOnPage.includes(tds[tds.length - 1].innerText)) {

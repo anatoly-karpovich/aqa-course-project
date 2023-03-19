@@ -25,6 +25,7 @@ function renderFiltersModal(page) {
                 </div>
               <div class="modal-footer">
                 <button type="submit" class="btn btn-primary" id="apply-filters">Apply</button>
+                <button class="btn btn-secondary" id="clear-filters">Clear Filters</button>
               </div>
             </div>
           </div>
@@ -39,12 +40,24 @@ function renderFiltersModal(page) {
       e.preventDefault();
       submitFilters(page)
     })
+    $("button#clear-filters").on('click', (event) => {
+      event.preventDefault();
+      clearAllFilters(page)
+    })
 }
 
 function submitFilters(page) {
   filters[page] = _.cloneDeep(filtersInitialState[page])
   searchInTable(page)
   removeFiltersModal()
+}
+
+function clearAllFilters(page) {
+  for (const key of Object.keys(filtersInitialState[page])) {
+    filtersInitialState[page][key] = false;
+  }
+  [...document.querySelectorAll("[id*=-filter]")].forEach((el) => el.removeAttribute("checked"));
+  submitFilters(page);
 }
 
 function applyFilter(page, name) {
