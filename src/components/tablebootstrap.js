@@ -16,8 +16,8 @@ function generateTableBootstrap(data = [], options) {
 
 function generateTableHeaders(titles = [], options) {
   return titles.length
-  ? titles.map((title) => `<th scope="col" onClick="tableOnClickSort('${title}');">${title}</th>`).join("") + `<th scope="col" style="text-align:center">Actions</th>`
-  : options.tableProps.defaultHeaders.map((title) => `<th scope="col" onClick="tableOnClickSort('${title}');">${title}</th>`).join("") + `<th scope="col" style="text-align:center">Actions</th>`;
+  ? titles.map((title) => `<th scope="col">${title}</th>`).join("") + `<th scope="col" style="text-align:center">Actions</th>`
+  : options.tableProps.defaultHeaders.map((title) => `<th scope="col">${title}</th>`).join("") + `<th scope="col" style="text-align:center">Actions</th>`;
 }
 
 function generateTableBody(arr = [], options) {
