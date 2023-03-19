@@ -36,7 +36,8 @@ function clearAllInputs(inputs, buttonsToBeDisabled = []) {
       field.value = inputs[input].options.values[0];
     } else {
       field.value = "";
-      field.style.border = null;
+      field.classList.remove('is-invalid');
+      field.classList.remove('is-valid');
       document.querySelector(inputs[input].errorMessageSelector).innerText = "";
     }
   }
@@ -70,13 +71,16 @@ async function showNotificationAfterDeleteRequest(response, notificationOptions,
 }
 
 function showErrorMessageForInput(inputOptions, saveButton) {
-  $(`#${inputOptions.id}`).css("border", "1px solid red");
+  $(`#${inputOptions.id}`).addClass('is-invalid')
+  $(`#${inputOptions.id}`).removeClass('is-valid')
   $(inputOptions.errorMessageSelector).html(inputOptions.errorMessage);
   saveButton.prop("disabled", true);
 }
 
 function hideErrorMessageForInput(options, inputName, saveButton, page) {
-  $(`#${options[inputName].id}`).css("border", "");
+  $(`#${options[inputName].id}`).removeClass('is-invalid');
+  $(`#${options[inputName].id}`).addClass('is-valid');
+
   $(options[inputName].errorMessageSelector).html("");
   let isValid;
   if (page === add_new_customer_props.path) {
@@ -98,7 +102,7 @@ function generateFormInputs(inputs) {
                 <input type="${inputs[input].type}" class="${inputs[input].classlist}" id="${inputs[input].id}" 
                 placeholder="${inputs[input].placeholder}" ${inputs[input].attributes ? inputs[input].attributes : ""}
                 value="${inputs[input].value}"> 
-                <strong class="error-message-for-input"></strong>
+                <div class="invalid-feedback" id=error-${inputs[input].id}></div>
                 </div>`;
     else if (inputs[input].type === "select") {
       return ` <div class="${inputs[input].divClasslist}">
@@ -114,7 +118,7 @@ function generateFormInputs(inputs) {
                 <textarea class="${inputs[input].classList}" id="${inputs[input].id}" ${inputs[input].attributes} 
                 placeholder="${inputs[input].placeholder}" 
                 ${inputs[input].attributes ? inputs[input].attributes : ""}>${inputs[input].value}</textarea>
-                <strong class="error-message-for-input"></strong>
+                <div class="invalid-feedback" id=error-${inputs[input].id}></div>
                 </div>`;
     } else if (inputs[input].type === "email") {
       return `  <div class="${inputs[input].divClasslist}">
@@ -122,7 +126,7 @@ function generateFormInputs(inputs) {
                 <input type="${inputs[input].type}" class="${inputs[input].classlist}" id="${inputs[input].id}" 
                 placeholder="${inputs[input].placeholder}" ${inputs[input].attributes ? inputs[input].attributes : ""}
                 value="${inputs[input].value}"> 
-                <strong class="error-message-for-input"></strong>
+                <div class="invalid-feedback" id=error-${inputs[input].id}></div>
                 </div>`;
     }
   });
@@ -139,19 +143,36 @@ function getDataFromForm(formSelector) {
   return data;
 }
 
-function searchInTable() {
+function searchInTable(page) {
   const value = $(`input[type="search"]`).val();
+  const filterOnPage = [...Object.keys(filtersInitialState[page]).filter((c) => filtersInitialState[page][c])];
+  searchState[page] = value;
   const rows = [...$(`tr:has(td)`)];
-  if(rows[0].querySelector(`td`).innerText !== 'No records created yet') {
+  if (rows[0].querySelector(`td`).innerText !== NO_RECORDS_IN_TABLE) {
     rows.forEach((r) => {
-      const ths = [...document.querySelectorAll('th')]
-      const tds = ths[ths.length - 1].innerText === 'Actions'
-      ? [...r.querySelectorAll(`td`)].slice(0,[...r.querySelectorAll(`td`)].length-1)
-      : [...r.querySelectorAll(`td`)]
-      if (tds.some((c) => c.innerText.toLowerCase().includes(value.toLowerCase()))) {
-        r.style.display = "";
+      const ths = [...document.querySelectorAll("th")];
+      const tds = ths[ths.length - 1].innerText === "Actions" ? [...r.querySelectorAll(`td`)].slice(0, [...r.querySelectorAll(`td`)].length - 1) : [...r.querySelectorAll(`td`)];
+
+      if (value && filterOnPage.length) {
+        if (tds.some((c) => c.innerText.toLowerCase().includes(value.toLowerCase())) && filterOnPage.includes(tds[tds.length - 1].innerText)) {
+          r.style.display = "";
+        } else {
+          r.style.display = "none";
+        }
+      } else if (value) {
+        if (tds.some((c) => c.innerText.toLowerCase().includes(value.toLowerCase()))) {
+          r.style.display = "";
+        } else {
+          r.style.display = "none";
+        }
+      } else if (filterOnPage.length) {      
+        if (filterOnPage.includes(tds[tds.length - 1].innerText)) {
+          r.style.display = "";
+        } else {
+          r.style.display = "none";
+        }
       } else {
-        r.style.display = "none";
+        r.style.display = "";
       }
     });
   }

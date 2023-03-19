@@ -1,6 +1,6 @@
 function renderEditCustomerLayout(options = edit_customer_props, data = {}) {
     edit_customer_props.id = data._id;
-    options.inputs.email.value = data.email;
+    options.inputs.email.value = String(data.email);
     options.inputs.name.value = data.name;
     options.inputs.country.value = data.country;
     options.inputs.city.value = data.city;
@@ -43,7 +43,6 @@ const edit_customer_props = {
     ...(_.cloneDeep(add_new_customer_props.inputs)),
   },
   requestOpts: {
-      method: "put",
       body: {},
   },
   buttons: {
@@ -117,6 +116,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
         if (!isValidInput("Customer Name", $(`#${options.name.id}`).val())) {
           showErrorMessageForInput(options.name, saveChangesBtn);
         } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+            hideErrorMessageForInput(options, "name", saveChangesBtn, edit_customer_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
           hideErrorMessageForInput(options, "name", saveChangesBtn, edit_customer_props.path);
@@ -128,6 +128,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
         if (!isValidInput("Email", $(`#${options.email.id}`).val())) {
           showErrorMessageForInput(options.email, saveChangesBtn);
         } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+            hideErrorMessageForInput(options, "email", saveChangesBtn, edit_customer_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
           hideErrorMessageForInput(options, "email", saveChangesBtn, edit_customer_props.path);
@@ -139,6 +140,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
         if (!isValidInput("City", $(`#${options.city.id}`).val())) {
           showErrorMessageForInput(options.city, saveChangesBtn);
         } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+            hideErrorMessageForInput(options, "city", saveChangesBtn, edit_customer_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
           hideErrorMessageForInput(options, "city", saveChangesBtn, edit_customer_props.path);
@@ -150,6 +152,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
         if (!isValidInput("Street", $(`#${options.street.id}`).val())) {
           showErrorMessageForInput(options.street, saveChangesBtn);
         } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+            hideErrorMessageForInput(options, "street", saveChangesBtn, edit_customer_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
           hideErrorMessageForInput(options, "street", saveChangesBtn, edit_customer_props.path);
@@ -161,6 +164,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
         if (!isValidInput("House", $(`#${options.house.id}`).val()) || +$(`#${options.house.id}`).val() === 0) {
           showErrorMessageForInput(options.house, saveChangesBtn);
         } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+            hideErrorMessageForInput(options, "house", saveChangesBtn, edit_customer_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
           hideErrorMessageForInput(options, "house", saveChangesBtn, edit_customer_props.path);
@@ -172,6 +176,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
         if (!isValidInput("Flat", $(`#${options.flat.id}`).val()) || +$(`#${options.flat.id}`).val() === 0) {
           showErrorMessageForInput(options.flat, saveChangesBtn);
         } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+            hideErrorMessageForInput(options, "flat", saveChangesBtn, edit_customer_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
           hideErrorMessageForInput(options, "flat", saveChangesBtn, edit_customer_props.path);
@@ -183,6 +188,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
         if (!isValidInput("Phone", $(`#${options.phone.id}`).val())) {
           showErrorMessageForInput(options.phone, saveChangesBtn);
         } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+            hideErrorMessageForInput(options, "phone", saveChangesBtn, edit_customer_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
           hideErrorMessageForInput(options, "phone", saveChangesBtn, edit_customer_props.path);
@@ -194,6 +200,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
         if (!isValidInput("Notes", $(`#${options.notes.id}`).val())) {
           showErrorMessageForInput(options.notes, saveChangesBtn);
         } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+            hideErrorMessageForInput(options, "notes", saveChangesBtn, edit_customer_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
           hideErrorMessageForInput(options, "notes", saveChangesBtn, edit_customer_props.path);

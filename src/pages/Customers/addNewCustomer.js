@@ -27,7 +27,6 @@ const add_new_customer_props = {
   requestOpts: {
     url: ENDPOINTS["Customers"],
     opts: {
-      method: "POST",
       body: "",
       headers: {
         ["Content-Type"]: "application/json",
@@ -42,7 +41,7 @@ const add_new_customer_props = {
       classlist: "form-control",
       placeholder: `Enter customer's email`,
       id: "inputEmail",
-      errorMessageSelector: "div:has(input#inputEmail) > strong",
+      errorMessageSelector: "#error-inputEmail",
       errorMessage: VALIDATION_ERROR_MESSAGES["Email"],
       attributes: `name="email"`,
       value: ""
@@ -54,7 +53,7 @@ const add_new_customer_props = {
       classlist: "form-control",
       placeholder: `Enter customer's name`,
       id: "inputName",
-      errorMessageSelector: "div:has(input#inputName) > strong",
+      errorMessageSelector: "#error-inputName",
       errorMessage: VALIDATION_ERROR_MESSAGES["Customer Name"],
       attributes: `name="name"`,
       value: ""
@@ -79,7 +78,7 @@ const add_new_customer_props = {
       classlist: "form-control",
       placeholder: `Enter customer's city`,
       id: "inputCity",
-      errorMessageSelector: "div:has(input#inputCity) > strong",
+      errorMessageSelector: "#error-inputCity",
       errorMessage: VALIDATION_ERROR_MESSAGES["City"],
       attributes: `name="city"`,
       value: ""
@@ -91,7 +90,7 @@ const add_new_customer_props = {
       classlist: "form-control",
       placeholder: `Enter customer's street`,
       id: "inputStreet",
-      errorMessageSelector: "div:has(input#inputStreet) > strong",
+      errorMessageSelector: "#error-inputStreet",
       errorMessage: VALIDATION_ERROR_MESSAGES["Street"],
       attributes: `name="street"`,
       value: ""
@@ -103,7 +102,7 @@ const add_new_customer_props = {
       classlist: "form-control",
       placeholder: `Enter customer's house`,
       id: "inputHouse",
-      errorMessageSelector: "div:has(input#inputHouse) > strong",
+      errorMessageSelector: "#error-inputHouse",
       errorMessage: VALIDATION_ERROR_MESSAGES["House"],
       attributes: `name="house"`,
       value: ""
@@ -115,7 +114,7 @@ const add_new_customer_props = {
       classlist: "form-control",
       placeholder: `Enter customer's flat`,
       id: "inputFlat",
-      errorMessageSelector: "div:has(input#inputFlat) > strong",
+      errorMessageSelector: "#error-inputFlat",
       errorMessage: VALIDATION_ERROR_MESSAGES["Flat"],
       attributes: `name="flat"`,
       value: ""
@@ -127,7 +126,7 @@ const add_new_customer_props = {
       classlist: "form-control",
       placeholder: `Enter customer's phone number`,
       id: "inputPhone",
-      errorMessageSelector: "div:has(input#inputPhone) > strong",
+      errorMessageSelector: "#error-inputPhone",
       errorMessage: VALIDATION_ERROR_MESSAGES["Phone"],
       attributes: `name="phone"`,
       value: ""
@@ -139,7 +138,7 @@ const add_new_customer_props = {
       classList: "form-control",
       placeholder: `Enter notes`,
       id: "textareaNotes",
-      errorMessageSelector: "div:has(textarea#textareaNotes) > strong",
+      errorMessageSelector: "#error-textareaNotes",
       errorMessage: VALIDATION_ERROR_MESSAGES['Notes'],
       attributes: `rows="3" name="notes"`,
       value: ""

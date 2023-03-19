@@ -15,6 +15,8 @@ async function renderCustomersPage(options = CustomerProps) {
     hideSpinner();
     sideMenuActivateElement(options.path);
     addEventListelersToCustomersPage()
+    $(`input[type="search"]`).val(searchState['customers']); 
+    searchInTable('customers')
   } else {
     handleApiErrors(response)
   }
@@ -68,11 +70,9 @@ async function renderProductsPage(options = ProductsProps) {
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderProductsPageLayout(options, response);
     hideSpinner();
     sideMenuActivateElement(options.path);
-    // const addCustomerBtn = document.querySelector("button.page-title-button");
-    // if (addCustomerBtn) {
-    //   addCustomerBtn.addEventListener("click", () => renderAddNewProductPage());
-    // }
     addEventListelersToProductsPage()
+    $(`input[type="search"]`).val(searchState['products']) 
+    searchInTable('products')
   } else {
     handleApiErrors(response)
   }

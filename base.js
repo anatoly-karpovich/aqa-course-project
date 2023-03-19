@@ -8,6 +8,14 @@ const BASE_URL = "https://aqa-course-project.app/";
 
 const NUMBER_KEYS = ["amount", "price", "flat", "house"]
 
+const NO_RECORDS_IN_TABLE = 'No records created yet'
+
+const FILTER_VALUES = {
+  customers: ["USA","Canada","Belarus","Ukraine","Germany","France","Great Britain","Russia"],
+  products: ['Apple', 'Samsung', 'Google', 'Microsoft', 'Sony', 'Xiaomi', 'Amazon', 'Tesla'],
+  orders: ['Draft', 'In Process', 'Partially Received', 'Received', 'Canceled']
+}
+
 const ENDPOINTS = {
   ['Login']: `${BASE_URL}/api/login/`,
   ["Customers"]: `${BASE_URL}/api/customers/`,
@@ -41,7 +49,7 @@ const VALIDATION_ERROR_MESSAGES = {
   ["House"]: "House number should be in range 1-999",
   ["Flat"]: "Flat number should be in range 1-9999",
   ["Email"]: "Invalid Email Address",
-  ["Phone"]: "Mobile Number should be at least 10 characters and start with a +",
+  ["Phone"]: "Mobile Number should be at least 10 characters (max 20) and start with a +",
   ["Notes"]: "Notes should be in range 0-250 and without < or > symbols",
   ["Product Name"]: "Products's name should contain only 3-40 alphanumerical characters and one space between",
   ['Amount']: "Amount should be in range 0-999",
@@ -56,7 +64,7 @@ const REGULAR_EXPRESSIONS = {
   ["Street"]: /^\b(?!.*?\s{2})[A-Za-z0-9 ]{1,40}\b$/m,
   ["House"]: /^[0-9]{1,3}$/m,
   ["Flat"]: /^[0-9]{1,4}$/m,
-  ["Email"]: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/m,
+  ["Email"]: /^(([^<>()\[\]\\.,;:\s@"']+(\.[^<>()\[\]\\.,;:\s@"]+)*))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/m,
   ["Notes"]: /^[^<>]{0,250}$/m,
   ['Product Name']: /^\b(?!.*?\s{2})[A-Za-z0-9 ]{3,40}\b$/m,
   ['Amount']: /^[0-9]{1,3}$/m,

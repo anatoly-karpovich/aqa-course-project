@@ -26,7 +26,6 @@ const add_new_product_props = {
   title: "Add New Product",
   formId: "add-new-product-form",
   requestOpts: {
-      method: "post",
       body: {},
   },
   inputs: {
@@ -37,7 +36,7 @@ const add_new_product_props = {
       classlist: "form-control",
       placeholder: `Enter products's name`,
       id: "inputName",
-      errorMessageSelector: "div:has(input#inputName) > strong",
+      errorMessageSelector: "#error-inputName",
       errorMessage: VALIDATION_ERROR_MESSAGES["Product Name"],
       attributes: `name="name"`,
       value: ""
@@ -61,7 +60,7 @@ const add_new_product_props = {
       classlist: "form-control",
       placeholder: `Enter products's price`,
       id: "inputPrice",
-      errorMessageSelector: "div:has(input#inputPrice) > strong",
+      errorMessageSelector: "#error-inputPrice",
       errorMessage: VALIDATION_ERROR_MESSAGES["Price"],
       attributes: `name="price"`,
       value: ""
@@ -73,7 +72,7 @@ const add_new_product_props = {
       classlist: "form-control",
       placeholder: `Enter products's on-hands amount`,
       id: "inputAmount",
-      errorMessageSelector: "div:has(input#inputAmount) > strong",
+      errorMessageSelector: "#error-inputAmount",
       errorMessage: VALIDATION_ERROR_MESSAGES["Amount"],
       attributes: `name="amount"`,
       value: ""
@@ -85,7 +84,7 @@ const add_new_product_props = {
       classList: "form-control",
       placeholder: `Enter notes`,
       id: "textareaNotes",
-      errorMessageSelector: "div:has(textarea#textareaNotes) > strong",
+      errorMessageSelector: "#error-textareaNotes",
       errorMessage: VALIDATION_ERROR_MESSAGES["Notes"],
       attributes: `rows="3" name="notes"`,
       value: ""

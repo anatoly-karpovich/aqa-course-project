@@ -4,7 +4,9 @@ async function createDetailsModal(options = {}, data = {}) {
 if(modalWrap !== null) {
     modalWrap.remove()
 }
-console.log(data)
+if(!_.isEmpty(data)) {
+  data[options.path]['createdOn'] = moment(data[options.path]['createdOn']).format('LLL') 
+}
     modalWrap = document.createElement("div");
     modalWrap.id = `${options.path}-details-modal-id`
     modalWrap.insertAdjacentHTML(
@@ -19,7 +21,7 @@ console.log(data)
       <div class="modal-body">
 
         <div class="bg-white rounded-5">
-          <section section class="w-100 p-4 mb-4">
+          <section section class="w-100 p-4">
             ${generateModalBody(options, data)}
           </section>
         </div>
@@ -74,7 +76,7 @@ const replaceApiToFeKeys = {
   "flat": "Flat",
   "street": "Street",
   "phone": "Phone",
-  "date_create": "Registered",
+  "createdOn": "Created On",
   "note": "Notes",
   "notes": "Notes",
   "manufacturer": "Manufacturer",

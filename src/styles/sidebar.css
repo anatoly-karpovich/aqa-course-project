@@ -216,18 +216,42 @@ main {
 
 .tableWrapper>thead>tr>th,
 .tableWrapper>tbody>tr>td {
-  text-align: center;
+  text-align: left;
   vertical-align: middle;
   word-break: break-word;
 }
+
 
 .modal-header {
   padding: 1rem 2.5rem;
 }
 
-.modal-body {
+.modal-body-text {
   padding: 1rem 2.5rem;
 }
+
+.modal-footer {
+  margin-right: 25px;
+}
+
+.modal-filters-body {
+  flex-wrap: wrap;
+  display: flex;
+}
+
+.modal-filters-wrapper {
+  width: 400px
+}
+
+.d-width {
+  width: 50%;
+}
+
+.ml-5 {
+  margin-left: 5px;
+}
+
+
 
 .col-lg-4 {
   display: flex;
@@ -242,13 +266,21 @@ tr:has(td):hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-/* .table-btn-border{
-  border: 1px solid grey;
-} */
+button[title='Delete']:focus {
+  box-shadow: 0 0 0 0.25rem rgba(220 53 69 / 40%)!important
+}
 
 .table-btn {
-  width: 80px;
-  margin: 5px 10px;
+  margin: 5px 3px; 
+}
+
+.tableWrapper > tbody > tr > td:last-child {
+  width: 175px;
+  text-align: center;
+}
+
+.tableWrapper > tbody > tr > td:first-child {
+  width: 400px;
 }
 
 .page-title-button {

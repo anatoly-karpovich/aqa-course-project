@@ -38,7 +38,6 @@ const edit_product_props = {
     ..._.cloneDeep(add_new_product_props.inputs),
   },
   requestOpts: {
-      method: "put",
       body: {},
   },
   buttons: {
@@ -96,6 +95,7 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
         if (!isValidInput("Product Name", $(`#${options.name.id}`).val())) {
           showErrorMessageForInput(options.name, saveChangesBtn);
         } else if (_.isEqual(_.omit(currentProductstate, "_id"), getDataFromForm("#edit-product-form"))) {
+          hideErrorMessageForInput(options, "name", saveChangesBtn, edit_product_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
           hideErrorMessageForInput(options, "name", saveChangesBtn, edit_product_props.path);
@@ -107,6 +107,7 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
         if (!isValidInput("Amount", $(`#${options.amount.id}`).val()) || !$(`#${options.amount.id}`).val().length) {
           showErrorMessageForInput(options.amount, saveChangesBtn);
         } else if (_.isEqual(_.omit(currentProductstate, "_id"), getDataFromForm("#edit-product-form"))) {
+          hideErrorMessageForInput(options, "amount", saveChangesBtn, edit_product_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
           hideErrorMessageForInput(options, "amount", saveChangesBtn, edit_product_props.path);
@@ -118,6 +119,7 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
         if (!isValidInput("Price", $(`#${options.price.id}`).val()) || +$(`#${options.price.id}`).val() === 0) {
           showErrorMessageForInput(options.price, saveChangesBtn);
         } else if (_.isEqual(_.omit(currentProductstate, "_id"), getDataFromForm("#edit-product-form"))) {
+          hideErrorMessageForInput(options, "price", saveChangesBtn, edit_product_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
           hideErrorMessageForInput(options, "price", saveChangesBtn, edit_product_props.path);
@@ -129,6 +131,7 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
         if (!isValidInput("Notes", $(`#${options.notes.id}`).val())) {
           showErrorMessageForInput(options.notes, saveChangesBtn);
         } else if (_.isEqual(_.omit(currentProductstate, "_id"), getDataFromForm("#edit-product-form"))) {
+          hideErrorMessageForInput(options, "notes", saveChangesBtn, edit_product_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
           hideErrorMessageForInput(options, "notes", saveChangesBtn, edit_product_props.path);

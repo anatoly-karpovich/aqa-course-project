@@ -2,7 +2,7 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
       let data 
       if(!_.isEmpty(response.data.Products)) {
         data = response.data.Products.map((el) => {
-          return { Id: el._id, Name: el.name, Price: `${el.price}$`, Manufacturer: el.manufacturer};
+          return { Id: el._id, Name: el.name, Price: `${el.price}$`,Manufacturer: el.manufacturer, "Created": moment(el.createdOn).format('LLL') };
         });
       }
       ProductsProps.data = response.data
@@ -13,7 +13,7 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
           <div class="page-header-flex">
             ${generatePageTitle(options)}
           </div>
-            ${searchBar(options.buttons)}
+            ${searchBar(options.buttons, 'products')}
           <div id="${CONTENT_ID}">
             ${generateTableBootstrap(data, options)}
           </div>
@@ -39,22 +39,25 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
     },
     tableProps: {
       id: "table-products",
-      defaultHeaders: ['Name, Price, Manufacturer'],
+      defaultHeaders: ['Name, Price, Manufacturer', 'Created'],
       buttons: [
         {
-          name: "Details",
-          classlist: "btn btn-link table-btn table-btn-border",
+          nestedItems: `<i class="bi bi-card-text"></i>`,
+          title: 'Details',
+          classlist: "btn btn-link table-btn",
           onclick: "renderProductDetailsModal",
         },
         {
-          name: "Edit",
-          classlist: "btn btn-primary table-action-buttons table-btn",
-          onclick: "renderEditProductPage"
+          nestedItems: `<i class="bi bi-pencil"></i>`,
+          title: 'Edit',
+          classlist: "btn btn-link table-btn",
+          onclick: "renderEditProductPage",
         },
         {
-          name: "Delete",
-          classlist: "btn btn-danger table-action-buttons table-btn",
-          onclick: "renderDeleteProductModal"
+          nestedItems: `<i class="bi bi-trash"></i>`,
+          title: 'Delete',
+          classlist: "btn btn-link text-danger table-btn",
+          onclick: "renderDeleteProductModal",
         }
       ],
     },
@@ -104,6 +107,17 @@ function addEventListelersToProductsPage() {
   $("button.page-title-button").on("click", () => renderAddNewProductPage());
   $(`#${ProductsProps.buttons.search.id}`).on('click', (event) => {
     event.preventDefault();
-    searchInTable()
+    searchInTable('products')
+  })
+  
+  $(`#filter`).on('click', (event) => {
+    event.preventDefault();
+    renderFiltersModal('products')
+  })
+
+  $("button#clear-filters").on('click', (event) => {
+    event.preventDefault();
+    console.log(123)
+    clearAllFilters('products')
   })
 }

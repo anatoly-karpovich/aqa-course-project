@@ -3,7 +3,7 @@ async function renderCustomersPageLayout(options = CustomerProps, response) {
   let data;
   if (!_.isEmpty(response.data.Customers)) {
     data = response.data.Customers.map((el) => {
-      return { Id: el._id, Email: el.email, Name: el.name, Country: el.country };
+      return { Id: el._id, Email: el.email, Name: el.name, Country: el.country, "Created": moment(el.createdOn).format('LLL') };
     });
   }
   CustomerProps.data = response.data.Customers;
@@ -14,7 +14,7 @@ async function renderCustomersPageLayout(options = CustomerProps, response) {
         <div class="page-header-flex">
           ${generatePageTitle(options)}
         </div>
-          ${searchBar(options.buttons)}
+          ${searchBar(options.buttons, 'customers')}
         <div id="${CONTENT_ID}">
           ${generateTableBootstrap(data, options)}
         </div>
@@ -36,25 +36,28 @@ const CustomerProps = {
       name: `<i class="fa-solid fa-magnifying-glass"></i>`,
       id: "search-customer",
       type: "submit"
-    }
+    },
   },    
   tableProps: {
     id: "table-customers",
-    defaultHeaders: ["Email", "Name", "Country"],
+    defaultHeaders: ["Email", "Name", "Country", 'Created'],
     buttons: [
       {
-        name: "Details",
+        nestedItems: `<i class="bi bi-card-text"></i>`,
+        title: 'Details',
         classlist: "btn btn-link table-btn",
         onclick: "renderCustomerDetailsModal",
       },
       {
-        name: "Edit",
-        classlist: "btn btn-primary table-action-buttons table-btn",
+        nestedItems: `<i class="bi bi-pencil"></i>`,
+        title: 'Edit',
+        classlist: "btn btn-link table-btn",
         onclick: "renderEditCustomerPage",
       },
       {
-        name: "Delete",
-        classlist: "btn btn-danger table-action-buttons table-btn",
+        nestedItems: `<i class="bi bi-trash"></i>`,
+        title: 'Delete',
+        classlist: "btn btn-link text-danger table-btn",
         onclick: "renderDeleteCustomerModal",
       },
     ],
@@ -106,6 +109,10 @@ function addEventListelersToCustomersPage() {
   $("button.page-title-button").on("click", () => renderAddNewCustomerPage());
   $(`#${CustomerProps.buttons.search.id}`).on('click', (event) => {
     event.preventDefault();
-    searchInTable()
+    searchInTable('customers')
+  })
+  $(`#filter`).on('click', (event) => {
+    event.preventDefault();
+    renderFiltersModal('customers')
   })
 }

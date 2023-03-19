@@ -4,9 +4,12 @@ function generateButton(options, id) {
     ${options?.type ? "type=" + '"' + options.type + '" ' : ""}
     ${options?.id ? "id=" + '"' + options.id + '" ' : ""}
     ${options?.classlist ? "class=" + '"' + options.classlist + '" ' : ""}
+    ${options?.title ? "title=" + '"' + options.title + '" ' : ""}
     ${options?.onclick ? "onClick=" + '"' + options.onclick + "(" + (id ? "'" + id + "'" : "") + ")" + '" ' : ""}
     ${options?.disabled ? "disabled " : ""}
-    >${options?.name}</button>
+    >${options?.name ?  options.name : ""}
+    ${options?.nestedItems ? options.nestedItems : ""}
+    </button>
     `;
 }
 
@@ -50,12 +53,15 @@ function generateSearchBar(buttons) {
   `;
 }
 
-function searchBar(buttons) {
+function searchBar(buttons, page) {
 return `
   <div class="dis-flex mt-50">
     <form class="d-flex search-bar">
       <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
       ${generateButton(buttons.search)}
+      <button class="btn btn-outline-primary ml-5" id="filter">
+        <i class="bi bi-funnel"></i>
+      </button>
     </form>
       ${generateButton(buttons.add)}
   </div>
