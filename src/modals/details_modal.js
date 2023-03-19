@@ -4,6 +4,9 @@ async function createDetailsModal(options = {}, data = {}) {
 if(modalWrap !== null) {
     modalWrap.remove()
 }
+if(!_.isEmpty(data)) {
+  data[options.path]['createdOn'] = moment(data[options.path]['createdOn']).format('LLL') 
+}
     modalWrap = document.createElement("div");
     modalWrap.id = `${options.path}-details-modal-id`
     modalWrap.insertAdjacentHTML(
@@ -73,7 +76,7 @@ const replaceApiToFeKeys = {
   "flat": "Flat",
   "street": "Street",
   "phone": "Phone",
-  "date_create": "Registered",
+  "createdOn": "Created On",
   "note": "Notes",
   "notes": "Notes",
   "manufacturer": "Manufacturer",

@@ -2,7 +2,7 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
       let data 
       if(!_.isEmpty(response.data.Products)) {
         data = response.data.Products.map((el) => {
-          return { Id: el._id, Name: el.name, Price: `${el.price}$`, Manufacturer: el.manufacturer};
+          return { Id: el._id, Name: el.name, Price: `${el.price}$`,Manufacturer: el.manufacturer, "Created": moment(el.createdOn).format('LLL') };
         });
       }
       ProductsProps.data = response.data
@@ -39,7 +39,7 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
     },
     tableProps: {
       id: "table-products",
-      defaultHeaders: ['Name, Price, Manufacturer'],
+      defaultHeaders: ['Name, Price, Manufacturer', 'Created'],
       buttons: [
         {
           nestedItems: `<i class="bi bi-card-text"></i>`,

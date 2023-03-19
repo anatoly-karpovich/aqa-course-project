@@ -29,9 +29,7 @@ function generateTableBody(arr = [], options) {
 function generateTableRow(obj = {}, options) {
   const row = Object.keys(obj)
     .map((key) => {if(key!=='Id'){ 
-      return `<td>${key === "Registration Date" 
-      ? moment(obj[key]).format("MM/DD/YYYY") || "-" 
-      : obj[key] || obj[key] === 0 ? obj[key] : "-"}</td>`
+      return `<td>${(obj[key] || obj[key] == 0) ? obj[key] : "-"}</td>`
    }}
     ).join("");
       

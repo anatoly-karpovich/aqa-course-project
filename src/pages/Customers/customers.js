@@ -3,7 +3,7 @@ async function renderCustomersPageLayout(options = CustomerProps, response) {
   let data;
   if (!_.isEmpty(response.data.Customers)) {
     data = response.data.Customers.map((el) => {
-      return { Id: el._id, Email: el.email, Name: el.name, Country: el.country };
+      return { Id: el._id, Email: el.email, Name: el.name, Country: el.country, "Created": moment(el.createdOn).format('LLL') };
     });
   }
   CustomerProps.data = response.data.Customers;
@@ -40,7 +40,7 @@ const CustomerProps = {
   },    
   tableProps: {
     id: "table-customers",
-    defaultHeaders: ["Email", "Name", "Country"],
+    defaultHeaders: ["Email", "Name", "Country", 'Created'],
     buttons: [
       {
         nestedItems: `<i class="bi bi-card-text"></i>`,
