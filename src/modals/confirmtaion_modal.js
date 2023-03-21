@@ -18,8 +18,10 @@ function renderConfirmationModal(id, options) {
         <p>${options.body}</p>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-danger" onClick="${options.deleteFunction}('${id}')">${options.buttons.success.name}</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="removeConfimationModal()">${options.buttons.cancel.name}</button>
+        <div class="modal-footer-mr">
+          <button type="submit" class="btn btn-danger mr-10" onClick="${options.deleteFunction}('${id}')">${options.buttons.success.name}</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="removeConfimationModal()">${options.buttons.cancel.name}</button>
+        </div>
       </div>
     </div>
   </div>

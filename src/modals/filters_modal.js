@@ -24,8 +24,10 @@ function renderFiltersModal(page) {
                     ${createFilterCheckboxes(page)}
                 </div>
               <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" id="apply-filters">Apply</button>
-                <button class="btn btn-secondary" id="clear-filters">Clear Filters</button>
+                <div class="modal-footer-mr">
+                  <button type="submit" class="btn btn-primary mr-10" id="apply-filters">Apply</button>
+                  <button class="btn btn-secondary" id="clear-filters">Clear Filters</button>
+                </div>
               </div>
             </div>
           </div>

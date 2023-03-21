@@ -28,7 +28,7 @@ if(!_.isEmpty(data)) {
           
       </div>
       <div class="modal-footer">
-        <button type="button" style="margin-right: 10px" class="btn btn-primary" onClick="${options.buttons.edit.onClickFunc}('${data[options.path]._id}');">Edit ${options.path}</button>
+        <button type="button" class="btn btn-primary mr-10" onClick="${options.buttons.edit.onClickFunc}('${data[options.path]._id}');">Edit ${options.path}</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="removeDetailsModal();">Cancel</button>
       </div>
     </div>
