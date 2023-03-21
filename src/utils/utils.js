@@ -155,13 +155,13 @@ function searchInTable(page) {
       if(ths[ths.length - 1].innerText === "Actions") tds.pop();
 
       if (value && filterOnPage.length) {
-        if (tds.some((c) => c.innerText.toLowerCase().includes(value.toLowerCase())) && filterOnPage.includes(tds[tds.length - 2].innerText)) {
+        if (tds.slice(0,-1).some((c) => c.innerText.toLowerCase().includes(value.toLowerCase())) && filterOnPage.includes(tds[tds.length - 2].innerText)) {
           r.style.display = "";
         } else {
           r.style.display = "none";
         }
       } else if (value) {
-        if (tds.some((c) => c.innerText.toLowerCase().includes(value.toLowerCase()))) {
+        if (tds.slice(0,-1).some((c) => c.innerText.toLowerCase().includes(value.toLowerCase()))) {
           r.style.display = "";
         } else {
           r.style.display = "none";
