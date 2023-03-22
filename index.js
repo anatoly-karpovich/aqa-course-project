@@ -1,14 +1,6 @@
 const token = getAuthorizationCookie();
 token ? renderPages['Landing'](landingProps) : renderPages['Sign In']();
 
-// let state.filtering = _.cloneDeep(filters)
-
-// let state.search = {
-//   customers: "",
-//   products: "",
-//   orders: ""
-// }
-
 const state = {
   filtering: _.cloneDeep(filters),
   search: {
