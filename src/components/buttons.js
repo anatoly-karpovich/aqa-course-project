@@ -37,28 +37,12 @@ function deleteButton(id, name) {
   `;
 }
 
-function generateSearchBar(buttons) {
-  return `
-  <nav class="navbar navbar-light search-bg rounded">
-    <div class="container-fluid">
-      <div class="page-header-flex">
-        <form class="d-flex search-bar">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-primary" type="submit">Search</button>
-        </form>
-      </div>
-      ${buttons ? buttons.map((el) => generateButton(el)) : ""}
-    </div>
-  </nav>
-  `;
-}
-
-function searchBar(buttons, page) {
+function searchBar(buttons) {
 return `
   <div class="mt-50">
     <div class="dis-flex">
       <form class="d-flex search-bar">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <input class="form-control me-2" type="search" placeholder="Search" maxlength="40" aria-label="Search">
         ${generateButton(buttons.search)}
         <button class="btn btn-outline-primary ml-5" id="filter">
           <i class="bi bi-funnel"></i>

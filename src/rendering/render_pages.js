@@ -15,7 +15,7 @@ async function renderCustomersPage(options = CustomerProps) {
     hideSpinner();
     sideMenuActivateElement(options.path);
     addEventListelersToCustomersPage()
-    $(`input[type="search"]`).val(state.search['customers']); 
+    renderChipsFromState('customers');
     searchInTable('customers')
   } else {
     handleApiErrors(response)
@@ -71,7 +71,7 @@ async function renderProductsPage(options = ProductsProps) {
     hideSpinner();
     sideMenuActivateElement(options.path);
     addEventListelersToProductsPage()
-    $(`input[type="search"]`).val(state.search['products']) 
+    renderChipsFromState('products');
     searchInTable('products')
   } else {
     handleApiErrors(response)
