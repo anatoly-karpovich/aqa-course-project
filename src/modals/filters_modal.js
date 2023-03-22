@@ -6,7 +6,7 @@ let filters = {
 } 
 
 function renderFiltersModal(page) {
-    filtersInitialState[page] = _.cloneDeep(filters[page])
+    filters[page] = _.cloneDeep(state.filtering[page])
     if(filtersModalWrap !== null) {
         filtersModalWrap.remove()
     }
@@ -49,23 +49,39 @@ function renderFiltersModal(page) {
 }
 
 function submitFilters(page) {
-  filters[page] = _.cloneDeep(filtersInitialState[page])
+  const changedFiltersToTrue = {}
+  const changedFiltersToFalse = {}
+  for(key in filters[page]) {
+    if(filters[page][key] !== state.filtering[page][key]) {
+      filters[page][key] 
+      ? changedFiltersToTrue[key] = filters[page][key]
+      : changedFiltersToFalse[key] = filters[page][key]
+    }
+  }
+  Object.keys(changedFiltersToTrue).forEach(key => renderChipButton(key, page, true))
+  Object.keys(changedFiltersToFalse).forEach(key => removeChipButton(key, page, true))
+  state.filtering[page] = _.cloneDeep(filters[page])
   searchInTable(page)
   removeFiltersModal()
 }
 
 function clearAllFilters(page) {
-  for (const key of Object.keys(filtersInitialState[page])) {
-    filtersInitialState[page][key] = false;
+  for (const key of Object.keys(state.filtering[page])) {
+    filters[page][key] = false;
   }
   [...document.querySelectorAll("[id*=-filter]")].forEach((el) => el.removeAttribute("checked"));
   submitFilters(page);
+  document.querySelectorAll(`div#chip-buttons [data-chip-${page}]`).forEach((el) => {
+    const id = el.getAttribute(`data-chip-${page}`)
+    if(id!== 'search')
+      removeChipButton(id, page, true)
+  });
 }
 
 function applyFilter(page, name) {
-    filtersInitialState[page][name] = !filtersInitialState[page][name]
+    filters[page][name] = !filters[page][name]
     const checkbox = $(`input#${name}-filter`)
-    checkbox.prop("checked", filtersInitialState[page][name])
+    checkbox.prop("checked", filters[page][name])
 }
 
 function createFilterCheckboxes(page) {
@@ -74,7 +90,7 @@ function createFilterCheckboxes(page) {
 function createFilterCheckbox(page, name) {
     return `
         <div class="form-check mb-0 d-width">
-            <input class="form-check-input me-2 ml-5" type="checkbox" ${filtersInitialState[page][name] ? "checked" : ""} 
+            <input class="form-check-input me-2 ml-5" type="checkbox" ${state.filtering[page][name] ? "checked" : ""} 
             value="${name}" id="${name}-filter" onClick="applyFilter('${page}', '${name}')">
             <label class="form-check-label" for="${name}-filter">
                 ${name}

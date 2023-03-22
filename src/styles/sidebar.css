@@ -357,3 +357,25 @@ label.form-label:not([for=textareaNotes]):after {
   content: "*";
   color: #d0011b;
 }
+
+#chip-buttons {
+  margin: 20px 20px 0 20px
+}
+
+.chip {
+  display: inline-block;
+  padding: 0 15px;
+  height: 30px;
+  font-size: 16px;
+  line-height: 25px;
+  border-radius: 25px;
+  border: 1px solid #ced4da;
+  background-color: transparent;
+}
+
+.closebtn {
+  vertical-align: -.1em;
+  fill: currentColor;
+  cursor: pointer;
+  margin-left: 5px;
+}

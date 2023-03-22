@@ -55,15 +55,19 @@ function generateSearchBar(buttons) {
 
 function searchBar(buttons, page) {
 return `
-  <div class="dis-flex mt-50">
-    <form class="d-flex search-bar">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-      ${generateButton(buttons.search)}
-      <button class="btn btn-outline-primary ml-5" id="filter">
-        <i class="bi bi-funnel"></i>
-      </button>
-    </form>
-      ${generateButton(buttons.add)}
+  <div class="mt-50">
+    <div class="dis-flex">
+      <form class="d-flex search-bar">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        ${generateButton(buttons.search)}
+        <button class="btn btn-outline-primary ml-5" id="filter">
+          <i class="bi bi-funnel"></i>
+        </button>
+      </form>
+        ${generateButton(buttons.add)}
+    </div>
+    <div id="chip-buttons" class="ml-50">
+    </div>
   </div>
 `
 }

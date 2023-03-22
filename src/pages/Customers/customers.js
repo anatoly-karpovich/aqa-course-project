@@ -109,7 +109,16 @@ function addEventListelersToCustomersPage() {
   $("button.page-title-button").on("click", () => renderAddNewCustomerPage());
   $(`#${CustomerProps.buttons.search.id}`).on('click', (event) => {
     event.preventDefault();
+    const value = $(`input[type="search"]`).val()
+    if(state.search.customers) {
+      removeChipButton('search', 'customers')
+    }
+    if(value) {
+      renderChipButton(value, 'customers')
+    }
+    state.search.customers = value
     searchInTable('customers')
+    $(`input[type="search"]`).val('')
   })
   $(`#filter`).on('click', (event) => {
     event.preventDefault();
