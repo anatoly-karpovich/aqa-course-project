@@ -144,7 +144,7 @@ function getDataFromForm(formSelector) {
 }
 
 function searchInTable(page) {
-  const value = $(`input[type="search"]`).val();
+  const value = state.search[page]
   const filterOnPage = [...Object.keys(state.filtering[page]).filter((c) => state.filtering[page][c])];
   state.search[page] = value;
   const rows = [...$(`tr:has(td)`)];

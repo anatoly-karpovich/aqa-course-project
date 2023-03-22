@@ -107,17 +107,20 @@ function addEventListelersToProductsPage() {
   $("button.page-title-button").on("click", () => renderAddNewProductPage());
   $(`#${ProductsProps.buttons.search.id}`).on('click', (event) => {
     event.preventDefault();
+    const value = $(`input[type="search"]`).val()
+    if(state.search.products) {
+      removeChipButton('search', 'products')
+    }
+    if(value) {
+      renderChipButton(value, 'products')
+    }
+    state.search.products = value
     searchInTable('products')
+    $(`input[type="search"]`).val('')
   })
   
   $(`#filter`).on('click', (event) => {
     event.preventDefault();
     renderFiltersModal('products')
-  })
-
-  $("button#clear-filters").on('click', (event) => {
-    event.preventDefault();
-    console.log(123)
-    clearAllFilters('products')
   })
 }

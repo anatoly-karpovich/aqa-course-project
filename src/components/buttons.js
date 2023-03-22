@@ -67,16 +67,9 @@ return `
         ${generateButton(buttons.add)}
     </div>
     <div id="chip-buttons" class="ml-50">
-      ${createChipButton('Belarus')}
     </div>
   </div>
 `
-}
-
-function createChipButton(text) {
-  return `
-  <div class="chip btn-outline-light text-dark">${text}<i class="closebtn bi-x-lg" onClick="(() => alert(1))()"></i></div>
-  `
 }
 
 function generatePageTitle(options, entitiName) {

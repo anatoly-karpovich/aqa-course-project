@@ -41,9 +41,3 @@ function generateTableRow(obj = {}, options) {
   return row + actions;
 }
 
-// `<button class="${btn.classlist}" onClick="${btn.onclick}('${obj.Id}')">${btn.name}</button>`
-
-const widthForColumns = {
-  Id: '70px',
-  Email: "200px",
-}
