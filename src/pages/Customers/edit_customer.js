@@ -115,7 +115,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
       case options.name.id: {
         if (!isValidInput("Customer Name", $(`#${options.name.id}`).val())) {
           showErrorMessageForInput(options.name, saveChangesBtn);
-        } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+        } else if (_.isEqual(_.omit(currentCustomerState, ["_id", "createdOn"]), getDataFromForm(`#${edit_customer_props.formId}`))) {
             hideErrorMessageForInput(options, "name", saveChangesBtn, edit_customer_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
@@ -127,7 +127,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
       case options.email.id: {
         if (!isValidInput("Email", $(`#${options.email.id}`).val())) {
           showErrorMessageForInput(options.email, saveChangesBtn);
-        } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+        } else if (_.isEqual(_.omit(currentCustomerState, ["_id", "createdOn"]), getDataFromForm(`#${edit_customer_props.formId}`))) {
             hideErrorMessageForInput(options, "email", saveChangesBtn, edit_customer_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
@@ -139,7 +139,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
       case options.city.id: {
         if (!isValidInput("City", $(`#${options.city.id}`).val())) {
           showErrorMessageForInput(options.city, saveChangesBtn);
-        } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+        } else if (_.isEqual(_.omit(currentCustomerState, ["_id", "createdOn"]), getDataFromForm(`#${edit_customer_props.formId}`))) {
             hideErrorMessageForInput(options, "city", saveChangesBtn, edit_customer_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
@@ -151,7 +151,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
       case options.street.id: {
         if (!isValidInput("Street", $(`#${options.street.id}`).val())) {
           showErrorMessageForInput(options.street, saveChangesBtn);
-        } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+        } else if (_.isEqual(_.omit(currentCustomerState, ["_id", "createdOn"]), getDataFromForm(`#${edit_customer_props.formId}`))) {
             hideErrorMessageForInput(options, "street", saveChangesBtn, edit_customer_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
@@ -163,7 +163,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
       case options.house.id: {
         if (!isValidInput("House", $(`#${options.house.id}`).val()) || +$(`#${options.house.id}`).val() === 0) {
           showErrorMessageForInput(options.house, saveChangesBtn);
-        } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+        } else if (_.isEqual(_.omit(currentCustomerState, ["_id", "createdOn"]), getDataFromForm(`#${edit_customer_props.formId}`))) {
             hideErrorMessageForInput(options, "house", saveChangesBtn, edit_customer_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
@@ -175,7 +175,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
       case options.flat.id: {
         if (!isValidInput("Flat", $(`#${options.flat.id}`).val()) || +$(`#${options.flat.id}`).val() === 0) {
           showErrorMessageForInput(options.flat, saveChangesBtn);
-        } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+        } else if (_.isEqual(_.omit(currentCustomerState, ["_id", "createdOn"]), getDataFromForm(`#${edit_customer_props.formId}`))) {
             hideErrorMessageForInput(options, "flat", saveChangesBtn, edit_customer_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
@@ -187,7 +187,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
       case options.phone.id: {
         if (!isValidInput("Phone", $(`#${options.phone.id}`).val())) {
           showErrorMessageForInput(options.phone, saveChangesBtn);
-        } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+        } else if (_.isEqual(_.omit(currentCustomerState, ["_id", "createdOn"]), getDataFromForm(`#${edit_customer_props.formId}`))) {
             hideErrorMessageForInput(options, "phone", saveChangesBtn, edit_customer_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
@@ -199,7 +199,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
       case options.notes.id: {
         if (!isValidInput("Notes", $(`#${options.notes.id}`).val())) {
           showErrorMessageForInput(options.notes, saveChangesBtn);
-        } else if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+        } else if (_.isEqual(_.omit(currentCustomerState, ["_id", "createdOn"]), getDataFromForm(`#${edit_customer_props.formId}`))) {
             hideErrorMessageForInput(options, "notes", saveChangesBtn, edit_customer_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
@@ -209,7 +209,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
       }
 
       case options.country.id: {
-        if (_.isEqual(_.omit(currentCustomerState, "_id"), getDataFromForm(`#${edit_customer_props.formId}`))) {
+        if (_.isEqual(_.omit(currentCustomerState, ["_id", "createdOn"]), getDataFromForm(`#${edit_customer_props.formId}`))) {
           saveChangesBtn.prop("disabled", true);
         } else {
           saveChangesBtn.prop("disabled", false);
