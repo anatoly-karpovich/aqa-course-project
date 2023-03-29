@@ -1,6 +1,14 @@
-const token = localStorage.getItem("token");
+const token = getAuthorizationCookie();
 token ? renderPages['Landing'](landingProps) : renderPages['Sign In']();
 
+const state = {
+  filtering: _.cloneDeep(filters),
+  search: {
+    customers: "",
+    products: "",
+    orders: ""
+  }
+}
 
 
 async function sideMenuClickHandler(page) {
@@ -9,31 +17,13 @@ async function sideMenuClickHandler(page) {
       renderPages[page](homeProps);
       break;
 
-    case "Orders":
-      await renderPages[page](OrderProps);
-      break;
-
     case "Products":
-      renderPages[page]({ title: "Products" });
+      renderPages[page](ProductsProps);
       break;
   
     case "Customers":
       renderPages[page](CustomerProps)
+      break;
     }
-}
-
-
-function createData() {
-  const data = document.createElement("div");
-  data.classList.add("zalupa");
-  data.insertAdjacentHTML(
-    "afterbegin",
-    `
-        <div>
-            <h4>Home content</h4>
-        </div>
-      `
-  );
-  document.querySelector("#contentInner").prepend(data);
 }
 

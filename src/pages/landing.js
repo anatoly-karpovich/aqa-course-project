@@ -2,19 +2,10 @@ function renderLandingPageLayout(options = landingProps) {
     return `
     ${getIconSvgHTML()}
     <div id="sidemenu">
-    ${renderSpinner()} 
+    ${renderSpinner()}
         <div class="contentWrapper">
                 ${generateSidebar(options)}
-                <div id="root">
-                    <div id="title">
-                        <h2 class="pageTitle">Home Page</h2>
-                    </div>
-                    <div id="contentInner">
-                        <div>
-                            <h4>Home Content</h4>
-                        </div>
-                    </div>
-                </div>
+                <div id="root"></div>
             </div>
         </div>
     `
@@ -42,5 +33,5 @@ const landingProps = {
             }
         ]
     }
-    
+
 }

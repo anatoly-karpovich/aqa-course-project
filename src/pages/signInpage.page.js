@@ -18,16 +18,16 @@ const layout = `
       <form>
         <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
           <p class="lead fw-normal mb-0 me-3">Sign in with</p>
-          <button type="button" class="btn btn-primary btn-floating mx-1">
-            <i class="fab fa-facebook-f"></i>
+          <button type="button" class="btn btn-link btn-floating mx-1">
+            <i class="bi bi-facebook"></i>
           </button>
 
-          <button type="button" class="btn btn-primary btn-floating mx-1">
-            <i class="fab fa-twitter"></i>
+          <button type="button" class="btn btn-link btn-floating mx-1">
+            <i class="bi bi-twitter"></i>
           </button>
 
-          <button type="button" class="btn btn-primary btn-floating mx-1">
-            <i class="fab fa-linkedin-in"></i>
+          <button type="button" class="btn btn-link btn-floating mx-1">
+           <i class="bi bi-linkedin"></i>
           </button>
         </div>
 
@@ -58,14 +58,14 @@ const layout = `
               Remember me
             </label>
           </div>
-          <a href="#!" class="text-body">Forgot password?</a>
+          <!-- <a href="#!" class="text-body">Forgot password?</a> -->
         </div>
 
         <div class="text-center text-lg-start mt-4 pt-2">
-          <button type="button" class="btn btn-primary btn-lg"
+          <button type="submit" class="btn btn-primary btn-lg"
             style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
-          <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
-              class="link-danger">Register</a></p>
+            <!-- <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
+              class="link-danger">Register</a></p> -->
         </div>
 
       </form>
@@ -76,7 +76,7 @@ const layout = `
   class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary">
   <!-- Copyright -->
   <div class="text-white mb-3 mb-md-0">
-    Copyright © 2022. All rights reserved.
+    Copyright © 2023. All rights reserved.
   </div>
   <!-- Copyright -->
 
@@ -97,49 +97,35 @@ const layout = `
   </div>
   <!-- Right -->
 </div>
-</section>`
-
+</section>`;
 
 function renderSignInPage() {
-    const signIn = document.createElement('div')
-    signIn.insertAdjacentHTML(
-      "afterbegin", layout)
-      document.body.prepend(signIn)
+  if (document.querySelector("#sidemenu")) {
+    document.querySelector("#sidemenu").parentNode.removeChild(document.querySelector("#sidemenu"));
+  }
+  const signIn = document.createElement("div");
+  signIn.insertAdjacentHTML("afterbegin", layout);
+  document.body.prepend(signIn);
 
-      const email = signIn.querySelector('#emailinput')
-      const password = signIn.querySelector('#passwordinput')
+  const email = signIn.querySelector("#emailinput");
+  const password = signIn.querySelector("#passwordinput");
 
-      const submit = signIn.querySelector(`.btn-lg`)
-      submit.addEventListener('click', () => {
-        if(validateSignIn(email.value, password.value)) {
-            const spinner = document.querySelector(`.overlay`)
-            signIn.classList.add('disabled')
-            spinner.style.display = 'block'
-            setTimeout(() => {
-            spinner.style.display = 'none'
-                
-                const token = '4fb18062-435d-11ed-b878-0242ac120002'
-                localStorage.setItem('token', token)
-                signIn.parentNode.removeChild(signIn)
-                renderLandingPage(landingProps)
-            }, 1000)
-           
-        } else {
-            const message = signIn.querySelector('#errorMessage')
-            message.style.display = 'block'
-            message.innerText = 'Credentials are required'
-        }
-    })
-    email.addEventListener('input', onInput)
-    password.addEventListener('input', onInput)
-}
-
-function validateSignIn(email, password) {
- 
-    return email === 'aqacourse@gmail.com' && password === 'password'
-}
-
-function onInput() {
-    const errorMessage = document.querySelector('#errorMessage')
-    errorMessage.style.display = 'none'
+  const submit = signIn.querySelector(`.btn-lg`);
+  submit.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const credentials = { username: email.value, password: password.value };
+    showSpinner();
+    const response = await SignInService.signIn(credentials);
+    if (response.status === 200) {
+      document.cookie = `Authorization=${response.data.token}`;
+      signIn.classList.add("disabled");
+      signIn.parentNode.removeChild(signIn);
+      renderLandingPage(landingProps);
+    } else {
+      renderNotification({ message: response.data.ErrorMessage ? response.data.ErrorMessage : ERROR_MESSAGES["Connection Issue"] });
+      document.querySelector(".toast").classList.add("bg-danger");
+      document.querySelector(".toast").classList.add("text-white");
+    }
+    hideSpinner();
+  });
 }

@@ -98,7 +98,7 @@ function _createSidebar() {
       <li>
         <a href="#" class="nav-link text-white" onClick="sideMenuClickHandler('products');">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-          Products
+          Products123
         </a>
       </li>
       <li>

@@ -1,10 +1,11 @@
-body {
-  /* min-height: 100vh;
-  min-height: -webkit-fill-available; */
+#root {
+  width: 100%;
+  margin-left: 221px;
 }
 
 html {
   height: -webkit-fill-available;
+  background-color: rgb(241, 237, 237);
 }
 
 main {
@@ -20,6 +21,10 @@ main {
 #sidebar {
   height: 100vh;
   position: fixed;
+}
+
+#sidemenu {
+  background-color: rgb(241, 237, 237);
 }
 
 .b-example-divider {
@@ -126,9 +131,9 @@ main {
   display: none;
 }
 
-.pageTitle {
+/* .pageTitle {
   margin: 13px 20px 20px 20px
-}
+} */
 
 .form-buttons {
   margin: 0px 20px 0px 0px;
@@ -142,17 +147,11 @@ main {
   margin: 20px;
 }
 
-#root {
-  margin-left: 230px;
-}
 
 .notification-wrapper {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, .5);
+  top: 10px;
+  left: calc(50% - 110px);
   display: flex;
   /* justify-content: center; */
   flex-direction: column;
@@ -162,11 +161,227 @@ main {
 
 .toast {
   margin-top: 20px;
+  /* opacity: 0.3; */
 }
 
 .error-message-for-input {
-  font-size: 0.5rem;
-  color: red
+  font-size: 0.7rem;
+  color: red;
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 5px;
+  margin-right: 5px;
+  word-break: break-word;
+  text-align: right;
+}
+
+.page-header-flex {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 60px 20px 0px !important
+}
+
+.dis-flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mt-50 {
+  margin-top: 50px;
+}
+
+.page-header {
+  justify-content: space-between;
+  margin-top: 20px !important
+}
+
+.strong-details {
+  word-break: normal;
+  margin-right: 20px;
+  min-width: 100px;
+  text-align: left;
+}
+
+.center {
+  margin: auto;
+  width: 120%;
+}
+
+.table-action-buttons {
+  margin-right: 15px;
+}
+
+.tableWrapper>tbody>tr>td {
+  text-align: left;
+  vertical-align: middle;
+  word-break: break-word;
+}
+
+.tableWrapper>thead>tr>th {
+  text-align: left;
+  vertical-align: middle;
 }
 
 
+
+
+.modal-header {
+  padding: 1rem 2.5rem;
+}
+
+.modal-body-text {
+  padding: 1rem 2.5rem;
+}
+
+.modal-footer-mr {
+  margin-right: 25px;
+}
+
+.modal-filters-body {
+  flex-wrap: wrap;
+  display: flex;
+}
+
+.modal-filters-wrapper {
+  width: 400px
+}
+
+.d-width {
+  width: 50%;
+}
+
+.ml-5 {
+  margin-left: 5px;
+}
+
+
+
+.col-lg-4 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 50px 0px
+}
+
+tr:has(td):hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+button[title='Delete']:focus {
+  box-shadow: 0 0 0 0.25rem rgba(220 53 69 / 40%)!important
+}
+
+.table-btn {
+  margin: 5px 3px; 
+}
+
+.tableWrapper > tbody > tr > td:last-child {
+  width: 175px;
+  text-align: center;
+}
+
+.tableWrapper > tbody > tr > td:first-child {
+  width: 400px;
+}
+
+.page-title-button {
+  margin-right: 20px;
+}
+
+.form-margin {
+  margin: 0px 20px 0px 20px
+}
+
+.mr-10 {
+  margin-right: 10px;
+}
+
+.page-title-margin {
+  margin: 20px !important
+}
+
+.page-title-text {
+  margin-left: 30px;
+  font-weight: bold;
+}
+
+.fw-bold {
+  font-weight: bold;
+}
+
+.ml-20 {
+  margin-left: 20px;
+}
+
+.fs-italic {
+  font-style: italic;
+}
+
+.page-title-border {
+  border-bottom: 2px solid black; 
+  padding-bottom: 5px; 
+  margin-right:25px
+}
+
+.clear-btn {
+  margin-right: -12px;
+}
+
+.form-action-section {
+  margin-top: 35px; 
+  display: flex; 
+  justify-content: space-between;
+}
+
+.search-bar {
+  margin-left: 20px;
+  width: 500px;
+}
+
+.search-bg {
+  background-color: #f2f4f6;
+}
+
+.navbar-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+label.form-label:not([for=textareaNotes]):after {
+  position: relative;
+  left: 1px;
+  display: inline-block;
+  content: "*";
+  color: #d0011b;
+}
+
+#chip-buttons {
+  margin: 20px 20px 0 20px
+}
+
+.chip {
+  display: inline-block;
+  padding: 0 15px;
+  height: 30px;
+  font-size: 16px;
+  line-height: 25px;
+  border-radius: 25px;
+  border: 1px solid #ced4da;
+  background-color: transparent;
+}
+
+.closebtn {
+  vertical-align: -.1em;
+  fill: currentColor;
+  cursor: pointer;
+  margin-left: 5px;
+}
