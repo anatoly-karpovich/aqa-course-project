@@ -4,6 +4,7 @@ const renderPages = {
   Landing: renderLandingPage,
   Customers: renderCustomersPage,
   Products: renderProductsPage,
+  Orders: renderOrdersPage,
 };
 
 //Customers Section
@@ -118,6 +119,37 @@ async function renderProductDetailsModal(id) {
     }
   }
 
+//Orders Section
+async function renderOrdersPage(options = OrdersProps) {
+  showSpinner();
+  const response = await OrdersService.getOrders()
+  if(response.status === 200) {
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrdersPageLayout(options, response);
+    hideSpinner();
+    sideMenuActivateElement(options.path);
+    addEventListelersToOrdersPage()
+    renderChipsFromState('orders');
+    searchInTable('orders')
+  } else {
+    handleApiErrors(response)
+  }
+}
+
+async function renderCreateOrderModal() {
+  showSpinner();
+  const [customers, products] = await Promise.all([CustomersService.getCustomers(), ProductsService.getProducts()])
+  if(customers.status === 200 && products.status === 200) {
+    await createAddOrderModal({customers: customers.data.Customers, products: products.data.Products});
+    hideSpinner();
+    sideMenuActivateElement("Orders");
+  } else {
+    handleApiErrors(customers)
+    handleApiErrors(products)
+  }
+}
+
+
+//Home section
 function renderLandingPage(options = {}) {
   document.querySelector("body").innerHTML = renderLandingPageLayout(options);
   document.querySelector("#signOut").addEventListener("click", () => {

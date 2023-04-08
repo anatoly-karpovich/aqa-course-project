@@ -24,6 +24,10 @@ async function sideMenuClickHandler(page) {
     case "Customers":
       renderPages[page](CustomerProps)
       break;
+
+    case "Orders":
+      renderPages[page](OrdersProps)
+      break;
     }
 }
 

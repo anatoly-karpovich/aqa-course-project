@@ -35,6 +35,7 @@ const SUCCESS_MESSAGES = {
   ['New Product Added']: "Product was successfully created",
   ['Product Successfully Deleted']: (name) => `${name} was successfully deleted`,
   ['Product Successfully Updated']: (name) => `${name} was successfully updated`,
+  ['New Order Added']: "Order was successfully created",
 };
 
 const ERROR_MESSAGES = {
@@ -64,7 +65,7 @@ const REGULAR_EXPRESSIONS = {
   ["Street"]: /^\b(?!.*?\s{2})[A-Za-z0-9 ]{1,40}\b$/m,
   ["House"]: /^[0-9]{1,3}$/m,
   ["Flat"]: /^[0-9]{1,4}$/m,
-  ["Email"]: /^(([^<>()\[\]\\.,;:\s@"']+(\.[^<>()\[\]\\.,;:\s@"]+)*))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/m,
+  ["Email"]: /^(([^<>()\[\]\\.,;:\s@"']+(\.[^<>()\[\]\\.,;:\s@"']+)*))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/m,
   ["Notes"]: /^[^<>]{0,250}$/m,
   ['Product Name']: /^\b(?!.*?\s{2})[A-Za-z0-9 ]{3,40}\b$/m,
   ['Amount']: /^[0-9]{1,3}$/m,

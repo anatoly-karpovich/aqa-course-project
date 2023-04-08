@@ -105,13 +105,7 @@ function generateFormInputs(inputs) {
                 <div class="invalid-feedback" id=error-${inputs[input].id}></div>
                 </div>`;
     else if (inputs[input].type === "select") {
-      return ` <div class="${inputs[input].divClasslist}">
-                <label for="${inputs[input].id}" class="form-label">${inputs[input].name}</label>
-                <select id="${inputs[input].id}" class="${inputs[input].classlist}"
-                ${inputs[input].attributes ? inputs[input].attributes : ""}>
-                ${renderOptions(inputs[input].options.values, inputs[input].defaultValue, inputs[input].value)}
-                </select>
-                </div>`;
+      return generateFormSelectInput(inputs[input])
     } else if (inputs[input].type === "textarea") {
       return `<div class="${inputs[input].divClasslist}">
                 <label for="${inputs[input].id}" class="form-label">${inputs[input].name}</label>

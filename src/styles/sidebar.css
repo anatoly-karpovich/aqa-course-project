@@ -286,7 +286,7 @@ button[title='Delete']:focus {
 }
 
 .tableWrapper > tbody > tr > td:first-child {
-  width: 400px;
+  width: 300px;
 }
 
 .page-title-button {
@@ -384,4 +384,15 @@ label.form-label:not([for=textareaNotes]):after {
   fill: currentColor;
   cursor: pointer;
   margin-left: 5px;
+}
+
+.delete-in-modal {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+}
+
+.del-btn-modal {
+  display: flex;
+  justify-content: center;
 }

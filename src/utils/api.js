@@ -77,3 +77,12 @@ async function submitEntiti(options, notificationOprions) {
   }
 }
 
+async function submitOrder(orderData) {
+  showSpinner()
+  const response = await OrdersService.createOrder(orderData);
+  response.data.IsSuccess
+  ? renderNotification({ message: SUCCESS_MESSAGES['New Order Added'] })
+  : handleApiErrors(response, true)
+  hideSpinner();
+  await renderOrdersPage()
+}

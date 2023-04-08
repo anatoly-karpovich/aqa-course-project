@@ -61,3 +61,24 @@ function generatePageTitle(options, entitiName) {
   <h2 class="${options.classlist ? options.classlist : 'page-title-text'}">${options.title} ${entitiName ? entitiName : ""}</h2>
   `;
 }
+
+function generateFormSelectInput(options) {
+  return `
+    <div class="${options.divClasslist}">
+      <label for="${options.id}" class="form-label">${options.name}</label>
+      <select id="${options.id}" class="${options.classlist}"
+      ${options.attributes ? options.attributes : ""}>
+      ${renderOptions(options.options.values, options.defaultValue, options.value)}
+      </select>
+    </div>`;
+}
+
+function generateFormSelectInputWithoutLabel(options) {
+  return `
+    <div class="${options.divClasslist}">
+      <select id="${options.id}" class="${options.classlist}"
+      ${options.attributes ? options.attributes : ""}>
+      ${renderOptions(options.options.values, options.defaultValue, options.value)}
+      </select>
+    </div>`;
+}
