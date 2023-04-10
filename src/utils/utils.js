@@ -54,10 +54,11 @@ function isValidInput(inputName, value) {
   }
 }
 
-function renderOptions(values = [], defaultValue, toBeSelected) {
+function renderOptions(values = [], defaultValue, toBeSelected, titleValues = "") {
+  const titles = (titleValues && !_.isEmpty(titleValues)) ? titleValues.map(t => `title="${t}"`) : ""
   return toBeSelected
-    ? values.map((el) => `<option ${el === toBeSelected ? "selected" : ""} value="${el}">${el}</option>`).join("")
-    : values.map((el) => `<option ${el === defaultValue ? "selected" : ""} value="${el}">${el}</option>`).join("");
+    ? values.map((el,i) => `<option ${el === toBeSelected ? "selected" : ""} ${titles ? titles[i] : ""} value="${el}">${el}</option>`).join("")
+    : values.map((el,i) => `<option ${el === defaultValue ? "selected" : ""} ${titles ? titles[i] : ""} value="${el}">${el}</option>`).join("");
 }
 
 async function showNotificationAfterDeleteRequest(response, notificationOptions, pageProps) {

@@ -2,6 +2,7 @@ let orderModalWrap = null
 async function createAddOrderModal(data) {
     add_order_modal_props.data = _.cloneDeep(data)
     add_order_modal_props.customers.options.values = add_order_modal_props.data.customers.map(c => c.name)
+    add_order_modal_props.customers.options.titles = add_order_modal_props.data.customers.map(c => c.email)
     add_order_modal_props.products.options.values = add_order_modal_props.data.products.map(c => c.name)
 if(orderModalWrap !== null) {
     orderModalWrap.remove()
@@ -121,7 +122,7 @@ const add_order_modal_props = {
         name: "Customer",
         type: "select",
         classlist: "form-select",
-        id: "inputCustomer",
+        id: "inputCustomerOrder",
         defaultValue: "Apple",
         options: {
         values: [],

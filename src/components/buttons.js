@@ -68,7 +68,7 @@ function generateFormSelectInput(options) {
       <label for="${options.id}" class="form-label">${options.name}</label>
       <select id="${options.id}" class="${options.classlist}"
       ${options.attributes ? options.attributes : ""}>
-      ${renderOptions(options.options.values, options.defaultValue, options.value)}
+      ${renderOptions(options.options.values, options.defaultValue, options.value, options.options.titles)}
       </select>
     </div>`;
 }

@@ -60,7 +60,7 @@ const OrdersProps = {
     $(`#${OrdersProps.buttons.search.id}`).on('click', (event) => {
       event.preventDefault();
       const value = $(`input[type="search"]`).val()
-      if(state.search.products) {
+      if(state.search.orders) {
         removeChipButton('search', 'orders')
       }
       if(value) {
