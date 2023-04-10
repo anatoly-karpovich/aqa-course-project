@@ -9,16 +9,18 @@ async function renderCustomersPageLayout(options = CustomerProps, response) {
   CustomerProps.data = response.data.Customers;
 
     return `      
+    <div class="bg-body rounded p-3">
+        <div id="${PAGE_TITLE_ID}" class="p-horizontal-20">  
+            <div class="page-header-flex">
+                ${generatePageTitle(options)}
+            </div>
+                ${searchBar(options.buttons)}
+        </div>
+    </div>      
     <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
-      <div id="${PAGE_TITLE_ID}">
-        <div class="page-header-flex">
-          ${generatePageTitle(options)}
-        </div>
-          ${searchBar(options.buttons, 'customers')}
         <div id="${CONTENT_ID}">
-          ${generateTableBootstrap(data, options)}
+            ${generateTableBootstrap(data, options)}
         </div>
-      </div>
     </div>`;
   }
 

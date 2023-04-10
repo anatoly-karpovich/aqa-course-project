@@ -39,7 +39,7 @@ function deleteButton(id, name) {
 
 function searchBar(buttons) {
 return `
-  <div class="mt-50">
+  <div class="mt-30">
     <div class="dis-flex">
       <form class="d-flex search-bar">
         <input class="form-control me-2" type="search" placeholder="Search" maxlength="40" aria-label="Search">

@@ -396,3 +396,7 @@ label.form-label:not([for=textareaNotes]):after {
   display: flex;
   justify-content: center;
 }
+
+.p-horizontal-20 {
+  padding: 0 20px;
+}

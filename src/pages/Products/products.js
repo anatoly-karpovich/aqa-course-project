@@ -8,16 +8,18 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
       ProductsProps.data = response.data
 
       return `      
-      <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
-        <div id="${PAGE_TITLE_ID}">  
-          <div class="page-header-flex">
-            ${generatePageTitle(options)}
-          </div>
-            ${searchBar(options.buttons, 'products')}
-          <div id="${CONTENT_ID}">
-            ${generateTableBootstrap(data, options)}
-          </div>
+      <div class="bg-body rounded p-3">
+        <div id="${PAGE_TITLE_ID}" class="p-horizontal-20">  
+            <div class="page-header-flex">
+                ${generatePageTitle(options)}
+            </div>
+                ${searchBar(options.buttons)} 
         </div>
+      </div>      
+      <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
+          <div id="${CONTENT_ID}">
+              ${generateTableBootstrap(data, options)}
+          </div>
       </div>`;
   }
 
