@@ -135,6 +135,18 @@ async function renderOrdersPage(options = OrdersProps) {
   }
 }
 
+async function renderOrderDetailsPage(id) {
+  const response = await OrdersService.getOrders(id)
+  if(response && response.status === 200) {
+    hideSpinner();
+    sideMenuActivateElement("Orders");
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(Order_Details_Props, response.data.Order);
+
+  } else {
+    handleApiErrors(response)
+  }
+}
+
 async function renderCreateOrderModal() {
   showSpinner();
   const [customers, products] = await Promise.all([CustomersService.getCustomers(), ProductsService.getProducts()])

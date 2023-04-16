@@ -2,7 +2,7 @@ function renderOrdersPageLayout(options = OrdersProps, response = {}) {
     let data 
     if(!_.isEmpty(response.data.Orders)) {
       data = response.data.Orders.map((el) => {
-        return { Id: el._id, 'Order Number': el._id, Customer: el.customer.email, 'Price': `${el.total_price}$`, Status: el.status, "Created": moment(el.createdOn).format('LLL') };
+        return { Id: el._id, 'Order Number': el._id, Name: el.customer.name, Email: el.customer.email, 'Price': `$${el.total_price}`, Status: el.status, "Created": moment(el.createdOn).format('LLL') };
       });
     }
     OrdersProps.data = response.data
@@ -47,7 +47,7 @@ const OrdersProps = {
           nestedItems: `<i class="bi bi-card-text"></i>`,
           title: 'Details',
           classlist: "btn btn-link table-btn",
-          onclick: "",
+          onclick: "renderOrderDetailsPage",
         }
       ],
     },

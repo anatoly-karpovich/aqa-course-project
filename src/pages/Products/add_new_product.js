@@ -1,10 +1,10 @@
 function renderAddNewProductLayout(options = add_new_product_props) {
   return `
   <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
-  <div id="${PAGE_TITLE_ID}" class="page-header">
-      ${generatePageTitle(options)}
-  </div>
-  <form class="row g-3 form-with-inputs" id="${options.formId}">
+    <div id="${PAGE_TITLE_ID}" class="page-header">
+        ${generatePageTitle(options)}
+    </div>
+    <form class="row g-3 form-with-inputs" id="${options.formId}">
       ${generateFormInputs(options.inputs)} 
         
         <div class="col-12 form-action-section">

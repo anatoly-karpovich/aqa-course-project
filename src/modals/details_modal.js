@@ -82,7 +82,10 @@ const replaceApiToFeKeys = {
   "manufacturer": "Manufacturer",
   "price": "Price",
   "amount": "Amount",
-  "active": "Active"
+  "status": "Order Status",
+  "delivery": "Delivery",
+  "condition": "Delivery Type",
+  "finalDate": "Delivery Date",
 }
 
 function removeDetailsModal() {

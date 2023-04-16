@@ -26,9 +26,16 @@ if(orderModalWrap !== null) {
                             </div>
                             
                         </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary mr-10" id="create-order-btn">Create</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancel-order-modal-btn">Cancel</button>
+                        <div class="modal-footer mx-4 justify-content-between">
+                            <div class="me-5">
+                                <span>Total Price:</span>
+                                <span class="text-primary" id="total-price-order-modal"></span>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-primary mr-10" id="create-order-btn">Create</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancel-order-modal-btn">Cancel</button>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -39,6 +46,7 @@ if(orderModalWrap !== null) {
     const ordersModal = new bootstrap.Modal(orderModalWrap.querySelector('.modal'));
     ordersModal.show();
     handleFirstDeleteButtonInOrderModal()
+    setCurrentTotalPriceToOrderModal()
 
     $("#add-product-btn").on("click", (e) => {
       e.preventDefault();
@@ -49,6 +57,7 @@ if(orderModalWrap !== null) {
       if($("#products-section > div").length === 5) {
         $("#add-product-btn").hide()
       }
+      setCurrentTotalPriceToOrderModal()
       }); 
 
     $("div#products-section").on("click", (e) => {
@@ -64,6 +73,7 @@ if(orderModalWrap !== null) {
                 $("#add-product-btn").show()
             }
         }
+        setCurrentTotalPriceToOrderModal()
     })
 
     $("#cancel-order-modal-btn").on("click", (e) => {
@@ -74,7 +84,8 @@ if(orderModalWrap !== null) {
     $("#create-order-btn").on('click', async (e) => {
         e.preventDefault()
         const requestedProducts = []
-        let customer = $("select#inputCustomer").find(":selected").text()
+        let customer = $("select#inputCustomerOrder").find(":selected").text()
+        console.log(customer)
         customer = add_order_modal_props.data.customers.find(c => c.name === customer)._id
         $('select[name="Product"]').each(function (){
             requestedProducts.push($(this).find(":selected").text())
@@ -88,6 +99,14 @@ if(orderModalWrap !== null) {
     })
 }
 
+function setCurrentTotalPriceToOrderModal() {
+    const requestedProducts = []
+    $('select[name="Product"]').each(function (){
+        requestedProducts.push($(this).find(":selected").text())
+    })
+    let prices = [...requestedProducts].reduce((a,b) => a + add_order_modal_props.data.products.find(p => p.name === b).price, 0)
+    $("#total-price-order-modal").text(`$${prices}`)
+}
 
 function handleFirstDeleteButtonInOrderModal(showButton) {
   if (showButton) {
