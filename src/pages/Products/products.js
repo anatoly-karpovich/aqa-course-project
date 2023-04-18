@@ -2,7 +2,7 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
       let data 
       if(!_.isEmpty(response.data.Products)) {
         data = response.data.Products.map((el) => {
-          return { Id: el._id, Name: el.name, Price: `$${el.price}`,Manufacturer: el.manufacturer, "Created": moment(el.createdOn).format('LLL') };
+          return { Id: el._id, Name: el.name, Price: `$${el.price}`,Manufacturer: el.manufacturer, "Created": moment(el.createdOn).format(DATE_AND_TIME_FORMAT) };
         });
       }
       ProductsProps.data = response.data

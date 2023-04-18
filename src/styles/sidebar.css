@@ -254,7 +254,7 @@ main {
 }
 
 .ml-5 {
-  margin-left: 5px;
+  margin-left: 5px
 }
 
 
@@ -470,4 +470,21 @@ label.form-label:not([for=textareaNotes]):after {
 
 .mr-0 {
   margin-right: 0 !important;
+}
+
+.d-p-icon {
+  cursor: pointer;
+}
+
+.d-p-input {
+  max-width: 155px;
+}
+
+.form-center {
+  width: 40%;
+  margin: 20px auto;
+}
+
+.s-loc-ml {
+  margin-left: 1px;
 }

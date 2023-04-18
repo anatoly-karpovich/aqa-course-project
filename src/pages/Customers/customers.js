@@ -3,7 +3,7 @@ async function renderCustomersPageLayout(options = CustomerProps, response) {
   let data;
   if (!_.isEmpty(response.data.Customers)) {
     data = response.data.Customers.map((el) => {
-      return { Id: el._id, Email: el.email, Name: el.name, Country: el.country, "Created": moment(el.createdOn).format('LLL') };
+      return { Id: el._id, Email: el.email, Name: el.name, Country: el.country, "Created": moment(el.createdOn).format(DATE_AND_TIME_FORMAT) };
     });
   }
   CustomerProps.data = response.data.Customers;

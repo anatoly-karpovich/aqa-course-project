@@ -20,13 +20,12 @@ function generateSectionEntry(key, value) {
 }
 
 function orderDetailsValuesMapper(key, value) {
-    if(dateKeys.includes(key) && value) return moment(value).format('LLL')
+    if(dateKeys.includes(key) && value) return moment(value).format(DATE_AND_TIME_FORMAT)
+    if(key === "finalDate" && value) return moment(value).format(DATE_FORMAT)
     if(!value) return "-"
     if(key === "total_price" || key === "price") return `$${value}`
     return value
 }
-
-const dateKeys = ['createdOn', 'createdAt', 'finalDate',]
 
 function generateCustomerSectionBody(customer) {
     return Object.keys(customer).map(key => generateSectionEntry(key, customer[key])).join('')
@@ -48,7 +47,7 @@ function generateOrderDetailsHeaderSection(data) {
         <div>
             <span class="fw-bold">Delivery</span>
             <br/>
-            <span class="text-primary">${data.delivery ? moment(data.delivery.finalDate).format('LLL') : "-"}</span>
+            <span class="text-primary">${data.delivery ? moment(data.delivery.finalDate).format(DATE_FORMAT) : "-"}</span>
         </div> 
         <div>
             <span class="fw-bold">Created On</span>
@@ -86,7 +85,7 @@ function generateProductsSectionBody(requestedProducts) {
     </div>`
 }
 
-function generateProductAccordion(product, index) { //accordion-item
+function generateProductAccordion(product, index) {
     return `
     <div class="">
         <h2 class="accordion-header" id="heading${index}">
@@ -144,8 +143,21 @@ function generateOrderDeliveryTabBody(order) {
             ${generateCustomerSectionBody({condition: order.delivery.condition, finalDate: order.delivery.finalDate, ...order.delivery.address})}
         </div>`
     }
-    
-    
-    return result += `<div class="section-footer btn-tab"><button class="btn btn-outline-primary page-title-header page-title-button">Edit Delivery</button></div>`
-    
+    return result + handleDeliveryButton(order)
+}
+
+function handleDeliveryButton(order) {
+
+    if(order.delivery && order.status === 'Draft') {
+        return generateDeliveryButton(order.delivery)
+    } else if (!order.delivery && order.status === 'Draft') {
+        return generateDeliveryButton(order.delivery)
+    } else return ""
+}
+
+function generateDeliveryButton(delivery) {
+    return `
+    <div class="section-footer btn-tab">
+    <button class="btn btn-outline-primary page-title-header page-title-button" id="delivery-btn">${delivery ? "Edit" : "Schedule"} Delivery</button>
+    </div>` 
 }

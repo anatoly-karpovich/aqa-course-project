@@ -47,7 +47,10 @@ function clearAllInputs(inputs, buttonsToBeDisabled = []) {
 }
 
 function isValidInput(inputName, value) {
-  if (typeof value === "string") {
+  const dates = [...dateKeys, 'Finaldate']
+  if(dates.includes(inputName)){
+    return isValidDate(value)
+  } else if (typeof value === "string") {
     return REGULAR_EXPRESSIONS[inputName].test(value.trim());
   } else {
     return REGULAR_EXPRESSIONS[inputName].test(value);
@@ -70,12 +73,24 @@ async function showNotificationAfterDeleteRequest(response, notificationOptions,
     handleApiErrors(response, true)
   }
 }
+ 
+function showErrorMessage(inputOptions) {
+  $(`#${inputOptions.id}`).addClass('is-invalid')
+  $(`#${inputOptions.id}`).removeClass('is-valid')
+  $(inputOptions.errorMessageSelector).html(inputOptions.errorMessage);
+}
 
 function showErrorMessageForInput(inputOptions, saveButton) {
   $(`#${inputOptions.id}`).addClass('is-invalid')
   $(`#${inputOptions.id}`).removeClass('is-valid')
   $(inputOptions.errorMessageSelector).html(inputOptions.errorMessage);
   saveButton.prop("disabled", true);
+}
+
+function hideErrorMessage(inputOptions) {
+  $(`#${inputOptions.id}`).removeClass('is-invalid');
+  $(`#${inputOptions.id}`).addClass('is-valid');
+  $(inputOptions.errorMessageSelector).html("");
 }
 
 function hideErrorMessageForInput(options, inputName, saveButton, page) {
@@ -97,17 +112,9 @@ function hideErrorMessageForInput(options, inputName, saveButton, page) {
 
 function generateFormInputs(inputs) {
   const formInputs = Object.keys(inputs).map((input) => {
-    if (inputs[input].type === "text")
-      return ` <div class="${inputs[input].divClasslist}">
-                <label for="${inputs[input].id}" class="form-label">${inputs[input].name}</label>
-                <input type="${inputs[input].type}" class="${inputs[input].classlist}" id="${inputs[input].id}" 
-                placeholder="${inputs[input].placeholder}" ${inputs[input].attributes ? inputs[input].attributes : ""}
-                value="${inputs[input].value}"> 
-                <div class="invalid-feedback" id=error-${inputs[input].id}></div>
-                </div>`;
-    else if (inputs[input].type === "select") {
-      return generateFormSelectInput(inputs[input])
-    } else if (inputs[input].type === "textarea") {
+    if (inputs[input].type === "text") return generateFormTextInput(inputs[input]);
+    else if (inputs[input].type === "select") return generateFormSelectInput(inputs[input]);
+    else if (inputs[input].type === "textarea") {
       return `<div class="${inputs[input].divClasslist}">
                 <label for="${inputs[input].id}" class="form-label">${inputs[input].name}</label>
                 <textarea class="${inputs[input].classList}" id="${inputs[input].id}" ${inputs[input].attributes} 
@@ -171,4 +178,12 @@ function searchInTable(page) {
       }
     });
   }
+}
+
+function isValidDate(dateString) {
+  const formats = [
+    DATE_AND_TIME_FORMAT,
+    DATE_FORMAT
+  ]
+  return moment(dateString, formats, true).isValid();
 }

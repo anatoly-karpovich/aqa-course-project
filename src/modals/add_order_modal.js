@@ -28,8 +28,8 @@ if(orderModalWrap !== null) {
                         </div>
                         <div class="modal-footer mx-4 justify-content-between">
                             <div class="me-5">
-                                <span>Total Price:</span>
-                                <span class="text-primary" id="total-price-order-modal"></span>
+                                <span class="">Total Price:</span>
+                                <span class="text-primary fw-bold" id="total-price-order-modal"></span>
                             </div>
                             <div>
                                 <button type="submit" class="btn btn-primary mr-10" id="create-order-btn">Create</button>
@@ -105,7 +105,7 @@ function setCurrentTotalPriceToOrderModal() {
         requestedProducts.push($(this).find(":selected").text())
     })
     let prices = [...requestedProducts].reduce((a,b) => a + add_order_modal_props.data.products.find(p => p.name === b).price, 0)
-    $("#total-price-order-modal").text(`$${prices}`)
+    $("span#total-price-order-modal").text(`$${prices}`)
 }
 
 function handleFirstDeleteButtonInOrderModal(showButton) {

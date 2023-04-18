@@ -16,6 +16,11 @@ const FILTER_VALUES = {
   orders: ['Draft', 'In Process', 'Partially Received', 'Received', 'Canceled']
 }
 
+const DATE_AND_TIME_FORMAT = 'YYYY/MM/DD HH:mm'
+const DATE_FORMAT = 'YYYY/MM/DD'
+
+const dateKeys = ['createdOn', 'createdAt']
+
 const ENDPOINTS = {
   ['Login']: `${BASE_URL}/api/login/`,
   ["Customers"]: `${BASE_URL}/api/customers/`,
@@ -36,6 +41,7 @@ const SUCCESS_MESSAGES = {
   ['Product Successfully Deleted']: (name) => `${name} was successfully deleted`,
   ['Product Successfully Updated']: (name) => `${name} was successfully updated`,
   ['New Order Added']: "Order was successfully created",
+  ['Delivery Saved']: "Delivery was successfully saved",
 };
 
 const ERROR_MESSAGES = {

@@ -2,7 +2,16 @@ function renderOrdersPageLayout(options = OrdersProps, response = {}) {
     let data 
     if(!_.isEmpty(response.data.Orders)) {
       data = response.data.Orders.map((el) => {
-        return { Id: el._id, 'Order Number': el._id, Name: el.customer.name, Email: el.customer.email, 'Price': `$${el.total_price}`, Status: el.status, "Created": moment(el.createdOn).format('LLL') };
+        return { 
+          Id: el._id, 
+          'Order Number': el._id, 
+          Name: el.customer.name, 
+          Email: el.customer.email, 
+          'Price': `$${el.total_price}`, 
+          Status: el.status,
+          Delivery: el.delivery ? moment(el.delivery.finalDate).format(DATE_FORMAT): "-", 
+          "Created": moment(el.createdOn).format(DATE_AND_TIME_FORMAT) 
+        };
       });
     }
     OrdersProps.data = response.data

@@ -136,12 +136,14 @@ async function renderOrdersPage(options = OrdersProps) {
 }
 
 async function renderOrderDetailsPage(id) {
+  showSpinner();
   const response = await OrdersService.getOrders(id)
   if(response && response.status === 200) {
     hideSpinner();
     sideMenuActivateElement("Orders");
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(Order_Details_Props, response.data.Order);
-
+    state.order = response.data.Order
+    addEventListelersToOrderDetailsPage()
   } else {
     handleApiErrors(response)
   }
@@ -158,6 +160,18 @@ async function renderCreateOrderModal() {
     handleApiErrors(customers)
     handleApiErrors(products)
   }
+}
+
+function renderScheduleDeliveryPage() {
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderScheduleDeliveryLayout(delivery_props); 
+  sideMenuActivateElement(delivery_props.path);
+  addEventListelersToScheduleDeliveryPage()
+}
+
+function renderEditDeliveryPage() {
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditDeliveryLayout(delivery_props); 
+  sideMenuActivateElement(delivery_props.path);
+  addEventListelersToEditDeliveryPage()
 }
 
 

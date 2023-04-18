@@ -64,7 +64,7 @@ function generatePageTitle(options, entitiName) {
 
 function generateFormSelectInput(options) {
   return `
-    <div class="${options.divClasslist}">
+    <div class="${options.divClasslist}" id="div-${options.id}">
       <label for="${options.id}" class="form-label">${options.name}</label>
       <select id="${options.id}" class="${options.classlist}"
       ${options.attributes ? options.attributes : ""}>
@@ -81,4 +81,14 @@ function generateFormSelectInputWithoutLabel(options) {
       ${renderOptions(options.options.values, options.defaultValue, options.value)}
       </select>
     </div>`;
+}
+
+function generateFormTextInput(options) {
+  return ` <div class="${options.divClasslist}" id="div-${options.id}">
+                <label for="${options.id}" class="form-label">${options.name}</label>
+                <input type="${options.type}" class="${options.classlist}" id="${options.id}" 
+                placeholder="${options.placeholder}" ${options.attributes ? options.attributes : ""}
+                value="${options.value}"> 
+                <div class="invalid-feedback" id=error-${options.id}></div>
+                </div>`;
 }

@@ -52,4 +52,18 @@ class OrdersService {
           };
           return sendRequest(options); 
     }
+
+    static async submitDelivery(delivery) {
+        const options = {
+            method: "post",
+            baseURL: BASE_URL,
+            url: ENDPOINTS["Order Delivery"],
+            headers: { 
+                Authorization: getAuthorizationCookie(),
+                ["Content-Type"]: "application/json" 
+            },
+            data: delivery
+          };
+          return sendRequest(options); 
+    }
 }

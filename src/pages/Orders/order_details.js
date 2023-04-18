@@ -22,4 +22,16 @@ const Order_Details_Props = {
     path: "Orders",
     title: "Order Details",
     classlist: "ml-20 fw-bold",
+    
+}
+
+function addEventListelersToOrderDetailsPage() {
+    $("#delivery-btn").on('click', (e) => {
+        e.preventDefault();
+        if(state.order.delivery) {
+
+        } else {
+            renderScheduleDeliveryPage()
+        }
+    })
 }
