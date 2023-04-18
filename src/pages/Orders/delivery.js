@@ -206,7 +206,7 @@ function renderScheduleDeliveryLayout(options = delivery_props) {
     const data = getDeliveryData(delivery_props.formId);
     delivery.finalDate = data.finalDate;
     delivery.address = _.omit(data, "finalDate");
-    delivery.condition = $(`#${delivery_props.inputs.type.id}`).val() === "Delivery" ? "Delivery" : "Pick Up"
+    delivery.condition = $(`#${delivery_props.inputs.type.id}`).val()
     return { delivery, _id: state.order._id };
   }
 
@@ -325,6 +325,7 @@ function renderScheduleDeliveryLayout(options = delivery_props) {
         isValid = false
       }
     }
+   if($("input.is-invalid").length) isValid = false
     return isValid
   }
 

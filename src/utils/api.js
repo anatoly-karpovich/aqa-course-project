@@ -90,9 +90,11 @@ async function submitOrder(orderData) {
 async function submitDelivery(delivery) {
   showSpinner()
   const response = await OrdersService.submitDelivery(delivery)
-  response.data.IsSuccess
-  ? renderNotification({ message: SUCCESS_MESSAGES['Delivery Saved'] })
-  : handleApiErrors(response, true)
+  if(response.data.IsSuccess) {
+    renderNotification({ message: SUCCESS_MESSAGES['Delivery Saved'] })
+    await renderOrderDetailsPage(delivery._id)
+} else {
+  handleApiErrors(response, true)
+}
   hideSpinner();
-  await renderOrderDetailsPage(delivery._id)
 }
