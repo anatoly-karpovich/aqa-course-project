@@ -216,11 +216,17 @@ function renderScheduleDeliveryLayout(options = delivery_props) {
     const deliveryTypeSelect = $("select#inputType");
     const deliveryLocationSelect = $("select#inputLocation");
     const deliveryLocationContainer = $("#div-inputLocation");
-    const saveButton = $("button#save-delivery")
+    const saveButton = $(`button#${delivery_props.buttons.save.id}`)
+    const cancelButton = $(`button#${delivery_props.buttons.back.id}`)
 
     saveButton.on("click", async (e) => {
       e.preventDefault();   
       await submitDelivery(createDeliveryRequestBody())
+    })
+
+    cancelButton.on("click", async (e) => {
+      e.preventDefault();   
+      await renderOrderDetailsPage(state.order._id)
     })
 
     $(`#${delivery_props.formId}`).on('change', (e) => {
