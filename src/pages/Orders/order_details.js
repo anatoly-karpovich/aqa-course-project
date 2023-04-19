@@ -29,7 +29,7 @@ function addEventListelersToOrderDetailsPage() {
     $("#delivery-btn").on('click', (e) => {
         e.preventDefault();
         if(state.order.delivery) {
-
+            renderEditDeliveryPage()
         } else {
             renderScheduleDeliveryPage()
         }

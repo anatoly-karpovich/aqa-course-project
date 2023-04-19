@@ -26,3 +26,9 @@ function enableDatePicker(params) {
     }
     $('#datepicker').datepicker(options); 
 }
+
+function setUpDateToDatePicker(date) {
+    $('#datepicker').data({ date });
+    $('#datepicker').datepicker('update');
+    $('#datepicker').datepicker().children('input').val(date);
+}

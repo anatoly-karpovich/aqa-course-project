@@ -72,7 +72,7 @@ function renderScheduleDeliveryLayout(options = delivery_props) {
         id: "selectCountry",
         defaultValue: "USA",
         options: {
-          values: ["USA", "Canada", "Belarus", "Ukraine", "Germany", "France", "Great Britain", "Russia"],
+          values: [...FILTER_VALUES.customers],
         },
         attributes: `name="country"`,
   
