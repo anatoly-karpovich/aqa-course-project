@@ -162,7 +162,7 @@ function generateEditDeliverySectionBody(location) {
     inputs.house = { ...delivery_props.inputs.house, value: state.order.customer.house };
     inputs.flat = { ...delivery_props.inputs.flat, value: state.order.customer.flat };
   } else {
-    const isOther = state.order?.location === "Other";
+    const isOther = state.order?.delivery?.location === "Other";
     inputs.country = { ...delivery_props.inputs.country, value: isOther ? state.order.delivery.address.country : state.order.customer.country };
     inputs.city = { ...delivery_props.inputs.city, value: isOther ? state.order.delivery.address.city : state.order.customer.city };
     inputs.street = { ...delivery_props.inputs.street, value: isOther ? state.order.delivery.address.street : state.order.customer.street };
@@ -194,7 +194,5 @@ function generateInitialEditDeliverySectionBody() {
 
 function isNewDeliveryEqualToState() {
   const delivery = _.omit(createDeliveryRequestBody(), "_id").delivery;
-  console.log(delivery);
-  console.log(_.omit(state.order.delivery, "location"));
   return _.isEqual(delivery, _.omit(state.order.delivery, "location"));
 }
