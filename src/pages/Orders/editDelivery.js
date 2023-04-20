@@ -58,6 +58,12 @@ function addEventListelersToEditDeliveryPage() {
   if (state.order.delivery.condition === "Pickup") {
     deliveryLocationContainer.hide();
   }
+
+  if (state.order.delivery.condition === "Delivery" && state.order.delivery.location === "Other") {
+    $("section#delivery-location-section input").each(function () {
+        $(this).prop("readonly", false);
+      });
+  }
   setUpDateToDatePicker(state.order.delivery.finalDate);
 
   saveButton.on("click", async (e) => {
