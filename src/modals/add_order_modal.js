@@ -81,6 +81,10 @@ if(orderModalWrap !== null) {
         removeAddOrderModal()
     })
 
+    $("div#products-section").on('input', (e) => {
+        setCurrentTotalPriceToOrderModal()
+    })
+
     $("#create-order-btn").on('click', async (e) => {
         e.preventDefault()
         const requestedProducts = []
