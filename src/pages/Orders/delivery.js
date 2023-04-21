@@ -238,11 +238,14 @@ function renderScheduleDeliveryLayout(options = delivery_props) {
     })
 
     $(`#${delivery_props.formId}`).on("input", (e) => {
-      if(validateScheduleDeliveryForm()) {
-        saveButton.prop("disabled", false);
-      } else {
-        saveButton.prop("disabled", true);
-      }
+      setTimeout(() => {
+        if(validateScheduleDeliveryForm()) {
+          saveButton.prop("disabled", false);
+        } else {
+          saveButton.prop("disabled", true);
+        }
+      } , 100)
+     
 
       switch (e.target.id) {
         case "inputLocation": {
