@@ -296,7 +296,7 @@ function renderScheduleDeliveryLayout(options = delivery_props) {
         }
 
         case "inputHouse": {
-          if (!isValidInput("House", $(`#${delivery_props.inputs.house.id}`).val()) || +$(`#${delivery_props.inputs.house.id}`).val() === 0) {
+          if (!isValidInput("House", +$(`#${delivery_props.inputs.house.id}`).val()) || +$(`#${delivery_props.inputs.house.id}`).val() === 0) {
             showErrorMessage(delivery_props.inputs.house)
           } else {
             hideErrorMessage(delivery_props.inputs.house)
@@ -305,7 +305,7 @@ function renderScheduleDeliveryLayout(options = delivery_props) {
         }
 
         case "inputFlat": {
-          if (!isValidInput("Flat", $(`#${delivery_props.inputs.flat.id}`).val()) || +$(`#${delivery_props.inputs.flat.id}`).val() === 0) {
+          if (!isValidInput("Flat", +$(`#${delivery_props.inputs.flat.id}`).val()) || +$(`#${delivery_props.inputs.flat.id}`).val() === 0) {
             showErrorMessage(delivery_props.inputs.flat)
           } else {
             hideErrorMessage(delivery_props.inputs.flat)

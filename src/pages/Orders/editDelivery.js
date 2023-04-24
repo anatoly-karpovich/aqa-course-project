@@ -21,18 +21,18 @@ function renderEditDeliveryLayout(options = edit_delivery_props) {
             <h2 class="fw-bold">${options.title}</h2>
         </div>
         <form class="row g-3 form-with-inputs modal-body" id="${options.formId}">
-        <div class="d-flex justify-content-between">
-          ${generateFormSelectInput({ ...options.inputs.type, defaultValue: state.order.delivery.condition })}
-          ${generateDatePicker()}
-        </div> 
+            <div class="d-flex justify-content-between">
+                ${generateFormSelectInput({ ...options.inputs.type, defaultValue: state.order.delivery.condition })}
+                ${generateDatePicker()}
+            </div> 
             ${
               state.order.delivery.condition === "Delivery"
                 ? generateFormSelectInput({ ...options.inputs.delivery_location, defaultValue: state.order.delivery.location })
                 : generateFormSelectInput({ ...options.inputs.delivery_location })
             }
-         <section id="delivery-location-section" class="row g-2 d-flex justify-content-between s-loc-ml">
-          ${generateInitialEditDeliverySectionBody()}
-         </section>
+            <section id="delivery-location-section" class="row g-2 d-flex justify-content-between s-loc-ml">
+                ${generateInitialEditDeliverySectionBody()}
+            </section>
             <div class="col-12  d-flex justify-content-around" style="margin-top: 50px;">
                 <div>
                     ${saveButton(options.buttons.save.id, options.buttons.save.name)}
@@ -139,7 +139,7 @@ function addEventListelersToEditDeliveryPage() {
       }
 
       case "inputHouse": {
-        if (!isValidInput("House", $(`#${delivery_props.inputs.house.id}`).val()) || +$(`#${delivery_props.inputs.house.id}`).val() === 0) {
+        if (!isValidInput("House", +$(`#${delivery_props.inputs.house.id}`).val()) || +$(`#${delivery_props.inputs.house.id}`).val() === 0) {
           showErrorMessage(delivery_props.inputs.house);
         } else {
           hideErrorMessage(delivery_props.inputs.house);
@@ -148,7 +148,7 @@ function addEventListelersToEditDeliveryPage() {
       }
 
       case "inputFlat": {
-        if (!isValidInput("Flat", $(`#${delivery_props.inputs.flat.id}`).val()) || +$(`#${delivery_props.inputs.flat.id}`).val() === 0) {
+        if (!isValidInput("Flat", +$(`#${delivery_props.inputs.flat.id}`).val()) || +$(`#${delivery_props.inputs.flat.id}`).val() === 0) {
           showErrorMessage(delivery_props.inputs.flat);
         } else {
           hideErrorMessage(delivery_props.inputs.flat);

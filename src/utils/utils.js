@@ -53,7 +53,7 @@ function isValidInput(inputName, value) {
   } else if (typeof value === "string") {
     return REGULAR_EXPRESSIONS[inputName].test(value.trim());
   } else {
-    return REGULAR_EXPRESSIONS[inputName].test(value);
+    return REGULAR_EXPRESSIONS[inputName].test(+value);
   }
 }
 

@@ -148,7 +148,7 @@ function addEventListelersToAddNewProductPage(options = add_new_product_props.in
       }
 
       case "inputAmount": {
-        if (!isValidInput("Amount", $(`#${options.amount.id}`).val()) || !$(`#${options.amount.id}`).val().length) {
+        if (!isValidInput("Amount", +$(`#${options.amount.id}`).val()) || !$(`#${options.amount.id}`).val().length) {
           showErrorMessageForInput(options.amount, saveChangesBtn);
         } else {
           hideErrorMessageForInput(options, "amount", saveChangesBtn, add_new_product_props.path);
@@ -157,7 +157,7 @@ function addEventListelersToAddNewProductPage(options = add_new_product_props.in
       }
 
       case "inputPrice": {
-        if (!isValidInput("Price", $(`#${options.price.id}`).val()) || +$(`#${options.price.id}`).val() === 0) {
+        if (!isValidInput("Price", +$(`#${options.price.id}`).val()) || +$(`#${options.price.id}`).val() === 0) {
           showErrorMessageForInput(options.price, saveChangesBtn);
         } else {
           hideErrorMessageForInput(options, "price", saveChangesBtn, add_new_product_props.path);
