@@ -66,4 +66,18 @@ class OrdersService {
           };
           return sendRequest(options); 
     }
+
+    static async changeOrderStatus(_id, status) {
+        const options = {
+            method: "put",
+            baseURL: BASE_URL,
+            url: ENDPOINTS["Order Status"],
+            headers: { 
+                Authorization: getAuthorizationCookie(),
+                ["Content-Type"]: "application/json" 
+            },
+            data: { _id, status }
+          };
+          return sendRequest(options); 
+    }
 }

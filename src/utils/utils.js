@@ -73,6 +73,16 @@ async function showNotificationAfterDeleteRequest(response, notificationOptions,
     handleApiErrors(response, true)
   }
 }
+
+async function showNotificationOnOrderDetailsPage(response, notificationOptions) {
+  hideSpinner();
+  if (response.status === 200) {
+    await renderOrderDetailsPage(state.order._id);
+    renderNotification(notificationOptions);
+  } else {
+    handleApiErrors(response, true)
+  }
+}
  
 function showErrorMessage(inputOptions) {
   $(`#${inputOptions.id}`).addClass('is-invalid')

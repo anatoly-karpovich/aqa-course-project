@@ -174,6 +174,14 @@ function renderEditDeliveryPage() {
   addEventListelersToEditDeliveryPage()
 }
 
+function renderCancelOrderModal() {
+  renderConfirmationModal("Canceled", cancel_order_confirmation_opts);
+}
+
+function renderProcessOrderModal() {
+  renderConfirmationModal("In Process", process_order_confirmation_opts);
+}
+
 
 //Home section
 function renderLandingPage(options = {}) {

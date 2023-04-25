@@ -422,6 +422,10 @@ label.form-label:not([for=textareaNotes]):after {
   width: 1120px;
 }
 
+.h-m-width {
+max-width: 1090px;;
+}
+
 .section-header {
   /* padding: 1rem -0.5rem; */
   display: flex;

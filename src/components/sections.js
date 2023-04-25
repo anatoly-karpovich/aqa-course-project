@@ -18,7 +18,6 @@ function generateProductsSection(products) {
                     <h4 class="modal-title">Requested Products</h4>
                 </div>
                 ${generateProductsSectionBody(products)}
-                <div class="section-footer"><button class="btn btn-primary page-title-header page-title-button">Receive</button></div>
             </div>`
 }
 
@@ -42,33 +41,70 @@ function generateOrderDetailsTabs(order) {
     </div>`
 }
 
-function generateOrderDetailsHeaderSection(data) {
+function generateOrderDetailsHeaderSection(order) {
+    return generateOrderDetailsInfoBar(order) + generateOrderDetailsStatusBar(order)
+}
+
+function generateOrderDetailsInfoBar(order) {
     return `
-    <div class="d-flex justify-content-between p-horizontal-20">
+    <div class="d-flex justify-content-start p-horizontal-20 mb-1">
+        <span class="strong-details fw-bold">Order number: </span>
+        <span class="fst-italic">${order._id}</span>
+    </div>
+    <div class="d-flex justify-content-start p-horizontal-20 mb-3">
+        <span class="strong-details fw-bold">Assigned Manageer: </span>
+        <span class="fst-italic">AQA user</span>
+    </div>
+    <div class="d-flex justify-content-between p-horizontal-20 mb-3">
+        <div class="d-flext justify-content-start">
+            ${generateProcessOrReceiveButton(order)}
+            <button class="btn btn-link btn-sm" id="refresh-order">Refresh Order <i class="bi bi-arrow-clockwise"></i></button>
+        </div>
+            ${generateCancelOrderButton(order)}
+    </div>`
+}
+
+function generateCancelOrderButton(order) {
+    return order.status === "Draft" || order.status === "In Process"
+    ? `<div><button class="btn btn-outline-danger btn-sm" id="cancel-order">Cancel Order</button></div>`
+    : ""
+}
+
+function generateProcessOrReceiveButton(order) {
+    if(order.status === "Draft") {
+        return '<button class="btn btn-primary btn-sm  me-3" id="process-order">Process Order</button>'
+    } else if(order.status === "In Process" || order.status === "Partially Received") {
+        return '<button class="btn btn-primary btn-sm me-3" id="receive-order">Receive Products</button>'
+    } else {
+        return ""
+    }
+}
+
+function generateOrderDetailsStatusBar(order) {
+return `
+    <div class="d-flex justify-content-between p-horizontal-20 h-m-width">
         <div>
             <span class="fw-bold">Order Status</span>
             <br/>
-            <span class="text-primary">${data.status}</span>
+            <span class="text-primary">${order.status}</span>
         </div>
         <div>
             <span class="fw-bold">Total Price</span>
             <br/>
-            <span class="text-primary">$${data.total_price}</span>
+            <span class="text-primary">$${order.total_price}</span>
         </div>
         <div>
             <span class="fw-bold">Delivery</span>
             <br/>
-            <span class="text-primary">${data.delivery ? moment(data.delivery.finalDate).format(DATE_FORMAT) : "-"}</span>
+            <span class="text-primary">${order.delivery ? moment(order.delivery.finalDate).format(DATE_FORMAT) : "-"}</span>
         </div> 
         <div>
             <span class="fw-bold">Created On</span>
             <br/>
-            <span class="text-primary">${moment(data.createdOn).format('LLL')}</span>
+            <span class="text-primary">${moment(order.createdOn).format('LLL')}</span>
         </div> 
-        <button class="btn btn-outline-danger page-title-header page-title-button">Cancel Order</button>
     </div>`
 }
-
 function generateSectionEntry(key, value) {
     return `
     <div class="c-details">
@@ -164,5 +200,5 @@ function generateDeliveryButton(delivery) {
 
 
 function generateOrderHistoryTab(order) {
-    
+
 }
