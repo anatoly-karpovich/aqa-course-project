@@ -137,15 +137,17 @@ async function renderOrdersPage(options = OrdersProps) {
 
 async function renderOrderDetailsPage(id) {
   showSpinner();
-  const response = await OrdersService.getOrders(id)
-  if(response && response.status === 200) {
+  const [order, customers] = await Promise.all([OrdersService.getOrders(id), CustomersService.getCustomers()]) 
+  if(order && order.status === 200 && customers.status === 200) {
     hideSpinner();
     sideMenuActivateElement("Orders");
-    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(Order_Details_Props, response.data.Order);
-    state.order = response.data.Order
+    state.order = order.data.Order
+    state.customers = customers.data.Customers
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(Order_Details_Props, order.data.Order);
     addEventListelersToOrderDetailsPage()
   } else {
-    handleApiErrors(response)
+    handleApiErrors(order)
+    handleApiErrors(customers)
   }
 }
 

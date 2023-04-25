@@ -25,19 +25,19 @@ function generateOrderDetailsTabs(order) {
     return `
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="delivery-tab" data-bs-toggle="tab" data-bs-target="#delivery" type="button" role="tab" aria-controls="delivery" aria-selected="true">      Delivery      </button>
+            <button class="nav-link active" id="delivery-tab" data-bs-toggle="tab" data-bs-target="#delivery" type="button" role="tab" aria-controls="delivery" aria-selected="true">Delivery</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab" aria-controls="history" aria-selected="false">      History      </button>
+            <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab" aria-controls="history" aria-selected="false">Order History</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">      Contact      </button>
+            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Comments</button>
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active  tab-w" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">${generateOrderDeliveryTabBody(order)}</div>
-        <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">...</div>
-        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+        <div class="tab-pane fade show active tab-w" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">${generateOrderDeliveryTabBody(order)}</div>
+        <div class="tab-pane fade mb-2" id="history" role="tabpanel" aria-labelledby="history-tab">${generateOrderHistoryTab(order)}</div>
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">${generateCommentsTab(order)}</div>
     </div>`
 }
 
@@ -53,7 +53,7 @@ function generateOrderDetailsInfoBar(order) {
     </div>
     <div class="d-flex justify-content-start p-horizontal-20 mb-3">
         <span class="strong-details fw-bold">Assigned Manageer: </span>
-        <span class="fst-italic">AQA user</span>
+        <span class="fst-italic">AQA User</span>
     </div>
     <div class="d-flex justify-content-between p-horizontal-20 mb-3">
         <div class="d-flext justify-content-start">
@@ -86,7 +86,7 @@ return `
         <div>
             <span class="fw-bold">Order Status</span>
             <br/>
-            <span class="text-primary">${order.status}</span>
+            <span class="text-${order.status === "Canceled" ? "danger" : "primary"}">${order.status}</span>
         </div>
         <div>
             <span class="fw-bold">Total Price</span>
@@ -178,8 +178,9 @@ function generateOrderDeliveryTabBody(order) {
         <div class="mb-4 modal-body">
             ${generateCustomerSectionBody({condition: order.delivery.condition, finalDate: order.delivery.finalDate, ...order.delivery.address})}
         </div>`
-    }
-    return result + handleDeliveryButton(order)
+    } 
+    const header = `<h4 class="ms-3 mt-4 mb-3">Delivery Information</h4>`
+    return header + result + handleDeliveryButton(order)
 }
 
 function handleDeliveryButton(order) {
@@ -200,5 +201,124 @@ function generateDeliveryButton(delivery) {
 
 
 function generateOrderHistoryTab(order) {
+    return `
+    <h4 class="ms-3 my-4">Order History</h4>
+    <div class="his-header py-3 fs-5">
+        <span class="his-action"></span>
+        <span class="his-col">Action</span>
+        <span class="his-col">Performed By</span>
+        <span class="his-col">Changed On</span>
+    </div>
+    ${generateOrderHistoryBody(order)}
+    `
+}
 
+function generateOrderHistoryEntiti(history) {
+    return `
+    <div class="d-flex justify-content-center">
+        <span class="his-action"></span>
+        <span class="his-col">${history.status}</span>
+        <span class="his-col">${state.order.customer.name}</span>
+        <span class="his-col">${moment(history.changedOn).format(DATE_AND_TIME_FORMAT)}</span>
+    </div>
+    `
+}
+
+function generateOrderHistoryBody(order) {
+    return `
+    <div id="history-body">
+        ${order.history.reverse().map((h, i) => generateOrderHistoryRow(order, i)).join("")}
+    </div>
+    `
+}
+
+function generateOrderHistoryRow(order, index) {
+    return ` 
+    <div class="accordion-header his-header border-bottom" id="heading2${index}">
+        <button class="accordion-button collapsed  his-action" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2${index}" 
+        aria-expanded="false" aria-controls="collapse2${index}"></button>
+        <span class="his-col">${getHistoryActionName(order,index)}</span>
+        <span class="his-col">${order.history[index].changedBy ? order.history[index].changedBy : "AQA User"}</span>
+        <span class="his-col">${moment(order.history[index].changedOn).format(DATE_AND_TIME_FORMAT)}</span>
+    </div>
+    <div id="collapse2${index}" class="accordion-collapse collapse" aria-labelledby="heading2${index}">
+        ${generateOrderHistoryNestedRows(order, index)}
+    </div>`
+}
+
+function generateOrderHistoryNestedRows(order, index) {
+    const keys = ["status", "total_price", "customer", "delivery" ];
+    return `
+    <div class="mb-3">
+        <div class="d-flex justify-content-around py-3 his-row">
+            <span class="his-action"></span>
+            <span class="fw-bold his-col"></span>
+            <span class="fw-bold his-col">Previous</span>
+            <span class="fw-bold his-col">Updated</span>
+        </div>
+        ${keys.map(key => generateOrderHistoryNestedRow(order, key, index)).join("") }
+    </div>`
+}
+
+function generateOrderHistoryNestedRow(order, key, index) {
+    let previous = index === order.history.length - 1 ? "-" : order.history[index + 1][key]
+    let updated = order.history[index][key] ? order.history[index][key] : "-"
+    if(key === "total_price") {
+        previous = previous === "-" ? previous : "$" + previous
+        updated = "$" + updated 
+    } else if(key === "customer") {
+        previous = state.customers.find(c => c._id === previous)?.name ? state.customers.find(c => c._id === previous).name : "-"
+        updated = state.customers.find(c => c._id === updated).name
+    } else if(key === "delivery") {
+        let previousDate = (previous && previous !== "-") ? moment(previous.finalDate).format(DATE_FORMAT) : "Not scheduled"
+        let updatedDate = (updated && updated !== "-") ? moment(updated.finalDate).format(DATE_FORMAT) : "Not scheduled"
+        return `
+            <div class="d-flex justify-content-around py-3 border-bottom">
+                <span class="his-action"></span>
+                <span class="his-col fst-italic">${replaceApiToFeKeys[key]}</span>
+                <span class="his-col fst-italic">${previousDate}</span>
+                <span class="his-col fst-italic">${updatedDate}</span>
+            </div> `          
+    } 
+    return `
+        <div class="d-flex justify-content-around py-3 border-bottom">
+            <span class="his-action"></span>
+            <span class="his-col fst-italic">${replaceApiToFeKeys[key]}</span>
+            <span class="his-col fst-italic">${previous}</span>
+            <span class="his-col fst-italic">${updated}</span>
+        </div> `
+}
+
+function generateCommentsTab(order) {
+    return `<h4 class="ms-3 my-4">Comments</h4>`
+}
+
+function getHistoryActionName(order, index) {
+    if(order.history.length - 1 === index) {
+        return "Order created"
+    }
+    if(order.history[index].customer !== order.history[index + 1].customer) {
+        return "Customer changed"
+    }
+    if(!_.isEqual(sortStrings(order.history[index].requestedProducts.map(e => e._id)),sortStrings(order.history[index+1].requestedProducts.map(e => e._id)))) {
+        return "Requested products changed"
+    }
+    if(order.history[index].status === "In Process" && order.history[index+1].status === "Draft") {
+        return "Order processing started"
+    }
+    if(order.history[index].delivery && !order.history[index+1].delivery) {
+        return "Delivery scheduled"
+    }
+    if(order.history[index].delivery && order.history[index+1].delivery && !_.isEqual(order.history[index].delivery,order.history[index+1].delivery)) {
+        return "Delivery edited"
+    }
+    if(order.history[index].status === "Received" && order.history[index+1].status === "Partially Received") {
+        return "All products received"
+    }
+    if(order.history[index].receivedProducts.length > order.history[index+1].receivedProducts.length) {
+        return "Received"
+    }
+    if(order.history[index].status === "Canceled" && order.history[index+1].status !== "Canceled") {
+        return "Order canceled"
+    }
 }

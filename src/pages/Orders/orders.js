@@ -8,8 +8,8 @@ function renderOrdersPageLayout(options = OrdersProps, response = {}) {
           Name: el.customer.name, 
           Email: el.customer.email, 
           'Price': `$${el.total_price}`, 
+          Delivery: el.delivery ? moment(el.delivery.finalDate).format(DATE_FORMAT): "-",
           Status: el.status,
-          Delivery: el.delivery ? moment(el.delivery.finalDate).format(DATE_FORMAT): "-", 
           "Created": moment(el.createdOn).format(DATE_AND_TIME_FORMAT) 
         };
       });

@@ -492,3 +492,31 @@ max-width: 1090px;;
 .s-loc-ml {
   margin-left: 1px;
 }
+
+.his-col {
+  width: 30%;
+  display: flex;
+  align-items: center;
+}
+
+.his-action {
+  width: 5%;
+  margin-right: 5px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.his-header {
+  width: 100%;
+  border-bottom: 1px solid rgb(223, 222, 222);
+  display: flex;
+  justify-content: space-around;
+}
+
+div#history div#history-body button::after {
+  margin-left: 0 !important;
+}
+
+.his-row {
+  border-bottom: 0.5px solid rgb(223, 222, 222);
+}
