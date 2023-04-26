@@ -528,3 +528,13 @@ div#history div#history-body button::after {
 .his-nested-delivery-row {
   padding-left: 90px;
 }
+
+button.accordion-button:not(.collapsed) {
+  color: #212529;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+button.accordion-button:focus {
+  box-shadow: none;
+}
