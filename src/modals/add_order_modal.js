@@ -88,9 +88,11 @@ if(orderModalWrap !== null) {
     $("#create-order-btn").on('click', async (e) => {
         e.preventDefault()
         const requestedProducts = []
-        let customer = $("select#inputCustomerOrder").find(":selected").text()
-        console.log(customer)
-        customer = add_order_modal_props.data.customers.find(c => c.name === customer)._id
+        let customer = {
+           name: $("select#inputCustomerOrder").find(":selected").text(),
+           email: $("select#inputCustomerOrder").find(":selected").attr("title")
+        }
+        customer = add_order_modal_props.data.customers.find(c => c.name === customer.name && c.email === customer.email)._id
         $('select[name="Product"]').each(function (){
             requestedProducts.push($(this).find(":selected").text())
         })
@@ -127,7 +129,7 @@ function handleFirstDeleteButtonInOrderModal(showButton) {
 function generateAddOrderModalBody() {
     return `
     <div style="margin-bottom: 20px">
-        ${generateFormSelectInput(add_order_modal_props.customers)}
+        ${generateFormSelectInput(add_order_modal_props.customers, add_order_modal_props.data.customers)}
     </div>
     <div id="products-section">
         <label for="products-section" class="form-label">Products</label>

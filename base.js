@@ -42,6 +42,7 @@ const SUCCESS_MESSAGES = {
   ["Product Successfully Deleted"]: (name) => `${name} was successfully deleted`,
   ["Product Successfully Updated"]: (name) => `${name} was successfully updated`,
   ["New Order Added"]: "Order was successfully created",
+  ["Order Successfully Updated"]: "Order was successfully created",
   ["Delivery Saved"]: "Delivery was successfully saved",
   ["Order Canceled"]: "Order was successfully canceled",
   ["Order In Process"]: "Order processing was successfully started",

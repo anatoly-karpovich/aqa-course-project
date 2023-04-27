@@ -78,13 +78,15 @@ async function submitEntiti(options, notificationOprions) {
 }
 
 async function submitOrder(orderData) {
-  showSpinner()
-  const response = await OrdersService.createOrder(orderData);
+  showSpinner();
+  const response = orderData._id ? await OrdersService.editOrder(orderData) : await OrdersService.createOrder(orderData);
   response.data.IsSuccess
-  ? renderNotification({ message: SUCCESS_MESSAGES['New Order Added'] })
-  : handleApiErrors(response, true)
+    ? orderData._id
+      ? renderNotification({ message: SUCCESS_MESSAGES["Order Successfully Updated"] })
+      : renderNotification({ message: SUCCESS_MESSAGES["New Order Added"] })
+    : handleApiErrors(response, true);
   hideSpinner();
-  await renderOrdersPage()
+  orderData._id ? await renderOrderDetailsPage(orderData._id) : await renderOrdersPage();
 }
 
 async function submitDelivery(delivery) {

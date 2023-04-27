@@ -8,7 +8,7 @@ function renderOrderDetailsPageLayout(options = Order_Details_Props, order) {
                 ${generateOrderDetailsHeaderSection(order)}
         </div>
     </div>      
-        <div class="d-flex justify-content-start">
+        <div class="d-flex justify-content-start" id="order-details-body">
             ${generateCustomerSection(order)}
             ${generateProductsSection(order)}
         </div>
@@ -57,6 +57,34 @@ const process_order_confirmation_opts = {
   },
 };
 
+const edit_order_details_modal_props = {
+  customers: {
+      divClasslist: "col-md-12",
+      name: "Customer",
+      type: "select",
+      classlist: "form-select",
+      id: "inputCustomerOrder",
+      defaultValue: "",
+      options: {
+      values: [],
+      },
+      attributes: `name="Customer"`
+  }, 
+  products: {
+      divClasslist: "col-md-11",
+      name: "Product",
+      type: "select",
+      classlist: "form-select",
+      id: `${window.crypto.randomUUID()}`,
+      defaultValue: "Apple",
+      options: {
+      values: [],
+      },
+      attributes: `name="Product"`
+  },
+  data: {}   
+}
+
 async function changeOrderStatus(status) {
   removeConfimationModal();
   showSpinner();
@@ -94,4 +122,18 @@ function addEventListelersToOrderDetailsPage() {
       }
     }
   });
+
+  $("#order-details-body").on("click", async (e) => {
+    e.preventDefault();
+    switch (e.target.id) {
+      case "edit-customer-pencil": {
+        await renderEditCustomerModal()
+        break;
+      }
+      case "edit-products-pencil": {
+        
+        break;
+      }
+    }
+  })
 }

@@ -64,6 +64,14 @@ function renderOptions(values = [], defaultValue, toBeSelected, titleValues = ""
     : values.map((el,i) => `<option ${el === defaultValue ? "selected" : ""} ${titles ? titles[i] : ""} value="${el}">${el}</option>`).join("");
 }
 
+function renderCustomersOptions(options, data) {
+  const titles = data.map(t => `title="${t.email}"`)
+  return data.map((el,i) => `
+  <option ${el.name === options.defaultValue.name && el.email === options.defaultValue.title ? "selected" : ""} ${titles ? titles[i] : ""} 
+  value="${el.name}">${el.name}</option>`
+  ).join("");
+}
+
 async function showNotificationAfterDeleteRequest(response, notificationOptions, pageProps) {
   hideSpinner();
   if (response.status === 204) {

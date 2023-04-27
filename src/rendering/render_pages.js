@@ -184,6 +184,18 @@ function renderProcessOrderModal() {
   renderConfirmationModal("In Process", process_order_confirmation_opts);
 }
 
+async function renderEditCustomerModal() {
+  showSpinner();
+  const customers = await CustomersService.getCustomers()
+  if(customers.status === 200) {
+    await createEditCustomerModal(customers.data.Customers);
+    hideSpinner();
+    sideMenuActivateElement("Orders");
+  } else {
+    handleApiErrors(customers)
+  }
+}
+
 
 //Home section
 function renderLandingPage(options = {}) {

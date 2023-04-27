@@ -62,13 +62,15 @@ function generatePageTitle(options, entitiName) {
   `;
 }
 
-function generateFormSelectInput(options) {
+function generateFormSelectInput(options, data) {
   return `
     <div class="${options.divClasslist}" id="div-${options.id}">
       <label for="${options.id}" class="form-label">${options.name}</label>
       <select id="${options.id}" class="${options.classlist}"
       ${options.attributes ? options.attributes : ""}>
-      ${renderOptions(options.options.values, options.defaultValue, options.value, options.options.titles)}
+      ${data 
+        ? renderCustomersOptions(options, data)
+        : renderOptions(options.options.values, options.defaultValue, options.value, options.options.titles)}
       </select>
     </div>`;
 }
