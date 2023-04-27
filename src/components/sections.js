@@ -1,23 +1,25 @@
-function generateCustomerSection(customer) {
+function generateCustomerSection(order) {
     return `
     <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin s-width mr-0">
         <div class="section-header">
             <h4 class="modal-title">Customer Details</h4>
+            ${order.status === "Draft" ? generateEditPencilButton() : "" }
         </div>
         <div class="modal-body">
-            ${generateCustomerSectionBody(customer)}
+            ${generateCustomerSectionBody(_.omit(order.customer, "_id"))}
         </div>
         
     </div>`
 }
 
-function generateProductsSection(products) {
+function generateProductsSection(order) {
     return `
             <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin s-width">
                 <div class="section-header">
                     <h4 class="modal-title">Requested Products</h4>
+                    ${order.status === "Draft" ? generateEditPencilButton() : "" }               
                 </div>
-                ${generateProductsSectionBody(products)}
+                ${generateProductsSectionBody(order.products)}
             </div>`
 }
 

@@ -92,3 +92,12 @@ function generateFormTextInput(options) {
                 <div class="invalid-feedback" id=error-${options.id}></div>
                 </div>`;
 }
+
+function generateEditPencilButton(options) {
+  return `
+  <button 
+  class="btn btn-light edit-pencil"
+  ${options?.id ? "id=" + '"' + options.id + '" ' : ""}>
+  <i class="bi bi-pencil-fill"></i>
+  </button>`;
+}

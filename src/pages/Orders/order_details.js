@@ -9,8 +9,8 @@ function renderOrderDetailsPageLayout(options = Order_Details_Props, order) {
         </div>
     </div>      
         <div class="d-flex justify-content-start">
-            ${generateCustomerSection(_.omit(order.customer, "_id"))}
-            ${generateProductsSection(order.products)}
+            ${generateCustomerSection(order)}
+            ${generateProductsSection(order)}
         </div>
         <div class="d-tabs shadow-sm p-3 mb-5 bg-body rounded">
             ${generateOrderDetailsTabs(order)}

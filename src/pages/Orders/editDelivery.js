@@ -85,11 +85,13 @@ function addEventListelersToEditDeliveryPage() {
   });
 
   $(`#${edit_delivery_props.formId}`).on("input", (e) => {
-    if (validateScheduleDeliveryForm() && !isNewDeliveryEqualToState()) {
-      saveButton.prop("disabled", false);
-    } else {
-      saveButton.prop("disabled", true);
-    }
+    setTimeout(() => {
+      if (validateScheduleDeliveryForm() && !isNewDeliveryEqualToState()) {
+        saveButton.prop("disabled", false);
+      } else {
+        saveButton.prop("disabled", true);
+      }
+    }, 0);
 
     switch (e.target.id) {
       case "inputLocation": {

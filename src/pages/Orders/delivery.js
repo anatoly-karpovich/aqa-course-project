@@ -244,7 +244,7 @@ function renderScheduleDeliveryLayout(options = delivery_props) {
         } else {
           saveButton.prop("disabled", true);
         }
-      } , 100)
+      } , 0)
      
 
       switch (e.target.id) {

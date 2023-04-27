@@ -96,7 +96,7 @@ if(orderModalWrap !== null) {
         })
         const orderData = {
             customer,
-            requestedProducts: [...requestedProducts].map(rp => {return add_order_modal_props.data.products.find(p => p.name === rp)._id})
+            products: [...requestedProducts].map(rp => {return add_order_modal_props.data.products.find(p => p.name === rp)._id})
         }
         await submitOrder(orderData)
         removeAddOrderModal()

@@ -431,7 +431,7 @@ max-width: 1090px;;
   display: flex;
   flex-shrink: 0;
   align-items: center;
-  justify-content: space-between;
+  justify-content: start;
   padding: 1rem 1rem;
   border-bottom: 1px solid #dee2e6;
   border-top-left-radius: calc(.3rem - 1px);
@@ -537,4 +537,16 @@ button.accordion-button:not(.collapsed) {
 
 button.accordion-button:focus {
   box-shadow: none;
+}
+
+.edit-pencil {
+  margin-left: 3px;
+}
+
+.edit-pencil:hover {
+  color: #0c63e4;
+}
+
+.edit-pencil:focus {
+  box-shadow: 0 0 0 .25rem rgba(13,110,253,.5);
 }
