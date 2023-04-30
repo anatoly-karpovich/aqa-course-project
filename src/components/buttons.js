@@ -99,7 +99,8 @@ function generateEditPencilButton(options) {
   return `
   <button 
   class="btn btn-light edit-pencil"
-  ${options?.id ? "id=" + '"' + options.id + '" ' : ""}>
+  ${options?.id ? "id=" + '"' + options.id + '" ' : ""}
+  ${options?.title ? "title=" + '"' + options.title + '" ' : ""}>
   <i class="bi bi-pencil-fill"></i>
   </button>`;
 }
