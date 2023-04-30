@@ -79,9 +79,9 @@ function generateCancelOrderButton(order) {
 }
 
 function generateProcessOrReceiveButton(order) {
-    if(order.status === "Draft") {
+    if(order.status === "Draft" && order.delivery) {
         return '<button class="btn btn-primary btn-sm  me-3" id="process-order">Process Order</button>'
-    } else if(order.status === "In Process" || order.status === "Partially Received") {
+    } else if(order.status === "In Process" || order.status === "Partially Received" || (order.status === "Draft" && !order.delivery)) {
         return '<button class="btn btn-primary btn-sm me-3" id="receive-order">Receive Products</button>'
     } else {
         return ""
@@ -152,14 +152,15 @@ function generateProductsSectionBody(products) {
 function generateProductAccordion(product, index) {
     return `
     <div class="">
-        <h2 class="accordion-header" id="heading${index}">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="false" aria-controls="collapse${index}">
+        <div class="accordion-header d-flex justify-content-between" id="heading${index}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="false" aria-controls="collapse${index}">
                 ${product.name}
             </button>
-        </h2>
+            <span class="align-items-center d-flex received-label">${product.received ? "Received" : "Not Received"}</span>
+        </div>
         <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}">
             <div class="accordion-body">
-                ${generateCustomerSectionBody(_.omit(product, ["_id", "amount"]))}
+                ${generateCustomerSectionBody(_.omit(product, ["_id", "amount", "received"]))}
             </div>
         </div>
     </div>`

@@ -91,7 +91,7 @@ const layout = `
     <a href="#!" class="text-white me-4">
       <i class="fab fa-google"></i>
     </a>
-    <a href="#!" class="text-white">
+    <a href="https://www.linkedin.com/in/anatolykarpovich/" class="text-white">
       <i class="fab fa-linkedin-in"></i>
     </a>
   </div>

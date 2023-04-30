@@ -202,6 +202,7 @@ function renderLandingPage(options = {}) {
   document.querySelector("body").innerHTML = renderLandingPageLayout(options);
   document.querySelector("#signOut").addEventListener("click", () => {
     localStorage.removeItem("token");
+    removeAuthorizationCookie()
     document.querySelector("#sidemenu").parentNode.removeChild(document.querySelector("#sidemenu"));
     renderSignInPage();
   });

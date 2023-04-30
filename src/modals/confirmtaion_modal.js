@@ -7,7 +7,7 @@ function renderConfirmationModal(id, options) {
     confirmationModalWrap = document.createElement("div");
     confirmationModalWrap.insertAdjacentHTML(
         "afterbegin", `
-<div class="modal" tabindex="-1">
+<div class="modal show fade" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">

@@ -57,10 +57,10 @@ async function createEditCustomerModal(data) {
     removeEditCustomerModal()
 })
 
-$("div.modal-footer #cancel-edit-customer-modal-btn").on("click", (e) => {
-  e.preventDefault()
-  removeEditCustomerModal()
-})
+  $("div.modal-footer #cancel-edit-customer-modal-btn").on("click", (e) => {
+    e.preventDefault()
+    removeEditCustomerModal()
+  })
 
 }
 

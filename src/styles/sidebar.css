@@ -550,3 +550,10 @@ button.accordion-button:focus {
 .edit-pencil:focus {
   box-shadow: 0 0 0 .25rem rgba(13,110,253,.5);
 }
+
+.received-label {
+  min-width: 95px;
+  white-space: nowrap;
+  margin-right: 30px;
+  justify-content: end;
+}
