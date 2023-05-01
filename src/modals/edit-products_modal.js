@@ -1,4 +1,6 @@
 let editProductsModalWrap = null;
+const updateProductsButtonSelector = "div#edit-products-modal #update-products-btn"
+
 async function createEditProductsModal(data) {
   edit_order_details_modal_props.data = _.cloneDeep(data);
   edit_order_details_modal_props.products.options.values = edit_order_details_modal_props.data.map((c) => c.name);
@@ -36,7 +38,7 @@ async function createEditProductsModal(data) {
                             <span class="text-primary fw-bold" id="total-price-order-modal"></span>
                         </div>
                         <div>
-                            <button type="submit" class="btn btn-primary mr-10" id="update-products-btn">Save</button>
+                            <button type="submit" class="btn btn-primary mr-10" id="update-products-btn" disabled>Save</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancel-edit-products-modal-btn">Cancel</button>
                         </div>                          
                     </div>
@@ -52,7 +54,7 @@ async function createEditProductsModal(data) {
 
   handleInitialEditProductsModalBody();
 
-  $("div.modal-footer #update-products-btn").on("click", async (e) => {
+  $(updateProductsButtonSelector).on("click", async (e) => {
     e.preventDefault();
     const products = [];
     $('select[name="Product"]').each(function () {
@@ -84,6 +86,7 @@ async function createEditProductsModal(data) {
       $("#add-product-btn").hide();
     }
     setCurrentTotalPriceToOrderModal(edit_order_details_modal_props.data);
+    handleSaveButtonAvailabilityInChangeProductsModal()
   });
 
   $("div#edit-products-section").on("click", (e) => {
@@ -99,12 +102,15 @@ async function createEditProductsModal(data) {
             $("#add-product-btn").show()
         }
     }
+    handleSaveButtonAvailabilityInChangeProductsModal()
     setCurrentTotalPriceToOrderModal(edit_order_details_modal_props.data)
 })
 
-  $("div#edit-products-section").on('input', (e) => {
-    setCurrentTotalPriceToOrderModal(edit_order_details_modal_props.data)
-})
+  $("div#edit-products-section").on("input", (e) => {
+    e.preventDefault()
+    setCurrentTotalPriceToOrderModal(edit_order_details_modal_props.data);
+    handleSaveButtonAvailabilityInChangeProductsModal()
+  });
 
 }
 
@@ -126,4 +132,18 @@ function handleInitialEditProductsModalBody() {
   setCurrentTotalPriceToOrderModal(edit_order_details_modal_props.data);
   if (state.order.products.length === 5) $("#add-product-btn").hide();
   if (state.order.products.length === 1) handleFirstDeleteButtonInOrderModal("edit-products-section");
+}
+
+function handleSaveButtonAvailabilityInChangeProductsModal() {
+  const changedProducts = []
+  $('select[name="Product"]').each(function () {
+    changedProducts.push($(this).find(":selected").text());
+  });
+  const selectedProducts = state.order.products.map(p => p.name)
+  const isEqualProductsArrays = _.isEqual(sortStrings(changedProducts), sortStrings(selectedProducts))
+  if(isEqualProductsArrays) {
+    $(updateProductsButtonSelector).prop("disabled", true)
+  } else {
+    $(updateProductsButtonSelector).prop("disabled", false)
+  }
 }
