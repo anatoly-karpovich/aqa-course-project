@@ -67,7 +67,7 @@ function generateOrderDetailsInfoBar(order) {
 }
 
 function generateRefreshOrderButton(order) {
-    return (order.status !== "Draft" && order.status !== "In Process")
+    return ((order.status !== "Draft" && order.status !== "In Process") || (order.status === "Draft" && !order.delivery))
     ? `<button class="btn btn-link btn-sm" id="refresh-order" style="padding-left: 0">Refresh Order <i class="bi bi-arrow-clockwise"></i></button>`
     : `<button class="btn btn-link btn-sm" id="refresh-order">Refresh Order <i class="bi bi-arrow-clockwise"></i></button>`
 }
@@ -80,8 +80,8 @@ function generateCancelOrderButton(order) {
 
 function generateProcessOrReceiveButton(order) {
     if(order.status === "Draft" && order.delivery) {
-        return '<button class="btn btn-primary btn-sm  me-3" id="process-order">Process Order</button>'
-    } else if(order.status === "In Process" || order.status === "Partially Received" || (order.status === "Draft" && !order.delivery)) {
+        return '<button class="btn btn-primary btn-sm me-3" id="process-order">Process Order</button>'
+    } else if(order.status === "In Process" || order.status === "Partially Received") {
         return '<button class="btn btn-primary btn-sm me-3" id="receive-order">Receive Products</button>'
     } else {
         return ""

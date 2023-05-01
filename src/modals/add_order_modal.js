@@ -34,8 +34,7 @@ if(orderModalWrap !== null) {
                             <div>
                                 <button type="submit" class="btn btn-primary mr-10" id="create-order-btn">Create</button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancel-order-modal-btn">Cancel</button>
-                            </div>
-                            
+                            </div>                          
                         </div>
                     </div>
                 </div>
@@ -45,19 +44,19 @@ if(orderModalWrap !== null) {
     
     const ordersModal = new bootstrap.Modal(orderModalWrap.querySelector('.modal'));
     ordersModal.show();
-    handleFirstDeleteButtonInOrderModal()
-    setCurrentTotalPriceToOrderModal()
+    handleFirstDeleteButtonInOrderModal("products-section")
+    setCurrentTotalPriceToOrderModal(add_order_modal_props.data.products)
 
     $("#add-product-btn").on("click", (e) => {
       e.preventDefault();
       if ($("#products-section > div").length < 5) {
-        handleFirstDeleteButtonInOrderModal(true)
-        $(generateAddOrderProductInput()).appendTo("#products-section")
+        handleFirstDeleteButtonInOrderModal("products-section", true)
+        $(generateAddOrderProductInput(add_order_modal_props.products)).appendTo("#products-section")
       } 
       if($("#products-section > div").length === 5) {
         $("#add-product-btn").hide()
       }
-      setCurrentTotalPriceToOrderModal()
+      setCurrentTotalPriceToOrderModal(add_order_modal_props.data.products)
       }); 
 
     $("div#products-section").on("click", (e) => {
@@ -67,13 +66,13 @@ if(orderModalWrap !== null) {
             const el = document.querySelector(`div[data-id="${id}"]`)
             el.parentNode.removeChild(el)
             if($("#products-section > div").length === 1) {
-                handleFirstDeleteButtonInOrderModal()
+                handleFirstDeleteButtonInOrderModal("products-section")
             }
             if($("#products-section > div").length < 5) {
                 $("#add-product-btn").show()
             }
         }
-        setCurrentTotalPriceToOrderModal()
+        setCurrentTotalPriceToOrderModal(add_order_modal_props.data.products)
     })
 
     $("#cancel-order-modal-btn").on("click", (e) => {
@@ -82,7 +81,7 @@ if(orderModalWrap !== null) {
     })
 
     $("div#products-section").on('input', (e) => {
-        setCurrentTotalPriceToOrderModal()
+        setCurrentTotalPriceToOrderModal(add_order_modal_props.data.products)
     })
 
     $("#create-order-btn").on('click', async (e) => {
@@ -105,24 +104,24 @@ if(orderModalWrap !== null) {
     })
 }
 
-function setCurrentTotalPriceToOrderModal() {
+function setCurrentTotalPriceToOrderModal(options) {
     const requestedProducts = []
     $('select[name="Product"]').each(function (){
         requestedProducts.push($(this).find(":selected").text())
     })
-    let prices = [...requestedProducts].reduce((a,b) => a + add_order_modal_props.data.products.find(p => p.name === b).price, 0)
+    let prices = [...requestedProducts].reduce((a,b) => a + options.find(p => p.name === b).price, 0)
     $("span#total-price-order-modal").text(`$${prices}`)
 }
 
-function handleFirstDeleteButtonInOrderModal(showButton) {
+function handleFirstDeleteButtonInOrderModal(sectionSelector, showButton) {
   if (showButton) {
-    $("#products-section > div:nth-of-type(1) button.del-btn-modal").show();
-    $("#products-section > div:nth-of-type(1) > div:first-child").removeClass("col-md-12");
-    $("#products-section > div:nth-of-type(1) > div:first-child").addClass("col-md-11");
+    $(`#${sectionSelector} > div:nth-of-type(1) button.del-btn-modal`).show();
+    $(`#${sectionSelector} > div:nth-of-type(1) > div:first-child`).removeClass("col-md-12");
+    $(`#${sectionSelector} > div:nth-of-type(1) > div:first-child`).addClass("col-md-11");
   } else {
-    $("#products-section > div:nth-of-type(1) button.del-btn-modal").hide();
-    $("#products-section > div:nth-of-type(1) > div:first-child").addClass("col-md-12");
-    $("#products-section > div:nth-of-type(1) > div:first-child").removeClass("col-md-11");
+    $(`#${sectionSelector} > div:nth-of-type(1) button.del-btn-modal`).hide();
+    $(`#${sectionSelector} > div:nth-of-type(1) > div:first-child`).addClass("col-md-12");
+    $(`#${sectionSelector} > div:nth-of-type(1) > div:first-child`).removeClass("col-md-11");
   }
 }
 
@@ -133,11 +132,11 @@ function generateAddOrderModalBody() {
     </div>
     <div id="products-section">
         <label for="products-section" class="form-label">Products</label>
-        ${generateAddOrderProductInput()}
+        ${generateAddOrderProductInput(add_order_modal_props.products)}
     </div>
-    <div>
-        <button id="add-product-btn" class="btn btn-outline-primary form-buttons">Add Product</button>
-    </div>
+        <div>
+            <button id="add-product-btn" class="btn btn-outline-primary form-buttons">Add Product</button>
+        </div>
     `       
 }
 
@@ -169,13 +168,13 @@ const add_order_modal_props = {
     data: {}   
 }
 
-function generateAddOrderProductInput() {
-    const options = {...add_order_modal_props.products, id: window.crypto.randomUUID()}
+function generateAddOrderProductInput(options) {
+    const products_options = {...options, id: window.crypto.randomUUID()}
     return `
-    <div style="margin-bottom: 10px; display: flex" data-id="${options.id}">
-        ${generateFormSelectInputWithoutLabel(options)}
+    <div style="margin-bottom: 10px; display: flex" data-id="${products_options.id}">
+        ${generateFormSelectInputWithoutLabel(products_options)}
         <div class="col-md-1 delete-in-modal">
-            <button class="btn btn-link text-danger del-btn-modal" title="Delete" data-delete-id="${options.id}">
+            <button class="btn btn-link text-danger del-btn-modal" title="Delete" data-delete-id="${products_options.id}">
                 <i class="bi bi-trash"></i>
             </button>
         </div>

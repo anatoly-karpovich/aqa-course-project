@@ -131,7 +131,7 @@ function addEventListelersToOrderDetailsPage() {
         break;
       }
       case "edit-products-pencil": {
-        
+        await renderEditProductsModal()
         break;
       }
     }

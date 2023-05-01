@@ -27,8 +27,8 @@ async function createEditCustomerModal(data) {
                             </div>
                             
                         </div>
-                        <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary mr-10" id="update-customer-btn">Create</button>
+                        <div class="modal-footer mx-4">
+                                <button type="submit" class="btn btn-primary mr-10" id="update-customer-btn">Save</button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancel-edit-customer-modal-btn">Cancel</button>
                         </div>
                     </div>

@@ -196,6 +196,18 @@ async function renderEditCustomerModal() {
   }
 }
 
+async function renderEditProductsModal() {
+  showSpinner();
+  const products = await ProductsService.getProducts()
+  if(products.status === 200) {
+    await createEditProductsModal(products.data.Products);
+    hideSpinner();
+    sideMenuActivateElement("Orders");
+  } else {
+    handleApiErrors(products)
+  }
+}
+
 
 //Home section
 function renderLandingPage(options = {}) {
