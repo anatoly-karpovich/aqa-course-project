@@ -1,4 +1,4 @@
-function renderOrderDetailsPageLayout(options = Order_Details_Props, order) {
+function renderOrderDetailsPageLayout(options = Order_Details_Props, order, isReceivingOn = false) {
   return `
     <div class="bg-body rounded p-3" id="order-details-header">
         <div id="${PAGE_TITLE_ID}" class="p-horizontal-20">  
@@ -10,13 +10,17 @@ function renderOrderDetailsPageLayout(options = Order_Details_Props, order) {
     </div>      
         <div class="d-flex justify-content-start" id="order-details-body">
             ${generateCustomerSection(order)}
-            ${generateProductsSection(order)}
+            ${generateProductsSection(order, isReceivingOn)}
         </div>
         <div class="d-tabs shadow-sm p-3 mb-5 bg-body rounded">
             ${generateOrderDetailsTabs(order)}
         </div>
     </div>`;
 }
+
+const notReceivedProductsCheckboxesSelector = 'input[type="checkbox"]:not([disabled]):not(#selectAll)'
+const selectAllCheckboxSelector = 'input#selectAll'
+const saveReceivingButtonId = 'save-received-products'
 
 const Order_Details_Props = {
   path: "Orders",
@@ -134,6 +138,75 @@ function addEventListelersToOrderDetailsPage() {
         await renderEditProductsModal()
         break;
       }
+      case "start-receiving-products": {
+        await renderReceivingOrderDetailsPage()
+        break;
+      }
+      case "saveReceivingButtonSelector": {
+        await renderOrderDetailsPage(state.order._id)
+        const products = getReceivingProducts()
+        await submitReceivedProducts(state.order._id, products)
+        break;
+      }
+      case "selectAll": {
+        setTimeout(() => {
+          checkSelectAll();
+          handleReceivingSaveButton()
+        }, 0)
+        break;
+      }
+      case "cancel-receiving": {
+        await renderOrderDetailsPage(state.order._id)
+      }
+    }
+
+    if(e.target.name === "product") {
+      setTimeout(() => {
+        const isChecked = $(`#${e.target.id}`).prop("checked")
+        $(`#${e.target.id}`).prop("checked", !isChecked)    
+        handleSelectAllCheckbox()
+        handleReceivingSaveButton()
+      }, 0)
     }
   })
+}
+
+function checkSelectAll() {
+  const selectAllInput = $(selectAllCheckboxSelector);
+  let isChecked = selectAllInput.prop("checked");
+  selectAllInput.prop("checked", !isChecked);
+  $(notReceivedProductsCheckboxesSelector).each(function () {
+    $(this).prop("checked", !isChecked);
+  });
+}
+
+function handleSelectAllCheckbox() {
+  let isEveryCheckboxChecked = true
+  $(notReceivedProductsCheckboxesSelector).each(function () {
+    const isChecked = $(this).prop("checked");
+    if(!isChecked) isEveryCheckboxChecked = false
+  });
+  const selectAllInput = $(selectAllCheckboxSelector);
+  selectAllInput.prop("checked", isEveryCheckboxChecked)
+  
+}
+
+function getReceivingProducts() {
+  const products = []
+    $(notReceivedProductsCheckboxesSelector).each(function () {
+    if($(this).prop("checked")) {
+      const id = $(this).prop("value")
+      products.push(id)
+    }
+  })
+  return products
+}
+
+function handleReceivingSaveButton() {
+  const saveButton = $(`#${saveReceivingButtonId}`)
+    if([...$(`input[name="product"]:checked:not([disabled])`)].length) {
+      saveButton.prop('disabled', false)
+    } else {
+      saveButton.prop('disabled', true)
+    }
 }

@@ -8,7 +8,6 @@ async function createEditProductsModal(data) {
     editProductsModalWrap.remove();
   }
   editProductsModalWrap = document.createElement("div");
-  editProductsModalWrap.id = `add-order-modal-id`;
   editProductsModalWrap.insertAdjacentHTML(
     "afterbegin",
     `
@@ -21,7 +20,7 @@ async function createEditProductsModal(data) {
                         </div>
                         <div class="modal-body">
                             <div class="bg-white rounded-5">
-                                <form class="row g-3 form-margin" id="create-order-form">
+                                <form class="row g-3 form-margin" id="edit-products-form">
                                   <div id="edit-products-section">
                                     <label for="edit-products-section" class="form-label">Products</label>
                                     ${generateEditProductsModalBody()}

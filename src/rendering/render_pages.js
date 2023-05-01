@@ -151,6 +151,20 @@ async function renderOrderDetailsPage(id) {
   }
 }
 
+async function renderReceivingOrderDetailsPage() {
+  showSpinner();
+  const order = await OrdersService.getOrders(state.order._id);
+  if (order && order.status === 200) {
+    hideSpinner();
+    sideMenuActivateElement("Orders");
+    state.order = order.data.Order;
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(Order_Details_Props, order.data.Order, true);
+    addEventListelersToOrderDetailsPage();
+  } else {
+    handleApiErrors(order);
+  }
+}
+
 async function renderCreateOrderModal() {
   showSpinner();
   const [customers, products] = await Promise.all([CustomersService.getCustomers(), ProductsService.getProducts()])
@@ -207,7 +221,6 @@ async function renderEditProductsModal() {
     handleApiErrors(products)
   }
 }
-
 
 //Home section
 function renderLandingPage(options = {}) {

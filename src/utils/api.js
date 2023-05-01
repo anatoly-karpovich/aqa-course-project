@@ -100,3 +100,15 @@ async function submitDelivery(delivery) {
 }
   hideSpinner();
 }
+
+async function submitReceivedProducts(_id, products) {
+  showSpinner()
+  const response = await OrdersService.receiveProducts(_id, products)
+  if(response.data.IsSuccess) {
+    renderNotification({ message: SUCCESS_MESSAGES['Products Successfully Received'] })
+    await renderOrderDetailsPage(_id)
+} else {
+  handleApiErrors(response, true)
+}
+  hideSpinner();
+}

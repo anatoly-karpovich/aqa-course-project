@@ -12,14 +12,20 @@ function generateCustomerSection(order) {
     </div>`
 }
 
-function generateProductsSection(order) {
+function generateProductsSection(order, isReceivingOn) {
     return `
             <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin s-width"  id="products-section">
-                <div class="section-header">
-                    <h4 class="modal-title">Requested Products</h4>
-                    ${order.status === "Draft" ? generateEditPencilButton({ id: "edit-products-pencil", title: "Edit Products" }) : "" }               
+                <div class="section-header d-flex justify-content-between">
+                        <div class="d-flex justify-content-start">
+                            <h4 class="modal-title">Requested Products</h4>
+                            ${order.status === "Draft" ? generateEditPencilButton({ id: "edit-products-pencil", title: "Edit Products" }) : "" }               
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            ${isReceivingOn ?  backButton('cancel-receiving', "Cancel") : ""}
+                            ${generateReceiveButton(order, isReceivingOn)}
+                        </div>     
                 </div>
-                ${generateProductsSectionBody(order.products)}
+                ${generateProductsSectionBody(order.products, isReceivingOn)}
             </div>`
 }
 
@@ -88,6 +94,15 @@ function generateProcessOrReceiveButton(order) {
     }
 }
 
+function generateReceiveButton(order, isReceivingOn) {
+    if(order.status === "In Process" || order.status === "Partially Received") {
+        
+        return `<button class="btn btn-primary" 
+        ${isReceivingOn ? "disabled" : ""}
+        id="${isReceivingOn ? "save-received-products" : "start-receiving-products"}">${isReceivingOn ? "Save" : "Receive"}</button>`
+    } else return ""
+}
+
 function generateOrderDetailsStatusBar(order) {
 return `
     <div class="d-flex justify-content-between p-horizontal-20 h-m-width">
@@ -142,11 +157,22 @@ function generateOrderDetailsHeader() {
     </div>`
 }
 
-function generateProductsSectionBody(products) {
-    return `
-    <div class="accordion section-body mt-2" id="accordionExample">
-        ${products.map((p, i) => generateProductAccordion(p, i)).join('')}
-    </div>`
+function generateProductsSectionBody(products, isReceivingOn) {
+    if(isReceivingOn) {
+        return `
+        <div class="form-check d-flex justify-content-end pt-4 pb-1" style="margin-right: 30px">
+            <input class="form-check-input me-3 align-items-center" type="checkbox" value="" id="selectAll">
+            <label class="form-check-label" for="selectAll">Select All</label>
+        </div>
+        <div class="accordion section-body mt-2" id="products-accordion-section">
+            ${products.map((p, i) => generateProductAccordionWithCheckbox(p, i)).join('')}
+        </div>`
+    } else {
+        return `
+        <div class="accordion section-body mt-2" id="products-accordion-section">
+            ${products.map((p, i) => generateProductAccordion(p, i)).join('')}
+        </div>`
+    } 
 }
 
 function generateProductAccordion(product, index) {
@@ -156,7 +182,28 @@ function generateProductAccordion(product, index) {
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="false" aria-controls="collapse${index}">
                 ${product.name}
             </button>
-            <span class="align-items-center d-flex received-label">${product.received ? "Received" : "Not Received"}</span>
+            <span class="align-items-center d-flex justify-content-start received-label">${product.received ? "Received" : "Not Received"}</span>
+        </div>
+        <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}">
+            <div class="accordion-body">
+                ${generateCustomerSectionBody(_.omit(product, ["_id", "amount", "received"]))}
+            </div>
+        </div>
+    </div>`
+}
+
+function generateProductAccordionWithCheckbox(product, index) {
+    return `
+    <div class="">
+        <div class="accordion-header d-flex justify-content-between" id="heading${index}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="false" aria-controls="collapse${index}">
+                ${product.name}
+            </button>
+            <div class="ms-1 form-check d-flex justify-content-center received-label align-items-center" style="margin-right: 30px">
+                <input class="form-check-input me-3 align-items-center" type="checkbox" value="${product._id}" id="check${index}" name="product"
+                ${product.received ? "checked disabled" : ""}>
+                <label class="form-check-label" for="check${index}">Received</label>
+            </div>
         </div>
         <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}">
             <div class="accordion-body">

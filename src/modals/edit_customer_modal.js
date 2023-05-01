@@ -24,7 +24,7 @@ async function createEditCustomerModal(data) {
                         </div>
                         <div class="modal-body">
                             <div class="bg-white rounded-5">
-                                <form class="row g-3 form-margin" id="create-order-form">
+                                <form class="row g-3 form-margin" id="edit-customer-form">
                                 ${generateEditCustomerModalBody()}
                                 </form>
                             </div>
