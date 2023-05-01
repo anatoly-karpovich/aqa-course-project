@@ -1,4 +1,8 @@
 let editCustomerModalWrap = null;
+const editCustomerModalId = "edit-customer-modal"
+const editCustomerSelectInput = `#${editCustomerModalId} select#inputCustomerOrder`
+const updateCustomerButtonSelector = `#${editCustomerModalId} #update-customer-btn`
+
 async function createEditCustomerModal(data) {
   edit_order_details_modal_props.data = _.cloneDeep(data);
   edit_order_details_modal_props.customers.options.values = edit_order_details_modal_props.data.map((c) => c.name);
@@ -8,11 +12,10 @@ async function createEditCustomerModal(data) {
     editCustomerModalWrap.remove();
   }
   editCustomerModalWrap = document.createElement("div");
-  editCustomerModalWrap.id = `add-order-modal-id`;
   editCustomerModalWrap.insertAdjacentHTML(
     "afterbegin",
     `
-            <div class="modal show fade" id="add-order-modal" tabindex="-1">
+            <div class="modal show fade" id="${editCustomerModalId}" tabindex="-1">
                 <div class="modal-dialog-scrollable modal-dialog show">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -25,11 +28,10 @@ async function createEditCustomerModal(data) {
                                 ${generateEditCustomerModalBody()}
                                 </form>
                             </div>
-                            
                         </div>
                         <div class="modal-footer mx-4">
-                                <button type="submit" class="btn btn-primary mr-10" id="update-customer-btn">Save</button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancel-edit-customer-modal-btn">Cancel</button>
+                          <button type="submit" class="btn btn-primary mr-10" id="update-customer-btn" disabled>Save</button>
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancel-edit-customer-modal-btn">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -60,6 +62,16 @@ async function createEditCustomerModal(data) {
   $("div.modal-footer #cancel-edit-customer-modal-btn").on("click", (e) => {
     e.preventDefault()
     removeEditCustomerModal()
+  })
+
+  $(editCustomerSelectInput).on("input", (e) => {
+    e.preventDefault()
+    const email = $(editCustomerSelectInput).find(":selected").attr("title")
+    if(email === state.order.customer.email) {
+      $(updateCustomerButtonSelector).prop("disabled", true)
+    } else {
+      $(updateCustomerButtonSelector).prop("disabled", false)
+    }
   })
 
 }

@@ -82,15 +82,6 @@ const layout = `
 
   <!-- Right -->
   <div>
-    <a href="#!" class="text-white me-4">
-      <i class="fab fa-facebook-f"></i>
-    </a>
-    <a href="#!" class="text-white me-4">
-      <i class="fab fa-twitter"></i>
-    </a>
-    <a href="#!" class="text-white me-4">
-      <i class="fab fa-google"></i>
-    </a>
     <a href="https://www.linkedin.com/in/anatolykarpovich/" class="text-white">
       <i class="fab fa-linkedin-in"></i>
     </a>

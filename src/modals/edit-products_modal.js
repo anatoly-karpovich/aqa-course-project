@@ -10,7 +10,7 @@ async function createEditProductsModal(data) {
   editProductsModalWrap.insertAdjacentHTML(
     "afterbegin",
     `
-            <div class="modal show fade" id="add-order-modal" tabindex="-1">
+            <div class="modal show fade" id="edit-products-modal" tabindex="-1">
                 <div class="modal-dialog-scrollable modal-dialog show">
                     <div class="modal-content">
                         <div class="modal-header">
