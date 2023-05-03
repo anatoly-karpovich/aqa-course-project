@@ -19,9 +19,9 @@ function saveButton(id, name) {
   `;
 }
 
-function backButton(id, name) {
+function backButton(id, name, classes) {
   return `
-  <button id="${id}" class="btn btn-secondary form-buttons">${name}</button>
+  <button id="${id}" class="btn btn-secondary form-buttons ${classes ? classes : ""}">${name}</button>
   `;
 }
 

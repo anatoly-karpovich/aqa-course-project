@@ -21,7 +21,7 @@ function generateProductsSection(order, isReceivingOn) {
                             ${order.status === "Draft" ? generateEditPencilButton({ id: "edit-products-pencil", title: "Edit Products" }) : "" }               
                         </div>
                         <div class="d-flex justify-content-end">
-                            ${isReceivingOn ?  backButton('cancel-receiving', "Cancel") : ""}
+                            ${isReceivingOn ?  backButton('cancel-receiving', "Cancel", "btn-sm") : ""}
                             ${generateReceiveButton(order, isReceivingOn)}
                         </div>     
                 </div>
@@ -94,7 +94,7 @@ function generateProcessOrReceiveButton(order) {
 function generateReceiveButton(order, isReceivingOn) {
     if(order.status === "In Process" || order.status === "Partially Received") {
         
-        return `<button class="btn btn-primary" 
+        return `<button class="btn btn-primary btn-sm" 
         ${isReceivingOn ? "disabled" : ""}
         id="${isReceivingOn ? "save-received-products" : "start-receiving-products"}">${isReceivingOn ? "Save" : "Receive"}</button>`
     } else return ""
