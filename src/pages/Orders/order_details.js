@@ -204,7 +204,7 @@ function addEventListelersToOrderDetailsPage() {
     e.preventDefault()
     if(e.target.id == "create-comment-btn") {
       const comments = {
-          text: $('#textareaComments').val()
+          text: $('#textareaComments').val().trim()
       }
       await submitComment(state.order._id, comments)
     }

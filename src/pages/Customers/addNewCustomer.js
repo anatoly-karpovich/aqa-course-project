@@ -263,7 +263,7 @@ function addEventListelersToAddNewCustomerPage(options = add_new_customer_props.
       }
       
       case options.notes.id: {
-        if (!isValidInput("Notes", $(`#${options.notes.id}`).val())) {
+        if (!isValidInput("Notes", $(`#${options.notes.id}`).val().replaceAll("\r", "").replaceAll("\n",""))) {
           showErrorMessageForInput(options.notes, saveChangesBtn);
         } else {
           hideErrorMessageForInput(options, "notes", saveChangesBtn, add_new_customer_props.path);

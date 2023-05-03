@@ -197,7 +197,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
       }
       
       case options.notes.id: {
-        if (!isValidInput("Notes", $(`#${options.notes.id}`).val())) {
+        if (!isValidInput("Notes", $(`#${options.notes.id}`).val().replaceAll("\r", "").replaceAll("\n",""))) {
           showErrorMessageForInput(options.notes, saveChangesBtn);
         } else if (_.isEqual(_.omit(currentCustomerState, ["_id", "createdOn"]), getDataFromForm(`#${edit_customer_props.formId}`))) {
             hideErrorMessageForInput(options, "notes", saveChangesBtn, edit_customer_props.path);
@@ -222,7 +222,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
 
 function validateNewCustomerInputs(options = edit_customer_props.inputs) {
   return (
-    isValidInput("Notes", $(`#${options.notes.id}`).val()) &&
+    isValidInput("Notes", $(`#${options.notes.id}`).val().replaceAll('\n', '')) &&
 
     (($(`#${options.flat.id}`).val().length && isValidInput("Flat", +$(`#${options.flat.id}`).val())) || +$(`#${options.flat.id}`).val() > 0) &&
 
