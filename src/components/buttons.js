@@ -95,6 +95,25 @@ function generateFormTextInput(options) {
                 </div>`;
 }
 
+function generateTextareaInput(options) {
+  return     `<div class="${options.divClasslist}">
+                <label for="${options.id}" class="form-label">${options.name}</label>
+                <textarea class="${options.classList}" id="${options.id}" ${options.attributes} 
+                placeholder="${options.placeholder}" 
+                ${options.attributes ? options.attributes : ""}>${options.value}</textarea>
+                <div class="invalid-feedback" id=error-${options.id}></div>
+              </div>`
+}
+
+function generateTextareaInputWithoutLabel(options) {
+  return     `<div class="${options.divClasslist}">
+                <textarea class="${options.classList}" id="${options.id}" ${options.attributes} 
+                placeholder="${options.placeholder}" 
+                ${options.attributes ? options.attributes : ""}>${options.value}</textarea>
+                <div class="invalid-feedback" id=error-${options.id}></div>
+              </div>`
+}
+
 function generateEditPencilButton(options) {
   return `
   <button 

@@ -12,7 +12,7 @@ function renderOrderDetailsPageLayout(options = Order_Details_Props, order, isRe
             ${generateCustomerSection(order)}
             ${generateProductsSection(order, isReceivingOn)}
         </div>
-        <div class="d-tabs shadow-sm p-3 mb-5 bg-body rounded">
+        <div class="d-tabs shadow-sm p-3 mb-5 bg-body rounded" id="order-details-tabs-section">
             ${generateOrderDetailsTabs(order)}
         </div>
     </div>`;
@@ -170,6 +170,53 @@ function addEventListelersToOrderDetailsPage() {
       }, 0)
     }
   })
+
+  $(`#order-details-tabs-section`).on("click", (e) => {
+    e.preventDefault()
+
+    switch(e.target.id) {
+      case "delivery-tab": {
+        state.activeTab = "delivery"
+        break;
+      }
+      case "history-tab": {
+        state.activeTab = "history"
+        break;
+      }
+      case "comments-tab": {
+        state.activeTab = "comments"
+        break;
+      }
+    }
+  })
+  const saveCommentBtn = $("#create-comment-btn")
+  $(`#textareaComments`).on("input", (e) => {
+    if (!isValidInput("Comments", $(`#textareaComments`).val())) {
+      showErrorMessage(commentsTabOptions.comments);
+      saveCommentBtn.prop("disabled", true)
+    } else {
+      hideErrorMessage(commentsTabOptions.comments);
+      saveCommentBtn.prop("disabled", false)
+    }
+  })
+
+  $(`div#order-details-tabs-content div#comments`).on("click", async (e) => {
+    e.preventDefault()
+    if(e.target.id == "create-comment-btn") {
+      const comments = {
+          text: $('#textareaComments').val()
+      }
+      await submitComment(state.order._id, comments)
+    }
+  })
+
+  $(`button[name="delete-comment"]`).on("click", async (e) => {
+    const comments = {
+      _id: e.target.id,
+    }
+    await deleteComment(state.order._id, comments)
+  })
+
 }
 
 function checkSelectAll() {
@@ -210,4 +257,19 @@ function handleReceivingSaveButton() {
     } else {
       saveButton.prop('disabled', true)
     }
+}
+
+const commentsTabOptions = {
+  comments: {
+    divClasslist: "col-md-12 px-3",
+    name: "Comments",
+    type: "textarea",
+    classList: "form-control",
+    placeholder: `Enter a comment`,
+    id: "textareaComments",
+    errorMessageSelector: "#error-textareaComments",
+    errorMessage: VALIDATION_ERROR_MESSAGES['Comments'],
+    attributes: `rows="3" name="comments"`,
+    value: ""
+  }
 }

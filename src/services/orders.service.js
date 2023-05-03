@@ -94,4 +94,32 @@ class OrdersService {
           };
           return sendRequest(options); 
     }
+
+    static async createComment(_id, comments) {
+        const options = {
+            method: "post",
+            baseURL: BASE_URL,
+            url: ENDPOINTS["Order Comments"],
+            headers: { 
+                Authorization: getAuthorizationCookie(),
+                ["Content-Type"]: "application/json" 
+            },
+            data: { _id, comments }
+          };
+          return sendRequest(options); 
+    }
+
+    static async deleteComment(_id, comments) {
+        const options = {
+            method: "put",
+            baseURL: BASE_URL,
+            url: ENDPOINTS["Order Comments"],
+            headers: { 
+                Authorization: getAuthorizationCookie(),
+                ["Content-Type"]: "application/json" 
+            },
+            data: { _id, comments }
+          };
+          return sendRequest(options); 
+    }
 }

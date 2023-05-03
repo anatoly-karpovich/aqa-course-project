@@ -112,3 +112,27 @@ async function submitReceivedProducts(_id, products) {
 }
   hideSpinner();
 }
+
+async function submitComment(_id, comments) {
+  showSpinner()
+  const response = await OrdersService.createComment(_id, comments)
+  if(response.data.IsSuccess) {
+    renderNotification({ message: SUCCESS_MESSAGES['Comment Successfully Created'] })
+    await renderOrderDetailsPage(_id)
+} else {
+  handleApiErrors(response, true)
+}
+  hideSpinner();
+}
+
+async function deleteComment(_id, comments) {
+  showSpinner()
+  const response = await OrdersService.deleteComment(_id, comments)
+  if(response.data.IsSuccess) {
+    renderNotification({ message: SUCCESS_MESSAGES['Comment Successfully Deleted'] })
+    await renderOrderDetailsPage(_id)
+} else {
+  handleApiErrors(response, true)
+}
+  hideSpinner();
+}

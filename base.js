@@ -31,7 +31,8 @@ const ENDPOINTS = {
   ["Get Order By Id"]: (id) => `${BASE_URL}/api/orders/${id}/`,
   ["Order Delivery"]: `${BASE_URL}/api/orders/delivery/`,
   ["Order Receive"]: `${BASE_URL}/api/orders/receive/`,
-  ["Order Status"]: `${BASE_URL}/api/orders/status`
+  ["Order Status"]: `${BASE_URL}/api/orders/status`,
+  ["Order Comments"]: `${BASE_URL}/api/orders/comments`,
 };
 
 const SUCCESS_MESSAGES = {
@@ -47,6 +48,8 @@ const SUCCESS_MESSAGES = {
   ["Order Canceled"]: "Order was successfully canceled",
   ["Order In Process"]: "Order processing was successfully started",
   ["Products Successfully Received"]: `Products were successfully updated`,
+  ["Comment Successfully Created"]: `Comment was successfully posted`,
+  ["Comment Successfully Deleted"]: `Comment was successfully deleted`,
 };
 
 const ERROR_MESSAGES = {
@@ -63,6 +66,7 @@ const VALIDATION_ERROR_MESSAGES = {
   ["Email"]: "Invalid Email Address",
   ["Phone"]: "Mobile Number should be at least 10 characters (max 20) and start with a +",
   ["Notes"]: "Notes should be in range 0-250 and without < or > symbols",
+  ["Comments"]: "Comment should be in range 1-250 and without < or > symbols",
   ["Product Name"]: "Products's name should contain only 3-40 alphanumerical characters and one space between",
   ["Amount"]: "Amount should be in range 0-999",
   ["Price"]: "Price should be in range 1-99999",
@@ -78,6 +82,7 @@ const REGULAR_EXPRESSIONS = {
   ["Flat"]: /^[0-9]{1,4}$/m,
   ["Email"]: /^(([^<>()\[\]\\.,;:\s@"']+(\.[^<>()\[\]\\.,;:\s@"']+)*))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/m,
   ["Notes"]: /^[^<>]{0,250}$/m,
+  ["Comments"]: /^[^<>]{1,250}$/m,
   ["Product Name"]: /^\b(?!.*?\s{2})[A-Za-z0-9 ]{3,40}\b$/m,
   ["Amount"]: /^[0-9]{1,3}$/m,
   ["Price"]: /^[0-9]{1,5}$/m,

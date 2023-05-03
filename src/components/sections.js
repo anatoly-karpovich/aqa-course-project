@@ -31,23 +31,24 @@ function generateProductsSection(order, isReceivingOn) {
 
 function generateOrderDetailsTabs(order) {
     return `
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <ul class="nav nav-tabs" id="order-details-tabs" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active fs-5" id="delivery-tab" data-bs-toggle="tab" data-bs-target="#delivery" type="button" role="tab" aria-controls="delivery" aria-selected="true">Delivery</button>
+            <button class="nav-link fs-5" id="delivery-tab" data-bs-toggle="tab" data-bs-target="#delivery" type="button" role="tab" aria-controls="delivery" aria-selected="false">Delivery</button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link fs-5" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab" aria-controls="history" aria-selected="false">Order History</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link fs-5" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Comments</button>
+            <button class="nav-link fs-5" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments" type="button" role="tab" aria-controls="comments" aria-selected="false">Comments</button>
         </li>
     </ul>
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active tab-w" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">${generateOrderDeliveryTabBody(order)}</div>
+    <div class="tab-content" id="order-details-tabs-content">
+        <div class="tab-pane fade tab-w" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">${generateOrderDeliveryTabBody(order)}</div>
         <div class="tab-pane fade mb-2" id="history" role="tabpanel" aria-labelledby="history-tab">${generateOrderHistoryTab(order)}</div>
-        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">${generateCommentsTab(order)}</div>
+        <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">${generateCommentsTab(order)}</div>
     </div>`
 }
+
 
 function generateOrderDetailsHeaderSection(order) {
     return generateOrderDetailsInfoBar(order) + generateOrderDetailsStatusBar(order)
@@ -431,5 +432,36 @@ function generateOrderReceiveProductsHistoryRows(order, index) {
 }
 
 function generateCommentsTab(order) {
-    return `<h4 class="ms-3 my-4">Comments</h4>`
+    return `
+        <h4 class="ms-3 my-4">Comments</h4>
+        <div class="py-3 fs-5">
+            ${generateTextareaInputWithoutLabel(commentsTabOptions.comments)}
+            <div class="my-3 ms-3">
+                <button class="btn btn-primary" id="create-comment-btn" disabled>Create</button>
+            </div>
+        </div>
+        ${generateSavedComments(order)}
+    `
+}
+
+function generateSavedComments(order) {
+    return order.comments.reverse().reduce((acc, comment) => acc + generateComment(comment) , "")
+}
+
+function generateComment(comment) {
+    const createdBy = "AQA User"
+    return `
+    <div class="shadow mx-3 my-3">
+        <div class="px-3 py-3">
+            <div class="d-flex justify-content-between">
+            <p>${comment.text}</p>
+            <button class="btn btn-link text-danger" title="Delete" name="delete-comment" id="${comment._id}" style="padding-right:0"><i class="bi bi-trash"></i></button>
+            </div>
+            <div class="d-flex justify-content-between">
+                <span class="text-primary">${createdBy}</span>
+                <span class="text-primary">${moment(comment.createdOn).format(DATE_AND_TIME_FORMAT)}</span>
+            </div>
+        </div>
+    </div>
+    `
 }

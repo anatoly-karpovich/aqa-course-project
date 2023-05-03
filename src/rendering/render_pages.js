@@ -143,8 +143,10 @@ async function renderOrderDetailsPage(id) {
     sideMenuActivateElement("Orders");
     state.order = order.data.Order
     state.customers = customers.data.Customers
+    state['activeTab'] = state['activeTab'] ?? 'comments'
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(Order_Details_Props, order.data.Order);
     addEventListelersToOrderDetailsPage()
+    activateTab()
   } else {
     handleApiErrors(order)
     handleApiErrors(customers)
@@ -160,6 +162,7 @@ async function renderReceivingOrderDetailsPage() {
     state.order = order.data.Order;
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(Order_Details_Props, order.data.Order, true);
     addEventListelersToOrderDetailsPage();
+    activateTab()
   } else {
     handleApiErrors(order);
   }
@@ -225,6 +228,7 @@ async function renderEditProductsModal() {
 //Home section
 function renderLandingPage(options = {}) {
   document.querySelector("body").innerHTML = renderLandingPageLayout(options);
+  addEventListelersToHomePage()
   document.querySelector("#signOut").addEventListener("click", () => {
     localStorage.removeItem("token");
     removeAuthorizationCookie()
@@ -238,6 +242,7 @@ function renderHomePage(options = {}) {
   showSpinner();
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(options);
   sideMenuActivateElement(options.path);
+  addEventListelersToHomePage()
   hideSpinner();
 }
 

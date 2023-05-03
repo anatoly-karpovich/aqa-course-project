@@ -1,4 +1,4 @@
-function renderHomePageLayout(options) {
+function renderHomePageLayout(options = homeProps) {
     return `
     <div id="contentInner">
       <div class="shadow-sm p-3 mb-5 bg-body rounded">
@@ -55,28 +55,28 @@ function renderHomePageLayout(options) {
         <div class="container marketing">
 
             <!-- Three columns of text below the carousel -->
-            <div class="row">
-            <div class="col-lg-4">
-                <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
+            <div class="row" id="navigation-section">
+                <div class="col-lg-4">
+                    <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
 
-                <h2 class="fw-normal">Orders</h2>
-                <p>Some representative placeholder content for the three columns of text below the carousel. This is the first column.</p>
-                <p><a class="btn btn-primary" href="#">View details »</a></p>
-            </div><!-- /.col-lg-4 -->
-            <div class="col-lg-4">
-                <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
+                    <h2 class="fw-normal">Orders</h2>
+                    <p>${options.ordersTitle}</p>
+                    <p><button class="btn btn-primary" id="orders-from-home">View details »</button></p>
+                </div><!-- /.col-lg-4 -->
+                <div class="col-lg-4">
+                    <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
 
-                <h2 class="fw-normal">Products</h2>
-                <p>Another exciting bit of representative placeholder content. This time, we've moved on to the second column.</p>
-                <p><a class="btn btn-primary" href="#">View details »</a></p>
-            </div><!-- /.col-lg-4 -->
-            <div class="col-lg-4">
-                <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
+                    <h2 class="fw-normal">Products</h2>
+                    <p>${options.productsTitle}</p>
+                    <p><button class="btn btn-primary" id="products-from-home">View details »</button></p>
+                </div><!-- /.col-lg-4 -->
+                <div class="col-lg-4">
+                    <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
 
-                <h2 class="fw-normal">Customers</h2>
-                <p>And lastly this, the third column of representative placeholder content.</p>
-                <p><a class="btn btn-primary" href="#">View details »</a></p>
-            </div><!-- /.col-lg-4 -->
+                    <h2 class="fw-normal">Customers</h2>
+                    <p>${options.customersTitle}</p>
+                    <p><button class="btn btn-primary" id="customers-from-home">View details »</button></p>
+                </div><!-- /.col-lg-4 -->
             </div><!-- /.row -->
             <hr class="featurette-divider">
             <div class="row featurette">
@@ -124,5 +124,29 @@ function renderHomePageLayout(options) {
 const homeProps = {
     path: 'Home',
     title: 'Home Page',
-    content: 'Home Content'
+    content: 'Home Content',
+    ordersTitle: "Module with all orders, created by our managers and customers, edit and process them",
+    customersTitle: "Module with all customers registered, that can be also edited and deleted",
+    productsTitle: "Module with all products presented in out store, that can be also edited and deleted"
+}
+
+function addEventListelersToHomePage() {
+    $("#navigation-section").on("click",async (e) => {
+        e.preventDefault();
+
+        switch (e.target.id){
+            case "customers-from-home": {
+                await renderCustomersPage()
+                break;
+            }
+            case "products-from-home": {
+                await renderProductsPage()
+                break;
+            }
+            case "orders-from-home": {
+                await renderOrdersPage()
+                break;
+            }
+        }   
+     })
 }

@@ -132,15 +132,8 @@ function generateFormInputs(inputs) {
   const formInputs = Object.keys(inputs).map((input) => {
     if (inputs[input].type === "text") return generateFormTextInput(inputs[input]);
     else if (inputs[input].type === "select") return generateFormSelectInput(inputs[input]);
-    else if (inputs[input].type === "textarea") {
-      return `<div class="${inputs[input].divClasslist}">
-                <label for="${inputs[input].id}" class="form-label">${inputs[input].name}</label>
-                <textarea class="${inputs[input].classList}" id="${inputs[input].id}" ${inputs[input].attributes} 
-                placeholder="${inputs[input].placeholder}" 
-                ${inputs[input].attributes ? inputs[input].attributes : ""}>${inputs[input].value}</textarea>
-                <div class="invalid-feedback" id=error-${inputs[input].id}></div>
-                </div>`;
-    } else if (inputs[input].type === "email") {
+    else if (inputs[input].type === "textarea") return generateTextareaInput(inputs[input]) 
+    else if (inputs[input].type === "email") {
       return `  <div class="${inputs[input].divClasslist}">
                 <label for="${inputs[input].id}" class="form-label">${inputs[input].name}</label>
                 <input type="${inputs[input].type}" class="${inputs[input].classlist}" id="${inputs[input].id}" 
@@ -208,4 +201,27 @@ function isValidDate(dateString) {
 
 function sortStrings(arr) {
   return arr.sort((a,b) => a.localeCompare(b))
+}
+
+function activateTab() {
+  const tabs = {
+    delivery: {
+      tab: $(`ul#order-details-tabs #delivery-tab`),
+      content: $(`div#order-details-tabs-content #delivery`),
+    },
+    history: {
+      tab: $(`ul#order-details-tabs #history-tab`),
+      content: $(`div#order-details-tabs-content #history`),
+    },
+    comments: {
+      tab: $(`ul#order-details-tabs #comments-tab`),
+      content: $(`div#order-details-tabs-content #comments`),
+    }
+  }
+
+  const activeTab = state.activeTab;
+
+  tabs[activeTab].tab.addClass("active");
+  tabs[activeTab].tab.prop("aria-selected", true);
+  tabs[activeTab].content.addClass("active show");
 }
