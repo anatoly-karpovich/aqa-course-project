@@ -454,7 +454,7 @@ function generateComment(comment) {
     <div class="shadow mx-3 my-3">
         <div class="px-3 py-3">
             <div class="d-flex justify-content-between">
-            <p style="word-break: break-word;">${comment.text}</p>
+            <p style="word-break: break-word;">${replaceLineBreaksWithBrTag(comment.text)}</p>
             <button class="btn btn-link text-danger" title="Delete" name="delete-comment" id="${comment._id}" style="padding-right:0"><i class="bi bi-trash"></i></button>
             </div>
             <div class="d-flex justify-content-between">

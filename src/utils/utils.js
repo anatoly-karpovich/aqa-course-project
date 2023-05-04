@@ -229,3 +229,7 @@ function activateTab() {
 function removeLineBreaks(value) {
   return value.replaceAll("\r", "").replaceAll("\n","")
 }
+
+function replaceLineBreaksWithBrTag(value) {
+  return value.replaceAll("\r\n", "<br>").replaceAll("\n", "<br>")
+}
