@@ -191,7 +191,8 @@ function addEventListelersToOrderDetailsPage() {
   })
   const saveCommentBtn = $("#create-comment-btn")
   $(`#textareaComments`).on("input", (e) => {
-    if (!isValidInput("Comments", $(`#textareaComments`).val())) {
+    const value = removeLineBreaks($(`#textareaComments`).val())
+    if (!isValidInput("Comments", value)) {
       showErrorMessage(commentsTabOptions.comments);
       saveCommentBtn.prop("disabled", true)
     } else {

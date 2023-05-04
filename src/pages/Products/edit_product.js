@@ -128,7 +128,8 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
       }
 
       case "textareaNotes": {
-        if (!isValidInput("Notes", $(`#${options.notes.id}`).val().replaceAll("\r", "").replaceAll("\n",""))) {
+        const value = removeLineBreaks($(`#${options.notes.id}`).val())
+        if (!isValidInput("Notes", value)) {
           showErrorMessageForInput(options.notes, saveChangesBtn);
         } else if (_.isEqual(_.omit(currentProductstate, ["_id", "createdOn"]), getDataFromForm("#edit-product-form"))) {
           hideErrorMessageForInput(options, "notes", saveChangesBtn, edit_product_props.path);

@@ -225,3 +225,7 @@ function activateTab() {
   tabs[activeTab].tab.prop("aria-selected", true);
   tabs[activeTab].content.addClass("active show");
 }
+
+function removeLineBreaks(value) {
+  return value.replaceAll("\r", "").replaceAll("\n","")
+}
