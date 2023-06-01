@@ -235,5 +235,5 @@ function replaceLineBreaksWithBrTag(value) {
 }
 
 function isValidForm() {
-  return [...document.querySelectorAll('.invalid-feedback')].every(e => e.textContent)
+  return [...document.querySelectorAll('.invalid-feedback')].every(e => !e.textContent)
 }
