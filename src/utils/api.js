@@ -29,14 +29,11 @@ function logout() {
 }
 
 function handleApiErrors(response, errorToNotification = false) {
-  console.log('entered')
   if (response.status === 401) {
     logout();
   } else {
     if(errorToNotification && response.status < 500) {
       renderNotification({ message: response.data.ErrorMessage ? response.data.ErrorMessage : ERROR_MESSAGES["Connection Issue"] }, true);
-      // document.querySelector(".toast").classList.add("bg-danger");
-      // document.querySelector(".toast").classList.add("text-white");
     } else {
       document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderErrorPageLayout(response.status);
     } 
