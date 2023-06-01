@@ -233,3 +233,7 @@ function removeLineBreaks(value) {
 function replaceLineBreaksWithBrTag(value) {
   return value.replaceAll("\r\n", "<br>").replaceAll("\n", "<br>")
 }
+
+function isValidForm() {
+  return [...document.querySelectorAll('.invalid-feedback')].every(e => e.textContent)
+}

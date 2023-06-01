@@ -141,7 +141,7 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
       }
 
       case "inputManufacturer": {
-        if (_.isEqual(_.omit(currentProductstate, ["_id", "createdOn"]), getDataFromForm("#edit-product-form"))) {
+        if (_.isEqual(_.omit(currentProductstate, ["_id", "createdOn"]), getDataFromForm("#edit-product-form")) || !isValidForm()) {
           saveChangesBtn.prop("disabled", true);
         } else {
           saveChangesBtn.prop("disabled", false);

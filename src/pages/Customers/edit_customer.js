@@ -210,7 +210,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
       }
 
       case options.country.id: {
-        if (_.isEqual(_.omit(currentCustomerState, ["_id", "createdOn"]), getDataFromForm(`#${edit_customer_props.formId}`))) {
+        if (_.isEqual(_.omit(currentCustomerState, ["_id", "createdOn"]), getDataFromForm(`#${edit_customer_props.formId}`))  || !isValidForm()) {
           saveChangesBtn.prop("disabled", true);
         } else {
           saveChangesBtn.prop("disabled", false);

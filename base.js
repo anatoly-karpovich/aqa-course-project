@@ -47,7 +47,7 @@ const SUCCESS_MESSAGES = {
   ["Delivery Saved"]: "Delivery was successfully saved",
   ["Order Canceled"]: "Order was successfully canceled",
   ["Order In Process"]: "Order processing was successfully started",
-  ["Products Successfully Received"]: `Products were successfully updated`,
+  ["Products Successfully Received"]: `Products were successfully received`,
   ["Comment Successfully Created"]: `Comment was successfully posted`,
   ["Comment Successfully Deleted"]: `Comment was successfully deleted`,
 };

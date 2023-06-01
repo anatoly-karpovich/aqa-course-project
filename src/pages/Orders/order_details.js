@@ -145,7 +145,6 @@ function addEventListelersToOrderDetailsPage() {
       case saveReceivingButtonId: {
         const products = getReceivingProducts()
         await submitReceivedProducts(state.order._id, products)
-        await renderOrderDetailsPage(state.order._id)
 
         break;
       }
