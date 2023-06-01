@@ -113,9 +113,9 @@ function renderSignInPage() {
       signIn.parentNode.removeChild(signIn);
       renderLandingPage(landingProps);
     } else {
-      renderNotification({ message: response.data.ErrorMessage ? response.data.ErrorMessage : ERROR_MESSAGES["Connection Issue"] });
-      document.querySelector(".toast").classList.add("bg-danger");
-      document.querySelector(".toast").classList.add("text-white");
+      renderNotification({ message: response.data.ErrorMessage ? response.data.ErrorMessage : ERROR_MESSAGES["Connection Issue"] }, true);
+      // document.querySelector(".toast").classList.add("bg-danger");
+      // document.querySelector(".toast").classList.add("text-white");
     }
     hideSpinner();
   });

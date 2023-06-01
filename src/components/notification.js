@@ -18,11 +18,11 @@ function renderNotificationContainer() {
 }
 
 
-function renderNotification(options) {
+function renderNotification(options, isError) {
   const notification = document.createElement("div");
   const id = window.crypto.randomUUID()
   notification.id = id;
-  notification.insertAdjacentHTML("afterbegin", `${generateNofificationLayout(options, id)}`);
+  notification.insertAdjacentHTML("afterbegin", `${generateNofificationLayout(options, id, isError)}`);
   if(!notificationContainer) {
     renderNotificationContainer();
   }
@@ -39,8 +39,9 @@ function renderNotification(options) {
   }, 10000);
 }
 
-function generateNofificationLayout(options, id) {
-  return `<div class="toast align-items-center show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false" id="toast">
+function generateNofificationLayout(options, id, isError) {
+  const classes = isError ? "bg-danger text-white" : ""
+  return `<div class="toast align-items-center show ${classes}" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false" id="toast">
         <div class="d-flex">
             <div class="toast-body">
                 ${options.message}
