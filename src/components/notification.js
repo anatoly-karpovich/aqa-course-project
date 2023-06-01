@@ -1,5 +1,5 @@
 let notificationContainer = null;
-const isStillExists = {};
+
 function renderNotificationContainer() {
   notificationContainer = document.createElement("div");
   notificationContainer.classList.add('toast-container')
@@ -11,7 +11,7 @@ function renderNotificationContainer() {
     if(event.target.title === 'Close') {
       const currentId = event.target.id
       const n = document.querySelector(`div[id="${currentId}"]`)
-      delete isStillExists[currentId]
+      delete state.notifications[currentId]
       notificationContainer.removeChild(n);
     }
   })
@@ -28,13 +28,13 @@ function renderNotification(options) {
   }
   const container = document.querySelector('.toast-container')
   container.append(notification);
-  isStillExists[id] = true;
+  state.notifications[id] = true;
 
   setTimeout(() => {
-    if (isStillExists[id]) {
+    if (state.notifications[id]) {
       const n = document.querySelector(`div[id="${id}"]`)
       container.removeChild(n);
-      delete isStillExists[id]
+      delete state.notifications[id]
     }
   }, 10000);
 }

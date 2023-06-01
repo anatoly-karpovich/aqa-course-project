@@ -7,7 +7,8 @@ const state = {
     customers: "",
     products: "",
     orders: ""
-  }
+  },
+  notifications: {}
 }
 
 
