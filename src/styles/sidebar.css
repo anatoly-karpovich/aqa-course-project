@@ -159,10 +159,10 @@ main {
   align-items: center;
 }
 
-.toast {
+/* .toast {
   margin-top: 20px;
-  /* opacity: 0.3; */
-}
+  opacity: 0.3;
+} */
 
 .error-message-for-input {
   font-size: 0.7rem;
