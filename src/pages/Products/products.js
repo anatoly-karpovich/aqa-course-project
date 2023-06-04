@@ -2,22 +2,24 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
       let data 
       if(!_.isEmpty(response.data.Products)) {
         data = response.data.Products.map((el) => {
-          return { Id: el._id, Name: el.name, Price: `${el.price}$`,Manufacturer: el.manufacturer, "Created": moment(el.createdOn).format('LLL') };
+          return { Id: el._id, Name: el.name, Price: `$${el.price}`,Manufacturer: el.manufacturer, "Created": moment(el.createdOn).format(DATE_AND_TIME_FORMAT) };
         });
       }
       ProductsProps.data = response.data
 
       return `      
-      <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
-        <div id="${PAGE_TITLE_ID}">  
-          <div class="page-header-flex">
-            ${generatePageTitle(options)}
-          </div>
-            ${searchBar(options.buttons, 'products')}
-          <div id="${CONTENT_ID}">
-            ${generateTableBootstrap(data, options)}
-          </div>
+      <div class="bg-body rounded p-3">
+        <div id="${PAGE_TITLE_ID}" class="p-horizontal-20">  
+            <div class="page-header-flex">
+                ${generatePageTitle(options)}
+            </div>
+                ${searchBar(options.buttons)} 
         </div>
+      </div>      
+      <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
+          <div id="${CONTENT_ID}">
+              ${generateTableBootstrap(data, options)}
+          </div>
       </div>`;
   }
 

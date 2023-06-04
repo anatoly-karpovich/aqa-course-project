@@ -34,7 +34,7 @@ function generateTableRow(obj = {}, options) {
     ).join("");
       
   let actions = "";
-  if (options.tableProps.buttons) {
+  if (options && options.tableProps.buttons) {
     actions = "<td>" + options.tableProps.buttons.map((btn) =>
     generateButton(btn, obj.Id)).join("") + "</td>";
   }

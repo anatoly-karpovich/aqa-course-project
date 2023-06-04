@@ -1,2 +1,0 @@
-function renderOrderPageLayout(options = OrderProps) {
-  }

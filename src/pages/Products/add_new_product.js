@@ -1,10 +1,10 @@
 function renderAddNewProductLayout(options = add_new_product_props) {
   return `
   <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
-  <div id="${PAGE_TITLE_ID}" class="page-header">
-      ${generatePageTitle(options)}
-  </div>
-  <form class="row g-3 form-with-inputs" id="${options.formId}">
+    <div id="${PAGE_TITLE_ID}" class="page-header">
+        ${generatePageTitle(options)}
+    </div>
+    <form class="row g-3 form-with-inputs" id="${options.formId}">
       ${generateFormInputs(options.inputs)} 
         
         <div class="col-12 form-action-section">
@@ -34,7 +34,7 @@ const add_new_product_props = {
       name: "Name",
       type: "text",
       classlist: "form-control",
-      placeholder: `Enter products's name`,
+      placeholder: `Enter products name`,
       id: "inputName",
       errorMessageSelector: "#error-inputName",
       errorMessage: VALIDATION_ERROR_MESSAGES["Product Name"],
@@ -58,7 +58,7 @@ const add_new_product_props = {
       name: "Price",
       type: "text",
       classlist: "form-control",
-      placeholder: `Enter products's price`,
+      placeholder: `Enter products price`,
       id: "inputPrice",
       errorMessageSelector: "#error-inputPrice",
       errorMessage: VALIDATION_ERROR_MESSAGES["Price"],
@@ -70,7 +70,7 @@ const add_new_product_props = {
       name: "Amount",
       type: "text",
       classlist: "form-control",
-      placeholder: `Enter products's on-hands amount`,
+      placeholder: `Enter product on-hands amount`,
       id: "inputAmount",
       errorMessageSelector: "#error-inputAmount",
       errorMessage: VALIDATION_ERROR_MESSAGES["Amount"],
@@ -148,7 +148,7 @@ function addEventListelersToAddNewProductPage(options = add_new_product_props.in
       }
 
       case "inputAmount": {
-        if (!isValidInput("Amount", $(`#${options.amount.id}`).val()) || !$(`#${options.amount.id}`).val().length) {
+        if (!isValidInput("Amount", +$(`#${options.amount.id}`).val()) || !$(`#${options.amount.id}`).val().length) {
           showErrorMessageForInput(options.amount, saveChangesBtn);
         } else {
           hideErrorMessageForInput(options, "amount", saveChangesBtn, add_new_product_props.path);
@@ -157,7 +157,7 @@ function addEventListelersToAddNewProductPage(options = add_new_product_props.in
       }
 
       case "inputPrice": {
-        if (!isValidInput("Price", $(`#${options.price.id}`).val()) || +$(`#${options.price.id}`).val() === 0) {
+        if (!isValidInput("Price", +$(`#${options.price.id}`).val()) || +$(`#${options.price.id}`).val() === 0) {
           showErrorMessageForInput(options.price, saveChangesBtn);
         } else {
           hideErrorMessageForInput(options, "price", saveChangesBtn, add_new_product_props.path);
@@ -166,7 +166,8 @@ function addEventListelersToAddNewProductPage(options = add_new_product_props.in
       }
       
       case "textareaNotes": {
-        if (!isValidInput("Notes", $(`#${options.notes.id}`).val())) {
+        const value = removeLineBreaks($(`#${options.notes.id}`).val())
+        if (!isValidInput("Notes", value)) {
           showErrorMessageForInput(options.notes, saveChangesBtn);
         } else {
           hideErrorMessageForInput(options, "notes", saveChangesBtn, add_new_product_props.path);

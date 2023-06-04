@@ -1,9 +1,8 @@
 let filtersModalWrap = null
-let filters = {
-  customers: FILTER_VALUES.customers.reduce((acc, value) => {acc[value] = false; return acc}, {}),
-  products: FILTER_VALUES.products.reduce((acc, value) => {acc[value] = false; return acc}, {}),
-  orders: FILTER_VALUES.products.reduce((acc, value) => {acc[value] = false; return acc}, {})
-} 
+const filters = {}
+for(const f in FILTER_VALUES) {
+  filters[f] = FILTER_VALUES[f].reduce((acc, value) => {acc[value] = false; return acc}, {})
+}
 
 function renderFiltersModal(page) {
     filters[page] = _.cloneDeep(state.filtering[page])
@@ -71,11 +70,15 @@ function clearAllFilters(page) {
   }
   [...document.querySelectorAll("[id*=-filter]")].forEach((el) => el.removeAttribute("checked"));
   submitFilters(page);
-  document.querySelectorAll(`div#chip-buttons [data-chip-${page}]`).forEach((el) => {
-    const id = el.getAttribute(`data-chip-${page}`)
-    if(id!== 'search')
-      removeChipButton(id, page, true)
-  });
+  const chips = document.querySelectorAll(`div#chip-buttons [data-chip-${page}]`)
+  if(chips.length) {
+    chips.forEach((el) => {
+      const id = el.getAttribute(`data-chip-${page}`)
+      if(id!== 'search')
+        removeChipButton(id, page, true)
+    });
+  }
+  
 }
 
 function applyFilter(page, name) {

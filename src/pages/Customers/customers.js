@@ -3,22 +3,24 @@ async function renderCustomersPageLayout(options = CustomerProps, response) {
   let data;
   if (!_.isEmpty(response.data.Customers)) {
     data = response.data.Customers.map((el) => {
-      return { Id: el._id, Email: el.email, Name: el.name, Country: el.country, "Created": moment(el.createdOn).format('LLL') };
+      return { Id: el._id, Email: el.email, Name: el.name, Country: el.country, "Created": moment(el.createdOn).format(DATE_AND_TIME_FORMAT) };
     });
   }
   CustomerProps.data = response.data.Customers;
 
     return `      
+    <div class="bg-body rounded p-3">
+        <div id="${PAGE_TITLE_ID}" class="p-horizontal-20">  
+            <div class="page-header-flex">
+                ${generatePageTitle(options)}
+            </div>
+                ${searchBar(options.buttons)}
+        </div>
+    </div>      
     <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
-      <div id="${PAGE_TITLE_ID}">
-        <div class="page-header-flex">
-          ${generatePageTitle(options)}
-        </div>
-          ${searchBar(options.buttons, 'customers')}
         <div id="${CONTENT_ID}">
-          ${generateTableBootstrap(data, options)}
+            ${generateTableBootstrap(data, options)}
         </div>
-      </div>
     </div>`;
   }
 

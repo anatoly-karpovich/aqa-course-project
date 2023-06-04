@@ -161,7 +161,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
       }
 
       case options.house.id: {
-        if (!isValidInput("House", $(`#${options.house.id}`).val()) || +$(`#${options.house.id}`).val() === 0) {
+        if (!isValidInput("House", +$(`#${options.house.id}`).val()) || +$(`#${options.house.id}`).val() === 0) {
           showErrorMessageForInput(options.house, saveChangesBtn);
         } else if (_.isEqual(_.omit(currentCustomerState, ["_id", "createdOn"]), getDataFromForm(`#${edit_customer_props.formId}`))) {
             hideErrorMessageForInput(options, "house", saveChangesBtn, edit_customer_props.path);
@@ -173,7 +173,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
       }
 
       case options.flat.id: {
-        if (!isValidInput("Flat", $(`#${options.flat.id}`).val()) || +$(`#${options.flat.id}`).val() === 0) {
+        if (!isValidInput("Flat", +$(`#${options.flat.id}`).val()) || +$(`#${options.flat.id}`).val() === 0) {
           showErrorMessageForInput(options.flat, saveChangesBtn);
         } else if (_.isEqual(_.omit(currentCustomerState, ["_id", "createdOn"]), getDataFromForm(`#${edit_customer_props.formId}`))) {
             hideErrorMessageForInput(options, "flat", saveChangesBtn, edit_customer_props.path);
@@ -197,7 +197,8 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
       }
       
       case options.notes.id: {
-        if (!isValidInput("Notes", $(`#${options.notes.id}`).val())) {
+        const value = removeLineBreaks($(`#${options.notes.id}`).val())
+        if (!isValidInput("Notes", value)) {
           showErrorMessageForInput(options.notes, saveChangesBtn);
         } else if (_.isEqual(_.omit(currentCustomerState, ["_id", "createdOn"]), getDataFromForm(`#${edit_customer_props.formId}`))) {
             hideErrorMessageForInput(options, "notes", saveChangesBtn, edit_customer_props.path);
@@ -209,7 +210,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
       }
 
       case options.country.id: {
-        if (_.isEqual(_.omit(currentCustomerState, ["_id", "createdOn"]), getDataFromForm(`#${edit_customer_props.formId}`))) {
+        if (_.isEqual(_.omit(currentCustomerState, ["_id", "createdOn"]), getDataFromForm(`#${edit_customer_props.formId}`))  || !isValidForm()) {
           saveChangesBtn.prop("disabled", true);
         } else {
           saveChangesBtn.prop("disabled", false);
@@ -222,7 +223,7 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
 
 function validateNewCustomerInputs(options = edit_customer_props.inputs) {
   return (
-    isValidInput("Notes", $(`#${options.notes.id}`).val()) &&
+    isValidInput("Notes", $(`#${options.notes.id}`).val().replaceAll('\n', '')) &&
 
     (($(`#${options.flat.id}`).val().length && isValidInput("Flat", +$(`#${options.flat.id}`).val())) || +$(`#${options.flat.id}`).val() > 0) &&
 

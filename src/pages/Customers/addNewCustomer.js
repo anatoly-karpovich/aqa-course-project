@@ -236,7 +236,7 @@ function addEventListelersToAddNewCustomerPage(options = add_new_customer_props.
       }
 
       case options.house.id: {
-        if (!isValidInput("House", $(`#${options.house.id}`).val()) || +$(`#${options.house.id}`).val() === 0) {
+        if (!isValidInput("House", +$(`#${options.house.id}`).val()) || +$(`#${options.house.id}`).val() === 0) {
           showErrorMessageForInput(options.house, saveChangesBtn);
         } else {
           hideErrorMessageForInput(options, "house", saveChangesBtn, add_new_customer_props.path);
@@ -245,7 +245,7 @@ function addEventListelersToAddNewCustomerPage(options = add_new_customer_props.
       }
 
       case options.flat.id: {
-        if (!isValidInput("Flat", $(`#${options.flat.id}`).val()) || +$(`#${options.flat.id}`).val() === 0) {
+        if (!isValidInput("Flat", +$(`#${options.flat.id}`).val()) || +$(`#${options.flat.id}`).val() === 0) {
           showErrorMessageForInput(options.flat, saveChangesBtn);
         } else {
           hideErrorMessageForInput(options, "flat", saveChangesBtn, add_new_customer_props.path);
@@ -263,7 +263,8 @@ function addEventListelersToAddNewCustomerPage(options = add_new_customer_props.
       }
       
       case options.notes.id: {
-        if (!isValidInput("Notes", $(`#${options.notes.id}`).val())) {
+        const value = removeLineBreaks($(`#${options.notes.id}`).val())
+        if (!isValidInput("Notes", value)) {
           showErrorMessageForInput(options.notes, saveChangesBtn);
         } else {
           hideErrorMessageForInput(options, "notes", saveChangesBtn, add_new_customer_props.path);

@@ -65,26 +65,6 @@ if(typeof value === 'boolean') {
 } else return value
 }
 
-const replaceApiToFeKeys = {
-  "_id": 'Id',
-  "email": "Email",
-  "name": "Name",
-  "country": "Country",
-  "city": "City",
-  "address": "Address",
-  "house": "House",
-  "flat": "Flat",
-  "street": "Street",
-  "phone": "Phone",
-  "createdOn": "Created On",
-  "note": "Notes",
-  "notes": "Notes",
-  "manufacturer": "Manufacturer",
-  "price": "Price",
-  "amount": "Amount",
-  "active": "Active"
-}
-
 function removeDetailsModal() {
     modalWrap.remove()
     modalWrap = null
