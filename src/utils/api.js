@@ -19,6 +19,8 @@ async function sendRequest(options) {
     if (err.response.status >= 400 && err.response.status < 500) {
       return err.response;
     }
+  } finally {
+    hideSpinner();
   }
   return response;
 }
