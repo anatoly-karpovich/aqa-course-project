@@ -41,7 +41,7 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
     },
     tableProps: {
       id: "table-products",
-      defaultHeaders: ['Name, Price, Manufacturer', 'Created'],
+      defaultHeaders: ['Name', 'Price', 'Manufacturer', 'Created'],
       buttons: [
         {
           nestedItems: `<i class="bi bi-card-text"></i>`,
