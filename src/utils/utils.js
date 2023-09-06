@@ -36,8 +36,8 @@ function clearAllInputs(inputs, buttonsToBeDisabled = []) {
       field.value = inputs[input].options.values[0];
     } else {
       field.value = "";
-      field.classList.remove('is-invalid');
-      field.classList.remove('is-valid');
+      field.classList.remove("is-invalid");
+      field.classList.remove("is-valid");
       document.querySelector(inputs[input].errorMessageSelector).innerText = "";
     }
   }
@@ -47,9 +47,9 @@ function clearAllInputs(inputs, buttonsToBeDisabled = []) {
 }
 
 function isValidInput(inputName, value) {
-  const dates = [...dateKeys, 'Finaldate']
-  if(dates.includes(inputName)){
-    return isValidDate(value)
+  const dates = [...dateKeys, "Finaldate"];
+  if (dates.includes(inputName)) {
+    return isValidDate(value);
   } else if (typeof value === "string") {
     return REGULAR_EXPRESSIONS[inputName].test(value.trim());
   } else {
@@ -58,18 +58,21 @@ function isValidInput(inputName, value) {
 }
 
 function renderOptions(values = [], defaultValue, toBeSelected, titleValues = "") {
-  const titles = (titleValues && !_.isEmpty(titleValues)) ? titleValues.map(t => `title="${t}"`) : ""
+  const titles = titleValues && !_.isEmpty(titleValues) ? titleValues.map((t) => `title="${t}"`) : "";
   return toBeSelected
-    ? values.map((el,i) => `<option ${el === toBeSelected ? "selected" : ""} ${titles ? titles[i] : ""} value="${el}">${el}</option>`).join("")
-    : values.map((el,i) => `<option ${el === defaultValue ? "selected" : ""} ${titles ? titles[i] : ""} value="${el}">${el}</option>`).join("");
+    ? values.map((el, i) => `<option ${el === toBeSelected ? "selected" : ""} ${titles ? titles[i] : ""} value="${el}">${el}</option>`).join("")
+    : values.map((el, i) => `<option ${el === defaultValue ? "selected" : ""} ${titles ? titles[i] : ""} value="${el}">${el}</option>`).join("");
 }
 
 function renderCustomersOptions(options, data) {
-  const titles = data.map(t => `title="${t.email}"`)
-  return data.map((el,i) => `
+  const titles = data.map((t) => `title="${t.email}"`);
+  return data
+    .map(
+      (el, i) => `
   <option ${el.name === options.defaultValue.name && el.email === options.defaultValue.title ? "selected" : ""} ${titles ? titles[i] : ""} 
   value="${el.name}">${el.name}</option>`
-  ).join("");
+    )
+    .join("");
 }
 
 async function showNotificationAfterDeleteRequest(response, notificationOptions, pageProps) {
@@ -78,7 +81,7 @@ async function showNotificationAfterDeleteRequest(response, notificationOptions,
     await renderPages[pageProps.path](pageProps);
     renderNotification(notificationOptions);
   } else {
-    handleApiErrors(response, true)
+    handleApiErrors(response, true);
   }
 }
 
@@ -88,32 +91,32 @@ async function showNotificationOnOrderDetailsPage(response, notificationOptions)
     await renderOrderDetailsPage(state.order._id);
     renderNotification(notificationOptions);
   } else {
-    handleApiErrors(response, true)
+    handleApiErrors(response, true);
   }
 }
- 
+
 function showErrorMessage(inputOptions) {
-  $(`#${inputOptions.id}`).addClass('is-invalid')
-  $(`#${inputOptions.id}`).removeClass('is-valid')
+  $(`#${inputOptions.id}`).addClass("is-invalid");
+  $(`#${inputOptions.id}`).removeClass("is-valid");
   $(inputOptions.errorMessageSelector).html(inputOptions.errorMessage);
 }
 
 function showErrorMessageForInput(inputOptions, saveButton) {
-  $(`#${inputOptions.id}`).addClass('is-invalid')
-  $(`#${inputOptions.id}`).removeClass('is-valid')
+  $(`#${inputOptions.id}`).addClass("is-invalid");
+  $(`#${inputOptions.id}`).removeClass("is-valid");
   $(inputOptions.errorMessageSelector).html(inputOptions.errorMessage);
   saveButton.prop("disabled", true);
 }
 
 function hideErrorMessage(inputOptions) {
-  $(`#${inputOptions.id}`).removeClass('is-invalid');
-  $(`#${inputOptions.id}`).addClass('is-valid');
+  $(`#${inputOptions.id}`).removeClass("is-invalid");
+  $(`#${inputOptions.id}`).addClass("is-valid");
   $(inputOptions.errorMessageSelector).html("");
 }
 
 function hideErrorMessageForInput(options, inputName, saveButton, page) {
-  $(`#${options[inputName].id}`).removeClass('is-invalid');
-  $(`#${options[inputName].id}`).addClass('is-valid');
+  $(`#${options[inputName].id}`).removeClass("is-invalid");
+  $(`#${options[inputName].id}`).addClass("is-valid");
 
   $(options[inputName].errorMessageSelector).html("");
   let isValid;
@@ -132,7 +135,7 @@ function generateFormInputs(inputs) {
   const formInputs = Object.keys(inputs).map((input) => {
     if (inputs[input].type === "text") return generateFormTextInput(inputs[input]);
     else if (inputs[input].type === "select") return generateFormSelectInput(inputs[input]);
-    else if (inputs[input].type === "textarea") return generateTextareaInput(inputs[input]) 
+    else if (inputs[input].type === "textarea") return generateTextareaInput(inputs[input]);
     else if (inputs[input].type === "email") {
       return `  <div class="${inputs[input].divClasslist}">
                 <label for="${inputs[input].id}" class="form-label">${inputs[input].name}</label>
@@ -157,28 +160,28 @@ function getDataFromForm(formSelector) {
 }
 
 function searchInTable(page) {
-  const value = state.search[page]
+  const value = state.search[page];
   const filterOnPage = [...Object.keys(state.filtering[page]).filter((c) => state.filtering[page][c])];
   const rows = [...$(`tr:has(td)`)];
   if (rows[0].querySelector(`td`).innerText !== NO_RECORDS_IN_TABLE) {
     rows.forEach((r) => {
       const ths = [...document.querySelectorAll("th")];
       const tds = [...r.querySelectorAll(`td`)];
-      if(ths.at(-1).innerText === "Actions") tds.pop();
+      if (ths.at(-1).innerText === "Actions") tds.pop();
 
       if (value && filterOnPage.length) {
-        if (tds.slice(0,-1).some((c) => c.innerText.toLowerCase().includes(value.toLowerCase())) && filterOnPage.includes(tds.at(-2).innerText)) {
+        if (tds.slice(0, -1).some((c) => c.innerText.toLowerCase().includes(value.toLowerCase())) && filterOnPage.includes(tds.at(-2).innerText)) {
           r.style.display = "";
         } else {
           r.style.display = "none";
         }
       } else if (value) {
-        if (tds.slice(0,-1).some((c) => c.innerText.toLowerCase().includes(value.toLowerCase()))) {
+        if (tds.slice(0, -1).some((c) => c.innerText.toLowerCase().includes(value.toLowerCase()))) {
           r.style.display = "";
         } else {
           r.style.display = "none";
         }
-      } else if (filterOnPage.length) {      
+      } else if (filterOnPage.length) {
         if (filterOnPage.includes(tds.at(-2).innerText)) {
           r.style.display = "";
         } else {
@@ -192,15 +195,12 @@ function searchInTable(page) {
 }
 
 function isValidDate(dateString) {
-  const formats = [
-    DATE_AND_TIME_FORMAT,
-    DATE_FORMAT
-  ]
+  const formats = [DATE_AND_TIME_FORMAT, DATE_FORMAT];
   return moment(dateString, formats, true).isValid();
 }
 
 function sortStrings(arr) {
-  return arr.sort((a,b) => a.localeCompare(b))
+  return arr.sort((a, b) => a.localeCompare(b));
 }
 
 function activateTab() {
@@ -216,8 +216,8 @@ function activateTab() {
     comments: {
       tab: $(`ul#order-details-tabs #comments-tab`),
       content: $(`div#order-details-tabs-content #comments`),
-    }
-  }
+    },
+  };
 
   const activeTab = state.activeTab;
 
@@ -227,13 +227,13 @@ function activateTab() {
 }
 
 function removeLineBreaks(value) {
-  return value.replaceAll("\r", "").replaceAll("\n","")
+  return value.replaceAll("\r", "").replaceAll("\n", "");
 }
 
 function replaceLineBreaksWithBrTag(value) {
-  return value.replaceAll("\r\n", "<br>").replaceAll("\n", "<br>")
+  return value.replaceAll("\r\n", "<br>").replaceAll("\n", "<br>");
 }
 
 function isValidForm() {
-  return [...document.querySelectorAll('.invalid-feedback')].every(e => !e.textContent)
+  return [...document.querySelectorAll(".invalid-feedback")].every((e) => !e.textContent);
 }

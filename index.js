@@ -1,16 +1,16 @@
 const token = getAuthorizationCookie();
-token ? renderPages['Landing'](landingProps) : renderPages['Sign In']();
+token ? renderPages["Landing"](landingProps) : renderPages["Sign In"]();
 
 const state = {
   filtering: _.cloneDeep(filters),
   search: {
     customers: "",
     products: "",
-    orders: ""
+    orders: "",
   },
-  notifications: {}
-}
-
+  notifications: {},
+  sideMenuElementForRed: getRandomArbitrary(1, 3),
+};
 
 async function sideMenuClickHandler(page) {
   switch (page) {
@@ -21,14 +21,13 @@ async function sideMenuClickHandler(page) {
     case "Products":
       renderPages[page](ProductsProps);
       break;
-  
+
     case "Customers":
-      renderPages[page](CustomerProps)
+      renderPages[page](CustomerProps);
       break;
 
     case "Orders":
-      renderPages[page](OrdersProps)
+      renderPages[page](OrdersProps);
       break;
-    }
+  }
 }
-
