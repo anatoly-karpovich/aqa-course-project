@@ -236,6 +236,7 @@ function renderLandingPage(options = {}) {
     renderSignInPage();
   });
   renderHomePage(homeProps);
+  addEventListenersToSidemenu();
 }
 
 function renderHomePage(options = {}) {
