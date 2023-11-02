@@ -234,9 +234,11 @@ function renderLandingPage(options = {}) {
     removeAuthorizationCookie();
     document.querySelector("#sidemenu").parentNode.removeChild(document.querySelector("#sidemenu"));
     renderSignInPage();
+    state.notifications = {};
   });
   renderHomePage(homeProps);
   addEventListenersToSidemenu();
+  renderNotificationContainer();
 }
 
 function renderHomePage(options = {}) {
