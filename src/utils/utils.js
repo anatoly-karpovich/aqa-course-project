@@ -257,7 +257,7 @@ function sortArrayByDataType(array, dataType, field, direction) {
 
 function sortArrayByField(array, field, direction) {
   let sortFunction;
-  const dateFields = ["Created"];
+  const dateFields = ["Created", "Delivery"];
   const stringFields = ["Name", "Email", "Country"];
   if (dateFields.includes(field)) {
     sortFunction = sortFunctions["date"];
