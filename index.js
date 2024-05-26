@@ -10,6 +10,11 @@ const state = {
   },
   notifications: {},
   sideMenuElementForRed: getRandomArbitrary(1, 3),
+  data: {
+    customers: [],
+    products: [],
+    orders: [],
+  },
 };
 
 async function sideMenuClickHandler(page) {
