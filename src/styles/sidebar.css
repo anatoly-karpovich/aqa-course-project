@@ -557,3 +557,7 @@ button.accordion-button:focus {
   margin-right: 30px;
   justify-content: end;
 }
+
+button[name='sort-button']:focus {
+  box-shadow: none
+}
