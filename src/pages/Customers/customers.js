@@ -139,7 +139,7 @@ function addEventListelersToCustomersPage() {
       const options = structuredClone(CustomerProps);
       options.tableProps.currentSortingField.direction = direction;
       options.tableProps.currentSortingField.name = fieldName;
-      $('[data-name="table"]').html(generateTableBootstrap(state.data.customers, options));
+      $('[data-name="table-customers"]').html(generateTableBootstrap(state.data.customers, options));
       searchInTable("customers");
     }
   });
