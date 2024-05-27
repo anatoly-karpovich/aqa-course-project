@@ -243,7 +243,7 @@ function sortArrayByDate(array, dateFieldName, direction) {
 }
 
 function sortArrayByString(array, stringFieldName, direction) {
-  return array.sort((a, b) => (direction === "asc" ? a[stringFieldName].localeCompare(b[stringFieldName]) : b[stringFieldName].localeCompare(a[stringFieldName])));
+  return array.sort((a, b) => (direction === "asc" ? a[stringFieldName].toLowerCase().localeCompare(b[stringFieldName].toLowerCase()) : b[stringFieldName].localeCompare(a[stringFieldName])));
 }
 
 const sortFunctions = {
