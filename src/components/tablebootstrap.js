@@ -16,15 +16,23 @@ function generateTableBootstrap(data = [], options) {
 
 function generateTableHeaders(titles = [], options) {
   return titles.length
-    ? titles.map((title) => (options.tableProps.sortableFields.includes(title) ? generateTableHeaderWithSorting(title, options.tableProps.currentSortingField) : generateTableHeader(title))).join("") +
-        `<th scope="col" style="text-align:center">Actions</th>`
-    : options.tableProps.defaultHeaders.map((title) => `<th scope="col">${title}</th>`).join("") + `<th scope="col" style="text-align:center">Actions</th>`;
+    ? titles
+        .map((title) =>
+          options.tableProps.sortableFields.includes(title)
+            ? generateTableHeaderWithSorting(title, options.tableProps.currentSortingField)
+            : generateTableHeader(title)
+        )
+        .join("") + `<th scope="col" style="text-align:center">Actions</th>`
+    : options.tableProps.defaultHeaders.map((title) => `<th scope="col">${title}</th>`).join("") +
+        `<th scope="col" style="text-align:center">Actions</th>`;
 }
 
 function generateTableBody(arr = [], options) {
   return arr.length
     ? arr.map((data) => `<tr>${generateTableRow(data, options)}</tr>`).join("")
-    : `<tr><td colspan="${options.tableProps.defaultHeaders.length + 1}" class="fs-italic">${NO_RECORDS_IN_TABLE}</td></tr>`;
+    : `<tr><td colspan="${
+        options.tableProps.defaultHeaders.length + 1
+      }" class="fs-italic">${NO_RECORDS_IN_TABLE}</td></tr>`;
 }
 
 function generateTableRow(obj = {}, options) {
@@ -68,7 +76,10 @@ function generateSortButton(name, sortingOptions) {
   const isCurrentSortingField = sortingOptions.name === name;
   let arrow = "";
   if (isCurrentSortingField) {
-    arrow = sortingOptions.direction === "asc" ? `<i class="bi bi-arrow-down-square-fill"></i>` : `<i class="bi bi-arrow-up-square-fill"></i>`;
+    arrow =
+      sortingOptions.direction === "asc"
+        ? `<i class="bi bi-arrow-down-square-fill"></i>`
+        : `<i class="bi bi-arrow-up-square-fill"></i>`;
   } else {
     arrow = `<i class="bi bi-arrow-down-square"></i>`;
   }

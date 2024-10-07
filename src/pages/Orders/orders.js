@@ -1,5 +1,7 @@
 function renderOrdersPageLayout(options = OrdersProps, response = {}) {
   OrdersProps.data = response.data;
+  options.tableProps.currentSortingField.direction = state.sorting.orders.sortOrder;
+  options.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.orders.sortField];
 
   const data = _.isEmpty(response.data.Orders) ? [] : transformOrdersForTable(response.data.Orders);
 
@@ -40,10 +42,28 @@ const OrdersProps = {
   },
   tableProps: {
     id: "table-orders",
-    defaultHeaders: ["Order Number", "Name", "Email", "Customer", "Price", "Delivery", "Status", "Created"],
-    sortableFields: ["Order Number", "Name", "Email", "Customer", "Price", "Delivery", "Status", "Created"],
+    defaultHeaders: [
+      idToOrderNumber._id,
+      replaceApiToFeKeys.name,
+      replaceApiToFeKeys.email,
+      replaceApiToFeKeys.customer,
+      replaceApiToFeKeys.price,
+      replaceApiToFeKeys.delivery,
+      replaceApiToFeKeys.status,
+      replaceApiToFeKeys.createdOn,
+    ],
+    sortableFields: [
+      idToOrderNumber._id,
+      replaceApiToFeKeys.name,
+      replaceApiToFeKeys.email,
+      replaceApiToFeKeys.customer,
+      replaceApiToFeKeys.price,
+      replaceApiToFeKeys.delivery,
+      replaceApiToFeKeys.status,
+      replaceApiToFeKeys.createdOn,
+    ],
     currentSortingField: {
-      name: "Created",
+      name: replaceApiToFeKeys.createdOn,
       direction: "desc",
     },
     buttons: [
@@ -63,7 +83,7 @@ function addEventListelersToOrdersPage() {
     await renderCreateOrderModal();
   });
 
-  $(`#${OrdersProps.buttons.search.id}`).on("click", (event) => {
+  $(`#${OrdersProps.buttons.search.id}`).on("click", async (event) => {
     event.preventDefault();
     const value = $(`input[type="search"]`).val();
     if (state.search.orders) {
@@ -73,7 +93,8 @@ function addEventListelersToOrdersPage() {
       renderChipButton(value, "orders");
     }
     state.search.orders = value;
-    searchInTable("orders");
+    // searchInTable("orders");
+    await getOrdersAndRenderTable();
     $(`input[type="search"]`).val("");
   });
 
@@ -82,7 +103,7 @@ function addEventListelersToOrdersPage() {
     renderFiltersModal("orders");
   });
 
-  $(`[data-name="table-orders"]`).on("click", (event) => {
+  $(`[data-name="table-orders"]`).on("click", async (event) => {
     if (event.target.name === "sort-button") {
       const fieldName = event.target.getAttribute("fieldname");
       const isCurrentSortingField = event.target.getAttribute("current");
@@ -90,12 +111,11 @@ function addEventListelersToOrdersPage() {
       if (isCurrentSortingField === "true") {
         direction = event.target.getAttribute("direction") === "asc" ? "desc" : "asc";
       }
-      state.data.orders = sortArrayByField(state.data.orders, fieldName, direction);
-      const options = structuredClone(OrdersProps);
-      options.tableProps.currentSortingField.direction = direction;
-      options.tableProps.currentSortingField.name = fieldName;
-      $('[data-name="table-orders"]').html(generateTableBootstrap(state.data.orders, options));
-      searchInTable("orders");
+      state.sorting.orders.sortField =
+        Object.keys(replaceApiToFeKeys).find((key) => replaceApiToFeKeys[key] === fieldName) ??
+        Object.keys(idToOrderNumber).find((key) => idToOrderNumber[key] === fieldName);
+      state.sorting.orders.sortOrder = direction;
+      await getOrdersAndRenderTable();
     }
   });
 }
@@ -103,14 +123,31 @@ function addEventListelersToOrdersPage() {
 function transformOrdersForTable(orders) {
   return orders.map((el) => {
     return {
-      Id: el._id,
-      "Order Number": el._id,
-      Name: el.customer.name,
-      Email: el.customer.email,
-      Price: `$${el.total_price}`,
-      Delivery: el.delivery ? moment(el.delivery.finalDate).format(DATE_FORMAT) : "-",
-      Status: el.status,
-      Created: moment(el.createdOn).format(DATE_AND_TIME_FORMAT),
+      [replaceApiToFeKeys._id]: el._id,
+      [idToOrderNumber._id]: el._id,
+      [replaceApiToFeKeys.name]: el.customer.name,
+      [replaceApiToFeKeys.email]: el.customer.email,
+      [replaceApiToFeKeys.price]: `$${el.total_price}`,
+      [replaceApiToFeKeys.delivery]: el.delivery ? moment(el.delivery.finalDate).format(DATE_FORMAT) : "-",
+      [replaceApiToFeKeys.status]: el.status,
+      [replaceApiToFeKeys.createdOn]: moment(el.createdOn).format(DATE_AND_TIME_FORMAT),
     };
   });
+}
+
+function renderOrdersTable(orders, options) {
+  $('[data-name="table-orders"]').html(generateTableBootstrap(transformOrdersForTable(orders), options));
+}
+
+async function getOrdersAndRenderTable() {
+  showSpinner();
+  const sortedOrders = (await getSortedOrders()).data.Orders;
+  const options = structuredClone(OrdersProps);
+  options.tableProps.currentSortingField.direction = state.sorting.orders.sortOrder;
+  options.tableProps.currentSortingField.name =
+    state.sorting.orders.sortField === "_id"
+      ? idToOrderNumber[state.sorting.orders.sortField]
+      : replaceApiToFeKeys[state.sorting.orders.sortField];
+  renderOrdersTable(sortedOrders, options);
+  hideSpinner();
 }

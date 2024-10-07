@@ -1,5 +1,7 @@
 function renderProductsPageLayout(options = ProductsProps, response = {}) {
   ProductsProps.data = response.data;
+  options.tableProps.currentSortingField.direction = state.sorting.products.sortOrder;
+  options.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.products.sortField];
 
   const data = _.isEmpty(response.data.Products) ? [] : transformProductsForTable(response.data.Products);
 
@@ -40,10 +42,10 @@ const ProductsProps = {
   },
   tableProps: {
     id: "table-products",
-    defaultHeaders: ["Name", "Price", "Manufacturer", "Created"],
-    sortableFields: ["Name", "Price", "Manufacturer", "Created"],
+    defaultHeaders: ["Name", "Price", "Manufacturer", "Created On"],
+    sortableFields: ["Name", "Price", "Manufacturer", "Created On"],
     currentSortingField: {
-      name: "Created",
+      name: "Created On",
       direction: "desc",
     },
     buttons: [
@@ -89,7 +91,11 @@ async function deleteProduct(id) {
   removeConfimationModal();
   showSpinner();
   const response = await ProductsService.deleteProduct(id);
-  await showNotificationAfterDeleteRequest(response, { message: SUCCESS_MESSAGES["Product Successfully Deleted"]("Product") }, ProductsProps);
+  await showNotificationAfterDeleteRequest(
+    response,
+    { message: SUCCESS_MESSAGES["Product Successfully Deleted"]("Product") },
+    ProductsProps
+  );
 }
 
 function renderEditProductPageFromModal(id) {
@@ -111,7 +117,7 @@ const product_details_props = (id) => {
 
 function addEventListelersToProductsPage() {
   $("button.page-title-button").on("click", () => renderAddNewProductPage());
-  $(`#${ProductsProps.buttons.search.id}`).on("click", (event) => {
+  $(`#${ProductsProps.buttons.search.id}`).on("click", async (event) => {
     event.preventDefault();
     const value = $(`input[type="search"]`).val();
     if (state.search.products) {
@@ -121,7 +127,8 @@ function addEventListelersToProductsPage() {
       renderChipButton(value, "products");
     }
     state.search.products = value;
-    searchInTable("products");
+    await getProductsAndRenderTable();
+    // searchInTable("products");
     $(`input[type="search"]`).val("");
   });
 
@@ -130,7 +137,7 @@ function addEventListelersToProductsPage() {
     renderFiltersModal("products");
   });
 
-  $(`[data-name="table-products"]`).on("click", (event) => {
+  $(`[data-name="table-products"]`).on("click", async (event) => {
     if (event.target.name === "sort-button") {
       const fieldName = event.target.getAttribute("fieldname");
       const isCurrentSortingField = event.target.getAttribute("current");
@@ -138,18 +145,37 @@ function addEventListelersToProductsPage() {
       if (isCurrentSortingField === "true") {
         direction = event.target.getAttribute("direction") === "asc" ? "desc" : "asc";
       }
-      state.data.products = sortArrayByField(state.data.products, fieldName, direction);
-      const options = structuredClone(ProductsProps);
-      options.tableProps.currentSortingField.direction = direction;
-      options.tableProps.currentSortingField.name = fieldName;
-      $('[data-name="table-products"]').html(generateTableBootstrap(state.data.products, options));
-      searchInTable("products");
+      state.sorting.products.sortField = Object.keys(replaceApiToFeKeys).find(
+        (key) => replaceApiToFeKeys[key] === fieldName
+      );
+      state.sorting.products.sortOrder = direction;
+      await getProductsAndRenderTable();
     }
   });
 }
 
 function transformProductsForTable(products) {
   return products.map((el) => {
-    return { Id: el._id, Name: el.name, Price: `$${el.price}`, Manufacturer: el.manufacturer, Created: moment(el.createdOn).format(DATE_AND_TIME_FORMAT) };
+    return {
+      [replaceApiToFeKeys._id]: el._id,
+      [replaceApiToFeKeys.name]: el.name,
+      [replaceApiToFeKeys.price]: `$${el.price}`,
+      [replaceApiToFeKeys.manufacturer]: el.manufacturer,
+      [replaceApiToFeKeys.createdOn]: moment(el.createdOn).format(DATE_AND_TIME_FORMAT),
+    };
   });
+}
+
+function renderProductsTable(products, options) {
+  $('[data-name="table-products"]').html(generateTableBootstrap(transformProductsForTable(products), options));
+}
+
+async function getProductsAndRenderTable() {
+  showSpinner();
+  const sortedProducts = (await getSortedProducts()).data.Products;
+  const options = structuredClone(ProductsProps);
+  options.tableProps.currentSortingField.direction = state.sorting.products.sortOrder;
+  options.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.products.sortField];
+  renderProductsTable(sortedProducts, options);
+  hideSpinner();
 }

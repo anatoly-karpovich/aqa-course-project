@@ -1,17 +1,21 @@
-let filtersModalWrap = null
-const filters = {}
-for(const f in FILTER_VALUES) {
-  filters[f] = FILTER_VALUES[f].reduce((acc, value) => {acc[value] = false; return acc}, {})
+let filtersModalWrap = null;
+const filters = {};
+for (const f in FILTER_VALUES) {
+  filters[f] = FILTER_VALUES[f].reduce((acc, value) => {
+    acc[value] = false;
+    return acc;
+  }, {});
 }
 
 function renderFiltersModal(page) {
-    filters[page] = _.cloneDeep(state.filtering[page])
-    if(filtersModalWrap !== null) {
-        filtersModalWrap.remove()
-    }
-    filtersModalWrap = document.createElement("div");
-    filtersModalWrap.insertAdjacentHTML(
-        "afterbegin", `
+  filters[page] = _.cloneDeep(state.filtering[page]);
+  if (filtersModalWrap !== null) {
+    filtersModalWrap.remove();
+  }
+  filtersModalWrap = document.createElement("div");
+  filtersModalWrap.insertAdjacentHTML(
+    "afterbegin",
+    `
         <div class="modal" tabindex="-1">
           <div class="modal-dialog modal-filters-wrapper">
             <div class="modal-content">
@@ -31,83 +35,81 @@ function renderFiltersModal(page) {
             </div>
           </div>
         </div>
-        `)
+        `
+  );
 
-    document.body.prepend(filtersModalWrap)
-    
-    const $filtersModalWrap = new bootstrap.Modal(filtersModalWrap.querySelector('.modal'));
-    $filtersModalWrap.show();
-    $('#apply-filters').on('click', (e) => {
-      e.preventDefault();
-      submitFilters(page)
-    })
-    $("button#clear-filters").on('click', (event) => {
-      event.preventDefault();
-      clearAllFilters(page)
-    })
+  document.body.prepend(filtersModalWrap);
+
+  const $filtersModalWrap = new bootstrap.Modal(filtersModalWrap.querySelector(".modal"));
+  $filtersModalWrap.show();
+  $("#apply-filters").on("click", async (e) => {
+    e.preventDefault();
+    await submitFilters(page);
+  });
+  $("button#clear-filters").on("click", async (event) => {
+    event.preventDefault();
+    await clearAllFilters(page);
+  });
 }
 
-function submitFilters(page) {
-  const changedFiltersToTrue = {}
-  const changedFiltersToFalse = {}
-  for(key in filters[page]) {
-    if(filters[page][key] !== state.filtering[page][key]) {
-      filters[page][key] 
-      ? changedFiltersToTrue[key] = filters[page][key]
-      : changedFiltersToFalse[key] = filters[page][key]
+async function submitFilters(page) {
+  const changedFiltersToTrue = {};
+  const changedFiltersToFalse = {};
+  for (key in filters[page]) {
+    if (filters[page][key] !== state.filtering[page][key]) {
+      filters[page][key]
+        ? (changedFiltersToTrue[key] = filters[page][key])
+        : (changedFiltersToFalse[key] = filters[page][key]);
     }
   }
-  Object.keys(changedFiltersToTrue).forEach(key => renderChipButton(key, page, true))
-  Object.keys(changedFiltersToFalse).forEach(key => removeChipButton(key, page, true))
-  state.filtering[page] = _.cloneDeep(filters[page])
-  searchInTable(page)
-  removeFiltersModal()
+  Object.keys(changedFiltersToTrue).forEach((key) => renderChipButton(key, page, true));
+  Object.keys(changedFiltersToFalse).forEach((key) => removeChipButton(key, page, true));
+  state.filtering[page] = _.cloneDeep(filters[page]);
+  await getDataAndRenderTable(page);
+  removeFiltersModal();
 }
 
-function clearAllFilters(page) {
+async function clearAllFilters(page) {
   for (const key of Object.keys(state.filtering[page])) {
     filters[page][key] = false;
   }
   [...document.querySelectorAll("[id*=-filter]")].forEach((el) => el.removeAttribute("checked"));
   submitFilters(page);
-  const chips = document.querySelectorAll(`div#chip-buttons [data-chip-${page}]`)
-  if(chips.length) {
+  const chips = document.querySelectorAll(`div#chip-buttons [data-chip-${page}]`);
+  if (chips.length) {
     chips.forEach((el) => {
-      const id = el.getAttribute(`data-chip-${page}`)
-      if(id!== 'search')
-        removeChipButton(id, page, true)
+      const id = el.getAttribute(`data-chip-${page}`);
+      if (id !== "search") removeChipButton(id, page, true);
     });
   }
-  
 }
 
 function applyFilter(page, name) {
-    filters[page][name] = !filters[page][name]
-    const checkbox = $(`input#${name}-filter`)
-    checkbox.prop("checked", filters[page][name])
+  filters[page][name] = !filters[page][name];
+  const checkbox = $(`input#${name}-filter`);
+  checkbox.prop("checked", filters[page][name]);
 }
 
 function createFilterCheckboxes(page) {
-  return FILTER_VALUES[page].map(name => createFilterCheckbox(page, name)).join('')
+  return FILTER_VALUES[page].map((name) => createFilterCheckbox(page, name)).join("");
 }
 function createFilterCheckbox(page, name) {
-    return `
+  return `
         <div class="form-check mb-0 d-width">
             <input class="form-check-input me-2 ml-5" type="checkbox" ${state.filtering[page][name] ? "checked" : ""} 
             value="${name}" id="${name}-filter" onClick="applyFilter('${page}', '${name}')">
             <label class="form-check-label" for="${name}-filter">
                 ${name}
             </label>
-        </div>`
+        </div>`;
 }
 
-
 function removeFiltersModal() {
-    filtersModalWrap.remove()
-    filtersModalWrap = null
-    $('body').removeClass('modal-open')
-    $('body').removeAttr('style')
-    if(document.querySelector('.modal-backdrop')) {
-        document.querySelector('.modal-backdrop').parentNode.removeChild(document.querySelector('.modal-backdrop'))
-    }
+  filtersModalWrap.remove();
+  filtersModalWrap = null;
+  $("body").removeClass("modal-open");
+  $("body").removeAttr("style");
+  if (document.querySelector(".modal-backdrop")) {
+    document.querySelector(".modal-backdrop").parentNode.removeChild(document.querySelector(".modal-backdrop"));
+  }
 }
