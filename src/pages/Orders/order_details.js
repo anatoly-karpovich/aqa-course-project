@@ -18,9 +18,9 @@ function renderOrderDetailsPageLayout(options = Order_Details_Props, order, isRe
     </div>`;
 }
 
-const notReceivedProductsCheckboxesSelector = 'input[type="checkbox"]:not([disabled]):not(#selectAll)'
-const selectAllCheckboxSelector = 'input#selectAll'
-const saveReceivingButtonId = 'save-received-products'
+const notReceivedProductsCheckboxesSelector = 'input[type="checkbox"]:not([disabled]):not(#selectAll)';
+const selectAllCheckboxSelector = "input#selectAll";
+const saveReceivingButtonId = "save-received-products";
 
 const Order_Details_Props = {
   path: "Orders",
@@ -63,31 +63,31 @@ const process_order_confirmation_opts = {
 
 const edit_order_details_modal_props = {
   customers: {
-      divClasslist: "col-md-12",
-      name: "Customer",
-      type: "select",
-      classlist: "form-select",
-      id: "inputCustomerOrder",
-      defaultValue: "",
-      options: {
+    divClasslist: "col-md-12",
+    name: "Customer",
+    type: "select",
+    classlist: "form-select",
+    id: "inputCustomerOrder",
+    defaultValue: "",
+    options: {
       values: [],
-      },
-      attributes: `name="Customer"`
-  }, 
-  products: {
-      divClasslist: "col-md-11",
-      name: "Product",
-      type: "select",
-      classlist: "form-select",
-      id: `${window.crypto.randomUUID()}`,
-      defaultValue: "Apple",
-      options: {
-      values: [],
-      },
-      attributes: `name="Product"`
+    },
+    attributes: `name="Customer"`,
   },
-  data: {}   
-}
+  products: {
+    divClasslist: "col-md-11",
+    name: "Product",
+    type: "select",
+    classlist: "form-select",
+    id: `${window.crypto.randomUUID()}`,
+    defaultValue: "Apple",
+    options: {
+      values: [],
+    },
+    attributes: `name="Product"`,
+  },
+  data: {},
+};
 
 async function changeOrderStatus(status) {
   removeConfimationModal();
@@ -131,92 +131,88 @@ function addEventListelersToOrderDetailsPage() {
     e.preventDefault();
     switch (e.target.id) {
       case "edit-customer-pencil": {
-        await renderEditCustomerModal()
+        await renderEditCustomerModal();
         break;
       }
       case "edit-products-pencil": {
-        await renderEditProductsModal()
+        await renderEditProductsModal();
         break;
       }
       case "start-receiving-products": {
-        await renderReceivingOrderDetailsPage()
+        await renderReceivingOrderDetailsPage();
         break;
       }
       case saveReceivingButtonId: {
-        const products = getReceivingProducts()
-        await submitReceivedProducts(state.order._id, products)
+        const products = getReceivingProducts();
+        await submitReceivedProducts(state.order._id, products);
 
         break;
       }
       case "selectAll": {
         setTimeout(() => {
           checkSelectAll();
-          handleReceivingSaveButton()
-        }, 0)
+          handleReceivingSaveButton();
+        }, 0);
         break;
       }
       case "cancel-receiving": {
-        await renderOrderDetailsPage(state.order._id)
+        await renderOrderDetailsPage(state.order._id);
       }
     }
 
-    if(e.target.name === "product") {
+    if (e.target.name === "product") {
       setTimeout(() => {
-        const isChecked = $(`#${e.target.id}`).prop("checked")
-        $(`#${e.target.id}`).prop("checked", !isChecked)    
-        handleSelectAllCheckbox()
-        handleReceivingSaveButton()
-      }, 0)
+        const isChecked = $(`#${e.target.id}`).prop("checked");
+        $(`#${e.target.id}`).prop("checked", !isChecked);
+        handleSelectAllCheckbox();
+        handleReceivingSaveButton();
+      }, 0);
     }
-  })
+  });
 
   $(`#order-details-tabs-section`).on("click", (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    switch(e.target.id) {
+    switch (e.target.id) {
       case "delivery-tab": {
-        state.activeTab = "delivery"
+        state.activeTab = "delivery";
         break;
       }
       case "history-tab": {
-        state.activeTab = "history"
+        state.activeTab = "history";
         break;
       }
       case "comments-tab": {
-        state.activeTab = "comments"
+        state.activeTab = "comments";
         break;
       }
     }
-  })
-  const saveCommentBtn = $("#create-comment-btn")
+  });
+  const saveCommentBtn = $("#create-comment-btn");
   $(`#textareaComments`).on("input", (e) => {
-    const value = removeLineBreaks($(`#textareaComments`).val())
+    const value = removeLineBreaks($(`#textareaComments`).val());
     if (!isValidInput("Comments", value)) {
       showErrorMessage(commentsTabOptions.comments);
-      saveCommentBtn.prop("disabled", true)
+      saveCommentBtn.prop("disabled", true);
     } else {
       hideErrorMessage(commentsTabOptions.comments);
-      saveCommentBtn.prop("disabled", false)
+      saveCommentBtn.prop("disabled", false);
     }
-  })
+  });
 
   $(`div#order-details-tabs-content div#comments`).on("click", async (e) => {
-    e.preventDefault()
-    if(e.target.id == "create-comment-btn") {
-      const comments = {
-          text: $('#textareaComments').val().trim()
-      }
-      await submitComment(state.order._id, comments)
+    e.preventDefault();
+    if (e.target.id == "create-comment-btn") {
+      const comment = {
+        comment: $("#textareaComments").val().trim(),
+      };
+      await submitComment(state.order._id, comment);
     }
-  })
+  });
 
   $(`button[name="delete-comment"]`).on("click", async (e) => {
-    const comments = {
-      _id: e.target.id,
-    }
-    await deleteComment(state.order._id, comments)
-  })
-
+    await deleteComment(state.order._id, e.target.id);
+  });
 }
 
 function checkSelectAll() {
@@ -229,34 +225,33 @@ function checkSelectAll() {
 }
 
 function handleSelectAllCheckbox() {
-  let isEveryCheckboxChecked = true
+  let isEveryCheckboxChecked = true;
   $(notReceivedProductsCheckboxesSelector).each(function () {
     const isChecked = $(this).prop("checked");
-    if(!isChecked) isEveryCheckboxChecked = false
+    if (!isChecked) isEveryCheckboxChecked = false;
   });
   const selectAllInput = $(selectAllCheckboxSelector);
-  selectAllInput.prop("checked", isEveryCheckboxChecked)
-  
+  selectAllInput.prop("checked", isEveryCheckboxChecked);
 }
 
 function getReceivingProducts() {
-  const products = []
-    $(notReceivedProductsCheckboxesSelector).each(function () {
-    if($(this).prop("checked")) {
-      const id = $(this).prop("value")
-      products.push(id)
+  const products = [];
+  $(notReceivedProductsCheckboxesSelector).each(function () {
+    if ($(this).prop("checked")) {
+      const id = $(this).prop("value");
+      products.push(id);
     }
-  })
-  return products
+  });
+  return products;
 }
 
 function handleReceivingSaveButton() {
-  const saveButton = $(`#${saveReceivingButtonId}`)
-    if([...$(`input[name="product"]:checked:not([disabled])`)].length) {
-      saveButton.prop('disabled', false)
-    } else {
-      saveButton.prop('disabled', true)
-    }
+  const saveButton = $(`#${saveReceivingButtonId}`);
+  if ([...$(`input[name="product"]:checked:not([disabled])`)].length) {
+    saveButton.prop("disabled", false);
+  } else {
+    saveButton.prop("disabled", true);
+  }
 }
 
 const commentsTabOptions = {
@@ -268,8 +263,8 @@ const commentsTabOptions = {
     placeholder: `Enter a comment`,
     id: "textareaComments",
     errorMessageSelector: "#error-textareaComments",
-    errorMessage: VALIDATION_ERROR_MESSAGES['Comments'],
+    errorMessage: VALIDATION_ERROR_MESSAGES["Comments"],
     attributes: `rows="3" name="comments"`,
-    value: ""
-  }
-}
+    value: "",
+  },
+};

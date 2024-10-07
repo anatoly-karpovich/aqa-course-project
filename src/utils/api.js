@@ -94,12 +94,12 @@ async function submitOrder(orderData) {
   orderData._id ? await renderOrderDetailsPage(orderData._id) : await renderOrdersPage();
 }
 
-async function submitDelivery(delivery) {
+async function submitDelivery(orderId, delivery) {
   showSpinner();
-  const response = await OrdersService.submitDelivery(delivery);
+  const response = await OrdersService.submitDelivery(orderId, delivery);
   if (response.data.IsSuccess) {
     renderNotification({ message: SUCCESS_MESSAGES["Delivery Saved"] });
-    await renderOrderDetailsPage(delivery._id);
+    await renderOrderDetailsPage(orderId);
   } else {
     handleApiErrors(response, true);
   }
@@ -118,9 +118,9 @@ async function submitReceivedProducts(_id, products) {
   hideSpinner();
 }
 
-async function submitComment(_id, comments) {
+async function submitComment(_id, comment) {
   showSpinner();
-  const response = await OrdersService.createComment(_id, comments);
+  const response = await OrdersService.createComment(_id, comment);
   if (response.data.IsSuccess) {
     renderNotification({ message: SUCCESS_MESSAGES["Comment Successfully Created"] });
     await renderOrderDetailsPage(_id);
@@ -130,10 +130,10 @@ async function submitComment(_id, comments) {
   hideSpinner();
 }
 
-async function deleteComment(_id, comments) {
+async function deleteComment(_id, commentId) {
   showSpinner();
-  const response = await OrdersService.deleteComment(_id, comments);
-  if (response.data.IsSuccess) {
+  const response = await OrdersService.deleteComment(_id, commentId);
+  if (response.status === 204) {
     renderNotification({ message: SUCCESS_MESSAGES["Comment Successfully Deleted"] });
     await renderOrderDetailsPage(_id);
   } else {

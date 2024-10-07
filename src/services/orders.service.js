@@ -43,12 +43,12 @@ class OrdersService {
     const options = {
       method: "put",
       baseURL: BASE_URL,
-      url: ENDPOINTS.Orders,
+      url: ENDPOINTS["Get Order By Id"](order._id),
       headers: {
         Authorization: getAuthorizationCookie(),
         ["Content-Type"]: "application/json",
       },
-      data: order,
+      data: _.omit(order, "_id"),
     };
     return sendRequest(options);
   }
@@ -66,11 +66,11 @@ class OrdersService {
     return sendRequest(options);
   }
 
-  static async submitDelivery(delivery) {
+  static async submitDelivery(orderId, delivery) {
     const options = {
       method: "post",
       baseURL: BASE_URL,
-      url: ENDPOINTS["Order Delivery"],
+      url: ENDPOINTS["Order Delivery"](orderId),
       headers: {
         Authorization: getAuthorizationCookie(),
         ["Content-Type"]: "application/json",
@@ -84,12 +84,12 @@ class OrdersService {
     const options = {
       method: "put",
       baseURL: BASE_URL,
-      url: ENDPOINTS["Order Status"],
+      url: ENDPOINTS["Order Status"](_id),
       headers: {
         Authorization: getAuthorizationCookie(),
         ["Content-Type"]: "application/json",
       },
-      data: { _id, status },
+      data: { status },
     };
     return sendRequest(options);
   }
@@ -98,40 +98,39 @@ class OrdersService {
     const options = {
       method: "post",
       baseURL: BASE_URL,
-      url: ENDPOINTS["Order Receive"],
+      url: ENDPOINTS["Order Receive"](_id),
       headers: {
         Authorization: getAuthorizationCookie(),
         ["Content-Type"]: "application/json",
       },
-      data: { _id, products },
+      data: { products },
     };
     return sendRequest(options);
   }
 
-  static async createComment(_id, comments) {
+  static async createComment(_id, comment) {
     const options = {
       method: "post",
       baseURL: BASE_URL,
-      url: ENDPOINTS["Order Comments"],
+      url: ENDPOINTS["Order Comments"](_id),
       headers: {
         Authorization: getAuthorizationCookie(),
         ["Content-Type"]: "application/json",
       },
-      data: { _id, comments },
+      data: comment,
     };
     return sendRequest(options);
   }
 
-  static async deleteComment(_id, comments) {
+  static async deleteComment(_id, commentId) {
     const options = {
-      method: "put",
+      method: "delete",
       baseURL: BASE_URL,
-      url: ENDPOINTS["Order Comments"],
+      url: ENDPOINTS["Order Comments Delete"](_id, commentId),
       headers: {
         Authorization: getAuthorizationCookie(),
         ["Content-Type"]: "application/json",
       },
-      data: { _id, comments },
     };
     return sendRequest(options);
   }

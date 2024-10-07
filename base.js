@@ -29,10 +29,11 @@ const ENDPOINTS = {
   ["Get Product By Id"]: (id) => `${BASE_URL}/api/products/${id}/`,
   ["Orders"]: `${BASE_URL}/api/orders`,
   ["Get Order By Id"]: (id) => `${BASE_URL}/api/orders/${id}/`,
-  ["Order Delivery"]: `${BASE_URL}/api/orders/delivery/`,
-  ["Order Receive"]: `${BASE_URL}/api/orders/receive/`,
-  ["Order Status"]: `${BASE_URL}/api/orders/status`,
-  ["Order Comments"]: `${BASE_URL}/api/orders/comments`,
+  ["Order Delivery"]: (orderId) => `${BASE_URL}/api/orders/${orderId}/delivery/`,
+  ["Order Receive"]: (orderId) => `${BASE_URL}/api/orders/${orderId}/receive/`,
+  ["Order Status"]: (orderId) => `${BASE_URL}/api/orders/${orderId}/status`,
+  ["Order Comments"]: (orderId) => `${BASE_URL}/api/orders/${orderId}/comments`,
+  ["Order Comments Delete"]: (orderId, commentId) => `${BASE_URL}/api/orders/${orderId}/comments/${commentId}`,
 };
 
 const SUCCESS_MESSAGES = {

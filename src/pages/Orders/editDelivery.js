@@ -27,7 +27,10 @@ function renderEditDeliveryLayout(options = edit_delivery_props) {
             </div> 
             ${
               state.order.delivery.condition === "Delivery"
-                ? generateFormSelectInput({ ...options.inputs.delivery_location, defaultValue: state.order.delivery.location })
+                ? generateFormSelectInput({
+                    ...options.inputs.delivery_location,
+                    defaultValue: state.order.delivery.location,
+                  })
                 : generateFormSelectInput({ ...options.inputs.delivery_location })
             }
             <section id="delivery-location-section" class="row g-2 d-flex justify-content-between s-loc-ml">
@@ -61,14 +64,14 @@ function addEventListelersToEditDeliveryPage() {
 
   if (state.order.delivery.condition === "Delivery" && state.order.delivery.location === "Other") {
     $("section#delivery-location-section input").each(function () {
-        $(this).prop("readonly", false);
-      });
+      $(this).prop("readonly", false);
+    });
   }
   setUpDateToDatePicker(state.order.delivery.finalDate);
 
   saveButton.on("click", async (e) => {
     e.preventDefault();
-    await submitDelivery(createDeliveryRequestBody());
+    await submitDelivery(state.order._id, createDeliveryRequestBody());
   });
 
   cancelButton.on("click", async (e) => {
@@ -141,7 +144,10 @@ function addEventListelersToEditDeliveryPage() {
       }
 
       case "inputHouse": {
-        if (!isValidInput("House", +$(`#${delivery_props.inputs.house.id}`).val()) || +$(`#${delivery_props.inputs.house.id}`).val() === 0) {
+        if (
+          !isValidInput("House", +$(`#${delivery_props.inputs.house.id}`).val()) ||
+          +$(`#${delivery_props.inputs.house.id}`).val() === 0
+        ) {
           showErrorMessage(delivery_props.inputs.house);
         } else {
           hideErrorMessage(delivery_props.inputs.house);
@@ -150,7 +156,10 @@ function addEventListelersToEditDeliveryPage() {
       }
 
       case "inputFlat": {
-        if (!isValidInput("Flat", +$(`#${delivery_props.inputs.flat.id}`).val()) || +$(`#${delivery_props.inputs.flat.id}`).val() === 0) {
+        if (
+          !isValidInput("Flat", +$(`#${delivery_props.inputs.flat.id}`).val()) ||
+          +$(`#${delivery_props.inputs.flat.id}`).val() === 0
+        ) {
           showErrorMessage(delivery_props.inputs.flat);
         } else {
           hideErrorMessage(delivery_props.inputs.flat);
@@ -171,11 +180,26 @@ function generateEditDeliverySectionBody(location) {
     inputs.flat = { ...delivery_props.inputs.flat, value: state.order.customer.flat };
   } else {
     const isOther = state.order?.delivery?.location === "Other";
-    inputs.country = { ...delivery_props.inputs.country, value: isOther ? state.order.delivery.address.country : state.order.customer.country };
-    inputs.city = { ...delivery_props.inputs.city, value: isOther ? state.order.delivery.address.city : state.order.customer.city };
-    inputs.street = { ...delivery_props.inputs.street, value: isOther ? state.order.delivery.address.street : state.order.customer.street };
-    inputs.house = { ...delivery_props.inputs.house, value: isOther ? state.order.delivery.address.house : state.order.customer.house };
-    inputs.flat = { ...delivery_props.inputs.flat, value: isOther ? state.order.delivery.address.flat : state.order.customer.flat };
+    inputs.country = {
+      ...delivery_props.inputs.country,
+      value: isOther ? state.order.delivery.address.country : state.order.customer.country,
+    };
+    inputs.city = {
+      ...delivery_props.inputs.city,
+      value: isOther ? state.order.delivery.address.city : state.order.customer.city,
+    };
+    inputs.street = {
+      ...delivery_props.inputs.street,
+      value: isOther ? state.order.delivery.address.street : state.order.customer.street,
+    };
+    inputs.house = {
+      ...delivery_props.inputs.house,
+      value: isOther ? state.order.delivery.address.house : state.order.customer.house,
+    };
+    inputs.flat = {
+      ...delivery_props.inputs.flat,
+      value: isOther ? state.order.delivery.address.flat : state.order.customer.flat,
+    };
   }
   return generateFormInputs(inputs);
 }
@@ -183,11 +207,26 @@ function generateEditDeliverySectionBody(location) {
 function generateEditPickupSectionBody() {
   const pickupCountry = state.order.delivery.condition === "Pickup" ? state.order.delivery.address.country : null;
   const inputs = {
-    country: { ...delivery_props.inputs.country, value: pickupCountry ? state.order.delivery.address.country : state.order.customer.country },
-    city: { ...delivery_props.inputs.city, value: shopAddressByCountry[pickupCountry || state.order.customer.country].city },
-    street: { ...delivery_props.inputs.street, value: shopAddressByCountry[pickupCountry || state.order.customer.country].street },
-    house: { ...delivery_props.inputs.house, value: shopAddressByCountry[pickupCountry || state.order.customer.country].house },
-    flat: { ...delivery_props.inputs.flat, value: shopAddressByCountry[pickupCountry || state.order.customer.country].flat },
+    country: {
+      ...delivery_props.inputs.country,
+      value: pickupCountry ? state.order.delivery.address.country : state.order.customer.country,
+    },
+    city: {
+      ...delivery_props.inputs.city,
+      value: shopAddressByCountry[pickupCountry || state.order.customer.country].city,
+    },
+    street: {
+      ...delivery_props.inputs.street,
+      value: shopAddressByCountry[pickupCountry || state.order.customer.country].street,
+    },
+    house: {
+      ...delivery_props.inputs.house,
+      value: shopAddressByCountry[pickupCountry || state.order.customer.country].house,
+    },
+    flat: {
+      ...delivery_props.inputs.flat,
+      value: shopAddressByCountry[pickupCountry || state.order.customer.country].flat,
+    },
   };
   return generateFormInputs(inputs);
 }
