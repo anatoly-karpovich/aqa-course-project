@@ -8,8 +8,27 @@ const state = {
     products: "",
     orders: "",
   },
+  sorting: {
+    customers: {
+      sortField: "createdOn",
+      sortOrder: "desc",
+    },
+    products: {
+      sortField: "createdOn",
+      sortOrder: "desc",
+    },
+    orders: {
+      sortField: "createdOn",
+      sortOrder: "desc",
+    },
+  },
   notifications: {},
   sideMenuElementForRed: getRandomArbitrary(1, 3),
+  data: {
+    customers: [],
+    products: [],
+    orders: [],
+  },
 };
 
 async function sideMenuClickHandler(page) {

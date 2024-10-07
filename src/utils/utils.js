@@ -237,3 +237,32 @@ function replaceLineBreaksWithBrTag(value) {
 function isValidForm() {
   return [...document.querySelectorAll(".invalid-feedback")].every((e) => !e.textContent);
 }
+
+function sortArrayByDate(array, dateFieldName, direction) {
+  return direction === "asc" ? array.sort((a, b) => new Date(a[dateFieldName]) - new Date(b[dateFieldName])) : array.sort((a, b) => new Date(b[dateFieldName]) - new Date(a[dateFieldName]));
+}
+
+function sortArrayByString(array, stringFieldName, direction) {
+  return array.sort((a, b) => (direction === "asc" ? a[stringFieldName].toLowerCase().localeCompare(b[stringFieldName].toLowerCase()) : b[stringFieldName].localeCompare(a[stringFieldName])));
+}
+
+const sortFunctions = {
+  string: sortArrayByString,
+  date: sortArrayByDate,
+};
+
+function sortArrayByDataType(array, dataType, field, direction) {
+  return sortFunctions[dataType](array, field, direction);
+}
+
+function sortArrayByField(array, field, direction) {
+  let sortFunction;
+  const dateFields = ["Created", "Delivery"];
+  const stringFields = ["Name", "Email", "Country"];
+  if (dateFields.includes(field)) {
+    sortFunction = sortFunctions["date"];
+  } else {
+    sortFunction = sortFunctions["string"];
+  }
+  return sortFunction(array, field, direction);
+}

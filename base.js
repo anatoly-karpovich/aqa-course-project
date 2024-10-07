@@ -23,16 +23,17 @@ const dateKeys = ["createdOn", "createdAt"];
 
 const ENDPOINTS = {
   ["Login"]: `${BASE_URL}/api/login/`,
-  ["Customers"]: `${BASE_URL}/api/customers/`,
+  ["Customers"]: `${BASE_URL}/api/customers`,
   ["Get Customer By Id"]: (id) => `${BASE_URL}/api/customers/${id}/`,
-  ["Products"]: `${BASE_URL}/api/products/`,
+  ["Products"]: `${BASE_URL}/api/products`,
   ["Get Product By Id"]: (id) => `${BASE_URL}/api/products/${id}/`,
-  ["Orders"]: `${BASE_URL}/api/orders/`,
+  ["Orders"]: `${BASE_URL}/api/orders`,
   ["Get Order By Id"]: (id) => `${BASE_URL}/api/orders/${id}/`,
-  ["Order Delivery"]: `${BASE_URL}/api/orders/delivery/`,
-  ["Order Receive"]: `${BASE_URL}/api/orders/receive/`,
-  ["Order Status"]: `${BASE_URL}/api/orders/status`,
-  ["Order Comments"]: `${BASE_URL}/api/orders/comments`,
+  ["Order Delivery"]: (orderId) => `${BASE_URL}/api/orders/${orderId}/delivery/`,
+  ["Order Receive"]: (orderId) => `${BASE_URL}/api/orders/${orderId}/receive/`,
+  ["Order Status"]: (orderId) => `${BASE_URL}/api/orders/${orderId}/status`,
+  ["Order Comments"]: (orderId) => `${BASE_URL}/api/orders/${orderId}/comments`,
+  ["Order Comments Delete"]: (orderId, commentId) => `${BASE_URL}/api/orders/${orderId}/comments/${commentId}`,
 };
 
 const SUCCESS_MESSAGES = {
@@ -80,7 +81,8 @@ const REGULAR_EXPRESSIONS = {
   ["Street"]: /^\b(?!.*?\s{2})[A-Za-z0-9 ]{1,40}\b$/m,
   ["House"]: /^[0-9]{1,3}$/m,
   ["Flat"]: /^[0-9]{1,4}$/m,
-  ["Email"]: /^(([^<>()\[\]\\.,;:\s@"']+(\.[^<>()\[\]\\.,;:\s@"']+)*))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/m,
+  ["Email"]:
+    /^(([^<>()\[\]\\.,;:\s@"']+(\.[^<>()\[\]\\.,;:\s@"']+)*))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/m,
   ["Notes"]: /^[^<>]{0,250}$/m,
   ["Comments"]: /^[^<>]{1,250}$/m,
   ["Product Name"]: /^\b(?!.*?\s{2})[A-Za-z0-9 ]{3,40}\b$/m,
@@ -89,29 +91,33 @@ const REGULAR_EXPRESSIONS = {
 };
 
 const replaceApiToFeKeys = {
-  "_id": 'Id',
-  "email": "Email",
-  "name": "Name",
-  "country": "Country",
-  "city": "City",
-  "address": "Address",
-  "house": "House",
-  "flat": "Flat",
-  "street": "Street",
-  "phone": "Phone",
-  "createdOn": "Created On",
-  "note": "Notes",
-  "notes": "Notes",
-  "manufacturer": "Manufacturer",
-  "price": "Price",
-  "amount": "Amount",
-  "status": "Order Status",
-  "delivery": "Delivery",
-  "condition": "Delivery Type",
-  "finalDate": "Delivery Date",
-  "total_price": "Total Price",
-  "customer": "Customer",
-}
+  _id: "Id",
+  email: "Email",
+  name: "Name",
+  country: "Country",
+  city: "City",
+  address: "Address",
+  house: "House",
+  flat: "Flat",
+  street: "Street",
+  phone: "Phone",
+  createdOn: "Created On",
+  note: "Notes",
+  notes: "Notes",
+  manufacturer: "Manufacturer",
+  price: "Price",
+  amount: "Amount",
+  status: "Order Status",
+  delivery: "Delivery",
+  condition: "Delivery Type",
+  finalDate: "Delivery Date",
+  total_price: "Total Price",
+  customer: "Customer",
+};
+
+const idToOrderNumber = {
+  _id: "Order Number",
+};
 
 const ORDER_HISTORY_ACTIONS = {
   CREATED: "Order created",
@@ -123,4 +129,4 @@ const ORDER_HISTORY_ACTIONS = {
   RECEIVED: "Received",
   RECEIVED_ALL: "All products received",
   CANCELED: "Order canceled",
-}
+};
