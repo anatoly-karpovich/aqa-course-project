@@ -201,26 +201,23 @@ function addEventListelersToHomePage() {
 
 function renderCharts() {
   // График заказов
-  const labels = data.Orders.map((order) => order._id);
-  const values = data.Orders.map((order) => order.totalOrders);
+  const ordersCtx = document.getElementById("ordersChart").getContext("2d");
+  const ordersData = {
+    labels: ["June", "July", "August", "September", "October", "November"],
+    datasets: [
+      {
+        label: "Orders Count",
+        data: [30, 45, 50, 40, 60, 55],
+        backgroundColor: "rgba(54, 162, 235, 0.2)",
+        borderColor: "rgba(54, 162, 235, 1)",
+        borderWidth: 1,
+      },
+    ],
+  };
 
-  // Обновляем данные для Chart.js
-  const ctx = document.getElementById("ordersChart").getContext("2d");
-
-  const config = {
-    type: "line", // Или "bar", если хотите использовать столбчатый график
-    data: {
-      labels: labels, // Метки (например, месяцы)
-      datasets: [
-        {
-          label: "Orders Count",
-          data: values, // Количество заказов
-          backgroundColor: "rgba(54, 162, 235, 0.2)",
-          borderColor: "rgba(54, 162, 235, 1)",
-          borderWidth: 1,
-        },
-      ],
-    },
+  const ordersConfig = {
+    type: "line",
+    data: ordersData,
     options: {
       scales: {
         y: {
@@ -229,9 +226,7 @@ function renderCharts() {
       },
     },
   };
-
-  // Отрисовываем график
-  new Chart(ctx, config);
+  new Chart(ordersCtx, ordersConfig);
 
   // График самых покупаемых продуктов
   const productsCtx = document.getElementById("topProductsChart").getContext("2d");
