@@ -29,7 +29,9 @@ async function createDetailsModal(options = {}, data = {}) {
           
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary mr-10" onClick="${options.buttons.edit.onClickFunc}('${data[options.path]._id}');">Edit ${options.path}</button>
+        <button type="button" class="btn btn-primary mr-10" onClick="${options.buttons.edit.onClickFunc}('${
+      data[options.path]._id
+    }');">Edit ${options.path}</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="removeDetailsModal();">Cancel</button>
       </div>
     </div>
@@ -78,3 +80,12 @@ function removeDetailsModal() {
     document.querySelector(".modal-backdrop").parentNode.removeChild(document.querySelector(".modal-backdrop"));
   }
 }
+
+const detailsIconsMapper = {
+  name: '<i class="bi bi-tag-fill me-2 text-primary"></i>',
+  amount: '<i class="bi bi-basket-fill me-2 text-success"></i>',
+  price: '<i class="bi bi-currency-dollar me-2 text-warning"></i>',
+  manufacturer: '<i class="bi bi-building me-2 text-info"></i>',
+  createdOn: '<i class="bi bi-calendar-check-fill me-2 text-muted"></i>',
+  notes: '<i class="bi bi-journal-text me-2 text-secondary"></i>',
+};

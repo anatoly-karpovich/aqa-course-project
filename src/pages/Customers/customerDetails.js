@@ -53,8 +53,8 @@ function createCustomerDetailsPageLayout(customerData, orders) {
             <div class="row g-3 mt-1">
                 <div class="col-md-12">
                     <h5><i class="bi bi-card-text"></i> Notes</h5>
-                    <p class="bg-light p-3 rounded" style="word-break: break-word;">
-                        Notes fBwEOEkHDRhKCJyWOuxjHVRVlTzkriDxrBfenEEFcVdOcUNFhcIfRDbqxFmGvStelFkWJHGQTCxcEDItGqMDNsqkrYuvdArgLAgXzccMFimvDevTdCJTaMdTLmLivvOzlqhgGpOAqAKlWlQqyXVyYDnROmitAjcrKkDOVtEafXigKSwqITVQCjKqzUqmthYiMLAURbJoOitqoMjzdTJDZtIaOlOeZYeGgfvsKKbKfEXVrwDdkuOn
+                    <p class="p-3 rounded" style="word-break: break-word;">
+                        ${customerData.notes ? customerData.notes : "-"}
                     </p>
                 </div>
             </div>
