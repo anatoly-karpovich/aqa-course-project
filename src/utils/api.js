@@ -214,3 +214,12 @@ async function getDataAndRenderTable(page) {
     await getOrdersAndRenderTable();
   }
 }
+
+async function getCustomerOrders(customerId) {
+  const response = await CustomersService.getOrders(customerId);
+  if (response.data.IsSuccess) {
+    return response;
+  } else {
+    handleApiErrors(response, true);
+  }
+}

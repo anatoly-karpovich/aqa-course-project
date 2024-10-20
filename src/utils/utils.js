@@ -26,7 +26,9 @@ Element.prototype.appendAfter = function (element) {
 };
 
 function renderButtons(buttons = []) {
-  buttons.map((el) => `<button class="${el.classlist}" ${el.type ? "type=" : ""}${el.type ? el.type : ""}>${el.text}</button>`);
+  buttons.map(
+    (el) => `<button class="${el.classlist}" ${el.type ? "type=" : ""}${el.type ? el.type : ""}>${el.text}</button>`
+  );
 }
 
 function clearAllInputs(inputs, buttonsToBeDisabled = []) {
@@ -60,8 +62,18 @@ function isValidInput(inputName, value) {
 function renderOptions(values = [], defaultValue, toBeSelected, titleValues = "") {
   const titles = titleValues && !_.isEmpty(titleValues) ? titleValues.map((t) => `title="${t}"`) : "";
   return toBeSelected
-    ? values.map((el, i) => `<option ${el === toBeSelected ? "selected" : ""} ${titles ? titles[i] : ""} value="${el}">${el}</option>`).join("")
-    : values.map((el, i) => `<option ${el === defaultValue ? "selected" : ""} ${titles ? titles[i] : ""} value="${el}">${el}</option>`).join("");
+    ? values
+        .map(
+          (el, i) =>
+            `<option ${el === toBeSelected ? "selected" : ""} ${titles ? titles[i] : ""} value="${el}">${el}</option>`
+        )
+        .join("")
+    : values
+        .map(
+          (el, i) =>
+            `<option ${el === defaultValue ? "selected" : ""} ${titles ? titles[i] : ""} value="${el}">${el}</option>`
+        )
+        .join("");
 }
 
 function renderCustomersOptions(options, data) {
@@ -69,7 +81,9 @@ function renderCustomersOptions(options, data) {
   return data
     .map(
       (el, i) => `
-  <option ${el.name === options.defaultValue.name && el.email === options.defaultValue.title ? "selected" : ""} ${titles ? titles[i] : ""} 
+  <option ${el.name === options.defaultValue.name && el.email === options.defaultValue.title ? "selected" : ""} ${
+        titles ? titles[i] : ""
+      } 
   value="${el.name}">${el.name}</option>`
     )
     .join("");
@@ -170,7 +184,10 @@ function searchInTable(page) {
       if (ths.at(-1).innerText === "Actions") tds.pop();
 
       if (value && filterOnPage.length) {
-        if (tds.slice(0, -1).some((c) => c.innerText.toLowerCase().includes(value.toLowerCase())) && filterOnPage.includes(tds.at(-2).innerText)) {
+        if (
+          tds.slice(0, -1).some((c) => c.innerText.toLowerCase().includes(value.toLowerCase())) &&
+          filterOnPage.includes(tds.at(-2).innerText)
+        ) {
           r.style.display = "";
         } else {
           r.style.display = "none";
@@ -239,11 +256,17 @@ function isValidForm() {
 }
 
 function sortArrayByDate(array, dateFieldName, direction) {
-  return direction === "asc" ? array.sort((a, b) => new Date(a[dateFieldName]) - new Date(b[dateFieldName])) : array.sort((a, b) => new Date(b[dateFieldName]) - new Date(a[dateFieldName]));
+  return direction === "asc"
+    ? array.sort((a, b) => new Date(a[dateFieldName]) - new Date(b[dateFieldName]))
+    : array.sort((a, b) => new Date(b[dateFieldName]) - new Date(a[dateFieldName]));
 }
 
 function sortArrayByString(array, stringFieldName, direction) {
-  return array.sort((a, b) => (direction === "asc" ? a[stringFieldName].toLowerCase().localeCompare(b[stringFieldName].toLowerCase()) : b[stringFieldName].localeCompare(a[stringFieldName])));
+  return array.sort((a, b) =>
+    direction === "asc"
+      ? a[stringFieldName].toLowerCase().localeCompare(b[stringFieldName].toLowerCase())
+      : b[stringFieldName].localeCompare(a[stringFieldName])
+  );
 }
 
 const sortFunctions = {
@@ -265,4 +288,8 @@ function sortArrayByField(array, field, direction) {
     sortFunction = sortFunctions["string"];
   }
   return sortFunction(array, field, direction);
+}
+
+function formatDateToDateAndTime(dateString) {
+  return moment(dateString).format(DATE_AND_TIME_FORMAT);
 }

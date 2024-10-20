@@ -9,6 +9,7 @@ const BASE_URL = "https://aqa-course-project.app/";
 const NUMBER_KEYS = ["amount", "price", "flat", "house"];
 
 const NO_RECORDS_IN_TABLE = "No records created yet";
+const NO_ORDERS_IN_TABLE = "No orders created yet";
 
 const FILTER_VALUES = {
   customers: ["USA", "Canada", "Belarus", "Ukraine", "Germany", "France", "Great Britain", "Russia"],
@@ -25,6 +26,7 @@ const ENDPOINTS = {
   ["Login"]: `${BASE_URL}/api/login/`,
   ["Customers"]: `${BASE_URL}/api/customers`,
   ["Get Customer By Id"]: (id) => `${BASE_URL}/api/customers/${id}/`,
+  ["Get Customer Orders"]: (id) => `${BASE_URL}/api/customers/${id}/orders`,
   ["Products"]: `${BASE_URL}/api/products`,
   ["Get Product By Id"]: (id) => `${BASE_URL}/api/products/${id}/`,
   ["Orders"]: `${BASE_URL}/api/orders`,

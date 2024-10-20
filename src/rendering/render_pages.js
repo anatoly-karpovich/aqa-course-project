@@ -40,6 +40,16 @@ async function renderCustomerDetailsModal(id) {
   }
 }
 
+async function renderCustomerDetailsPage(id) {
+  showSpinner();
+  const [customer, orders] = await Promise.all([CustomersService.getCustomers(id), CustomersService.getOrders(id)]);
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createCustomerDetailsPageLayout(
+    customer.data.Customer,
+    orders.data.Orders
+  );
+  hideSpinner();
+}
+
 async function renderEditCustomerPage(id) {
   if (modalWrap) {
     removeDetailsModal();

@@ -50,7 +50,7 @@ const CustomerProps = {
         nestedItems: `<i class="bi bi-card-text"></i>`,
         title: "Details",
         classlist: "btn btn-link table-btn",
-        onclick: "renderCustomerDetailsModal",
+        onclick: "renderCustomerDetailsPage",
       },
       {
         nestedItems: `<i class="bi bi-pencil"></i>`,

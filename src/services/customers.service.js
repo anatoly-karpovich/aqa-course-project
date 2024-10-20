@@ -65,4 +65,17 @@ class CustomersService {
     };
     return sendRequest(options);
   }
+
+  static async getOrders(customerId) {
+    const options = {
+      method: "get",
+      baseURL: BASE_URL,
+      url: ENDPOINTS["Get Customer Orders"](customerId),
+      headers: {
+        Authorization: getAuthorizationCookie(),
+        ["Content-Type"]: "application/json",
+      },
+    };
+    return sendRequest(options);
+  }
 }
