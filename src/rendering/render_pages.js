@@ -258,6 +258,7 @@ function renderHomePage(options = {}) {
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(options);
   sideMenuActivateElement(options.path);
   addEventListelersToHomePage();
+  renderCharts();
   hideSpinner();
 }
 

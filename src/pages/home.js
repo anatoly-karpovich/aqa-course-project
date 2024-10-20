@@ -1,57 +1,68 @@
 function renderHomePageLayout(options = homeProps) {
-    return `
+  return `
     <div id="contentInner">
       <div class="shadow-sm p-3 mb-5 bg-body rounded">
-        <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
-            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2" class=""></button>
-            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3" class="active" aria-current="true"></button>
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" class="active" aria-current="true"></button>
             </div>
             <div class="carousel-inner">
-            <div class="carousel-item">
-                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"></rect></svg>
-
+                <div class="carousel-item active">
+                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <rect width="100%" height="100%" fill="#777"></rect>
+                </svg>
                 <div class="container">
-                <div class="carousel-caption text-start">
-                    <h1>Example headline.</h1>
-                    <p>Some representative placeholder content for the first slide of the carousel.</p>
-                    <p><a class="btn btn-lg btn-primary" href="#">Sign up today</a></p>
+                    <div class="carousel-caption text-start">
+                    <h1>Monthly Orders Overview</h1>
+                    <p>Check out how many orders were created this month and compare it with the previous months.</p>
+                    <p><a class="btn btn-lg btn-primary" href="#orders-overview" onclick="scrollToSection('#orders-overview')">See details</a></p>
+                    </div>
                 </div>
                 </div>
-            </div>
-            <div class="carousel-item">
-                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"></rect></svg>
-
+                <div class="carousel-item">
+                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <rect width="100%" height="100%" fill="#777"></rect>
+                </svg>
                 <div class="container">
-                <div class="carousel-caption">
-                    <h1>Another example headline.</h1>
-                    <p>Some representative placeholder content for the second slide of the carousel.</p>
-                    <p><a class="btn btn-lg btn-primary" href="#">Learn more</a></p>
+                    <div class="carousel-caption">
+                    <h1>Top Products</h1>
+                    <p>Discover which products were the most purchased in the last months.</p>
+                    <p><a class="btn btn-lg btn-primary" href="#top-products" onclick="scrollToSection('#top-products')">Learn more</a></p>
+                    </div>
                 </div>
                 </div>
-            </div>
-            <div class="carousel-item active">
-                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"></rect></svg>
-
+                <div class="carousel-item">
+                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <rect width="100%" height="100%" fill="#777"></rect>
+                </svg>
                 <div class="container">
-                <div class="carousel-caption text-end">
-                    <h1>One more for good measure.</h1>
-                    <p>Some representative placeholder content for the third slide of this carousel.</p>
-                    <p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>
+                    <div class="carousel-caption text-end">
+                    <h1>Customer Insights</h1>
+                    <p>Explore detailed insights on customer activity and engagement.</p>
+                    <p><a class="btn btn-lg btn-primary" href="#customer-insights" onclick="scrollToSection('#customer-insights')">Explore insights</a></p>
+                    </div>
                 </div>
                 </div>
-            </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
             </button>
-        </div>
+            </div>
+
+            <script>
+            function scrollToSection(sectionId) {
+                document.querySelector(sectionId).scrollIntoView({ behavior: 'smooth' });
+            }
+            </script>
+
+
         <div class="container marketing">
 
             <!-- Three columns of text below the carousel -->
@@ -78,6 +89,41 @@ function renderHomePageLayout(options = homeProps) {
                     <p><button class="btn btn-primary" id="customers-from-home">View details »</button></p>
                 </div><!-- /.col-lg-4 -->
             </div><!-- /.row -->
+            <div class="section">
+                <h2 class="section-header">Orders Overview</h2>
+                <hr class="section-divider">
+                <div class="container">
+                <!-- Первый график: График слева, описание справа -->
+                    <div class="row align-items-center mb-5 chart-section">
+                        <div class="col-md-6 chart-container">
+                        <canvas id="ordersChart"></canvas>
+                        </div>
+                        <div class="col-md-6 chart-description">
+                        <p>
+                            This chart shows the number of orders created over the last 6 months.
+                            You can track the monthly dynamics of orders and identify trends in
+                            sales.
+                        </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="section">
+                    <h2 class="section-header">Top 5 Products</h2>
+                    <hr class="section-divider">
+                    <!-- Второй график: Описание слева, график справа -->
+                    <div class="row align-items-center mb-5 chart-section">
+                        <div class="col-md-6 chart-description">
+                        <p>
+                            This chart shows the top 5 most purchased products in our store,
+                            helping you identify popular items and make data-driven decisions.
+                        </p>
+                        </div>
+                        <div class="col-md-6 chart-container">
+                        <canvas id="topProductsChart"></canvas>
+                        </div>
+                    </div>
+                    </div>
+                </div>
             <!-- 
             <hr class="featurette-divider">
             <div class="row featurette">
@@ -120,35 +166,110 @@ function renderHomePageLayout(options = homeProps) {
     </div>
         </div>
     </div>
-  </div>`
+  </div>`;
 }
 
 const homeProps = {
-    path: 'Home',
-    title: 'Home Page',
-    content: 'Home Content',
-    ordersTitle: "Module with all orders, created by our managers and customers, edit and process them",
-    customersTitle: "Module with all customers registered, that can be also edited and deleted",
-    productsTitle: "Module with all products presented in out store, that can be also edited and deleted"
-}
+  path: "Home",
+  title: "Home Page",
+  content: "Home Content",
+  ordersTitle: "Module with all orders, created by our managers and customers, edit and process them",
+  customersTitle: "Module with all customers registered, that can be also edited and deleted",
+  productsTitle: "Module with all products presented in out store, that can be also edited and deleted",
+};
 
 function addEventListelersToHomePage() {
-    $("#navigation-section").on("click",async (e) => {
-        e.preventDefault();
+  $("#navigation-section").on("click", async (e) => {
+    e.preventDefault();
 
-        switch (e.target.id){
-            case "customers-from-home": {
-                await renderCustomersPage()
-                break;
-            }
-            case "products-from-home": {
-                await renderProductsPage()
-                break;
-            }
-            case "orders-from-home": {
-                await renderOrdersPage()
-                break;
-            }
-        }   
-     })
+    switch (e.target.id) {
+      case "customers-from-home": {
+        await renderCustomersPage();
+        break;
+      }
+      case "products-from-home": {
+        await renderProductsPage();
+        break;
+      }
+      case "orders-from-home": {
+        await renderOrdersPage();
+        break;
+      }
+    }
+  });
+}
+
+function renderCharts() {
+  // График заказов
+  const labels = data.Orders.map((order) => order._id);
+  const values = data.Orders.map((order) => order.totalOrders);
+
+  // Обновляем данные для Chart.js
+  const ctx = document.getElementById("ordersChart").getContext("2d");
+
+  const config = {
+    type: "line", // Или "bar", если хотите использовать столбчатый график
+    data: {
+      labels: labels, // Метки (например, месяцы)
+      datasets: [
+        {
+          label: "Orders Count",
+          data: values, // Количество заказов
+          backgroundColor: "rgba(54, 162, 235, 0.2)",
+          borderColor: "rgba(54, 162, 235, 1)",
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  };
+
+  // Отрисовываем график
+  new Chart(ctx, config);
+
+  // График самых покупаемых продуктов
+  const productsCtx = document.getElementById("topProductsChart").getContext("2d");
+  const productsData = {
+    labels: ["Product A", "Product B", "Product C", "Product D", "Product E"],
+    datasets: [
+      {
+        label: "Purchases",
+        data: [120, 150, 80, 70, 110],
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const productsConfig = {
+    type: "bar",
+    data: productsData,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  };
+  new Chart(productsCtx, productsConfig);
 }

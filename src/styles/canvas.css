@@ -1,0 +1,22 @@
+.chart-section {
+  margin-bottom: 30px;
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: auto !important;
+}
+
+.chart-description h4 {
+  font-weight: bold;
+}
+
+.chart-description p {
+  font-size: 1rem;
+}
+
+.chart-container,
+.chart-description {
+  padding: 20px;
+}
+

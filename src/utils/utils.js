@@ -293,3 +293,12 @@ function sortArrayByField(array, field, direction) {
 function formatDateToDateAndTime(dateString) {
   return moment(dateString).format(DATE_AND_TIME_FORMAT);
 }
+
+function scrollToSection(sectionId) {
+  setTimeout(function () {
+    const section = document.querySelector(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  }, 300);
+}
