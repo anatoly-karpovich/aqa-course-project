@@ -52,7 +52,7 @@ function createCustomerDetailsPageLayout(customerData, orders) {
             <!-- Notes Section -->
             <div class="row g-3 mt-1">
                 <div class="col-md-12">
-                    <h5><i class="bi bi-card-text"></i> Notes</h5>
+                    <h5><i class="bi bi-journal-text"></i> Notes</h5>
                     <p class="p-3 rounded" style="word-break: break-word;">
                         ${customerData.notes ? customerData.notes : "-"}
                     </p>

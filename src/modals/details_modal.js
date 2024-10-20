@@ -16,7 +16,9 @@ async function createDetailsModal(options = {}, data = {}) {
   <div class="modal-dialog-scrollable modal-dialog show">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">${data[options.path].name}'s Details</h5>
+        <h5 class="modal-title">${detailsTitleIcon[options.path] ?? '<i class="bi bi-box-seam me-2"></i>'} ${
+      data[options.path].name
+    }'s Details</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick="removeDetailsModal();"></button>
       </div>
       <div class="modal-body">
@@ -48,18 +50,28 @@ async function createDetailsModal(options = {}, data = {}) {
 function generateModalBody(options, data) {
   const modalBody = Object.keys(_.omit(data[options.path], "_id", "__v")).map((key) => {
     return key === "date_create"
-      ? `<div class="note note-primary details mb-3">
-      <strong class="strong-details">${replaceApiToFeKeys[key]}:</strong> 
-        <div>
-        ${data[options.path][key] ? moment(data[options.path][key]).format("LLL") : "-"}
+      ? `      
+        <div class="details mb-3">
+          <h6 class="d-flex align-items-top">
+            ${detailsIconsMapper[key] ?? ""}
+            <strong class="strong-details">${replaceApiToFeKeys[key]}:</strong>
+          </h6>
+          <p class="ms-4" style="word-wrap: break-word; white-space: pre-wrap; max-width: 100%; overflow-wrap: break-word;">${
+            data[options.path][key] ? moment(data[options.path][key]).format("LLL") : "-"
+          }</p>
         </div>
-      </div>`
-      : `<div class="note note-primary details mb-3">
-       <strong class="strong-details">${replaceApiToFeKeys[key]}:</strong> 
-        <div>
-          ${data[options.path][key].toString() ? replaceBooleanToYesNo(data[options.path][key]) : "-"}
+`
+      : `   
+        <div class="details mb-3">
+          <h6 class="d-flex align-items-top">
+            ${detailsIconsMapper[key] ?? ""}
+            <strong class="strong-details">${replaceApiToFeKeys[key]}:</strong>
+          </h6>
+          <p class="ms-4" style="word-wrap: break-word; white-space: pre-wrap; max-width: 100%; overflow-wrap: break-word;">${
+            data[options.path][key].toString() ? replaceBooleanToYesNo(data[options.path][key]) : "-"
+          }</p>
         </div>
-      </div>`;
+      `;
   });
 
   return modalBody.join("");
@@ -83,9 +95,13 @@ function removeDetailsModal() {
 
 const detailsIconsMapper = {
   name: '<i class="bi bi-tag-fill me-2 text-primary"></i>',
-  amount: '<i class="bi bi-basket-fill me-2 text-success"></i>',
-  price: '<i class="bi bi-currency-dollar me-2 text-warning"></i>',
-  manufacturer: '<i class="bi bi-building me-2 text-info"></i>',
-  createdOn: '<i class="bi bi-calendar-check-fill me-2 text-muted"></i>',
-  notes: '<i class="bi bi-journal-text me-2 text-secondary"></i>',
+  amount: '<i class="bi bi-basket-fill me-2 text-primary"></i>',
+  price: '<i class="bi bi-currency-dollar me-2 text-primary"></i>',
+  manufacturer: '<i class="bi bi-building me-2 text-primary"></i>',
+  createdOn: '<i class="bi bi-calendar-check-fill me-2 text-primary"></i>',
+  notes: '<i class="bi bi-journal-text me-2 text-primary"></i>',
+};
+
+const detailsTitleIcon = {
+  Product: '<i class="bi bi-box-seam me-2"></i>',
 };
