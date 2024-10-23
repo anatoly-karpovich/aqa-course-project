@@ -3,8 +3,8 @@ const CONTENT_CONTAINER_ID = "root";
 const CONTENT_ID = "contentInner";
 const PAGE_TITLE_ID = "title";
 
-const BASE_URL = "https://aqa-course-project.app/";
-// const BASE_URL = "http://localhost:5000";
+// const BASE_URL = "https://aqa-course-project.app/";
+const BASE_URL = "http://localhost:5000";
 
 const NUMBER_KEYS = ["amount", "price", "flat", "house"];
 
@@ -36,6 +36,7 @@ const ENDPOINTS = {
   ["Order Status"]: (orderId) => `${BASE_URL}/api/orders/${orderId}/status`,
   ["Order Comments"]: (orderId) => `${BASE_URL}/api/orders/${orderId}/comments`,
   ["Order Comments Delete"]: (orderId, commentId) => `${BASE_URL}/api/orders/${orderId}/comments/${commentId}`,
+  ["Metrics"]: `${BASE_URL}/api/metrics`,
 };
 
 const SUCCESS_MESSAGES = {
