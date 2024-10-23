@@ -20,3 +20,20 @@
   padding: 20px;
 }
 
+.page-header {
+  margin-bottom: 50px;
+  padding: 40px 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+}
+
+.welcome-text {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #343a40;
+}
+
+.subheader-text {
+  font-size: 1.25rem;
+  color: #6c757d;
+}

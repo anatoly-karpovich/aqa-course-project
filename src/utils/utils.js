@@ -294,11 +294,22 @@ function formatDateToDateAndTime(dateString) {
   return moment(dateString).format(DATE_AND_TIME_FORMAT);
 }
 
-function scrollToSection(sectionId) {
-  setTimeout(function () {
-    const section = document.querySelector(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  }, 300);
+function scrollToSection(sectionSelector) {
+  const section = document.querySelector(sectionSelector);
+  if (section) {
+    section.scrollIntoView();
+  }
+}
+
+function getLastMonths(amount) {
+  const currentDate = new Date();
+  const months = [];
+
+  for (let i = amount; i >= 0; i--) {
+    const d = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
+    const monthName = d.toLocaleString("default", { month: "long" });
+    months.push(monthName);
+  }
+
+  return months;
 }

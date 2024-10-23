@@ -47,6 +47,7 @@ async function renderCustomerDetailsPage(id) {
     customer.data.Customer,
     orders.data.Orders
   );
+  scrollToSection(`#${CONTENT_CONTAINER_ID}`);
   hideSpinner();
 }
 
@@ -82,7 +83,6 @@ async function renderProductsPage(options = ProductsProps) {
   sideMenuActivateElement(options.path);
   addEventListelersToProductsPage();
   renderChipsFromState("products");
-  // searchInTable("products");
 }
 
 function renderAddNewProductPage(options = add_new_product_props) {
@@ -133,18 +133,16 @@ async function renderOrdersPage(options = OrdersProps) {
   showSpinner();
   const response = await getSortedOrders();
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrdersPageLayout(options, response);
-  hideSpinner();
   sideMenuActivateElement(options.path);
   addEventListelersToOrdersPage();
   renderChipsFromState("orders");
-  // searchInTable("orders");
+  hideSpinner();
 }
 
 async function renderOrderDetailsPage(id) {
   showSpinner();
   const [order, customers] = await Promise.all([OrdersService.getOrders(id), CustomersService.getCustomers()]);
   if (order && order.status === 200 && customers.status === 200) {
-    hideSpinner();
     sideMenuActivateElement("Orders");
     state.order = order.data.Order;
     state.customers = customers.data.Customers;
@@ -153,12 +151,14 @@ async function renderOrderDetailsPage(id) {
       Order_Details_Props,
       order.data.Order
     );
+    scrollToSection(`#${CONTENT_CONTAINER_ID}`);
     addEventListelersToOrderDetailsPage();
     activateTab();
   } else {
     handleApiErrors(order);
     handleApiErrors(customers);
   }
+  hideSpinner();
 }
 
 async function renderReceivingOrderDetailsPage() {
@@ -238,9 +238,8 @@ async function renderEditProductsModal() {
 }
 
 //Home section
-function renderLandingPage(options = {}) {
+async function renderLandingPage(options = {}) {
   document.querySelector("body").innerHTML = renderLandingPageLayout(options);
-  addEventListelersToHomePage();
   document.querySelector("#signOut").addEventListener("click", () => {
     localStorage.removeItem("token");
     removeAuthorizationCookie();
@@ -248,18 +247,25 @@ function renderLandingPage(options = {}) {
     renderSignInPage();
     state.notifications = {};
   });
-  renderHomePage(homeProps);
+  await renderHomePage(homeProps);
   addEventListenersToSidemenu();
   renderNotificationContainer();
 }
 
-function renderHomePage(options = {}) {
+async function renderHomePage(options = {}) {
   showSpinner();
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(options);
-  sideMenuActivateElement(options.path);
-  addEventListelersToHomePage();
-  renderCharts();
-  hideSpinner();
+  const metrics = await MetricsService.get();
+  if (metrics.status === 200) {
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(metrics.data.Metrics);
+    loadCharts(
+      metrics.data.Metrics.orders.ordersCountPerDay,
+      metrics.data.Metrics.products.topProducts,
+      metrics.data.Metrics.customers.customerGrowth
+    );
+    sideMenuActivateElement(options.path);
+  } else {
+    handleApiErrors(metrics);
+  }
 }
 
 const indexForRed = _.random(1, 3);

@@ -111,9 +111,12 @@ function renderSignInPage() {
       document.cookie = `Authorization=${response.data.token}`;
       signIn.classList.add("disabled");
       signIn.parentNode.removeChild(signIn);
-      renderLandingPage(landingProps);
+      await renderLandingPage(landingProps);
     } else {
-      renderNotification({ message: response.data.ErrorMessage ? response.data.ErrorMessage : ERROR_MESSAGES["Connection Issue"] }, true);
+      renderNotification(
+        { message: response.data.ErrorMessage ? response.data.ErrorMessage : ERROR_MESSAGES["Connection Issue"] },
+        true
+      );
     }
     hideSpinner();
   });
