@@ -1,21 +1,25 @@
-let orderModalWrap = null
+let orderModalWrap = null;
 async function createAddOrderModal(data) {
-    add_order_modal_props.data = _.cloneDeep(data)
-    add_order_modal_props.customers.options.values = add_order_modal_props.data.customers.map(c => c.name)
-    add_order_modal_props.customers.options.titles = add_order_modal_props.data.customers.map(c => c.email)
-    add_order_modal_props.products.options.values = add_order_modal_props.data.products.map(c => c.name)
-if(orderModalWrap !== null) {
-    orderModalWrap.remove()
-}
-    orderModalWrap = document.createElement("div");
-    orderModalWrap.id = `add-order-modal-id`
-    orderModalWrap.insertAdjacentHTML(
-        "afterbegin", `
+  add_order_modal_props.data = _.cloneDeep(data);
+  add_order_modal_props.customers.options.values = add_order_modal_props.data.customers.map((c) => c.name);
+  add_order_modal_props.customers.options.titles = add_order_modal_props.data.customers.map((c) => c.email);
+  add_order_modal_props.products.options.values = add_order_modal_props.data.products.map((c) => c.name);
+  if (orderModalWrap !== null) {
+    orderModalWrap.remove();
+  }
+  orderModalWrap = document.createElement("div");
+  orderModalWrap.id = `add-order-modal-id`;
+  orderModalWrap.insertAdjacentHTML(
+    "afterbegin",
+    `
             <div class="modal show fade" id="add-order-modal" tabindex="-1">
                 <div class="modal-dialog-scrollable modal-dialog show">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Create Order</h5>
+                            <h5 class="modal-title">
+                                <i class="bi bi-list-check me-2"></i>
+                                Create Order
+                            </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick="removeAddOrderModal();"></button>
                         </div>
                         <div class="modal-body">
@@ -28,6 +32,7 @@ if(orderModalWrap !== null) {
                         </div>
                         <div class="modal-footer mx-4 justify-content-between">
                             <div class="me-5">
+                                <i class="bi bi-tag"></i>
                                 <span class="">Total Price:</span>
                                 <span class="text-primary fw-bold" id="total-price-order-modal"></span>
                             </div>
@@ -39,78 +44,84 @@ if(orderModalWrap !== null) {
                     </div>
                 </div>
             </div>
-    `)
-    document.body.prepend(orderModalWrap)
-    
-    const ordersModal = new bootstrap.Modal(orderModalWrap.querySelector('.modal'));
-    ordersModal.show();
-    handleFirstDeleteButtonInOrderModal("products-section")
-    setCurrentTotalPriceToOrderModal(add_order_modal_props.data.products)
+    `
+  );
+  document.body.prepend(orderModalWrap);
 
-    $("#add-product-btn").on("click", (e) => {
-      e.preventDefault();
-      if ($("#products-section > div").length < 5) {
-        handleFirstDeleteButtonInOrderModal("products-section", true)
-        $(generateAddOrderProductInput(add_order_modal_props.products)).appendTo("#products-section")
-      } 
-      if($("#products-section > div").length === 5) {
-        $("#add-product-btn").hide()
+  const ordersModal = new bootstrap.Modal(orderModalWrap.querySelector(".modal"));
+  ordersModal.show();
+  handleFirstDeleteButtonInOrderModal("products-section");
+  setCurrentTotalPriceToOrderModal(add_order_modal_props.data.products);
+
+  $("#add-product-btn").on("click", (e) => {
+    e.preventDefault();
+    if ($("#products-section > div").length < 5) {
+      handleFirstDeleteButtonInOrderModal("products-section", true);
+      $(generateAddOrderProductInput(add_order_modal_props.products)).appendTo("#products-section");
+    }
+    if ($("#products-section > div").length === 5) {
+      $("#add-product-btn").hide();
+    }
+    setCurrentTotalPriceToOrderModal(add_order_modal_props.data.products);
+  });
+
+  $("div#products-section").on("click", (e) => {
+    e.preventDefault();
+    if (e.target.title === "Delete") {
+      const id = e.target.getAttribute("data-delete-id");
+      const el = document.querySelector(`div[data-id="${id}"]`);
+      el.parentNode.removeChild(el);
+      if ($("#products-section > div").length === 1) {
+        handleFirstDeleteButtonInOrderModal("products-section");
       }
-      setCurrentTotalPriceToOrderModal(add_order_modal_props.data.products)
-      }); 
+      if ($("#products-section > div").length < 5) {
+        $("#add-product-btn").show();
+      }
+    }
+    setCurrentTotalPriceToOrderModal(add_order_modal_props.data.products);
+  });
 
-    $("div#products-section").on("click", (e) => {
-        e.preventDefault();
-        if(e.target.title === "Delete") {
-            const id = e.target.getAttribute("data-delete-id")
-            const el = document.querySelector(`div[data-id="${id}"]`)
-            el.parentNode.removeChild(el)
-            if($("#products-section > div").length === 1) {
-                handleFirstDeleteButtonInOrderModal("products-section")
-            }
-            if($("#products-section > div").length < 5) {
-                $("#add-product-btn").show()
-            }
-        }
-        setCurrentTotalPriceToOrderModal(add_order_modal_props.data.products)
-    })
+  $("#cancel-order-modal-btn").on("click", (e) => {
+    e.preventDefault();
+    removeAddOrderModal();
+  });
 
-    $("#cancel-order-modal-btn").on("click", (e) => {
-        e.preventDefault()
-        removeAddOrderModal()
-    })
+  $("div#products-section").on("input", (e) => {
+    setCurrentTotalPriceToOrderModal(add_order_modal_props.data.products);
+  });
 
-    $("div#products-section").on('input', (e) => {
-        setCurrentTotalPriceToOrderModal(add_order_modal_props.data.products)
-    })
-
-    $("#create-order-btn").on('click', async (e) => {
-        e.preventDefault()
-        const requestedProducts = []
-        let customer = {
-           name: $("select#inputCustomerOrder").find(":selected").text(),
-           email: $("select#inputCustomerOrder").find(":selected").attr("title")
-        }
-        customer = add_order_modal_props.data.customers.find(c => c.name === customer.name && c.email === customer.email)._id
-        $('select[name="Product"]').each(function (){
-            requestedProducts.push($(this).find(":selected").text())
-        })
-        const orderData = {
-            customer,
-            products: [...requestedProducts].map(rp => {return add_order_modal_props.data.products.find(p => p.name === rp)._id})
-        }
-        await submitOrder(orderData)
-        removeAddOrderModal()
-    })
+  $("#create-order-btn").on("click", async (e) => {
+    showSpinner();
+    e.preventDefault();
+    const requestedProducts = [];
+    let customer = {
+      name: $("select#inputCustomerOrder").find(":selected").text(),
+      email: $("select#inputCustomerOrder").find(":selected").attr("title"),
+    };
+    customer = add_order_modal_props.data.customers.find(
+      (c) => c.name === customer.name && c.email === customer.email
+    )._id;
+    $('select[name="Product"]').each(function () {
+      requestedProducts.push($(this).find(":selected").text());
+    });
+    const orderData = {
+      customer,
+      products: [...requestedProducts].map((rp) => {
+        return add_order_modal_props.data.products.find((p) => p.name === rp)._id;
+      }),
+    };
+    removeAddOrderModal();
+    await submitOrder(orderData);
+  });
 }
 
 function setCurrentTotalPriceToOrderModal(options) {
-    const requestedProducts = []
-    $('select[name="Product"]').each(function (){
-        requestedProducts.push($(this).find(":selected").text())
-    })
-    let prices = [...requestedProducts].reduce((a,b) => a + options.find(p => p.name === b).price, 0)
-    $("span#total-price-order-modal").text(`$${prices}`)
+  const requestedProducts = [];
+  $('select[name="Product"]').each(function () {
+    requestedProducts.push($(this).find(":selected").text());
+  });
+  let prices = [...requestedProducts].reduce((a, b) => a + options.find((p) => p.name === b).price, 0);
+  $("span#total-price-order-modal").text(`$${prices}`);
 }
 
 function handleFirstDeleteButtonInOrderModal(sectionSelector, showButton) {
@@ -126,7 +137,7 @@ function handleFirstDeleteButtonInOrderModal(sectionSelector, showButton) {
 }
 
 function generateAddOrderModalBody() {
-    return `
+  return `
     <div style="margin-bottom: 20px">
         ${generateFormSelectInput(add_order_modal_props.customers, add_order_modal_props.data.customers)}
     </div>
@@ -137,57 +148,59 @@ function generateAddOrderModalBody() {
         <div>
             <button id="add-product-btn" class="btn btn-outline-primary form-buttons">Add Product</button>
         </div>
-    `       
+    `;
 }
 
 const add_order_modal_props = {
-    customers: {
-        divClasslist: "col-md-12",
-        name: "Customer",
-        type: "select",
-        classlist: "form-select",
-        id: "inputCustomerOrder",
-        defaultValue: "Apple",
-        options: {
-        values: [],
-        },
-        attributes: `name="Customer"`
-    }, 
-    products: {
-        divClasslist: "col-md-11",
-        name: "Product",
-        type: "select",
-        classlist: "form-select",
-        id: `${window.crypto.randomUUID()}`,
-        defaultValue: "Apple",
-        options: {
-        values: [],
-        },
-        attributes: `name="Product"`
+  customers: {
+    divClasslist: "col-md-12",
+    name: "Customer",
+    type: "select",
+    classlist: "form-select",
+    id: "inputCustomerOrder",
+    defaultValue: "Apple",
+    options: {
+      values: [],
     },
-    data: {}   
-}
+    attributes: `name="Customer"`,
+  },
+  products: {
+    divClasslist: "col-md-11",
+    name: "Product",
+    type: "select",
+    classlist: "form-select",
+    id: `${window.crypto.randomUUID()}`,
+    defaultValue: "Apple",
+    options: {
+      values: [],
+    },
+    attributes: `name="Product"`,
+  },
+  data: {},
+};
 
 function generateAddOrderProductInput(options) {
-    const products_options = {...options, id: window.crypto.randomUUID()}
-    return `
+  const products_options = { ...options, id: window.crypto.randomUUID() };
+  return `
     <div style="margin-bottom: 10px; display: flex" data-id="${products_options.id}">
         ${generateFormSelectInputWithoutLabel(products_options)}
         <div class="col-md-1 delete-in-modal">
-            <button class="btn btn-link text-danger del-btn-modal" title="Delete" data-delete-id="${products_options.id}">
+            <button class="btn btn-link text-danger del-btn-modal" title="Delete" data-delete-id="${
+              products_options.id
+            }">
                 <i class="bi bi-trash"></i>
             </button>
         </div>
     </div>
-    `
+    `;
 }
 
 function removeAddOrderModal() {
-    orderModalWrap.remove()
-    orderModalWrap = null
-    $('body').removeClass('modal-open')
-    $('body').removeAttr('style')
-    if(document.querySelector('.modal-backdrop')) {
-        document.querySelector('.modal-backdrop').parentNode.removeChild(document.querySelector('.modal-backdrop'))
+  orderModalWrap.remove();
+  orderModalWrap = null;
+  $("body").removeClass("modal-open");
+  $("body").removeAttr("style");
+  if (document.querySelector(".modal-backdrop")) {
+    document.querySelector(".modal-backdrop").parentNode.removeChild(document.querySelector(".modal-backdrop"));
   }
 }

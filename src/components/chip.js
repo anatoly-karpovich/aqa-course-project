@@ -1,7 +1,7 @@
 function createChipButton(text, page, isFilter) {
   const id = isFilter ? text : "search";
   return `
-    <div class="chip btn-outline-light text-dark" data-chip-${page}="${id}">${text}<i 
+    <div class="chip text-dark" data-chip-${page}="${id}">${text}<i 
     class="closebtn bi-x-lg" data-chip-${page}="${id}" onClick="removeChipButtonAndRenderTable('${id}', '${page}', '${
     isFilter ? 1 : 0
   }')"></i></div>

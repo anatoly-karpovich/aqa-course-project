@@ -20,7 +20,10 @@ function renderFiltersModal(page) {
           <div class="modal-dialog modal-filters-wrapper">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Filters</h5>
+                <h5 class="modal-title">
+                  <i class="bi bi-filter me-2"></i>
+                  Filters
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick="removeFiltersModal()"></button>
               </div>
                 <div class="modal-body modal-body-text modal-filters-body">
@@ -65,8 +68,8 @@ async function submitFilters(page) {
   Object.keys(changedFiltersToTrue).forEach((key) => renderChipButton(key, page, true));
   Object.keys(changedFiltersToFalse).forEach((key) => removeChipButton(key, page, true));
   state.filtering[page] = _.cloneDeep(filters[page]);
-  await getDataAndRenderTable(page);
   removeFiltersModal();
+  await getDataAndRenderTable(page);
 }
 
 async function clearAllFilters(page) {

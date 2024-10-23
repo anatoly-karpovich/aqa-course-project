@@ -90,7 +90,6 @@ async function submitOrder(orderData) {
       ? renderNotification({ message: SUCCESS_MESSAGES["Order Successfully Updated"] })
       : renderNotification({ message: SUCCESS_MESSAGES["New Order Added"] })
     : handleApiErrors(response, true);
-  hideSpinner();
   orderData._id ? await renderOrderDetailsPage(orderData._id) : await renderOrdersPage();
 }
 

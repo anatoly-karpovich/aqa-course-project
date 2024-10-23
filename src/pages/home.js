@@ -16,7 +16,7 @@ function renderHomePageLayout(metrics) {
         <div class="col-md-4 mb-4">
           <div class="card shadow-sm h-100">
             <div class="card-body">
-              <i class="bi bi-box-seam display-4 mb-3"></i>
+              <i class="bi bi-list-check display-4 mb-3"></i>
               <h5 class="card-title">Orders</h5>
               <p class="card-text">Manage and process orders from customers and managers.</p>
               <button class="btn btn-primary" id="orders-from-home" onclick="renderOrdersPage()">View Orders</button>
@@ -27,7 +27,7 @@ function renderHomePageLayout(metrics) {
         <div class="col-md-4 mb-4">
           <div class="card shadow-sm h-100">
             <div class="card-body">
-              <i class="bi bi-box display-4 mb-3"></i>
+              <i class="bi bi-box-seam display-4 mb-3"></i>
               <h5 class="card-title">Products</h5>
               <p class="card-text">Manage and update product listings, including editing and deleting.</p>
               <button href="/products" class="btn btn-primary" id="products-from-home" onclick="renderProductsPage()">View Products</button>
