@@ -7,7 +7,7 @@ function renderHomePageLayout(metrics) {
       <div class="page-header text-center">
           <h1 class="display-4 welcome-text">Welcome to Sales Management Portal</h1>
           <p class="lead subheader-text">
-              Monitor key metrics, manage orders, and optimize customer interactions—all in one place.
+              Monitor key metrics, manage orders, and optimize customer interactions — all in one place.
           </p>
       </div>
 
@@ -116,7 +116,7 @@ function renderHomePageLayout(metrics) {
           <canvas id="ordersChart" width="400" height="200"></canvas>
         </div>
         <div class="col-md-6">
-          <h4>Orders in ${new Date().toLocaleString("default", { month: "long", year: "numeric" })}</h4>
+          <h4>Orders in ${new Date().toLocaleString("en-US", { month: "long", year: "numeric" })}</h4>
           <p>This chart shows the number of orders created during the current month. You can track daily orders and sales trends.</p>
         </div>
       </div>

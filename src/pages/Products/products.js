@@ -128,7 +128,6 @@ function addEventListelersToProductsPage() {
     }
     state.search.products = value;
     await getProductsAndRenderTable();
-    // searchInTable("products");
     $(`input[type="search"]`).val("");
   });
 

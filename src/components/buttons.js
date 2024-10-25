@@ -7,7 +7,7 @@ function generateButton(options, id) {
     ${options?.title ? "title=" + '"' + options.title + '" ' : ""}
     ${options?.onclick ? "onClick=" + '"' + options.onclick + "(" + (id ? "'" + id + "'" : "") + ")" + '" ' : ""}
     ${options?.disabled ? "disabled " : ""}
-    >${options?.name ?  options.name : ""}
+    >${options?.name ? options.name : ""}
     ${options?.nestedItems ? options.nestedItems : ""}
     </button>
     `;
@@ -38,14 +38,14 @@ function deleteButton(id, name) {
 }
 
 function searchBar(buttons) {
-return `
+  return `
   <div class="mt-30">
     <div class="dis-flex">
       <form class="d-flex search-bar">
         <input class="form-control me-2" type="search" placeholder="Search" maxlength="40" aria-label="Search">
         ${generateButton(buttons.search)}
-        <button class="btn btn-outline-primary ml-5" id="filter">
-          <i class="bi bi-funnel"></i>
+        <button class="btn btn-outline-primary ml-5 d-flex justify-content-start" id="filter">
+          <i class="bi bi-funnel me-2"></i> Filter
         </button>
       </form>
         ${generateButton(buttons.add)}
@@ -53,12 +53,14 @@ return `
     <div id="chip-buttons" class="ml-50">
     </div>
   </div>
-`
+`;
 }
 
 function generatePageTitle(options, entitiName) {
   return `
-  <h2 class="${options.classlist ? options.classlist : 'page-title-text'}">${options.title} ${entitiName ? entitiName : ""}</h2>
+  <h2 class="${options.classlist ? options.classlist : "page-title-text"}">${options.title} ${
+    entitiName ? entitiName : ""
+  }</h2>
   `;
 }
 
@@ -68,9 +70,11 @@ function generateFormSelectInput(options, data) {
       <label for="${options.id}" class="form-label">${options.name}</label>
       <select id="${options.id}" class="${options.classlist}"
       ${options.attributes ? options.attributes : ""}>
-      ${data 
-        ? renderCustomersOptions(options, data)
-        : renderOptions(options.options.values, options.defaultValue, options.value, options.options.titles)}
+      ${
+        data
+          ? renderCustomersOptions(options, data)
+          : renderOptions(options.options.values, options.defaultValue, options.value, options.options.titles)
+      }
       </select>
     </div>`;
 }
@@ -96,22 +100,22 @@ function generateFormTextInput(options) {
 }
 
 function generateTextareaInput(options) {
-  return     `<div class="${options.divClasslist}">
+  return `<div class="${options.divClasslist}">
                 <label for="${options.id}" class="form-label">${options.name}</label>
                 <textarea class="${options.classList}" id="${options.id}" ${options.attributes} 
                 placeholder="${options.placeholder}" 
                 ${options.attributes ? options.attributes : ""}>${options.value}</textarea>
                 <div class="invalid-feedback" id=error-${options.id}></div>
-              </div>`
+              </div>`;
 }
 
 function generateTextareaInputWithoutLabel(options) {
-  return     `<div class="${options.divClasslist}">
+  return `<div class="${options.divClasslist}">
                 <textarea class="${options.classList}" id="${options.id}" ${options.attributes} 
                 placeholder="${options.placeholder}" 
                 ${options.attributes ? options.attributes : ""}>${options.value}</textarea>
                 <div class="invalid-feedback" id=error-${options.id}></div>
-              </div>`
+              </div>`;
 }
 
 function generateEditPencilButton(options) {
