@@ -39,21 +39,24 @@ function deleteButton(id, name) {
 
 function searchBar(buttons) {
   return `
-  <div class="mt-30">
-    <div class="dis-flex">
-      <form class="d-flex search-bar">
-        <input class="form-control me-2" type="search" placeholder="Search" maxlength="40" aria-label="Search">
-        ${generateButton(buttons.search)}
-        <button class="btn btn-outline-primary ml-5 d-flex justify-content-start" id="filter">
-          <i class="bi bi-funnel me-2"></i> Filter
-        </button>
-      </form>
-        ${generateButton(buttons.add)}
+
+    <div class="d-flex justify-content-between">
+      <div class="d-flex justify-content-start">
+        <form class="d-flex search-bar">
+          <input class="form-control me-2" type="search" placeholder="Type a value..." maxlength="40" aria-label="Search">
+          ${generateButton(buttons.search)}
+        </form>
+        <button class="btn btn-outline-primary ms-2 d-flex justify-content-start" id="filter">
+            <i class="bi bi-funnel me-2"></i> Filter
+        </button>       
+      </div>
     </div>
-    <div id="chip-buttons" class="ml-50">
-    </div>
-  </div>
+
 `;
+}
+
+function chipsSection() {
+  return `<div id="chip-buttons" class="ml-50"></div>`;
 }
 
 function generatePageTitle(options, entitiName) {

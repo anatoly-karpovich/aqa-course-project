@@ -19,7 +19,7 @@ async function createDetailsModal(options = {}, data = {}) {
         <h5 class="modal-title">${detailsTitleIcon[options.path] ?? '<i class="bi bi-box-seam me-2"></i>'} ${
       data[options.path].name
     }'s Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick="removeDetailsModal();"></button>
+        <button type="button" class="btn-close hover-danger" data-bs-dismiss="modal" aria-label="Close" onClick="removeDetailsModal();"></button>
       </div>
       <div class="modal-body">
 

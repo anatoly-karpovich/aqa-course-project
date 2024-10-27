@@ -184,7 +184,7 @@ body.loading {
 .page-header-flex {
   display: flex;
   justify-content: space-between;
-  margin: 20px 60px 20px 0px !important
+  margin: 20px 0px 20px 0px !important
 }
 
 .dis-flex {
@@ -405,6 +405,14 @@ label.form-label:not([for=textareaNotes]):after {
   color: #dc3545;
 }
 
+.hover-danger:hover {
+  color: #dc3545; /* Цвет для состояния hover, аналогичный text-danger */
+}
+
+.btn-close.hover-danger:hover {
+  filter: invert(38%) sepia(87%) saturate(471%) hue-rotate(338deg) brightness(97%) contrast(92%);
+}
+
 .closebtn {
   vertical-align: -.1em;
   fill: currentColor;
@@ -471,7 +479,7 @@ max-width: 1090px;;
 }
 
 .tableWrapper > tbody > tr > td {
-  max-width: 300px;
+  max-width: 250px;
 }
 
 .section-footer {
@@ -597,4 +605,11 @@ button[name='sort-button']:focus {
   /* font-style: italic; */
   text-decoration: underline;
   color: #0d6efd
+}
+
+input[type="date"] {
+  width: auto;
+  min-width: 150px;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
 }

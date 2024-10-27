@@ -10,8 +10,10 @@ async function renderCustomersPageLayout(options = CustomerProps, response) {
         <div id="${PAGE_TITLE_ID}" class="p-horizontal-20">  
             <div class="page-header-flex">
                 ${generatePageTitle(options)}
+                ${generateButton(options.buttons.add)}
             </div>
                 ${searchBar(options.buttons)}
+                ${chipsSection()}
         </div>
     </div>      
     <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
@@ -31,8 +33,8 @@ const CustomerProps = {
       name: "+ Add Customer",
     },
     search: {
-      classlist: "btn btn-primary",
-      name: `<i class="fa-solid fa-magnifying-glass"></i>`,
+      classlist: "btn btn-primary d-flex justify-content-center align-items-center",
+      name: `<i class="fa-solid fa-magnifying-glass me-2"></i> Search`,
       id: "search-customer",
       type: "submit",
     },

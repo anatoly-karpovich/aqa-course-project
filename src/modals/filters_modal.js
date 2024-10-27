@@ -24,7 +24,7 @@ function renderFiltersModal(page) {
                   <i class="bi bi-filter me-2"></i>
                   Filters
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick="removeFiltersModal()"></button>
+                <button type="button" class="btn-close hover-danger" data-bs-dismiss="modal" aria-label="Close" onClick="removeFiltersModal()"></button>
               </div>
                 <div class="modal-body modal-body-text modal-filters-body">
                     ${createFilterCheckboxes(page)}

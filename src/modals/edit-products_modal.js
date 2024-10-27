@@ -1,5 +1,5 @@
 let editProductsModalWrap = null;
-const updateProductsButtonSelector = "div#edit-products-modal #update-products-btn"
+const updateProductsButtonSelector = "div#edit-products-modal #update-products-btn";
 
 async function createEditProductsModal(data) {
   edit_order_details_modal_props.data = _.cloneDeep(data);
@@ -16,7 +16,7 @@ async function createEditProductsModal(data) {
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Edit Products</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick="removeEditProductsModal();"></button>
+                            <button type="button" class="btn-close hover-danger" data-bs-dismiss="modal" aria-label="Close" onClick="removeEditProductsModal();"></button>
                         </div>
                         <div class="modal-body">
                             <div class="bg-white rounded-5">
@@ -85,36 +85,37 @@ async function createEditProductsModal(data) {
       $("#add-product-btn").hide();
     }
     setCurrentTotalPriceToOrderModal(edit_order_details_modal_props.data);
-    handleSaveButtonAvailabilityInChangeProductsModal()
+    handleSaveButtonAvailabilityInChangeProductsModal();
   });
 
   $("div#edit-products-section").on("click", (e) => {
     e.preventDefault();
-    if(e.target.title === "Delete") {
-        const id = e.target.getAttribute("data-delete-id")
-        const el = document.querySelector(`div[data-id="${id}"]`)
-        el.parentNode.removeChild(el)
-        if($("#edit-products-section > div").length === 1) {
-            handleFirstDeleteButtonInOrderModal("edit-products-section")
-        }
-        if($("#edit-products-section > div").length < 5) {
-            $("#add-product-btn").show()
-        }
+    if (e.target.title === "Delete") {
+      const id = e.target.getAttribute("data-delete-id");
+      const el = document.querySelector(`div[data-id="${id}"]`);
+      el.parentNode.removeChild(el);
+      if ($("#edit-products-section > div").length === 1) {
+        handleFirstDeleteButtonInOrderModal("edit-products-section");
+      }
+      if ($("#edit-products-section > div").length < 5) {
+        $("#add-product-btn").show();
+      }
     }
-    handleSaveButtonAvailabilityInChangeProductsModal()
-    setCurrentTotalPriceToOrderModal(edit_order_details_modal_props.data)
-})
-
-  $("div#edit-products-section").on("input", (e) => {
-    e.preventDefault()
+    handleSaveButtonAvailabilityInChangeProductsModal();
     setCurrentTotalPriceToOrderModal(edit_order_details_modal_props.data);
-    handleSaveButtonAvailabilityInChangeProductsModal()
   });
 
+  $("div#edit-products-section").on("input", (e) => {
+    e.preventDefault();
+    setCurrentTotalPriceToOrderModal(edit_order_details_modal_props.data);
+    handleSaveButtonAvailabilityInChangeProductsModal();
+  });
 }
 
 function generateEditProductsModalBody() {
-  return state.order.products.map((p) => generateAddOrderProductInput({ ...edit_order_details_modal_props.products, defaultValue: p.name })).join("");
+  return state.order.products
+    .map((p) => generateAddOrderProductInput({ ...edit_order_details_modal_props.products, defaultValue: p.name }))
+    .join("");
 }
 
 function removeEditProductsModal() {
@@ -134,15 +135,15 @@ function handleInitialEditProductsModalBody() {
 }
 
 function handleSaveButtonAvailabilityInChangeProductsModal() {
-  const changedProducts = []
+  const changedProducts = [];
   $('select[name="Product"]').each(function () {
     changedProducts.push($(this).find(":selected").text());
   });
-  const selectedProducts = state.order.products.map(p => p.name)
-  const isEqualProductsArrays = _.isEqual(sortStrings(changedProducts), sortStrings(selectedProducts))
-  if(isEqualProductsArrays) {
-    $(updateProductsButtonSelector).prop("disabled", true)
+  const selectedProducts = state.order.products.map((p) => p.name);
+  const isEqualProductsArrays = _.isEqual(sortStrings(changedProducts), sortStrings(selectedProducts));
+  if (isEqualProductsArrays) {
+    $(updateProductsButtonSelector).prop("disabled", true);
   } else {
-    $(updateProductsButtonSelector).prop("disabled", false)
+    $(updateProductsButtonSelector).prop("disabled", false);
   }
 }

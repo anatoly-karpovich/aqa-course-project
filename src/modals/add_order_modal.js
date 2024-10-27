@@ -20,7 +20,7 @@ async function createAddOrderModal(data) {
                                 <i class="bi bi-list-check me-2"></i>
                                 Create Order
                             </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick="removeAddOrderModal();"></button>
+                            <button type="button" class="btn-close hover-danger" data-bs-dismiss="modal" aria-label="Close" onClick="removeAddOrderModal();"></button>
                         </div>
                         <div class="modal-body">
                             <div class="bg-white rounded-5">
