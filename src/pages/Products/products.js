@@ -40,6 +40,7 @@ const ProductsProps = {
       name: `<i class="fa-solid fa-magnifying-glass me-2"></i> Search`,
       id: "search-products",
       type: "submit",
+      disabled: true,
     },
   },
   tableProps: {
@@ -75,7 +76,7 @@ const ProductsProps = {
 };
 
 const delete_product_confirmation_opts = {
-  title: "Delete Product",
+  title: '<i class="bi bi-trash me-2"></i> Delete Product',
   body: "Are you sure you want to delete product?",
   deleteFunction: "deleteProduct",
   buttons: {
@@ -123,6 +124,11 @@ function addEventListelersToProductsPage() {
   $(`#${ProductsProps.buttons.search.id}`).on("click", async (event) => {
     event.preventDefault();
     const value = $(`input[type="search"]`).val();
+
+    $(`input[type="search"]`).val("");
+    const searchButton = $("[id*=search-]");
+    searchButton.prop("disabled", true);
+
     if (state.search.products) {
       removeChipButton("search", "products");
     }
@@ -131,7 +137,6 @@ function addEventListelersToProductsPage() {
     }
     state.search.products = value;
     await getProductsAndRenderTable();
-    $(`input[type="search"]`).val("");
   });
 
   $(`#filter`).on("click", (event) => {

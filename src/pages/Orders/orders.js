@@ -40,6 +40,7 @@ const OrdersProps = {
       name: `<i class="fa-solid fa-magnifying-glass me-2"></i> Search`,
       id: "search-orders",
       type: "submit",
+      disabled: true,
     },
   },
   tableProps: {
@@ -89,6 +90,11 @@ function addEventListelersToOrdersPage() {
   $(`#${OrdersProps.buttons.search.id}`).on("click", async (event) => {
     event.preventDefault();
     const value = $(`input[type="search"]`).val();
+
+    $(`input[type="search"]`).val("");
+    const searchButton = $("[id*=search-]");
+    searchButton.prop("disabled", true);
+
     if (state.search.orders) {
       removeChipButton("search", "orders");
     }
@@ -98,7 +104,6 @@ function addEventListelersToOrdersPage() {
     state.search.orders = value;
     // searchInTable("orders");
     await getOrdersAndRenderTable();
-    $(`input[type="search"]`).val("");
   });
 
   $(`#filter`).on("click", (event) => {

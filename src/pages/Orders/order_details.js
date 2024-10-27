@@ -30,7 +30,7 @@ const Order_Details_Props = {
 };
 
 const cancel_order_confirmation_opts = {
-  title: "Cancel Order",
+  title: '<i class="bi bi-x-circle me-2"></i> Cancel Order',
   body: "Are you sure you want to cancel the order?",
   deleteFunction: "changeOrderStatus",
   buttons: {

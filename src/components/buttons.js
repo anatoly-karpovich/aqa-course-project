@@ -43,7 +43,7 @@ function searchBar(buttons) {
     <div class="d-flex justify-content-between">
       <div class="d-flex justify-content-start">
         <form class="d-flex search-bar">
-          <input class="form-control me-2" type="search" placeholder="Type a value..." maxlength="40" aria-label="Search">
+          <input class="form-control me-2" type="search" placeholder="Type a value..." maxlength="40" aria-label="Search" oninput="seachButtonHandler(this)">
           ${generateButton(buttons.search)}
         </form>
         <button class="btn btn-outline-primary ms-2 d-flex justify-content-start" id="filter">

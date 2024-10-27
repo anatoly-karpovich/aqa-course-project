@@ -37,6 +37,7 @@ const CustomerProps = {
       name: `<i class="fa-solid fa-magnifying-glass me-2"></i> Search`,
       id: "search-customer",
       type: "submit",
+      disabled: true,
     },
   },
   tableProps: {
@@ -77,7 +78,7 @@ const CustomerProps = {
 };
 
 const delete_customer_confirmation_opts = {
-  title: "Delete Customer",
+  title: '<i class="bi bi-trash me-2"></i> Delete Customer',
   body: "Are you sure you want to delete customer?",
   deleteFunction: "deleteCustomer",
   buttons: {
@@ -120,6 +121,11 @@ function addEventListelersToCustomersPage() {
   $(`#${CustomerProps.buttons.search.id}`).on("click", async (event) => {
     event.preventDefault();
     const value = $(`input[type="search"]`).val();
+
+    $(`input[type="search"]`).val("");
+    const searchButton = $("[id*=search-]");
+    searchButton.prop("disabled", true);
+
     if (state.search.customers) {
       removeChipButton("search", "customers");
     }
@@ -128,7 +134,6 @@ function addEventListelersToCustomersPage() {
     }
     state.search.customers = value;
     await getCustomersAndRenderTable();
-    $(`input[type="search"]`).val("");
   });
   $(`#filter`).on("click", (event) => {
     event.preventDefault();

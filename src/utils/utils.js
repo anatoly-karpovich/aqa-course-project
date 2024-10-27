@@ -313,3 +313,9 @@ function getLastMonths(amount) {
 
   return months;
 }
+
+function seachButtonHandler(input) {
+  const text = input.value;
+  const searchButton = $("[id*=search-]");
+  text.trim() ? searchButton.prop("disabled", false) : searchButton.prop("disabled", true);
+}
