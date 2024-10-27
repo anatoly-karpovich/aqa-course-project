@@ -10,6 +10,7 @@ async function renderEditProductLayout(options = edit_product_props, data = {}) 
 
   return `
     <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
+    ${backLink(renderProductsPage, "Products")}
     <div id="${PAGE_TITLE_ID}" class="page-header-title">
       ${generatePageTitle(options, data.name)}
     </div>
@@ -18,7 +19,6 @@ async function renderEditProductLayout(options = edit_product_props, data = {}) 
         <div class="col-12" style="margin-top: 50px; display: flex; justify-content: space-between;">
           <div>
             ${saveButton(options.buttons.save.id, options.buttons.save.name)}
-            ${backButton(options.buttons.back.id, options.buttons.back.name)}
           </div>
           <div>
             ${deleteButton(options.buttons.delete.id, options.buttons.delete.name)}

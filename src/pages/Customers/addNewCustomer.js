@@ -1,6 +1,7 @@
 function renderAddNewCustomerLayout(options = add_new_customer_props) {
   return `
   <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
+    ${backLink(renderCustomersPage, "Customers")}
     <div id="${PAGE_TITLE_ID}" class="page-header-title">
       ${generatePageTitle(options)}
     </div>
@@ -9,7 +10,6 @@ function renderAddNewCustomerLayout(options = add_new_customer_props) {
       <div class="col-12 form-action-section">
         <div>
           ${saveButton(options.buttons.save.id, options.buttons.save.name)}
-          ${backButton(options.buttons.back.id, options.buttons.back.name)}
         </div>
         <div>
           ${clearInputsButton(options.buttons.clear.id, options.buttons.clear.name)}

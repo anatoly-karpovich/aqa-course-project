@@ -2,8 +2,8 @@ function createCustomerDetailsPageLayout(customerData, orders) {
   return `
     <!-- Customer Details Card -->
     <div class="card shadow-sm p-4 mb-5 bg-body rounded page-title-margin">
-        <div class="card-body">
-            <div class="d-flex justify-content-between">
+        ${backLink(renderCustomersPage, "Customers")}
+        <div class="card-body" style="margin: 0 12px 0 12px;">
                 <div class="card-title mb-4 d-flex justify-content-start align-items-center">
                     <h3>Customer Details</h3>
                     <button class="btn btn-light edit-pencil" id="edit-customer-pencil" title="Edit Customer" onclick="renderEditCustomerPage('${
@@ -11,26 +11,24 @@ function createCustomerDetailsPageLayout(customerData, orders) {
                     }')">
                         <i class="bi bi-pencil-fill"></i>
                     </button>
-                </div>
-                <button id="back-to-customers-page" class="btn btn-secondary form-buttons align-self-center" onclick="renderCustomersPage()">Back</button>
             </div>
 
             <div class="row g-4">
                 <!-- Left side: Contact details -->
                 <div class="col-md-6">
-                    <h5><i class="bi bi-envelope"></i> Email</h5>
+                    <h5 class="d-flex align-items-center"><i class="bi bi-envelope me-1"></i> Email</h5>
                     <p>${customerData.email}</p>
 
-                    <h5><i class="bi bi-person"></i> Name</h5>
+                    <h5 class="d-flex align-items-center"><i class="bi bi-person me-1"></i> Name</h5>
                     <p>${customerData.name}</p>
 
-                    <h5><i class="bi bi-telephone"></i> Phone</h5>
+                    <h5 class="d-flex align-items-center"><i class="bi bi-telephone me-1"></i> Phone</h5>
                     <p>${customerData.phone}</p>
                 </div>
 
                 <!-- Right side: Address details -->
                 <div class="col-md-6">
-                    <h5><i class="bi bi-geo-alt"></i> Address</h5>
+                    <h5 class="d-flex align-items-center"><i class="bi bi-geo-alt me-1"></i> Address</h5>
                     <p>
                         <strong>Country:</strong> ${customerData.country}<br>
                         <strong>City:</strong> ${customerData.city}<br>
@@ -44,7 +42,7 @@ function createCustomerDetailsPageLayout(customerData, orders) {
             <!-- Registration Date Section -->
             <div class="row g-4 mt-1">
                 <div class="col-md-12">
-                    <h5><i class="bi bi-calendar-check"></i> Registration Date</h5>
+                    <h5 class="d-flex align-items-center"><i class="bi bi-calendar-check me-1"></i> Registration Date</h5>
                     <p>${formatDateToDateAndTime(customerData.createdOn)}</p> <!-- Дата в формате YYYY-MM-DD -->
                 </div>
             </div>
@@ -52,8 +50,8 @@ function createCustomerDetailsPageLayout(customerData, orders) {
             <!-- Notes Section -->
             <div class="row g-3 mt-1">
                 <div class="col-md-12">
-                    <h5><i class="bi bi-journal-text"></i> Notes</h5>
-                    <p class="p-3 rounded" style="word-break: break-word;">
+                    <h5 class="d-flex align-items-center"><i class="bi bi-journal-text me-1"></i> Notes</h5>
+                    <p class="rounded" style="word-break: break-word;">
                         ${customerData.notes ? customerData.notes : "-"}
                     </p>
                 </div>

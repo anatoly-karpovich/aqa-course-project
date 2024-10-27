@@ -127,3 +127,7 @@ function generateEditPencilButton(options) {
   <i class="bi bi-pencil-fill"></i>
   </button>`;
 }
+
+function backLink(onClick, text) {
+  return `<div class="back-link" onclick="${onClick.name}();"><i class="bi bi-arrow-left me-2"></i> ${text}</div>`;
+}

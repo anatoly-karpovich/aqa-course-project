@@ -80,7 +80,7 @@ function generateTableHeaderWithSorting(headerName, options) {
 function generateSortButton(direction) {
   let arrow = direction === "asc" ? `<i class="bi bi-arrow-down"></i>` : `<i class="bi bi-arrow-up"></i>`;
 
-  return `<div class="text-primary ms-1" style="cursor: pointer">${arrow}</div>`;
+  return `<div class="text-primary ms-1">${arrow}</div>`;
 }
 
 async function sortProductsInTable(header) {

@@ -110,7 +110,7 @@ const replaceApiToFeKeys = {
   manufacturer: "Manufacturer",
   price: "Price",
   amount: "Amount",
-  status: "Order Status",
+  status: "Status",
   delivery: "Delivery",
   condition: "Delivery Type",
   finalDate: "Delivery Date",
