@@ -181,7 +181,7 @@ function recentOrdersTable(recentOrders) {
                 <tr>
                     <th scope="col">Customer</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Total Amount</th>
+                    <th scope="col">Total</th>
                     <th scope="col">Details</th>
                 </tr>
                 </thead>
