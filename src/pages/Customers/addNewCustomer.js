@@ -1,7 +1,7 @@
 function renderAddNewCustomerLayout(options = add_new_customer_props) {
   return `
   <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
-    <div id="${PAGE_TITLE_ID}" class="page-header">
+    <div id="${PAGE_TITLE_ID}" class="page-header-title">
       ${generatePageTitle(options)}
     </div>
     <form class="row g-3 form-with-inputs" id="${options.formId}">
@@ -44,7 +44,7 @@ const add_new_customer_props = {
       errorMessageSelector: "#error-inputEmail",
       errorMessage: VALIDATION_ERROR_MESSAGES["Email"],
       attributes: `name="email"`,
-      value: ""
+      value: "",
     },
     name: {
       divClasslist: "col-md-6",
@@ -56,7 +56,7 @@ const add_new_customer_props = {
       errorMessageSelector: "#error-inputName",
       errorMessage: VALIDATION_ERROR_MESSAGES["Customer Name"],
       attributes: `name="name"`,
-      value: ""
+      value: "",
     },
     country: {
       divClasslist: "col-md-6",
@@ -69,7 +69,6 @@ const add_new_customer_props = {
         values: ["USA", "Canada", "Belarus", "Ukraine", "Germany", "France", "Great Britain", "Russia"],
       },
       attributes: `name="country"`,
-
     },
     city: {
       divClasslist: "col-md-6",
@@ -81,7 +80,7 @@ const add_new_customer_props = {
       errorMessageSelector: "#error-inputCity",
       errorMessage: VALIDATION_ERROR_MESSAGES["City"],
       attributes: `name="city"`,
-      value: ""
+      value: "",
     },
     street: {
       divClasslist: "col-md-6",
@@ -93,7 +92,7 @@ const add_new_customer_props = {
       errorMessageSelector: "#error-inputStreet",
       errorMessage: VALIDATION_ERROR_MESSAGES["Street"],
       attributes: `name="street"`,
-      value: ""
+      value: "",
     },
     house: {
       divClasslist: "col-md-6",
@@ -105,7 +104,7 @@ const add_new_customer_props = {
       errorMessageSelector: "#error-inputHouse",
       errorMessage: VALIDATION_ERROR_MESSAGES["House"],
       attributes: `name="house"`,
-      value: ""
+      value: "",
     },
     flat: {
       divClasslist: "col-md-6",
@@ -117,7 +116,7 @@ const add_new_customer_props = {
       errorMessageSelector: "#error-inputFlat",
       errorMessage: VALIDATION_ERROR_MESSAGES["Flat"],
       attributes: `name="flat"`,
-      value: ""
+      value: "",
     },
     phone: {
       divClasslist: "col-md-6",
@@ -129,7 +128,7 @@ const add_new_customer_props = {
       errorMessageSelector: "#error-inputPhone",
       errorMessage: VALIDATION_ERROR_MESSAGES["Phone"],
       attributes: `name="phone"`,
-      value: ""
+      value: "",
     },
     notes: {
       divClasslist: "col-md-12",
@@ -139,26 +138,25 @@ const add_new_customer_props = {
       placeholder: `Enter notes`,
       id: "textareaNotes",
       errorMessageSelector: "#error-textareaNotes",
-      errorMessage: VALIDATION_ERROR_MESSAGES['Notes'],
+      errorMessage: VALIDATION_ERROR_MESSAGES["Notes"],
       attributes: `rows="3" name="notes"`,
-      value: ""
-    }
+      value: "",
+    },
   },
   buttons: {
     save: {
-      id: 'save-new-customer',
+      id: "save-new-customer",
       name: "Save New Customer",
     },
     back: {
-      id: 'back-to-customers-page',
-      name: 'Back'
-
+      id: "back-to-customers-page",
+      name: "Back",
     },
     clear: {
-      id: 'clear-inputs',
-      name: "Clear all"
-    }
-  }
+      id: "clear-inputs",
+      name: "Clear all",
+    },
+  },
 };
 
 let newCustomerModel = {};
@@ -177,7 +175,7 @@ function addEventListelersToAddNewCustomerPage(options = add_new_customer_props.
     const elementId = e.target.id;
     switch (elementId) {
       case add_new_customer_props.buttons.save.id: {
-        const customer = getDataFromForm(`#${add_new_customer_props.formId}`)
+        const customer = getDataFromForm(`#${add_new_customer_props.formId}`);
         add_new_customer_props.requestOpts.body = customer;
         await submitEntiti(add_new_customer_props, { message: SUCCESS_MESSAGES["New Customer Added"] });
         saveChangesBtn.prop("disabled", true);
@@ -261,9 +259,9 @@ function addEventListelersToAddNewCustomerPage(options = add_new_customer_props.
         }
         break;
       }
-      
+
       case options.notes.id: {
-        const value = removeLineBreaks($(`#${options.notes.id}`).val())
+        const value = removeLineBreaks($(`#${options.notes.id}`).val());
         if (!isValidInput("Notes", value)) {
           showErrorMessageForInput(options.notes, saveChangesBtn);
         } else {
@@ -278,23 +276,18 @@ function addEventListelersToAddNewCustomerPage(options = add_new_customer_props.
 function validateNewCustomerInputs(options = add_new_customer_props.inputs) {
   return (
     isValidInput("Notes", $(`#${options.notes.id}`).val()) &&
-
-    (($(`#${options.flat.id}`).val().length && isValidInput("Flat", +$(`#${options.flat.id}`).val())) || +$(`#${options.flat.id}`).val() > 0) &&
-
-    (($(`#${options.house.id}`).val().length && isValidInput("House", +$(`#${options.house.id}`).val())) || +$(`#${options.house.id}`).val() > 0) &&
-
+    (($(`#${options.flat.id}`).val().length && isValidInput("Flat", +$(`#${options.flat.id}`).val())) ||
+      +$(`#${options.flat.id}`).val() > 0) &&
+    (($(`#${options.house.id}`).val().length && isValidInput("House", +$(`#${options.house.id}`).val())) ||
+      +$(`#${options.house.id}`).val() > 0) &&
     $(`#${options.name.id}`).val().length &&
     isValidInput("Customer Name", $(`#${options.name.id}`).val()) &&
-
     $(`#${options.email.id}`).val().length &&
     isValidInput("Email", $(`#${options.email.id}`).val()) &&
-
     $(`#${options.street.id}`).val().length &&
     isValidInput("Street", $(`#${options.street.id}`).val()) &&
-    
     $(`#${options.city.id}`).val().length &&
     isValidInput("City", $(`#${options.city.id}`).val()) &&
-    
     $(`#${options.phone.id}`).val().length &&
     isValidInput("Phone", $(`#${options.phone.id}`).val())
   );

@@ -19,7 +19,7 @@ function generateTableHeaders(titles = [], options) {
     ? titles
         .map((title) =>
           options.tableProps.sortableFields.includes(title)
-            ? generateTableHeaderWithSorting(title, options.tableProps.currentSortingField)
+            ? generateTableHeaderWithSorting(title, options)
             : generateTableHeader(title)
         )
         .join("") + `<th scope="col" style="text-align:center">Actions</th>`
@@ -61,31 +61,66 @@ function generateTableHeader(headerName) {
   `;
 }
 
-function generateTableHeaderWithSorting(headerName, sortingOptions) {
+function generateTableHeaderWithSorting(headerName, options) {
+  const isCurrentSortingField = options.tableProps.currentSortingField.name === headerName;
+  const direction = `direction="${isCurrentSortingField ? options.tableProps.currentSortingField.direction : "asc"}"`;
   return `
   <th scope="col">
     <div class="d-flex justify-content-start align-items-center">
-        <div>${headerName}</div>
-        ${generateSortButton(headerName, sortingOptions)}
+        <div style="cursor: pointer"
+        onclick="${options.tableProps.sortFunction.name}(this)" 
+        current="${isCurrentSortingField}"
+        ${isCurrentSortingField ? direction : ""}>${headerName}</div>
+        ${isCurrentSortingField ? generateSortButton(options.tableProps.currentSortingField.direction) : ""}
     </div>
   </th>
   `;
 }
 
-function generateSortButton(name, sortingOptions) {
-  const isCurrentSortingField = sortingOptions.name === name;
-  let arrow = "";
-  if (isCurrentSortingField) {
-    arrow =
-      sortingOptions.direction === "asc"
-        ? `<i class="bi bi-arrow-down-square-fill"></i>`
-        : `<i class="bi bi-arrow-up-square-fill"></i>`;
-  } else {
-    arrow = `<i class="bi bi-arrow-down-square"></i>`;
+function generateSortButton(direction) {
+  let arrow = direction === "asc" ? `<i class="bi bi-arrow-down"></i>` : `<i class="bi bi-arrow-up"></i>`;
+
+  return `<div class="text-primary ms-1" style="cursor: pointer">${arrow}</div>`;
+}
+
+async function sortProductsInTable(header) {
+  const isCurrentSortingField = header.getAttribute("current");
+  const fieldName = header.innerText;
+  let direction = "asc";
+  if (isCurrentSortingField === "true") {
+    direction = header.getAttribute("direction") === "asc" ? "desc" : "asc";
   }
-  return `
-  <button class="btn btn-sm text-primary" name="sort-button" fieldname="${name}" current="${isCurrentSortingField}" direction="${
-    isCurrentSortingField ? sortingOptions.direction : "asc"
-  }">${arrow}</button>
-  `;
+  state.sorting.products.sortField = Object.keys(replaceApiToFeKeys).find(
+    (key) => replaceApiToFeKeys[key] === fieldName
+  );
+  state.sorting.products.sortOrder = direction;
+  await getProductsAndRenderTable();
+}
+
+async function sortCustomersInTable(header) {
+  const isCurrentSortingField = header.getAttribute("current");
+  const fieldName = header.innerText;
+  let direction = "asc";
+  if (isCurrentSortingField === "true") {
+    direction = header.getAttribute("direction") === "asc" ? "desc" : "asc";
+  }
+  state.sorting.customers.sortField = Object.keys(replaceApiToFeKeys).find(
+    (key) => replaceApiToFeKeys[key] === fieldName
+  );
+  state.sorting.customers.sortOrder = direction;
+  await getCustomersAndRenderTable();
+}
+
+async function sortOrdersInTable(header) {
+  const isCurrentSortingField = header.getAttribute("current");
+  const fieldName = header.innerText;
+  let direction = "asc";
+  if (isCurrentSortingField === "true") {
+    direction = header.getAttribute("direction") === "asc" ? "desc" : "asc";
+  }
+  state.sorting.orders.sortField =
+    Object.keys(replaceApiToFeKeys).find((key) => replaceApiToFeKeys[key] === fieldName) ??
+    Object.keys(idToOrderNumber).find((key) => idToOrderNumber[key] === fieldName);
+  state.sorting.orders.sortOrder = direction;
+  await getOrdersAndRenderTable();
 }

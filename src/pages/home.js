@@ -49,7 +49,7 @@ function renderHomePageLayout(metrics) {
 
       <!-- Section Title for Metrics -->
       <div class="row mb-4 mt-5">
-        <div class="col">
+        <div class="col page-header">
           <h2 class="text-center">Business Metrics Overview</h2>
           <p class="text-muted text-center">Here you can track the key metrics and performance indicators of your store</p>
         </div>

@@ -48,6 +48,7 @@ const ProductsProps = {
       name: "Created On",
       direction: "desc",
     },
+    sortFunction: sortProductsInTable,
     buttons: [
       {
         nestedItems: `<i class="bi bi-card-text"></i>`,
@@ -135,22 +136,6 @@ function addEventListelersToProductsPage() {
     event.preventDefault();
     renderFiltersModal("products");
   });
-
-  $(`[data-name="table-products"]`).on("click", async (event) => {
-    if (event.target.name === "sort-button") {
-      const fieldName = event.target.getAttribute("fieldname");
-      const isCurrentSortingField = event.target.getAttribute("current");
-      let direction = "asc";
-      if (isCurrentSortingField === "true") {
-        direction = event.target.getAttribute("direction") === "asc" ? "desc" : "asc";
-      }
-      state.sorting.products.sortField = Object.keys(replaceApiToFeKeys).find(
-        (key) => replaceApiToFeKeys[key] === fieldName
-      );
-      state.sorting.products.sortOrder = direction;
-      await getProductsAndRenderTable();
-    }
-  });
 }
 
 function transformProductsForTable(products) {
@@ -172,9 +157,8 @@ function renderProductsTable(products, options) {
 async function getProductsAndRenderTable() {
   showSpinner();
   const sortedProducts = (await getSortedProducts()).data.Products;
-  const options = structuredClone(ProductsProps);
-  options.tableProps.currentSortingField.direction = state.sorting.products.sortOrder;
-  options.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.products.sortField];
-  renderProductsTable(sortedProducts, options);
+  ProductsProps.tableProps.currentSortingField.direction = state.sorting.products.sortOrder;
+  ProductsProps.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.products.sortField];
+  renderProductsTable(sortedProducts, ProductsProps);
   hideSpinner();
 }

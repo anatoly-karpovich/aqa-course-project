@@ -4,7 +4,7 @@ function renderScheduleDeliveryLayout(options = delivery_props) {
 
   return `
     <div class="shadow-sm p-3 mb-5 bg-body rounded form-center">
-        <div id="${PAGE_TITLE_ID}" class="page-header d-flex justify-content-around">
+        <div id="${PAGE_TITLE_ID}" class="page-header-title d-flex justify-content-around">
             <h2 class="fw-bold">${options.title}</h2>
         </div>
         <form class="row g-3 form-with-inputs modal-body" id="${options.formId}">

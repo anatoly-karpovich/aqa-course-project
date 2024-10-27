@@ -1,7 +1,7 @@
 function renderAddNewProductLayout(options = add_new_product_props) {
   return `
   <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
-    <div id="${PAGE_TITLE_ID}" class="page-header">
+    <div id="${PAGE_TITLE_ID}" class="page-header-title">
         ${generatePageTitle(options)}
     </div>
     <form class="row g-3 form-with-inputs" id="${options.formId}">
@@ -26,7 +26,7 @@ const add_new_product_props = {
   title: "Add New Product",
   formId: "add-new-product-form",
   requestOpts: {
-      body: {},
+    body: {},
   },
   inputs: {
     name: {
@@ -39,7 +39,7 @@ const add_new_product_props = {
       errorMessageSelector: "#error-inputName",
       errorMessage: VALIDATION_ERROR_MESSAGES["Product Name"],
       attributes: `name="name"`,
-      value: ""
+      value: "",
     },
     manufacturer: {
       divClasslist: "col-md-6",
@@ -51,7 +51,7 @@ const add_new_product_props = {
       options: {
         values: ["Apple", "Samsung", "Google", "Microsoft", "Sony", "Xiaomi", "Amazon", "Tesla"],
       },
-      attributes: `name="manufacturer"`
+      attributes: `name="manufacturer"`,
     },
     price: {
       divClasslist: "col-md-6",
@@ -63,7 +63,7 @@ const add_new_product_props = {
       errorMessageSelector: "#error-inputPrice",
       errorMessage: VALIDATION_ERROR_MESSAGES["Price"],
       attributes: `name="price"`,
-      value: ""
+      value: "",
     },
     amount: {
       divClasslist: "col-md-6",
@@ -75,7 +75,7 @@ const add_new_product_props = {
       errorMessageSelector: "#error-inputAmount",
       errorMessage: VALIDATION_ERROR_MESSAGES["Amount"],
       attributes: `name="amount"`,
-      value: ""
+      value: "",
     },
     notes: {
       divClasslist: "col-md-12",
@@ -87,24 +87,23 @@ const add_new_product_props = {
       errorMessageSelector: "#error-textareaNotes",
       errorMessage: VALIDATION_ERROR_MESSAGES["Notes"],
       attributes: `rows="3" name="notes"`,
-      value: ""
+      value: "",
     },
   },
   buttons: {
     save: {
-      id: 'save-new-product',
+      id: "save-new-product",
       name: "Save New Product",
     },
     back: {
-      id: 'back-to-products-page',
-      name: 'Back'
-
+      id: "back-to-products-page",
+      name: "Back",
     },
     clear: {
-      id: 'clear-inputs',
-      name: "Clear all"
-    }
-  }
+      id: "clear-inputs",
+      name: "Clear all",
+    },
+  },
 };
 
 function addEventListelersToAddNewProductPage(options = add_new_product_props.inputs) {
@@ -116,7 +115,7 @@ function addEventListelersToAddNewProductPage(options = add_new_product_props.in
     const elementId = e.target.id;
     switch (elementId) {
       case add_new_product_props.buttons.save.id: {
-        const product = getDataFromForm(`#${add_new_product_props.formId}`)
+        const product = getDataFromForm(`#${add_new_product_props.formId}`);
         add_new_product_props.requestOpts.body = product;
         await submitEntiti(add_new_product_props, { message: SUCCESS_MESSAGES["New Product Added"] });
         saveChangesBtn.prop("disabled", true);
@@ -164,9 +163,9 @@ function addEventListelersToAddNewProductPage(options = add_new_product_props.in
         }
         break;
       }
-      
+
       case "textareaNotes": {
-        const value = removeLineBreaks($(`#${options.notes.id}`).val())
+        const value = removeLineBreaks($(`#${options.notes.id}`).val());
         if (!isValidInput("Notes", value)) {
           showErrorMessageForInput(options.notes, saveChangesBtn);
         } else {
@@ -181,7 +180,8 @@ function addEventListelersToAddNewProductPage(options = add_new_product_props.in
 function validateNewProductInputs(options = add_new_product_props.inputs) {
   return (
     isValidInput("Notes", $(`#${options.notes.id}`).val()) &&
-    (($(`#${options.price.id}`).val().length && isValidInput("Price", +$(`#${options.price.id}`).val())) || +$(`#${options.price.id}`).val() > 0) &&
+    (($(`#${options.price.id}`).val().length && isValidInput("Price", +$(`#${options.price.id}`).val())) ||
+      +$(`#${options.price.id}`).val() > 0) &&
     $(`#${options.amount.id}`).val().length &&
     isValidInput("Amount", +$(`#${options.amount.id}`).val()) &&
     $(`#${options.name.id}`).val().length &&

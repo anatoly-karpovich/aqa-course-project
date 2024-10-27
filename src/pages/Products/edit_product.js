@@ -1,16 +1,16 @@
 async function renderEditProductLayout(options = edit_product_props, data = {}) {
-    edit_product_props.id = data._id;
-    options.inputs.name.value = data.name;
-    options.inputs.manufacturer.value = data.manufacturer;
-    options.inputs.price.value = data.price;
-    options.inputs.amount.value = data.amount;
-    options.inputs.notes.value = data.notes ? data.notes : "";
-    currentProductstate = data;
-    currentProductstate.notes = data.notes ? data.notes : "";
+  edit_product_props.id = data._id;
+  options.inputs.name.value = data.name;
+  options.inputs.manufacturer.value = data.manufacturer;
+  options.inputs.price.value = data.price;
+  options.inputs.amount.value = data.amount;
+  options.inputs.notes.value = data.notes ? data.notes : "";
+  currentProductstate = data;
+  currentProductstate.notes = data.notes ? data.notes : "";
 
-    return `
+  return `
     <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
-    <div id="${PAGE_TITLE_ID}" class="page-header">
+    <div id="${PAGE_TITLE_ID}" class="page-header-title">
       ${generatePageTitle(options, data.name)}
     </div>
     <form class="row g-3 form-with-inputs" id="${options.formId}">
@@ -38,28 +38,27 @@ const edit_product_props = {
     ..._.cloneDeep(add_new_product_props.inputs),
   },
   requestOpts: {
-      body: {},
+    body: {},
   },
   buttons: {
     save: {
-      id: 'save-product-changes',
+      id: "save-product-changes",
       name: "Save Changes",
     },
     back: {
-      id: 'back-to-products-page',
+      id: "back-to-products-page",
       name: "Back",
     },
     delete: {
-      id: 'delete-product-btn',
+      id: "delete-product-btn",
       name: "Delete Product",
-    }
-  }
+    },
+  },
 };
 
 let currentProductstate = {};
 
 function addListenersToEditProductPage(options = edit_product_props.inputs) {
-
   const saveChangesBtn = $("#save-product-changes");
   const form = $(`#${edit_product_props.formId}`);
 
@@ -71,9 +70,11 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
         const product = getDataFromForm("#edit-product-form");
         edit_product_props.requestOpts.body = {
           _id: edit_product_props.id,
-          ...product
+          ...product,
         };
-        await submitEntiti(edit_product_props, { message: SUCCESS_MESSAGES["Product Successfully Updated"]('Product') });
+        await submitEntiti(edit_product_props, {
+          message: SUCCESS_MESSAGES["Product Successfully Updated"]("Product"),
+        });
         break;
       }
 
@@ -94,7 +95,9 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
       case "inputName": {
         if (!isValidInput("Product Name", $(`#${options.name.id}`).val())) {
           showErrorMessageForInput(options.name, saveChangesBtn);
-        } else if (_.isEqual(_.omit(currentProductstate, ["_id", "createdOn"]), getDataFromForm("#edit-product-form"))) {
+        } else if (
+          _.isEqual(_.omit(currentProductstate, ["_id", "createdOn"]), getDataFromForm("#edit-product-form"))
+        ) {
           hideErrorMessageForInput(options, "name", saveChangesBtn, edit_product_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
@@ -106,7 +109,9 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
       case "inputAmount": {
         if (!isValidInput("Amount", +$(`#${options.amount.id}`).val()) || !$(`#${options.amount.id}`).val().length) {
           showErrorMessageForInput(options.amount, saveChangesBtn);
-        } else if (_.isEqual(_.omit(currentProductstate, ["_id", "createdOn"]), getDataFromForm("#edit-product-form"))) {
+        } else if (
+          _.isEqual(_.omit(currentProductstate, ["_id", "createdOn"]), getDataFromForm("#edit-product-form"))
+        ) {
           hideErrorMessageForInput(options, "amount", saveChangesBtn, edit_product_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
@@ -118,7 +123,9 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
       case "inputPrice": {
         if (!isValidInput("Price", +$(`#${options.price.id}`).val()) || +$(`#${options.price.id}`).val() === 0) {
           showErrorMessageForInput(options.price, saveChangesBtn);
-        } else if (_.isEqual(_.omit(currentProductstate, ["_id", "createdOn"]), getDataFromForm("#edit-product-form"))) {
+        } else if (
+          _.isEqual(_.omit(currentProductstate, ["_id", "createdOn"]), getDataFromForm("#edit-product-form"))
+        ) {
           hideErrorMessageForInput(options, "price", saveChangesBtn, edit_product_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
@@ -128,10 +135,12 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
       }
 
       case "textareaNotes": {
-        const value = removeLineBreaks($(`#${options.notes.id}`).val())
+        const value = removeLineBreaks($(`#${options.notes.id}`).val());
         if (!isValidInput("Notes", value)) {
           showErrorMessageForInput(options.notes, saveChangesBtn);
-        } else if (_.isEqual(_.omit(currentProductstate, ["_id", "createdOn"]), getDataFromForm("#edit-product-form"))) {
+        } else if (
+          _.isEqual(_.omit(currentProductstate, ["_id", "createdOn"]), getDataFromForm("#edit-product-form"))
+        ) {
           hideErrorMessageForInput(options, "notes", saveChangesBtn, edit_product_props.path);
           saveChangesBtn.prop("disabled", true);
         } else {
@@ -141,7 +150,10 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
       }
 
       case "inputManufacturer": {
-        if (_.isEqual(_.omit(currentProductstate, ["_id", "createdOn"]), getDataFromForm("#edit-product-form")) || !isValidForm()) {
+        if (
+          _.isEqual(_.omit(currentProductstate, ["_id", "createdOn"]), getDataFromForm("#edit-product-form")) ||
+          !isValidForm()
+        ) {
           saveChangesBtn.prop("disabled", true);
         } else {
           saveChangesBtn.prop("disabled", false);
