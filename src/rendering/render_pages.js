@@ -9,15 +9,13 @@ const renderPages = {
 
 //Customers Section
 async function renderCustomersPage(options = CustomerProps) {
-  showSpinner();
-  const response = await getSortedCustomers();
-
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderCustomersPageLayout(options, response);
-  hideSpinner();
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderCustomersPageLayout(options, {
+    data: { Customers: [] },
+  });
   sideMenuActivateElement(options.path);
+  await getCustomersAndRenderTable();
   addEventListelersToCustomersPage();
   renderChipsFromState("customers");
-  // searchInTable("customers");
 }
 
 function renderAddNewCustomerPage(options = add_new_customer_props) {
@@ -76,11 +74,11 @@ function renderDeleteCustomerModal(id) {
 
 //Products Section
 async function renderProductsPage(options = ProductsProps) {
-  showSpinner();
-  const response = await getSortedProducts();
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderProductsPageLayout(options, response);
-  hideSpinner();
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderProductsPageLayout(options, {
+    data: { Products: [] },
+  });
   sideMenuActivateElement(options.path);
+  await getProductsAndRenderTable();
   addEventListelersToProductsPage();
   renderChipsFromState("products");
 }
@@ -130,13 +128,11 @@ async function renderEditProductPage(id) {
 
 //Orders Section
 async function renderOrdersPage(options = OrdersProps) {
-  showSpinner();
-  const response = await getSortedOrders();
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrdersPageLayout(options, response);
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrdersPageLayout(options, { data: { Orders: [] } });
   sideMenuActivateElement(options.path);
+  await getOrdersAndRenderTable();
   addEventListelersToOrdersPage();
   renderChipsFromState("orders");
-  hideSpinner();
 }
 
 async function renderOrderDetailsPage(id) {
@@ -253,7 +249,14 @@ async function renderLandingPage(options = {}) {
 }
 
 async function renderHomePage(options = {}) {
-  showSpinner();
+  sideMenuActivateElement(options.path);
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(defaultMetrics);
+  showHomeSpinners();
+  loadCharts(
+    defaultMetrics.orders.ordersCountPerDay,
+    defaultMetrics.products.topProducts,
+    defaultMetrics.customers.customerGrowth
+  );
   const metrics = await MetricsService.get();
   if (metrics.status === 200) {
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(metrics.data.Metrics);
@@ -262,7 +265,6 @@ async function renderHomePage(options = {}) {
       metrics.data.Metrics.products.topProducts,
       metrics.data.Metrics.customers.customerGrowth
     );
-    sideMenuActivateElement(options.path);
   } else {
     handleApiErrors(metrics);
   }

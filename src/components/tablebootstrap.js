@@ -1,15 +1,17 @@
 function generateTableBootstrap(data = [], options) {
   const layout = `
-    <table class="table table-striped tableWrapper" id="${options.tableProps.id}">
-        <thead>
-            <tr>
-                ${generateTableHeaders(Object.keys(_.omit(data[0], "Id")), options)}
-            </tr>
-        </thead>
-        <tbody>
-            ${generateTableBody(data, options)}
-        </tbody>
-    </table>
+    <div class="position-relative" id="table-container">
+      <table class="table table-striped tableWrapper" id="${options.tableProps.id}">
+          <thead>
+              <tr>
+                  ${generateTableHeaders(Object.keys(_.omit(data[0], "Id")), options)}
+              </tr>
+          </thead>
+          <tbody>
+              ${generateTableBody(data, options)}
+          </tbody>
+      </table>
+    </div>
     `;
   return layout;
 }

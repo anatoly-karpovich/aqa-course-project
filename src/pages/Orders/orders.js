@@ -132,7 +132,7 @@ function renderOrdersTable(orders, options) {
 }
 
 async function getOrdersAndRenderTable() {
-  showSpinner();
+  showTableSpinner();
   const sortedOrders = (await getSortedOrders()).data.Orders;
   OrdersProps.tableProps.currentSortingField.direction = state.sorting.orders.sortOrder;
   OrdersProps.tableProps.currentSortingField.name =
@@ -140,5 +140,4 @@ async function getOrdersAndRenderTable() {
       ? idToOrderNumber[state.sorting.orders.sortField]
       : replaceApiToFeKeys[state.sorting.orders.sortField];
   renderOrdersTable(sortedOrders, OrdersProps);
-  hideSpinner();
 }

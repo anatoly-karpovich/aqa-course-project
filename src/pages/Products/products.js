@@ -162,10 +162,9 @@ function renderProductsTable(products, options) {
 }
 
 async function getProductsAndRenderTable() {
-  showSpinner();
+  showTableSpinner();
   const sortedProducts = (await getSortedProducts()).data.Products;
   ProductsProps.tableProps.currentSortingField.direction = state.sorting.products.sortOrder;
   ProductsProps.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.products.sortField];
   renderProductsTable(sortedProducts, ProductsProps);
-  hideSpinner();
 }

@@ -105,7 +105,9 @@ function renderSignInPage() {
   submit.addEventListener("click", async (e) => {
     e.preventDefault();
     const credentials = { username: email.value, password: password.value };
-    showSpinner();
+    submit.innerHTML = `
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
+    submit.disabled = true;
     const response = await SignInService.signIn(credentials);
     if (response.status === 200) {
       document.cookie = `Authorization=${response.data.token}`;

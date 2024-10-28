@@ -1,4 +1,4 @@
-async function renderCustomersPageLayout(options = CustomerProps, response) {
+function renderCustomersPageLayout(options = CustomerProps, response) {
   options.tableProps.currentSortingField.direction = state.sorting.customers.sortOrder;
   options.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.customers.sortField];
   const data = _.isEmpty(response.data.Customers) ? [] : transformCustomersForTable(response.data.Customers);
@@ -158,10 +158,9 @@ function renderCustomersTable(customers, options) {
 }
 
 async function getCustomersAndRenderTable() {
-  showSpinner();
+  showTableSpinner();
   const sortedCustomers = (await getSortedCustomers()).data.Customers;
   CustomerProps.tableProps.currentSortingField.direction = state.sorting.customers.sortOrder;
   CustomerProps.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.customers.sortField];
   renderCustomersTable(sortedCustomers, CustomerProps);
-  hideSpinner();
 }

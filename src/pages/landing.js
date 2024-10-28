@@ -1,37 +1,36 @@
 function renderLandingPageLayout(options = landingProps) {
-    return `
+  return `
     ${getIconSvgHTML()}
     <div id="sidemenu">
-    ${renderSpinner()}
+    ${spinner()}
         <div class="contentWrapper">
                 ${generateSidebar(options)}
                 <div id="root"></div>
             </div>
         </div>
-    `
+    `;
 }
 
 const landingProps = {
-    navbar: {
-        name: 'Sales Portal',
-        items: [
-            {
-                name: 'Home',
-                xlink: "#home"
-            },
-            {
-                name: 'Orders',
-                xlink: "#table"
-            },
-            {
-                name: 'Products',
-                xlink: "#grid"
-            },
-            {
-                name: 'Customers',
-                xlink: "#people-circle"
-            }
-        ]
-    }
-
-}
+  navbar: {
+    name: "Sales Portal",
+    items: [
+      {
+        name: "Home",
+        xlink: "#home",
+      },
+      {
+        name: "Orders",
+        xlink: "#table",
+      },
+      {
+        name: "Products",
+        xlink: "#grid",
+      },
+      {
+        name: "Customers",
+        xlink: "#people-circle",
+      },
+    ],
+  },
+};
