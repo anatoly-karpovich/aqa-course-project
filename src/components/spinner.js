@@ -33,6 +33,11 @@ function showHomeSpinners() {
   renderSpinnerInContainer("#customer-growth-chart-container");
 }
 
+function showCustomerDetailsSpinners() {
+  renderSpinnerInContainer("#customer-info-container");
+  renderSpinnerInContainer("#customer-orders-container");
+}
+
 function renderSpinnerInContainer(contaierSelector = "") {
   const contaier = document.querySelector(contaierSelector);
   const overlay = document.createElement("div");
