@@ -96,27 +96,28 @@ function renderDeleteProductModal(id) {
 }
 
 async function renderProductDetailsModal(id) {
-  showSpinner();
+  createDetailsModal(product_details_props(id), { Product: emptyProduct });
+  renderSpinnerInContainer("#details-modal-container");
   const response = await ProductsService.getProducts(id);
   if (response.status === 200) {
-    await createDetailsModal(product_details_props(id), response.data);
-    hideSpinner();
+    setDataToProductDetailsModal(product_details_props(id), response.data);
     sideMenuActivateElement("Products");
   } else {
     handleApiErrors(response);
   }
+  hideSpinners();
 }
 
 async function renderEditProductPage(id) {
   if (modalWrap) {
     removeDetailsModal();
   }
-  showSpinner();
+  sideMenuActivateElement("Products");
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditProductLayout(edit_product_props, emptyProduct);
+  renderSpinnerInContainer("#edit-product-container");
   const response = await ProductsService.getProducts(id);
   if (response && response.status === 200) {
-    hideSpinner();
-    sideMenuActivateElement("Products");
-    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderEditProductLayout(
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditProductLayout(
       edit_product_props,
       response.data.Product
     );

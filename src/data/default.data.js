@@ -12,6 +12,16 @@ const emptyCustomer = {
   notes: "",
 };
 
+const emptyProduct = {
+  _id: "",
+  name: "",
+  amount: "",
+  price: "",
+  manufacturer: "",
+  createdOn: "",
+  notes: "",
+};
+
 const defaultMetrics = {
   orders: {
     totalRevenue: 651163,

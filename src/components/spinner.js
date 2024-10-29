@@ -13,7 +13,7 @@ function showTableSpinner() {
   renderSpinnerInContainer("#table-container");
 }
 
-function hideTableSpinner() {
+function hideSpinners() {
   const spinnesOverlay = [...document.querySelectorAll(".overlay-spinner")];
   if (spinnesOverlay.length) {
     spinnesOverlay.forEach((spinner) => spinner.remove());
@@ -52,3 +52,5 @@ function renderSpinnerInContainer(contaierSelector = "") {
 
   contaier.prepend(overlay);
 }
+
+const buttonSpinner = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;

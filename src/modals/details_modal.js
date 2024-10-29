@@ -1,11 +1,13 @@
 let modalWrap = null;
 //TODO: Create generateModalLayout and generateModalRaws functions
-async function createDetailsModal(options = {}, data = {}) {
+function createDetailsModal(options = {}, data = {}) {
   if (modalWrap !== null) {
     modalWrap.remove();
   }
   if (!_.isEmpty(data)) {
-    data[options.path]["createdOn"] = moment(data[options.path]["createdOn"]).format("LLL");
+    data[options.path]["createdOn"] = data[options.path]["createdOn"]
+      ? moment(data[options.path]["createdOn"]).format("LLL")
+      : "";
   }
   modalWrap = document.createElement("div");
   modalWrap.id = `${options.path}-details-modal-id`;
@@ -14,17 +16,17 @@ async function createDetailsModal(options = {}, data = {}) {
     `
     <div class="modal show fade" id="${options.path}DetailsModal" tabindex="-1">
   <div class="modal-dialog-scrollable modal-dialog show">
-    <div class="modal-content">
+    <div class="modal-content position-relative" id="details-modal-container">
       <div class="modal-header">
-        <h5 class="modal-title">${detailsTitleIcon[options.path] ?? '<i class="bi bi-box-seam me-2"></i>'} ${
-      data[options.path].name
-    }'s Details</h5>
+        <h5 class="modal-title d-flex justify-content-start align-items-center">${
+          detailsTitleIcon[options.path] ?? '<i class="bi bi-box-seam me-2"></i>'
+        } ${data[options.path].name}'s Details</h5>
         <button type="button" class="btn-close hover-danger" data-bs-dismiss="modal" aria-label="Close" onClick="removeDetailsModal();"></button>
       </div>
       <div class="modal-body">
 
         <div class="bg-white rounded-5">
-          <section section class="w-100 p-4">
+          <section section class="w-100 p-4" id="details-modal-body-container">
             ${generateModalBody(options, data)}
           </section>
         </div>
@@ -49,7 +51,7 @@ async function createDetailsModal(options = {}, data = {}) {
 
 function generateModalBody(options, data) {
   const modalBody = Object.keys(_.omit(data[options.path], "_id", "__v")).map((key) => {
-    return key === "date_create"
+    return key === "createdOn"
       ? `      
         <div class="details mb-3">
           <h6 class="d-flex align-items-top">
@@ -105,3 +107,8 @@ const detailsIconsMapper = {
 const detailsTitleIcon = {
   Product: '<i class="bi bi-box-seam me-2"></i>',
 };
+
+function setDataToProductDetailsModal(options, data) {
+  $("#details-modal-body-container").html(generateModalBody(options, data));
+  $(".modal-title").html(`${detailsTitleIcon[options.path]} ${data[options.path].name}'s Details`);
+}
