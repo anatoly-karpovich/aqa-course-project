@@ -319,3 +319,30 @@ function seachButtonHandler(input) {
   const searchButton = $("[id*=search-]");
   text.trim() ? searchButton.prop("disabled", false) : searchButton.prop("disabled", true);
 }
+
+/**
+ *
+ * @param {string} value
+ * @returns yyyy/mm/dd hh/mm
+ */
+function convertToDateAndTime(value) {
+  return moment(value).format(DATE_AND_TIME_FORMAT);
+}
+
+/**
+ *
+ * @param {string} value
+ * @returns yyyy/mm/dd
+ */
+function convertToDate(value) {
+  return moment(value).format(DATE_FORMAT);
+}
+
+/**
+ *
+ * @param {string} value
+ * @returns e.g. October 24, 2024 3:34 PM
+ */
+function convertToFullDateAndTime(value) {
+  return moment(value).format("LLL");
+}

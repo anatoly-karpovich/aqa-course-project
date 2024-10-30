@@ -149,7 +149,7 @@ function transformCustomersForTable(customers) {
       [replaceApiToFeKeys.email]: el.email,
       [replaceApiToFeKeys.name]: el.name,
       [replaceApiToFeKeys.country]: el.country,
-      [replaceApiToFeKeys.createdOn]: moment(el.createdOn).format(DATE_AND_TIME_FORMAT),
+      [replaceApiToFeKeys.createdOn]: convertToDateAndTime(el.createdOn),
     };
   });
 }

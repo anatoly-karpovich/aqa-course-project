@@ -153,7 +153,7 @@ function transformProductsForTable(products) {
       [replaceApiToFeKeys.name]: el.name,
       [replaceApiToFeKeys.price]: `$${el.price}`,
       [replaceApiToFeKeys.manufacturer]: el.manufacturer,
-      [replaceApiToFeKeys.createdOn]: moment(el.createdOn).format(DATE_AND_TIME_FORMAT),
+      [replaceApiToFeKeys.createdOn]: convertToDateAndTime(el.createdOn),
     };
   });
 }

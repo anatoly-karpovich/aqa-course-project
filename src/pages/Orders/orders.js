@@ -120,9 +120,9 @@ function transformOrdersForTable(orders) {
       [replaceApiToFeKeys.name]: el.customer.name,
       [replaceApiToFeKeys.email]: el.customer.email,
       [replaceApiToFeKeys.price]: `$${el.total_price}`,
-      [replaceApiToFeKeys.delivery]: el.delivery ? moment(el.delivery.finalDate).format(DATE_FORMAT) : "-",
+      [replaceApiToFeKeys.delivery]: el.delivery ? convertToDate(el.delivery.finalDate) : "-",
       [replaceApiToFeKeys.status]: el.status,
-      [replaceApiToFeKeys.createdOn]: moment(el.createdOn).format(DATE_AND_TIME_FORMAT),
+      [replaceApiToFeKeys.createdOn]: convertToDateAndTime(el.createdOn),
     };
   });
 }

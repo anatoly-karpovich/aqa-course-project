@@ -6,7 +6,7 @@ function createDetailsModal(options = {}, data = {}) {
   }
   if (!_.isEmpty(data)) {
     data[options.path]["createdOn"] = data[options.path]["createdOn"]
-      ? moment(data[options.path]["createdOn"]).format("LLL")
+      ? convertToFullDateAndTime(data[options.path]["createdOn"])
       : "";
   }
   modalWrap = document.createElement("div");
@@ -59,7 +59,7 @@ function generateModalBody(options, data) {
             <strong class="strong-details">${replaceApiToFeKeys[key]}:</strong>
           </h6>
           <p class="ms-4" style="word-wrap: break-word; white-space: pre-wrap; max-width: 100%; overflow-wrap: break-word;">${
-            data[options.path][key] ? moment(data[options.path][key]).format("LLL") : "-"
+            data[options.path][key] ? convertToFullDateAndTime(data[options.path][key]) : "-"
           }</p>
         </div>
 `
