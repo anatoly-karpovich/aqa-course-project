@@ -8,17 +8,10 @@ function generateSidebar(options) {
       </a>
       <hr>
 
-       <ul class="nav nav-pills flex-column">
+       <ul class="nav nav-pills flex-column mb-auto">
       ${generateSidebarItem(options.navbar.items)}
       </ul> 
-      <div class="mb-auto mt-5">
-        <label for="currency-input" class="mb-2">Currency exchange</label>
-        <label for="currency-input" class="mb-2" id="currancy-rate">Rate: $20.15</label>
-        <input type="number" class="form-control" id="currency-input">
-        <button class="btn btn-primary mt-2" id='exchange-button'>Buy</button>
-        <br>
-        <label id="exchange-result" class="mt-2 d-none">Result:</label>
-      </div>
+
       <hr>
       <div class="dropdown">
         <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -97,4 +90,17 @@ function addEventListenersToSidemenu(options) {
     console.log({ key });
     writeToDatabase(key);
   });
+}
+
+function currencyExchangeSection() {
+  return `
+        <div class="mb-auto mt-5">
+        <label for="currency-input" class="mb-2">Currency exchange</label>
+        <label for="currency-input" class="mb-2" id="currancy-rate">Rate: $20.15</label>
+        <input type="number" class="form-control" id="currency-input">
+        <button class="btn btn-primary mt-2" id='exchange-button'>Buy</button>
+        <br>
+        <label id="exchange-result" class="mt-2 d-none">Result:</label>
+      </div>
+  `;
 }

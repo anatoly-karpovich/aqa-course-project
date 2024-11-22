@@ -207,6 +207,7 @@ function addEventListelersToOrderDetailsPage() {
       const comment = {
         comment: $("#textareaComments").val().trim(),
       };
+      $("#create-comment-btn").html(buttonSpinner);
       await submitComment(state.order._id, comment);
     }
   });

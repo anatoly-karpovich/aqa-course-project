@@ -38,6 +38,10 @@ function showCustomerDetailsSpinners() {
   renderSpinnerInContainer("#customer-orders-container");
 }
 
+function showAddOrderModalSpinner() {
+  renderSpinnerInContainer("#add-order-modal-body");
+}
+
 function renderSpinnerInContainer(contaierSelector = "") {
   const contaier = document.querySelector(contaierSelector);
   const overlay = document.createElement("div");

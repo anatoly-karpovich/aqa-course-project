@@ -30,7 +30,7 @@ async function renderCustomerDetailsModal(id) {
   showSpinner();
   const response = await CustomersService.getCustomers(id);
   if (response.status === 200) {
-    await createDetailsModal(customer_details_props(id), response.data);
+    createDetailsModal(customer_details_props(id), response.data);
     hideSpinner();
     sideMenuActivateElement("Customers");
   } else {
@@ -178,11 +178,12 @@ async function renderReceivingOrderDetailsPage() {
 }
 
 async function renderCreateOrderModal() {
-  showSpinner();
+  createAddOrderModal({ customers: [], products: [] });
+  showAddOrderModalSpinner();
   const [customers, products] = await Promise.all([CustomersService.getCustomers(), ProductsService.getProducts()]);
   if (customers.status === 200 && products.status === 200) {
-    await createAddOrderModal({ customers: customers.data.Customers, products: products.data.Products });
-    hideSpinner();
+    setDataToAddOrderModal({ customers: customers.data.Customers, products: products.data.Products });
+    hideSpinners();
     sideMenuActivateElement("Orders");
   } else {
     handleApiErrors(customers);
