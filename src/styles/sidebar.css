@@ -217,13 +217,13 @@ body.loading {
   margin-right: 15px;
 }
 
-.tableWrapper>tbody>tr>td {
+.tableWrapper tbody>tr>td {
   text-align: left;
   vertical-align: middle;
   word-break: break-word;
 }
 
-.tableWrapper>thead>tr>th {
+.tableWrapper thead>tr>th {
   text-align: left;
   vertical-align: middle;
 }

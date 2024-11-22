@@ -9,15 +9,13 @@ const renderPages = {
 
 //Customers Section
 async function renderCustomersPage(options = CustomerProps) {
-  showSpinner();
-  const response = await getSortedCustomers();
-
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderCustomersPageLayout(options, response);
-  hideSpinner();
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderCustomersPageLayout(options, {
+    data: { Customers: [] },
+  });
   sideMenuActivateElement(options.path);
+  await getCustomersAndRenderTable();
   addEventListelersToCustomersPage();
   renderChipsFromState("customers");
-  // searchInTable("customers");
 }
 
 function renderAddNewCustomerPage(options = add_new_customer_props) {
@@ -32,7 +30,7 @@ async function renderCustomerDetailsModal(id) {
   showSpinner();
   const response = await CustomersService.getCustomers(id);
   if (response.status === 200) {
-    await createDetailsModal(customer_details_props(id), response.data);
+    createDetailsModal(customer_details_props(id), response.data);
     hideSpinner();
     sideMenuActivateElement("Customers");
   } else {
@@ -41,28 +39,28 @@ async function renderCustomerDetailsModal(id) {
 }
 
 async function renderCustomerDetailsPage(id) {
-  showSpinner();
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createCustomerDetailsPageLayout(emptyCustomer, []);
+  showCustomerDetailsSpinners();
   const [customer, orders] = await Promise.all([CustomersService.getCustomers(id), CustomersService.getOrders(id)]);
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createCustomerDetailsPageLayout(
     customer.data.Customer,
     orders.data.Orders
   );
   scrollToSection(`#${CONTENT_CONTAINER_ID}`);
-  hideSpinner();
 }
 
 async function renderEditCustomerPage(id) {
-  if (modalWrap) {
-    removeDetailsModal();
-  }
-  showSpinner();
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditCustomerLayout(
+    edit_customer_props,
+    emptyCustomer
+  );
+  renderSpinnerInContainer("#edit-customer-container");
   const response = await CustomersService.getCustomers(id);
   if (response.status === 200) {
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditCustomerLayout(
       edit_customer_props,
       response.data.Customer
     );
-    hideSpinner();
     sideMenuActivateElement("Customers");
     addListenersToEditCustomerPage();
   } else {
@@ -76,11 +74,11 @@ function renderDeleteCustomerModal(id) {
 
 //Products Section
 async function renderProductsPage(options = ProductsProps) {
-  showSpinner();
-  const response = await getSortedProducts();
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderProductsPageLayout(options, response);
-  hideSpinner();
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderProductsPageLayout(options, {
+    data: { Products: [] },
+  });
   sideMenuActivateElement(options.path);
+  await getProductsAndRenderTable();
   addEventListelersToProductsPage();
   renderChipsFromState("products");
 }
@@ -98,27 +96,28 @@ function renderDeleteProductModal(id) {
 }
 
 async function renderProductDetailsModal(id) {
-  showSpinner();
+  createDetailsModal(product_details_props(id), { Product: emptyProduct });
+  renderSpinnerInContainer("#details-modal-container");
   const response = await ProductsService.getProducts(id);
   if (response.status === 200) {
-    await createDetailsModal(product_details_props(id), response.data);
-    hideSpinner();
+    setDataToProductDetailsModal(product_details_props(id), response.data);
     sideMenuActivateElement("Products");
   } else {
     handleApiErrors(response);
   }
+  hideSpinners();
 }
 
 async function renderEditProductPage(id) {
   if (modalWrap) {
     removeDetailsModal();
   }
-  showSpinner();
+  sideMenuActivateElement("Products");
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditProductLayout(edit_product_props, emptyProduct);
+  renderSpinnerInContainer("#edit-product-container");
   const response = await ProductsService.getProducts(id);
   if (response && response.status === 200) {
-    hideSpinner();
-    sideMenuActivateElement("Products");
-    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = await renderEditProductLayout(
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditProductLayout(
       edit_product_props,
       response.data.Product
     );
@@ -130,13 +129,11 @@ async function renderEditProductPage(id) {
 
 //Orders Section
 async function renderOrdersPage(options = OrdersProps) {
-  showSpinner();
-  const response = await getSortedOrders();
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrdersPageLayout(options, response);
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrdersPageLayout(options, { data: { Orders: [] } });
   sideMenuActivateElement(options.path);
+  await getOrdersAndRenderTable();
   addEventListelersToOrdersPage();
   renderChipsFromState("orders");
-  hideSpinner();
 }
 
 async function renderOrderDetailsPage(id) {
@@ -181,11 +178,12 @@ async function renderReceivingOrderDetailsPage() {
 }
 
 async function renderCreateOrderModal() {
-  showSpinner();
+  createAddOrderModal({ customers: [], products: [] });
+  showAddOrderModalSpinner();
   const [customers, products] = await Promise.all([CustomersService.getCustomers(), ProductsService.getProducts()]);
   if (customers.status === 200 && products.status === 200) {
-    await createAddOrderModal({ customers: customers.data.Customers, products: products.data.Products });
-    hideSpinner();
+    setDataToAddOrderModal({ customers: customers.data.Customers, products: products.data.Products });
+    hideSpinners();
     sideMenuActivateElement("Orders");
   } else {
     handleApiErrors(customers);
@@ -253,7 +251,14 @@ async function renderLandingPage(options = {}) {
 }
 
 async function renderHomePage(options = {}) {
-  showSpinner();
+  sideMenuActivateElement(options.path);
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(defaultMetrics);
+  showHomeSpinners();
+  loadCharts(
+    defaultMetrics.orders.ordersCountPerDay,
+    defaultMetrics.products.topProducts,
+    defaultMetrics.customers.customerGrowth
+  );
   const metrics = await MetricsService.get();
   if (metrics.status === 200) {
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(metrics.data.Metrics);
@@ -262,7 +267,6 @@ async function renderHomePage(options = {}) {
       metrics.data.Metrics.products.topProducts,
       metrics.data.Metrics.customers.customerGrowth
     );
-    sideMenuActivateElement(options.path);
   } else {
     handleApiErrors(metrics);
   }

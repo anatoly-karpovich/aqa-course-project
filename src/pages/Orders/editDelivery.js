@@ -13,7 +13,7 @@ function renderEditDeliveryLayout(options = edit_delivery_props) {
   };
 
   state.order.delivery.location = _.isEqual(customerAddress, state.order.delivery.address) ? "Home" : "Other";
-  state.order.delivery.finalDate = moment(state.order.delivery.finalDate).format(DATE_FORMAT);
+  state.order.delivery.finalDate = convertToDate(state.order.delivery.finalDate);
 
   return `
     <div class="shadow-sm p-3 mb-5 bg-body rounded form-center">

@@ -120,9 +120,9 @@ function transformOrdersForTable(orders) {
       [replaceApiToFeKeys.name]: el.customer.name,
       [replaceApiToFeKeys.email]: el.customer.email,
       [replaceApiToFeKeys.price]: `$${el.total_price}`,
-      [replaceApiToFeKeys.delivery]: el.delivery ? moment(el.delivery.finalDate).format(DATE_FORMAT) : "-",
+      [replaceApiToFeKeys.delivery]: el.delivery ? convertToDate(el.delivery.finalDate) : "-",
       [replaceApiToFeKeys.status]: el.status,
-      [replaceApiToFeKeys.createdOn]: moment(el.createdOn).format(DATE_AND_TIME_FORMAT),
+      [replaceApiToFeKeys.createdOn]: convertToDateAndTime(el.createdOn),
     };
   });
 }
@@ -132,7 +132,7 @@ function renderOrdersTable(orders, options) {
 }
 
 async function getOrdersAndRenderTable() {
-  showSpinner();
+  showTableSpinner();
   const sortedOrders = (await getSortedOrders()).data.Orders;
   OrdersProps.tableProps.currentSortingField.direction = state.sorting.orders.sortOrder;
   OrdersProps.tableProps.currentSortingField.name =
@@ -140,5 +140,4 @@ async function getOrdersAndRenderTable() {
       ? idToOrderNumber[state.sorting.orders.sortField]
       : replaceApiToFeKeys[state.sorting.orders.sortField];
   renderOrdersTable(sortedOrders, OrdersProps);
-  hideSpinner();
 }

@@ -1,4 +1,4 @@
-async function renderEditProductLayout(options = edit_product_props, data = {}) {
+function renderEditProductLayout(options = edit_product_props, data = {}) {
   edit_product_props.id = data._id;
   options.inputs.name.value = data.name;
   options.inputs.manufacturer.value = data.manufacturer;
@@ -9,7 +9,7 @@ async function renderEditProductLayout(options = edit_product_props, data = {}) 
   currentProductstate.notes = data.notes ? data.notes : "";
 
   return `
-    <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
+    <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin position-relative" id="edit-product-container">
     ${backLink(renderProductsPage, "Products")}
     <div id="${PAGE_TITLE_ID}" class="page-header-title">
       ${generatePageTitle(options, data.name)}

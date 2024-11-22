@@ -1,4 +1,4 @@
-async function renderCustomersPageLayout(options = CustomerProps, response) {
+function renderCustomersPageLayout(options = CustomerProps, response) {
   options.tableProps.currentSortingField.direction = state.sorting.customers.sortOrder;
   options.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.customers.sortField];
   const data = _.isEmpty(response.data.Customers) ? [] : transformCustomersForTable(response.data.Customers);
@@ -105,10 +105,11 @@ const customer_details_props = (id) => {
   };
 };
 
-async function deleteCustomer(id) {
-  removeConfimationModal();
-  showSpinner();
+async function deleteCustomer(id, confirmButton) {
+  $('[name="confirmation-modal"] button.btn-secondary').prop("disabled", true);
+  confirmButton.innerHTML = buttonSpinner;
   const response = await CustomersService.deleteCustomer(id);
+  removeConfimationModal();
   await showNotificationAfterDeleteRequest(
     response,
     { message: SUCCESS_MESSAGES["Customer Successfully Deleted"]("Customer") },
@@ -148,7 +149,7 @@ function transformCustomersForTable(customers) {
       [replaceApiToFeKeys.email]: el.email,
       [replaceApiToFeKeys.name]: el.name,
       [replaceApiToFeKeys.country]: el.country,
-      [replaceApiToFeKeys.createdOn]: moment(el.createdOn).format(DATE_AND_TIME_FORMAT),
+      [replaceApiToFeKeys.createdOn]: convertToDateAndTime(el.createdOn),
     };
   });
 }
@@ -158,10 +159,9 @@ function renderCustomersTable(customers, options) {
 }
 
 async function getCustomersAndRenderTable() {
-  showSpinner();
+  showTableSpinner();
   const sortedCustomers = (await getSortedCustomers()).data.Customers;
   CustomerProps.tableProps.currentSortingField.direction = state.sorting.customers.sortOrder;
   CustomerProps.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.customers.sortField];
   renderCustomersTable(sortedCustomers, CustomerProps);
-  hideSpinner();
 }

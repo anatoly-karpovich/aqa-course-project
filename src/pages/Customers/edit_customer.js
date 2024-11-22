@@ -13,7 +13,7 @@ function renderEditCustomerLayout(options = edit_customer_props, data = {}) {
   currentCustomerState.notes = data.notes ? data.notes : "";
 
   return `
-    <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
+    <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin position-relative" id="edit-customer-container">
       ${backLink(renderCustomersPage, "Customers")}
     <div id="${PAGE_TITLE_ID}" class="page-header-title">
         ${generatePageTitle(options, data.name)}

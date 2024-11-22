@@ -91,10 +91,11 @@ const delete_product_confirmation_opts = {
   },
 };
 
-async function deleteProduct(id) {
-  removeConfimationModal();
-  showSpinner();
+async function deleteProduct(id, confirmButton) {
+  $('[name="confirmation-modal"] button.btn-secondary').prop("disabled", true);
+  confirmButton.innerHTML = buttonSpinner;
   const response = await ProductsService.deleteProduct(id);
+  removeConfimationModal();
   await showNotificationAfterDeleteRequest(
     response,
     { message: SUCCESS_MESSAGES["Product Successfully Deleted"]("Product") },
@@ -152,7 +153,7 @@ function transformProductsForTable(products) {
       [replaceApiToFeKeys.name]: el.name,
       [replaceApiToFeKeys.price]: `$${el.price}`,
       [replaceApiToFeKeys.manufacturer]: el.manufacturer,
-      [replaceApiToFeKeys.createdOn]: moment(el.createdOn).format(DATE_AND_TIME_FORMAT),
+      [replaceApiToFeKeys.createdOn]: convertToDateAndTime(el.createdOn),
     };
   });
 }
@@ -162,10 +163,9 @@ function renderProductsTable(products, options) {
 }
 
 async function getProductsAndRenderTable() {
-  showSpinner();
+  showTableSpinner();
   const sortedProducts = (await getSortedProducts()).data.Products;
   ProductsProps.tableProps.currentSortingField.direction = state.sorting.products.sortOrder;
   ProductsProps.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.products.sortField];
   renderProductsTable(sortedProducts, ProductsProps);
-  hideSpinner();
 }

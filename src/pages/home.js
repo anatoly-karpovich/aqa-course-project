@@ -58,7 +58,7 @@ function renderHomePageLayout(metrics) {
       <!-- Metrics Cards Section -->
       <div class="row text-center mb-5 d-flex justify-content-between">
         <div class="col-md-2 mb-4">
-          <div class="card shadow-sm h-100">
+          <div class="card shadow-sm h-100 position-relative" id="total-orders-container">
             <div class="card-body">
               <i class="bi bi-cart4 display-4 mb-3"></i>
               <h5 class="card-title">Orders This Year</h5>
@@ -68,7 +68,7 @@ function renderHomePageLayout(metrics) {
         </div>
 
         <div class="col-md-2 mb-4">
-          <div class="card shadow-sm h-100">
+          <div class="card shadow-sm h-100 position-relative" id="total-revenue-container">
             <div class="card-body">
               <i class="bi bi-currency-dollar display-4 mb-3"></i>
               <h5 class="card-title">Total Revenue</h5>
@@ -78,7 +78,7 @@ function renderHomePageLayout(metrics) {
         </div>
 
         <div class="col-md-2 mb-4">
-          <div class="card shadow-sm h-100">
+          <div class="card shadow-sm h-100 position-relative" id="total-customers-container">
             <div class="card-body">
               <i class="bi bi-person-plus-fill display-4 mb-3"></i>
               <h5 class="card-title">New Customers</h5>
@@ -88,7 +88,7 @@ function renderHomePageLayout(metrics) {
         </div>
 
         <div class="col-md-2 mb-4">
-          <div class="card shadow-sm h-100">
+          <div class="card shadow-sm h-100 position-relative" id="avg-orders-value-container">
             <div class="card-body">
               <i class="bi bi-receipt display-4 mb-3"></i>
               <h5 class="card-title">Avg Order Value</h5>
@@ -100,7 +100,7 @@ function renderHomePageLayout(metrics) {
         </div>
 
         <div class="col-md-2 mb-4">
-          <div class="card shadow-sm h-100">
+          <div class="card shadow-sm h-100 position-relative" id="canceled-orders-container">
             <div class="card-body">
               <i class="bi bi-x-circle-fill display-4 mb-3"></i>
               <h5 class="card-title">Canceled Orders</h5>
@@ -112,7 +112,7 @@ function renderHomePageLayout(metrics) {
 
       <!-- Orders Chart Block -->
       <div class="row mb-5 align-items-center">
-        <div class="col-md-6">
+        <div class="col-md-6 position-relative" id="orders-chart-container">
           <canvas id="ordersChart" width="400" height="200"></canvas>
         </div>
         <div class="col-md-6">
@@ -123,7 +123,7 @@ function renderHomePageLayout(metrics) {
 
       <!-- Products Chart Block -->
       <div class="row mb-5 align-items-center">
-        <div class="col-md-6 order-md-2">
+        <div class="col-md-6 order-md-2 position-relative" id="top-products-chart-container">
           <canvas id="topProductsChart" width="400" height="200"></canvas>
         </div>
         <div class="col-md-6 order-md-1">
@@ -134,7 +134,7 @@ function renderHomePageLayout(metrics) {
 
       <!-- Customer Growth Chart Block -->
       <div class="row mb-5 align-items-center">
-        <div class="col-md-6">
+        <div class="col-md-6 position-relative" id="customer-growth-chart-container">
           <canvas id="customerGrowthChart" width="400" height="200"></canvas>
         </div>
         <div class="col-md-6">
@@ -146,12 +146,12 @@ function renderHomePageLayout(metrics) {
       <!-- Recent Orders and Top Customers Section -->
       <div class="row mt-5">
         <!-- Recent Orders Table -->
-        <div class="col-md-6">
+        <div class="col-md-6 position-relative">
           ${recentOrdersTable(metrics.orders.recentOrders)}
         </div>
 
         <!-- Top Customers Table -->
-        <div class="col-md-6">
+        <div class="col-md-6 position-relative">
             ${topCustomersTable(metrics.customers.topCustomers)}
         </div>
       </div>
@@ -176,6 +176,7 @@ function createRecentOrderRow(order) {
 function recentOrdersTable(recentOrders) {
   return `
             <h4>Recent Orders</h4>
+            <div id="recent-orders-container">
               <table class="table table-striped">
                 <thead>
                 <tr>
@@ -189,7 +190,8 @@ function recentOrdersTable(recentOrders) {
                 <!-- Replace with dynamic data -->
                 ${recentOrders.map((o) => createRecentOrderRow(o)).join("")}
                 </tbody>
-            </table>
+              </table>
+            </div>
     `;
 }
 
@@ -206,19 +208,21 @@ function createTopCustomersRow(customer) {
 function topCustomersTable(customers) {
   return `
             <h4>Top Customers</h4>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">Customer Name</th>
-                    <th scope="col">Total Spent</th>
-                    <th scope="col">Details</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- Replace with dynamic data -->
-                ${customers.map((c) => createTopCustomersRow(c)).join("")}
-                </tbody>
-            </table>
+            <div id="top-customers-container">
+              <table class="table table-striped">
+                  <thead>
+                  <tr>
+                      <th scope="col">Customer Name</th>
+                      <th scope="col">Total Spent</th>
+                      <th scope="col">Details</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <!-- Replace with dynamic data -->
+                  ${customers.map((c) => createTopCustomersRow(c)).join("")}
+                  </tbody>
+              </table>
+            </div>
     `;
 }
 

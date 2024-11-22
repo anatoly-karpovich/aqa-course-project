@@ -1,5 +1,5 @@
 let orderModalWrap = null;
-async function createAddOrderModal(data) {
+function createAddOrderModal(data) {
   add_order_modal_props.data = _.cloneDeep(data);
   add_order_modal_props.customers.options.values = add_order_modal_props.data.customers.map((c) => c.name);
   add_order_modal_props.customers.options.titles = add_order_modal_props.data.customers.map((c) => c.email);
@@ -22,7 +22,7 @@ async function createAddOrderModal(data) {
                             </h5>
                             <button type="button" class="btn-close hover-danger" data-bs-dismiss="modal" aria-label="Close" onClick="removeAddOrderModal();"></button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body position-relative" id="add-order-modal-body">
                             <div class="bg-white rounded-5">
                                 <form class="row g-3 form-margin" id="create-order-form">
                                 ${generateAddOrderModalBody()}
@@ -52,7 +52,10 @@ async function createAddOrderModal(data) {
   ordersModal.show();
   handleFirstDeleteButtonInOrderModal("products-section");
   setCurrentTotalPriceToOrderModal(add_order_modal_props.data.products);
+  addEventListelersToAddOrderModal();
+}
 
+function addEventListelersToAddOrderModal() {
   $("#add-product-btn").on("click", (e) => {
     e.preventDefault();
     if ($("#products-section > div").length < 5) {
@@ -120,7 +123,9 @@ function setCurrentTotalPriceToOrderModal(options) {
   $('select[name="Product"]').each(function () {
     requestedProducts.push($(this).find(":selected").text());
   });
-  let prices = [...requestedProducts].reduce((a, b) => a + options.find((p) => p.name === b).price, 0);
+  let prices = 0;
+  if (requestedProducts.every(Boolean))
+    prices = [...requestedProducts].reduce((a, b) => a + options.find((p) => p.name === b).price, 0);
   $("span#total-price-order-modal").text(`$${prices}`);
 }
 
@@ -203,4 +208,41 @@ function removeAddOrderModal() {
   if (document.querySelector(".modal-backdrop")) {
     document.querySelector(".modal-backdrop").parentNode.removeChild(document.querySelector(".modal-backdrop"));
   }
+}
+
+function setDataToAddOrderModal(data) {
+  add_order_modal_props.data = _.cloneDeep(data);
+  add_order_modal_props.customers.options.values = data.customers.map((c) => c.name);
+  add_order_modal_props.customers.options.titles = data.customers.map((c) => c.email);
+  add_order_modal_props.products.options.values = data.products.map((p) => p.name);
+  $("#create-order-form").html(generateAddOrderModalBody());
+  setCurrentTotalPriceToOrderModal(add_order_modal_props.data.products);
+
+  $("#add-product-btn").on("click", (e) => {
+    e.preventDefault();
+    if ($("#products-section > div").length < 5) {
+      handleFirstDeleteButtonInOrderModal("products-section", true);
+      $(generateAddOrderProductInput(add_order_modal_props.products)).appendTo("#products-section");
+    }
+    if ($("#products-section > div").length === 5) {
+      $("#add-product-btn").hide();
+    }
+    setCurrentTotalPriceToOrderModal(add_order_modal_props.data.products);
+  });
+
+  $("div#products-section").on("click", (e) => {
+    e.preventDefault();
+    if (e.target.title === "Delete") {
+      const id = e.target.getAttribute("data-delete-id");
+      const el = document.querySelector(`div[data-id="${id}"]`);
+      el.parentNode.removeChild(el);
+      if ($("#products-section > div").length === 1) {
+        handleFirstDeleteButtonInOrderModal("products-section");
+      }
+      if ($("#products-section > div").length < 5) {
+        $("#add-product-btn").show();
+      }
+    }
+    setCurrentTotalPriceToOrderModal(add_order_modal_props.data.products);
+  });
 }

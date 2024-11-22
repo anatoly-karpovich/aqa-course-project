@@ -134,3 +134,9 @@ function generateEditPencilButton(options) {
 function backLink(onClick, text) {
   return `<div class="back-link" onclick="${onClick.name}();"><i class="bi bi-arrow-left me-2"></i> ${text}</div>`;
 }
+
+function createOptions(selectSelector, arrayOfOptions) {
+  $(selectSelector).html(
+    arrayOfOptions.map((el, i) => `<option value="${el}" ${!i ? "selected" : ""}>${el}</option>`).join("")
+  );
+}

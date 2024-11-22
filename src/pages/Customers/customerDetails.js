@@ -1,7 +1,7 @@
 function createCustomerDetailsPageLayout(customerData, orders) {
   return `
     <!-- Customer Details Card -->
-    <div class="card shadow-sm p-4 mb-5 bg-body rounded page-title-margin">
+    <div class="card shadow-sm p-4 mb-5 bg-body rounded page-title-margin position-relative" id="customer-info-container">
         ${backLink(renderCustomersPage, "Customers")}
         <div class="card-body" style="margin: 0 12px 0 12px;">
                 <div class="card-title mb-4 d-flex justify-content-start align-items-center">
@@ -43,7 +43,9 @@ function createCustomerDetailsPageLayout(customerData, orders) {
             <div class="row g-4 mt-1">
                 <div class="col-md-12">
                     <h5 class="d-flex align-items-center"><i class="bi bi-calendar-check me-1"></i> Registration Date</h5>
-                    <p>${formatDateToDateAndTime(customerData.createdOn)}</p> <!-- Дата в формате YYYY-MM-DD -->
+                    <p>${
+                      customerData.createdOn ? formatDateToDateAndTime(customerData.createdOn) : ""
+                    }</p> <!-- Дата в формате YYYY-MM-DD -->
                 </div>
             </div>
 
@@ -60,7 +62,7 @@ function createCustomerDetailsPageLayout(customerData, orders) {
     </div>
 
     <!-- Orders Table Card -->
-    <div class="card shadow-sm p-4 mb-5 bg-body rounded page-title-margin">
+    <div class="card shadow-sm p-4 mb-5 bg-body rounded page-title-margin position-relative" id="customer-orders-container">
         <div class="card-body">
             <h3 class="card-title">Orders</h3>
             <div class="table-responsive">
