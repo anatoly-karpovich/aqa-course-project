@@ -1,6 +1,6 @@
 function generateCustomerSection(order) {
   return `
-    <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin s-width mr-0" id="customer-section">
+    <div class="shadow-sm p-3 mb-5 bg-body rounded page-title-margin s-width mr-0 position-relative" id="customer-section">
         <div class="section-header">
             <h4 class="modal-title">Customer Details</h4>
             ${
@@ -18,7 +18,7 @@ function generateCustomerSection(order) {
 
 function generateProductsSection(order, isReceivingOn) {
   return `
-            <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin s-width"  id="products-section">
+            <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin s-width position-relative"  id="products-section">
                 <div class="section-header d-flex justify-content-between">
                         <div class="d-flex justify-content-start">
                             <h4 class="modal-title">Requested Products</h4>
@@ -64,7 +64,11 @@ function generateOrderDetailsTabs(order) {
 }
 
 function generateOrderDetailsHeaderSection(order) {
-  return generateOrderDetailsInfoBar(order) + generateOrderDetailsStatusBar(order);
+  return `
+  <div class="position-relative" id="order-info-container">
+    ${generateOrderDetailsInfoBar(order) + generateOrderDetailsStatusBar(order)}
+  </div>
+  `;
 }
 
 function generateOrderDetailsInfoBar(order) {
@@ -469,14 +473,16 @@ function generateOrderReceiveProductsHistoryRows(order, index) {
 
 function generateCommentsTab(order) {
   return `
+      <div class="position-relative" id="comments-tab-container">
         <h4 class="ms-3 my-4">Comments</h4>
         <div class="py-3 fs-5">
             ${generateTextareaInputWithoutLabel(commentsTabOptions.comments)}
             <div class="my-3 ms-3">
-                <button class="btn btn-primary" id="create-comment-btn" disabled>Create</button>
+                <button class="btn btn-primary" id="create-comment-btn" onclick="saveCommentOnClick()" disabled>Create</button>
             </div>
         </div>
         ${generateSavedComments(order)}
+      </div>
     `;
 }
 
@@ -493,7 +499,7 @@ function generateComment(comment) {
             <div class="d-flex align-items-center">
                 <button class="btn btn-link text-danger delete-comment" title="Delete" name="delete-comment" id="${
                   comment._id
-                }">
+                }" onclick="deleteCommentOnClick(this)">
                     <i class="bi bi-trash"></i>
                 </button>
             </div>
@@ -504,4 +510,8 @@ function generateComment(comment) {
         </div>
     </div>
     `;
+}
+
+function renderCommentsTab(order) {
+  $("#comments").html(generateCommentsTab(order));
 }

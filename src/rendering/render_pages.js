@@ -136,8 +136,17 @@ async function renderOrdersPage(options = OrdersProps) {
   renderChipsFromState("orders");
 }
 
-async function renderOrderDetailsPage(id) {
-  showSpinner();
+async function renderOrderDetailsPage(id, withScroll = true) {
+  // showSpinner();
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(
+    Order_Details_Props,
+    state.order ?? emptyOrder
+  );
+  showOrderDetailsSpinners();
+
+  if (withScroll) {
+    scrollToSection(`#${CONTENT_CONTAINER_ID}`);
+  }
   const [order, customers] = await Promise.all([OrdersService.getOrders(id), CustomersService.getCustomers()]);
   if (order && order.status === 200 && customers.status === 200) {
     sideMenuActivateElement("Orders");
@@ -148,7 +157,6 @@ async function renderOrderDetailsPage(id) {
       Order_Details_Props,
       order.data.Order
     );
-    scrollToSection(`#${CONTENT_CONTAINER_ID}`);
     addEventListelersToOrderDetailsPage();
     activateTab();
   } else {

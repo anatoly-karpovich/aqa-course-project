@@ -42,6 +42,15 @@ function showAddOrderModalSpinner() {
   renderSpinnerInContainer("#add-order-modal-body");
 }
 
+function showOrderDetailsSpinners() {
+  const selectors = ["#order-info-container", "#customer-section", "#products-section", "#order-details-tabs-section"];
+  selectors.forEach((s) => renderSpinnerInContainer(s));
+}
+
+function showCommentsTabSpinner() {
+  renderSpinnerInContainer("#comments-tab-container");
+}
+
 function renderSpinnerInContainer(contaierSelector = "") {
   const contaier = document.querySelector(contaierSelector);
   const overlay = document.createElement("div");

@@ -118,27 +118,28 @@ async function submitReceivedProducts(_id, products) {
 }
 
 async function submitComment(_id, comment) {
-  showSpinner();
   const response = await OrdersService.createComment(_id, comment);
   if (response.data.IsSuccess) {
     renderNotification({ message: SUCCESS_MESSAGES["Comment Successfully Created"] });
-    await renderOrderDetailsPage(_id);
+    comments;
+    renderCommentsTab(response.data.Order);
   } else {
     handleApiErrors(response, true);
+    renderCommentsTab(state.data.Order);
   }
-  hideSpinner();
 }
 
 async function deleteComment(_id, commentId) {
-  showSpinner();
   const response = await OrdersService.deleteComment(_id, commentId);
-  if (response.status === 204) {
+  const orderResponse = await OrdersService.getOrders(state.order._id);
+  if (response.status === 204 && orderResponse.status === 200) {
+    state.order = orderResponse.data.Order;
     renderNotification({ message: SUCCESS_MESSAGES["Comment Successfully Deleted"] });
-    await renderOrderDetailsPage(_id);
+    renderCommentsTab(orderResponse.data.Order);
   } else {
     handleApiErrors(response, true);
+    renderCommentsTab(state.data.Order);
   }
-  hideSpinner();
 }
 
 async function getSortedProducts() {

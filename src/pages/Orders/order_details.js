@@ -13,7 +13,7 @@ function renderOrderDetailsPageLayout(options = Order_Details_Props, order, isRe
             ${generateCustomerSection(order)}
             ${generateProductsSection(order, isReceivingOn)}
         </div>
-        <div class="d-tabs shadow-sm p-3 mb-5 bg-body rounded" id="order-details-tabs-section">
+        <div class="d-tabs shadow-sm p-3 mb-5 bg-body rounded position-relative" id="order-details-tabs-section">
             ${generateOrderDetailsTabs(order)}
         </div>
     </div>`;
@@ -189,32 +189,6 @@ function addEventListelersToOrderDetailsPage() {
       }
     }
   });
-  const saveCommentBtn = $("#create-comment-btn");
-  $(`#textareaComments`).on("input", (e) => {
-    const value = removeLineBreaks($(`#textareaComments`).val());
-    if (!isValidInput("Comments", value)) {
-      showErrorMessage(commentsTabOptions.comments);
-      saveCommentBtn.prop("disabled", true);
-    } else {
-      hideErrorMessage(commentsTabOptions.comments);
-      saveCommentBtn.prop("disabled", false);
-    }
-  });
-
-  $(`div#order-details-tabs-content div#comments`).on("click", async (e) => {
-    e.preventDefault();
-    if (e.target.id == "create-comment-btn") {
-      const comment = {
-        comment: $("#textareaComments").val().trim(),
-      };
-      $("#create-comment-btn").html(buttonSpinner);
-      await submitComment(state.order._id, comment);
-    }
-  });
-
-  $(`button[name="delete-comment"]`).on("click", async (e) => {
-    await deleteComment(state.order._id, e.target.id);
-  });
 }
 
 function checkSelectAll() {
@@ -266,7 +240,33 @@ const commentsTabOptions = {
     id: "textareaComments",
     errorMessageSelector: "#error-textareaComments",
     errorMessage: VALIDATION_ERROR_MESSAGES["Comments"],
-    attributes: `rows="3" name="comments"`,
+    attributes: `rows="3" name="comments" oninput="orderCommentsTextareaOnInput()"`,
     value: "",
   },
 };
+
+function orderCommentsTextareaOnInput() {
+  const saveCommentBtn = $("#create-comment-btn");
+  const value = removeLineBreaks($(`#textareaComments`).val());
+  if (!isValidInput("Comments", value)) {
+    showErrorMessage(commentsTabOptions.comments);
+    saveCommentBtn.prop("disabled", true);
+  } else {
+    hideErrorMessage(commentsTabOptions.comments);
+    saveCommentBtn.prop("disabled", false);
+  }
+}
+
+async function saveCommentOnClick() {
+  const comment = {
+    comment: $("#textareaComments").val().trim(),
+  };
+  $("#create-comment-btn").html(buttonSpinner);
+  showCommentsTabSpinner();
+  await submitComment(state.order._id, comment);
+}
+
+async function deleteCommentOnClick(element) {
+  showCommentsTabSpinner();
+  await deleteComment(state.order._id, element.id);
+}
