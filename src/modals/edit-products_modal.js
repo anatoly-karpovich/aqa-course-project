@@ -65,8 +65,9 @@ async function createEditProductsModal(data) {
         return edit_order_details_modal_props.data.find((p) => p.name === rp)._id;
       }),
     };
-    await submitOrder(orderData);
-    removeEditProductsModal();
+    const submit = document.querySelector("div#edit-products-modal #update-products-btn");
+    setSpinnerToButton(submit);
+    await submitOrder(orderData, removeEditProductsModal);
   });
 
   $("div.modal-footer #cancel-edit-products-modal-btn").on("click", (e) => {

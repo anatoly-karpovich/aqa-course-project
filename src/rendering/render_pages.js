@@ -19,15 +19,13 @@ async function renderCustomersPage(options = CustomerProps) {
 }
 
 function renderAddNewCustomerPage(options = add_new_customer_props) {
-  showSpinner();
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderAddNewCustomerLayout(options);
-  hideSpinner();
   sideMenuActivateElement(options.path);
   addEventListelersToAddNewCustomerPage();
 }
 
 async function renderCustomerDetailsModal(id) {
-  showSpinner();
+  // showSpinner();
   const response = await CustomersService.getCustomers(id);
   if (response.status === 200) {
     createDetailsModal(customer_details_props(id), response.data);
@@ -84,9 +82,7 @@ async function renderProductsPage(options = ProductsProps) {
 }
 
 function renderAddNewProductPage(options = add_new_product_props) {
-  showSpinner();
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderAddNewProductLayout(options);
-  hideSpinner();
   sideMenuActivateElement(options.path);
   addEventListelersToAddNewProductPage();
 }
@@ -137,7 +133,6 @@ async function renderOrdersPage(options = OrdersProps) {
 }
 
 async function renderOrderDetailsPage(id, withScroll = true) {
-  // showSpinner();
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(
     Order_Details_Props,
     state.order ?? emptyOrder
@@ -166,8 +161,8 @@ async function renderOrderDetailsPage(id, withScroll = true) {
   hideSpinner();
 }
 
-async function renderReceivingOrderDetailsPage() {
-  showSpinner();
+async function renderReceivingOrderDetailsPage(receiveButton) {
+  setSpinnerToButton(receiveButton);
   const order = await OrdersService.getOrders(state.order._id);
   if (order && order.status === 200) {
     hideSpinner();
@@ -223,7 +218,6 @@ function renderProcessOrderModal() {
 }
 
 async function renderEditCustomerModal() {
-  // showSpinner();
   edit_order_details_modal_props.data = _.cloneDeep(state.customers);
   edit_order_details_modal_props.customers.options.values = edit_order_details_modal_props.data.map((c) => c.name);
   edit_order_details_modal_props.customers.options.titles = edit_order_details_modal_props.data.map((c) => c.email);
@@ -251,13 +245,11 @@ async function renderEditCustomerModal() {
 }
 
 async function renderEditProductsModal() {
-  // showSpinner();
   await createEditProductsModal([state.order.products[0]]);
   showEditProductsModalSpinner();
   const products = await ProductsService.getSortedProducts({ sortField: "name", sortOrder: "asc" });
   if (products.status === 200) {
     setDataToEditProductsModal(products.data.Products);
-    // hideSpinner();
     sideMenuActivateElement("Orders");
   } else {
     handleApiErrors(products);

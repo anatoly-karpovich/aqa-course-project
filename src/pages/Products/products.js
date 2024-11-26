@@ -92,8 +92,8 @@ const delete_product_confirmation_opts = {
 };
 
 async function deleteProduct(id, confirmButton) {
+  setSpinnerToButton(confirmButton);
   $('[name="confirmation-modal"] button.btn-secondary').prop("disabled", true);
-  confirmButton.innerHTML = buttonSpinner;
   const response = await ProductsService.deleteProduct(id);
   removeConfimationModal();
   await showNotificationAfterDeleteRequest(

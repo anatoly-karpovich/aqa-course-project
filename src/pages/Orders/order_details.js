@@ -73,7 +73,7 @@ const edit_order_details_modal_props = {
     options: {
       values: [],
     },
-    attributes: `name="Customer"`,
+    attributes: `name="Customer" oninput="editCustomerSelectOnInput()"`,
   },
   products: {
     divClasslist: "col-md-11",
@@ -90,10 +90,12 @@ const edit_order_details_modal_props = {
   data: {},
 };
 
-async function changeOrderStatus(status) {
-  removeConfimationModal();
-  showSpinner();
+async function changeOrderStatus(status, button) {
+  const cancelBtn = document.querySelector(".modal-footer-mr button.btn-secondary");
+  cancelBtn.setAttribute("disabled", "");
+  setSpinnerToButton(button);
   const response = await OrdersService.changeOrderStatus(state.order._id, status);
+  removeConfimationModal();
   await showNotificationOnOrderDetailsPage(response, { message: SUCCESS_MESSAGES[`Order ${status}`] });
 }
 
@@ -140,11 +142,13 @@ function addEventListelersToOrderDetailsPage() {
         break;
       }
       case "start-receiving-products": {
-        await renderReceivingOrderDetailsPage();
+        await renderReceivingOrderDetailsPage(document.getElementById("start-receiving-products"));
         break;
       }
       case saveReceivingButtonId: {
         const products = getReceivingProducts();
+        setSpinnerToButton(document.getElementById(saveReceivingButtonId));
+        document.getElementById("cancel-receiving").setAttribute("disabled", "");
         await submitReceivedProducts(state.order._id, products);
 
         break;
@@ -261,7 +265,7 @@ async function saveCommentOnClick() {
   const comment = {
     comment: $("#textareaComments").val().trim(),
   };
-  $("#create-comment-btn").html(buttonSpinner);
+  setSpinnerToButton(document.querySelector("#create-comment-btn"));
   showCommentsTabSpinner();
   await submitComment(state.order._id, comment);
 }

@@ -115,10 +115,11 @@ function addEventListelersToAddNewProductPage(options = add_new_product_props.in
     const elementId = e.target.id;
     switch (elementId) {
       case add_new_product_props.buttons.save.id: {
+        const submitButton = document.getElementById(add_new_product_props.buttons.save.id);
+        setSpinnerToButton(submitButton);
         const product = getDataFromForm(`#${add_new_product_props.formId}`);
         add_new_product_props.requestOpts.body = product;
         await submitEntiti(add_new_product_props, { message: SUCCESS_MESSAGES["New Product Added"] });
-        saveChangesBtn.prop("disabled", true);
         break;
       }
 

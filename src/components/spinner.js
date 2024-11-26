@@ -75,3 +75,14 @@ function renderSpinnerInContainer(contaierSelector = "") {
 }
 
 const buttonSpinner = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
+
+function setSpinnerToButton(button) {
+  const buttonWidth = button.offsetWidth;
+  const buttonHeight = button.offsetHeight;
+
+  button.style.width = `${buttonWidth}px`;
+  button.style.height = `${buttonHeight}px`;
+
+  button.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
+  button.setAttribute("disabled", "");
+}

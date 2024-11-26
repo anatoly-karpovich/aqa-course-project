@@ -88,6 +88,10 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
     const elementId = e.target.id;
     switch (elementId) {
       case edit_customer_props.buttons.save.id: {
+        const submitButton = document.getElementById(edit_customer_props.buttons.save.id);
+        const deleteButton = document.getElementById(edit_customer_props.buttons.delete.id);
+        deleteButton.setAttribute("disabled", "");
+        setSpinnerToButton(submitButton);
         const customer = getDataFromForm(`#${edit_customer_props.formId}`);
         edit_customer_props.requestOpts.body = {
           _id: edit_customer_props.id,
@@ -96,11 +100,6 @@ function addListenersToEditCustomerPage(options = edit_customer_props.inputs) {
         await submitEntiti(edit_customer_props, {
           message: SUCCESS_MESSAGES["Customer Successfully Updated"]("Customer"),
         });
-        break;
-      }
-
-      case edit_customer_props.buttons.back.id: {
-        await renderCustomersPage(CustomerProps);
         break;
       }
 

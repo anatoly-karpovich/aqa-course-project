@@ -80,8 +80,7 @@ async function submitEntiti(options, notificationOprions) {
   }
 }
 
-async function submitOrder(orderData) {
-  showSpinner();
+async function submitOrder(orderData, closeModalFunc) {
   const response = orderData._id
     ? await OrdersService.editOrder(orderData)
     : await OrdersService.createOrder(orderData);
@@ -90,11 +89,12 @@ async function submitOrder(orderData) {
       ? renderNotification({ message: SUCCESS_MESSAGES["Order Successfully Updated"] })
       : renderNotification({ message: SUCCESS_MESSAGES["New Order Added"] })
     : handleApiErrors(response, true);
-  orderData._id ? await renderOrderDetailsPage(orderData._id) : await renderOrdersPage();
+  if (closeModalFunc) closeModalFunc();
+  orderData._id ? await renderOrderDetailsPage(orderData._id, true) : await renderOrdersPage();
 }
 
 async function submitDelivery(orderId, delivery) {
-  showSpinner();
+  // showSpinner();
   const response = await OrdersService.submitDelivery(orderId, delivery);
   if (response.data.IsSuccess) {
     renderNotification({ message: SUCCESS_MESSAGES["Delivery Saved"] });
@@ -106,7 +106,6 @@ async function submitDelivery(orderId, delivery) {
 }
 
 async function submitReceivedProducts(_id, products) {
-  showSpinner();
   const response = await OrdersService.receiveProducts(_id, products);
   if (response.data.IsSuccess) {
     renderNotification({ message: SUCCESS_MESSAGES["Products Successfully Received"] });
