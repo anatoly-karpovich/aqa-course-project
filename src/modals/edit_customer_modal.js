@@ -3,14 +3,7 @@ const editCustomerModalId = "edit-customer-modal";
 const editCustomerSelectInput = `#${editCustomerModalId} select#inputCustomerOrder`;
 const updateCustomerButtonSelector = `#${editCustomerModalId} #update-customer-btn`;
 
-async function createEditCustomerModal(data) {
-  edit_order_details_modal_props.data = _.cloneDeep(data);
-  edit_order_details_modal_props.customers.options.values = edit_order_details_modal_props.data.map((c) => c.name);
-  edit_order_details_modal_props.customers.options.titles = edit_order_details_modal_props.data.map((c) => c.email);
-  edit_order_details_modal_props.customers.defaultValue = {
-    name: state.order.customer.name,
-    title: state.order.customer.email,
-  };
+function createEditCustomerModal(data) {
   if (editCustomerModalWrap !== null) {
     editCustomerModalWrap.remove();
   }
@@ -95,4 +88,8 @@ function removeEditCustomerModal() {
   if (document.querySelector(".modal-backdrop")) {
     document.querySelector(".modal-backdrop").parentNode.removeChild(document.querySelector(".modal-backdrop"));
   }
+}
+
+function setDataToEditCustomerModal() {
+  $("#edit-customer-form").html(generateEditCustomerModalBody());
 }

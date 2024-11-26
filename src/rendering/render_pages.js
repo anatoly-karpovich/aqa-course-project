@@ -188,7 +188,10 @@ async function renderReceivingOrderDetailsPage() {
 async function renderCreateOrderModal() {
   createAddOrderModal({ customers: [], products: [] });
   showAddOrderModalSpinner();
-  const [customers, products] = await Promise.all([CustomersService.getCustomers(), ProductsService.getProducts()]);
+  const [customers, products] = await Promise.all([
+    CustomersService.getSorted({ sortField: "name", sortOrder: "asc" }),
+    ProductsService.getSortedProducts({ sortField: "name", sortOrder: "asc" }),
+  ]);
   if (customers.status === 200 && products.status === 200) {
     setDataToAddOrderModal({ customers: customers.data.Customers, products: products.data.Products });
     hideSpinners();
@@ -220,23 +223,41 @@ function renderProcessOrderModal() {
 }
 
 async function renderEditCustomerModal() {
-  showSpinner();
-  const customers = await CustomersService.getCustomers();
+  // showSpinner();
+  edit_order_details_modal_props.data = _.cloneDeep(state.customers);
+  edit_order_details_modal_props.customers.options.values = edit_order_details_modal_props.data.map((c) => c.name);
+  edit_order_details_modal_props.customers.options.titles = edit_order_details_modal_props.data.map((c) => c.email);
+  edit_order_details_modal_props.customers.defaultValue = {
+    name: state.order.customer.name,
+    title: state.order.customer.email,
+  };
+  createEditCustomerModal();
+  showEditCustomerModalSpinner();
+  const customers = await CustomersService.getSorted({ sortField: "name", sortOrder: "asc" });
   if (customers.status === 200) {
-    await createEditCustomerModal(customers.data.Customers);
-    hideSpinner();
-    sideMenuActivateElement("Orders");
+    edit_order_details_modal_props.data = _.cloneDeep(customers.data.Customers);
+    edit_order_details_modal_props.customers.options.values = edit_order_details_modal_props.data.map((c) => c.name);
+    edit_order_details_modal_props.customers.options.titles = edit_order_details_modal_props.data.map((c) => c.email);
+    edit_order_details_modal_props.customers.defaultValue = {
+      name: state.order.customer.name,
+      title: state.order.customer.email,
+    };
+    // createEditCustomerModal(customers.data.Customers);
+    setDataToEditCustomerModal();
+    // hideSpinner();
   } else {
     handleApiErrors(customers);
   }
 }
 
 async function renderEditProductsModal() {
-  showSpinner();
-  const products = await ProductsService.getProducts();
+  // showSpinner();
+  await createEditProductsModal([state.order.products[0]]);
+  showEditProductsModalSpinner();
+  const products = await ProductsService.getSortedProducts({ sortField: "name", sortOrder: "asc" });
   if (products.status === 200) {
-    await createEditProductsModal(products.data.Products);
-    hideSpinner();
+    setDataToEditProductsModal(products.data.Products);
+    // hideSpinner();
     sideMenuActivateElement("Orders");
   } else {
     handleApiErrors(products);

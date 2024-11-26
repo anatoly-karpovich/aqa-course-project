@@ -51,6 +51,14 @@ function showCommentsTabSpinner() {
   renderSpinnerInContainer("#comments-tab-container");
 }
 
+function showEditCustomerModalSpinner() {
+  renderSpinnerInContainer("#edit-customer-form > div");
+}
+
+function showEditProductsModalSpinner() {
+  renderSpinnerInContainer("#edit-products-section");
+}
+
 function renderSpinnerInContainer(contaierSelector = "") {
   const contaier = document.querySelector(contaierSelector);
   const overlay = document.createElement("div");
