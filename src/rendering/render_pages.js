@@ -19,15 +19,13 @@ async function renderCustomersPage(options = CustomerProps) {
 }
 
 function renderAddNewCustomerPage(options = add_new_customer_props) {
-  showSpinner();
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderAddNewCustomerLayout(options);
-  hideSpinner();
   sideMenuActivateElement(options.path);
   addEventListelersToAddNewCustomerPage();
 }
 
 async function renderCustomerDetailsModal(id) {
-  showSpinner();
+  // showSpinner();
   const response = await CustomersService.getCustomers(id);
   if (response.status === 200) {
     createDetailsModal(customer_details_props(id), response.data);
@@ -84,9 +82,7 @@ async function renderProductsPage(options = ProductsProps) {
 }
 
 function renderAddNewProductPage(options = add_new_product_props) {
-  showSpinner();
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderAddNewProductLayout(options);
-  hideSpinner();
   sideMenuActivateElement(options.path);
   addEventListelersToAddNewProductPage();
 }
@@ -136,8 +132,16 @@ async function renderOrdersPage(options = OrdersProps) {
   renderChipsFromState("orders");
 }
 
-async function renderOrderDetailsPage(id) {
-  showSpinner();
+async function renderOrderDetailsPage(id, withScroll = true) {
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(
+    Order_Details_Props,
+    state.order ?? emptyOrder
+  );
+  showOrderDetailsSpinners();
+
+  if (withScroll) {
+    scrollToSection(`#${CONTENT_CONTAINER_ID}`);
+  }
   const [order, customers] = await Promise.all([OrdersService.getOrders(id), CustomersService.getCustomers()]);
   if (order && order.status === 200 && customers.status === 200) {
     sideMenuActivateElement("Orders");
@@ -148,7 +152,6 @@ async function renderOrderDetailsPage(id) {
       Order_Details_Props,
       order.data.Order
     );
-    scrollToSection(`#${CONTENT_CONTAINER_ID}`);
     addEventListelersToOrderDetailsPage();
     activateTab();
   } else {
@@ -158,8 +161,8 @@ async function renderOrderDetailsPage(id) {
   hideSpinner();
 }
 
-async function renderReceivingOrderDetailsPage() {
-  showSpinner();
+async function renderReceivingOrderDetailsPage(receiveButton) {
+  setSpinnerToButton(receiveButton);
   const order = await OrdersService.getOrders(state.order._id);
   if (order && order.status === 200) {
     hideSpinner();
@@ -180,7 +183,10 @@ async function renderReceivingOrderDetailsPage() {
 async function renderCreateOrderModal() {
   createAddOrderModal({ customers: [], products: [] });
   showAddOrderModalSpinner();
-  const [customers, products] = await Promise.all([CustomersService.getCustomers(), ProductsService.getProducts()]);
+  const [customers, products] = await Promise.all([
+    CustomersService.getSorted({ sortField: "name", sortOrder: "asc" }),
+    ProductsService.getSortedProducts({ sortField: "name", sortOrder: "asc" }),
+  ]);
   if (customers.status === 200 && products.status === 200) {
     setDataToAddOrderModal({ customers: customers.data.Customers, products: products.data.Products });
     hideSpinners();
@@ -212,23 +218,38 @@ function renderProcessOrderModal() {
 }
 
 async function renderEditCustomerModal() {
-  showSpinner();
-  const customers = await CustomersService.getCustomers();
+  edit_order_details_modal_props.data = _.cloneDeep(state.customers);
+  edit_order_details_modal_props.customers.options.values = edit_order_details_modal_props.data.map((c) => c.name);
+  edit_order_details_modal_props.customers.options.titles = edit_order_details_modal_props.data.map((c) => c.email);
+  edit_order_details_modal_props.customers.defaultValue = {
+    name: state.order.customer.name,
+    title: state.order.customer.email,
+  };
+  createEditCustomerModal();
+  showEditCustomerModalSpinner();
+  const customers = await CustomersService.getSorted({ sortField: "name", sortOrder: "asc" });
   if (customers.status === 200) {
-    await createEditCustomerModal(customers.data.Customers);
-    hideSpinner();
-    sideMenuActivateElement("Orders");
+    edit_order_details_modal_props.data = _.cloneDeep(customers.data.Customers);
+    edit_order_details_modal_props.customers.options.values = edit_order_details_modal_props.data.map((c) => c.name);
+    edit_order_details_modal_props.customers.options.titles = edit_order_details_modal_props.data.map((c) => c.email);
+    edit_order_details_modal_props.customers.defaultValue = {
+      name: state.order.customer.name,
+      title: state.order.customer.email,
+    };
+    // createEditCustomerModal(customers.data.Customers);
+    setDataToEditCustomerModal();
+    // hideSpinner();
   } else {
     handleApiErrors(customers);
   }
 }
 
 async function renderEditProductsModal() {
-  showSpinner();
-  const products = await ProductsService.getProducts();
+  await createEditProductsModal([state.order.products[0]]);
+  showEditProductsModalSpinner();
+  const products = await ProductsService.getSortedProducts({ sortField: "name", sortOrder: "asc" });
   if (products.status === 200) {
-    await createEditProductsModal(products.data.Products);
-    hideSpinner();
+    setDataToEditProductsModal(products.data.Products);
     sideMenuActivateElement("Orders");
   } else {
     handleApiErrors(products);

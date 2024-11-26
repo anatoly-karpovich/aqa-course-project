@@ -2,8 +2,7 @@ let editProductsModalWrap = null;
 const updateProductsButtonSelector = "div#edit-products-modal #update-products-btn";
 
 async function createEditProductsModal(data) {
-  edit_order_details_modal_props.data = _.cloneDeep(data);
-  edit_order_details_modal_props.products.options.values = edit_order_details_modal_props.data.map((c) => c.name);
+  setProductsToEditProductsModalProps(data);
   if (editProductsModalWrap !== null) {
     editProductsModalWrap.remove();
   }
@@ -21,7 +20,7 @@ async function createEditProductsModal(data) {
                         <div class="modal-body">
                             <div class="bg-white rounded-5">
                                 <form class="row g-3 form-margin" id="edit-products-form">
-                                  <div id="edit-products-section">
+                                  <div id="edit-products-section" class="position-relative">
                                     <label for="edit-products-section" class="form-label">Products</label>
                                     ${generateEditProductsModalBody()}
                                   </div>
@@ -63,11 +62,12 @@ async function createEditProductsModal(data) {
       _id: state.order._id,
       customer: state.order.customer._id,
       products: [...products].map((rp) => {
-        return data.find((p) => p.name === rp)._id;
+        return edit_order_details_modal_props.data.find((p) => p.name === rp)._id;
       }),
     };
-    await submitOrder(orderData);
-    removeEditProductsModal();
+    const submit = document.querySelector("div#edit-products-modal #update-products-btn");
+    setSpinnerToButton(submit);
+    await submitOrder(orderData, removeEditProductsModal);
   });
 
   $("div.modal-footer #cancel-edit-products-modal-btn").on("click", (e) => {
@@ -146,4 +146,18 @@ function handleSaveButtonAvailabilityInChangeProductsModal() {
   } else {
     $(updateProductsButtonSelector).prop("disabled", false);
   }
+}
+
+function setProductsToEditProductsModalProps(products) {
+  edit_order_details_modal_props.data = _.cloneDeep(products);
+  edit_order_details_modal_props.products.options.values = edit_order_details_modal_props.data.map((c) => c.name);
+}
+
+function setDataToEditProductsModal(products) {
+  setProductsToEditProductsModalProps(products);
+  const html = `
+    <label for="edit-products-section" class="form-label">Products</label>
+    ${generateEditProductsModalBody()}
+  `;
+  $("#edit-products-section").html(html);
 }

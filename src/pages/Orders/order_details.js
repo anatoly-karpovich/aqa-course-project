@@ -13,7 +13,7 @@ function renderOrderDetailsPageLayout(options = Order_Details_Props, order, isRe
             ${generateCustomerSection(order)}
             ${generateProductsSection(order, isReceivingOn)}
         </div>
-        <div class="d-tabs shadow-sm p-3 mb-5 bg-body rounded" id="order-details-tabs-section">
+        <div class="d-tabs shadow-sm p-3 mb-5 bg-body rounded position-relative" id="order-details-tabs-section">
             ${generateOrderDetailsTabs(order)}
         </div>
     </div>`;
@@ -73,7 +73,7 @@ const edit_order_details_modal_props = {
     options: {
       values: [],
     },
-    attributes: `name="Customer"`,
+    attributes: `name="Customer" oninput="editCustomerSelectOnInput()"`,
   },
   products: {
     divClasslist: "col-md-11",
@@ -90,10 +90,12 @@ const edit_order_details_modal_props = {
   data: {},
 };
 
-async function changeOrderStatus(status) {
-  removeConfimationModal();
-  showSpinner();
+async function changeOrderStatus(status, button) {
+  const cancelBtn = document.querySelector(".modal-footer-mr button.btn-secondary");
+  cancelBtn.setAttribute("disabled", "");
+  setSpinnerToButton(button);
   const response = await OrdersService.changeOrderStatus(state.order._id, status);
+  removeConfimationModal();
   await showNotificationOnOrderDetailsPage(response, { message: SUCCESS_MESSAGES[`Order ${status}`] });
 }
 
@@ -140,11 +142,13 @@ function addEventListelersToOrderDetailsPage() {
         break;
       }
       case "start-receiving-products": {
-        await renderReceivingOrderDetailsPage();
+        await renderReceivingOrderDetailsPage(document.getElementById("start-receiving-products"));
         break;
       }
       case saveReceivingButtonId: {
         const products = getReceivingProducts();
+        setSpinnerToButton(document.getElementById(saveReceivingButtonId));
+        document.getElementById("cancel-receiving").setAttribute("disabled", "");
         await submitReceivedProducts(state.order._id, products);
 
         break;
@@ -188,32 +192,6 @@ function addEventListelersToOrderDetailsPage() {
         break;
       }
     }
-  });
-  const saveCommentBtn = $("#create-comment-btn");
-  $(`#textareaComments`).on("input", (e) => {
-    const value = removeLineBreaks($(`#textareaComments`).val());
-    if (!isValidInput("Comments", value)) {
-      showErrorMessage(commentsTabOptions.comments);
-      saveCommentBtn.prop("disabled", true);
-    } else {
-      hideErrorMessage(commentsTabOptions.comments);
-      saveCommentBtn.prop("disabled", false);
-    }
-  });
-
-  $(`div#order-details-tabs-content div#comments`).on("click", async (e) => {
-    e.preventDefault();
-    if (e.target.id == "create-comment-btn") {
-      const comment = {
-        comment: $("#textareaComments").val().trim(),
-      };
-      $("#create-comment-btn").html(buttonSpinner);
-      await submitComment(state.order._id, comment);
-    }
-  });
-
-  $(`button[name="delete-comment"]`).on("click", async (e) => {
-    await deleteComment(state.order._id, e.target.id);
   });
 }
 
@@ -266,7 +244,33 @@ const commentsTabOptions = {
     id: "textareaComments",
     errorMessageSelector: "#error-textareaComments",
     errorMessage: VALIDATION_ERROR_MESSAGES["Comments"],
-    attributes: `rows="3" name="comments"`,
+    attributes: `rows="3" name="comments" oninput="orderCommentsTextareaOnInput()"`,
     value: "",
   },
 };
+
+function orderCommentsTextareaOnInput() {
+  const saveCommentBtn = $("#create-comment-btn");
+  const value = removeLineBreaks($(`#textareaComments`).val());
+  if (!isValidInput("Comments", value)) {
+    showErrorMessage(commentsTabOptions.comments);
+    saveCommentBtn.prop("disabled", true);
+  } else {
+    hideErrorMessage(commentsTabOptions.comments);
+    saveCommentBtn.prop("disabled", false);
+  }
+}
+
+async function saveCommentOnClick() {
+  const comment = {
+    comment: $("#textareaComments").val().trim(),
+  };
+  setSpinnerToButton(document.querySelector("#create-comment-btn"));
+  showCommentsTabSpinner();
+  await submitComment(state.order._id, comment);
+}
+
+async function deleteCommentOnClick(element) {
+  showCommentsTabSpinner();
+  await deleteComment(state.order._id, element.id);
+}

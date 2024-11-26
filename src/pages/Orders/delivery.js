@@ -220,6 +220,10 @@ function addEventListelersToScheduleDeliveryPage() {
 
   saveButton.on("click", async (e) => {
     e.preventDefault();
+    const submit = document.querySelector(`button#${delivery_props.buttons.save.id}`);
+    setSpinnerToButton(submit);
+    const deleteButton = document.getElementById(delivery_props.buttons.back.id);
+    deleteButton.setAttribute("disabled", "");
     await submitDelivery(state.order._id, createDeliveryRequestBody());
   });
 

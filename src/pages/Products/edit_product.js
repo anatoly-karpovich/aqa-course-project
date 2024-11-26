@@ -67,6 +67,10 @@ function addListenersToEditProductPage(options = edit_product_props.inputs) {
     const elementId = e.target.id;
     switch (elementId) {
       case "save-product-changes": {
+        const submitButton = document.getElementById(edit_product_props.buttons.save.id);
+        const deleteButton = document.getElementById(edit_product_props.buttons.delete.id);
+        deleteButton.setAttribute("disabled", "");
+        setSpinnerToButton(submitButton);
         const product = getDataFromForm("#edit-product-form");
         edit_product_props.requestOpts.body = {
           _id: edit_product_props.id,

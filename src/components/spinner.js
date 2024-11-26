@@ -42,6 +42,23 @@ function showAddOrderModalSpinner() {
   renderSpinnerInContainer("#add-order-modal-body");
 }
 
+function showOrderDetailsSpinners() {
+  const selectors = ["#order-info-container", "#customer-section", "#products-section", "#order-details-tabs-section"];
+  selectors.forEach((s) => renderSpinnerInContainer(s));
+}
+
+function showCommentsTabSpinner() {
+  renderSpinnerInContainer("#comments-tab-container");
+}
+
+function showEditCustomerModalSpinner() {
+  renderSpinnerInContainer("#edit-customer-form > div");
+}
+
+function showEditProductsModalSpinner() {
+  renderSpinnerInContainer("#edit-products-section");
+}
+
 function renderSpinnerInContainer(contaierSelector = "") {
   const contaier = document.querySelector(contaierSelector);
   const overlay = document.createElement("div");
@@ -58,3 +75,14 @@ function renderSpinnerInContainer(contaierSelector = "") {
 }
 
 const buttonSpinner = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
+
+function setSpinnerToButton(button) {
+  const buttonWidth = button.offsetWidth;
+  const buttonHeight = button.offsetHeight;
+
+  button.style.width = `${buttonWidth}px`;
+  button.style.height = `${buttonHeight}px`;
+
+  button.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
+  button.setAttribute("disabled", "");
+}

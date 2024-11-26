@@ -106,6 +106,7 @@ const customer_details_props = (id) => {
 };
 
 async function deleteCustomer(id, confirmButton) {
+  setSpinnerToButton(confirmButton);
   $('[name="confirmation-modal"] button.btn-secondary').prop("disabled", true);
   confirmButton.innerHTML = buttonSpinner;
   const response = await CustomersService.deleteCustomer(id);

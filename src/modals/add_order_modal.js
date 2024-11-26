@@ -94,8 +94,11 @@ function addEventListelersToAddOrderModal() {
   });
 
   $("#create-order-btn").on("click", async (e) => {
-    showSpinner();
     e.preventDefault();
+    const submit = document.querySelector("#create-order-btn");
+    const cancelBtn = document.querySelector("#cancel-order-modal-btn");
+    cancelBtn.setAttribute("disabled", "");
+    setSpinnerToButton(submit);
     const requestedProducts = [];
     let customer = {
       name: $("select#inputCustomerOrder").find(":selected").text(),
@@ -113,8 +116,7 @@ function addEventListelersToAddOrderModal() {
         return add_order_modal_props.data.products.find((p) => p.name === rp)._id;
       }),
     };
-    removeAddOrderModal();
-    await submitOrder(orderData);
+    await submitOrder(orderData, removeAddOrderModal);
   });
 }
 

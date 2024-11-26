@@ -946,3 +946,57 @@ const defaultMetrics = {
     ],
   },
 };
+
+const emptyOrder = {
+  _id: "-",
+  status: "Draft",
+  customer: {
+    _id: "-",
+    email: "-",
+    name: "-",
+    country: "-",
+    city: "-",
+    street: "-",
+    house: "-",
+    flat: "-",
+    phone: "-",
+    createdOn: "2024-11-22T01:27:00.000Z",
+    notes: "-",
+  },
+  products: [
+    {
+      _id: "-",
+      name: "-",
+      amount: "-",
+      price: "-",
+      manufacturer: "-",
+      notes: "-",
+      received: false,
+    },
+  ],
+  delivery: null,
+  total_price: 0,
+  createdOn: "2024-11-24T01:15:00.000Z",
+  comments: [],
+  history: [
+    {
+      status: "Draft",
+      customer: "-",
+      products: [
+        {
+          _id: "-",
+          name: "-",
+          amount: "-",
+          price: "-",
+          manufacturer: "-",
+          notes: "-",
+          received: false,
+        },
+      ],
+      total_price: 0,
+      delivery: null,
+      changedOn: "2024-11-24T01:15:00.000Z",
+      action: "Order created",
+    },
+  ],
+};

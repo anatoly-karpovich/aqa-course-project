@@ -3,14 +3,7 @@ const editCustomerModalId = "edit-customer-modal";
 const editCustomerSelectInput = `#${editCustomerModalId} select#inputCustomerOrder`;
 const updateCustomerButtonSelector = `#${editCustomerModalId} #update-customer-btn`;
 
-async function createEditCustomerModal(data) {
-  edit_order_details_modal_props.data = _.cloneDeep(data);
-  edit_order_details_modal_props.customers.options.values = edit_order_details_modal_props.data.map((c) => c.name);
-  edit_order_details_modal_props.customers.options.titles = edit_order_details_modal_props.data.map((c) => c.email);
-  edit_order_details_modal_props.customers.defaultValue = {
-    name: state.order.customer.name,
-    title: state.order.customer.email,
-  };
+function createEditCustomerModal(data) {
   if (editCustomerModalWrap !== null) {
     editCustomerModalWrap.remove();
   }
@@ -60,23 +53,14 @@ async function createEditCustomerModal(data) {
       customer,
       products: state.order.products.map((p) => p._id),
     };
-    await submitOrder(orderData);
-    removeEditCustomerModal();
+    const submit = document.querySelector("div.modal-footer #update-customer-btn");
+    setSpinnerToButton(submit);
+    await submitOrder(orderData, removeEditCustomerModal);
   });
 
   $("div.modal-footer #cancel-edit-customer-modal-btn").on("click", (e) => {
     e.preventDefault();
     removeEditCustomerModal();
-  });
-
-  $(editCustomerSelectInput).on("input", (e) => {
-    e.preventDefault();
-    const email = $(editCustomerSelectInput).find(":selected").attr("title");
-    if (email === state.order.customer.email) {
-      $(updateCustomerButtonSelector).prop("disabled", true);
-    } else {
-      $(updateCustomerButtonSelector).prop("disabled", false);
-    }
   });
 }
 
@@ -94,5 +78,20 @@ function removeEditCustomerModal() {
   $("body").removeAttr("style");
   if (document.querySelector(".modal-backdrop")) {
     document.querySelector(".modal-backdrop").parentNode.removeChild(document.querySelector(".modal-backdrop"));
+  }
+}
+
+function setDataToEditCustomerModal() {
+  $("#edit-customer-form").html(generateEditCustomerModalBody());
+}
+
+function editCustomerSelectOnInput() {
+  const editCustomerSelectInput = "#edit-customer-modal select#inputCustomerOrder";
+  const updateCustomerButtonSelector = "#edit-customer-modal #update-customer-btn";
+  const email = $(editCustomerSelectInput).find(":selected").attr("title");
+  if (email === state.order.customer.email) {
+    $(updateCustomerButtonSelector).prop("disabled", true);
+  } else {
+    $(updateCustomerButtonSelector).prop("disabled", false);
   }
 }
