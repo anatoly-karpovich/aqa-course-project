@@ -46,7 +46,6 @@ function handleApiErrors(response, errorToNotification = false) {
 }
 
 async function submitEntiti(options, notificationOprions) {
-  showSpinner();
   let response;
   switch (options.path) {
     case "Products":

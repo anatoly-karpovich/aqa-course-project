@@ -92,7 +92,7 @@ function renderDeleteProductModal(id) {
 }
 
 async function renderProductDetailsModal(id) {
-  createDetailsModal(product_details_props(id), { Product: emptyProduct });
+  createDetailsModal(product_details_props(id), { Product: { ...emptyProduct, ...{ _id: id } } });
   renderSpinnerInContainer("#details-modal-container");
   const response = await ProductsService.getProducts(id);
   if (response.status === 200) {
@@ -112,6 +112,7 @@ async function renderEditProductPage(id) {
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditProductLayout(edit_product_props, emptyProduct);
   renderSpinnerInContainer("#edit-product-container");
   const response = await ProductsService.getProducts(id);
+  console.log(response);
   if (response && response.status === 200) {
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditProductLayout(
       edit_product_props,
