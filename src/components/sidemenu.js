@@ -12,6 +12,12 @@ function generateSidebar(options) {
       ${generateSidebarItem(options.navbar.items)}
       </ul> 
 
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="sp-theme-switch" onclick="switchTheme()" ${
+          getStoredTheme() === "dark" ? "checked" : ""
+        }>
+        <label class="form-check-label" for="sp-theme-switch">Dark mode</label>
+      </div>
       <hr>
       <div class="dropdown">
         <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -90,6 +96,41 @@ function addEventListenersToSidemenu(options) {
     console.log({ key });
     writeToDatabase(key);
   });
+}
+
+function switchTheme(storedTheme) {
+  let toDark;
+  if (storedTheme) {
+    toDark = storedTheme === "dark";
+    applyTheme(toDark);
+  } else {
+    const toggle = document.querySelector("#sp-theme-switch");
+    toDark = typeof toggle.getAttribute("checked") !== "string";
+    toDark ? toggle.setAttribute("checked", "") : toggle.removeAttribute("checked");
+    applyTheme(toDark);
+  }
+  storeTheme(toDark ? "dark" : "light");
+}
+
+function applyTheme(toDark) {
+  if (toDark) {
+    if (document.querySelector("#sidemenu"))
+      document.querySelector("#sidemenu").style["background-color"] = "rgb(78, 78, 78)";
+    document.querySelector("html").style["background-color"] = "rgb(78, 78, 78)";
+  } else {
+    if (document.querySelector("#sidemenu"))
+      document.querySelector("#sidemenu").style["background-color"] = "rgb(241, 237, 237)";
+    document.querySelector("html").style["background-color"] = "rgb(241, 237, 237)";
+  }
+  document.querySelector("html").setAttribute("data-bs-theme", toDark ? "dark" : "light");
+}
+
+function getStoredTheme() {
+  return window.localStorage.getItem("theme");
+}
+
+function storeTheme(theme) {
+  window.localStorage.setItem("theme", theme);
 }
 
 function currencyExchangeSection() {

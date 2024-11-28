@@ -19,7 +19,7 @@ function createEditCustomerModal(data) {
                             <button type="button" class="btn-close hover-danger" data-bs-dismiss="modal" aria-label="Close" onClick="removeEditCustomerModal();"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="bg-white rounded-5">
+                            <div class="rounded-5">
                                 <form class="row g-3 form-margin" id="edit-customer-form">
                                 ${generateEditCustomerModalBody()}
                                 </form>

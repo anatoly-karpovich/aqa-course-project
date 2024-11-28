@@ -5,7 +5,6 @@
 
 html {
   height: -webkit-fill-available;
-  background-color: rgb(241, 237, 237);
 }
 
 main {
@@ -21,10 +20,6 @@ main {
 #sidebar {
   height: 100vh;
   position: fixed;
-}
-
-#sidemenu {
-  background-color: rgb(241, 237, 237);
 }
 
 .b-example-divider {

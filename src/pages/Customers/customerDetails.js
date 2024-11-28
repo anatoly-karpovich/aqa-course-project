@@ -6,7 +6,7 @@ function createCustomerDetailsPageLayout(customerData, orders) {
         <div class="card-body" style="margin: 0 12px 0 12px;">
                 <div class="card-title mb-4 d-flex justify-content-start align-items-center">
                     <h3>Customer Details</h3>
-                    <button class="btn btn-light edit-pencil" id="edit-customer-pencil" title="Edit Customer" onclick="renderEditCustomerPage('${
+                    <button class="btn edit-pencil" id="edit-customer-pencil" title="Edit Customer" onclick="renderEditCustomerPage('${
                       customerData._id
                     }')">
                         <i class="bi bi-pencil-fill"></i>

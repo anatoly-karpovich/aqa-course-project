@@ -23,7 +23,7 @@ function createAddOrderModal(data) {
                             <button type="button" class="btn-close hover-danger" data-bs-dismiss="modal" aria-label="Close" onClick="removeAddOrderModal();"></button>
                         </div>
                         <div class="modal-body position-relative" id="add-order-modal-body">
-                            <div class="bg-white rounded-5">
+                            <div class="rounded-5">
                                 <form class="row g-3 form-margin" id="create-order-form">
                                 ${generateAddOrderModalBody()}
                                 </form>
