@@ -7,7 +7,7 @@ function renderScheduleDeliveryLayout(options = delivery_props) {
         <div id="${PAGE_TITLE_ID}" class="page-header-title d-flex justify-content-around">
             <h2 class="fw-bold">${options.title}</h2>
         </div>
-        <form class="row g-3 form-with-inputs modal-body" id="${options.formId}">
+        <form class="row g-3 form-with-inputs p-3" id="${options.formId}">
         <div class="d-flex justify-content-between">
           ${generateFormSelectInput(options.inputs.type)}
           ${generateDatePicker()}

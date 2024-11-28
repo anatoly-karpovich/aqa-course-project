@@ -18,7 +18,7 @@ async function createEditProductsModal(data) {
                             <button type="button" class="btn-close hover-danger" data-bs-dismiss="modal" aria-label="Close" onClick="removeEditProductsModal();"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="bg-white rounded-5">
+                            <div class="rounded-5">
                                 <form class="row g-3 form-margin" id="edit-products-form">
                                   <div id="edit-products-section" class="position-relative">
                                     <label for="edit-products-section" class="form-label">Products</label>

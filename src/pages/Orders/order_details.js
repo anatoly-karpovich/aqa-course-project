@@ -19,7 +19,7 @@ function renderOrderDetailsPageLayout(options = Order_Details_Props, order, isRe
     </div>`;
 }
 
-const notReceivedProductsCheckboxesSelector = 'input[type="checkbox"]:not([disabled]):not(#selectAll)';
+const notReceivedProductsCheckboxesSelector = 'input[type="checkbox"][name="product"]:not([disabled]):not(#selectAll)';
 const selectAllCheckboxSelector = "input#selectAll";
 const saveReceivingButtonId = "save-received-products";
 
@@ -216,6 +216,7 @@ function handleSelectAllCheckbox() {
 
 function getReceivingProducts() {
   const products = [];
+  console.log(document.querySelectorAll(notReceivedProductsCheckboxesSelector));
   $(notReceivedProductsCheckboxesSelector).each(function () {
     if ($(this).prop("checked")) {
       const id = $(this).prop("value");

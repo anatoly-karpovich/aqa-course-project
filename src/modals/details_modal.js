@@ -25,7 +25,7 @@ function createDetailsModal(options = {}, data = {}) {
       </div>
       <div class="modal-body">
 
-        <div class="bg-white rounded-5">
+        <div class="rounded-5">
           <section section class="w-100 p-4" id="details-modal-body-container">
             ${generateModalBody(options, data)}
           </section>

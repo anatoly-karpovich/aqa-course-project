@@ -63,6 +63,7 @@ function renderSpinnerInContainer(contaierSelector = "") {
   const contaier = document.querySelector(contaierSelector);
   const overlay = document.createElement("div");
   overlay.classList.add("overlay-spinner");
+  overlay.classList.add("rounded");
   overlay.innerHTML = `
         <div class="spinner-container${contaierSelector.includes("table") ? "" : "-center"}">
             <div class="spinner-border text-secondary" role="status">

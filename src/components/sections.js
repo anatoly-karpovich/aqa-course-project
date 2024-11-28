@@ -9,7 +9,7 @@ function generateCustomerSection(order) {
                 : ""
             }
         </div>
-        <div class="modal-body">
+        <div class="p-3">
             ${generateCustomerSectionBody(_.omit(order.customer, "_id"))}
         </div>
         
@@ -247,12 +247,12 @@ function generateOrderDeliveryTabBody(order) {
       flat: null,
     };
     result = `
-        <div class="mb-4 modal-body">
+        <div class="mb-4 p-3">
             ${generateCustomerSectionBody(nullDeliveryData)}
         </div>`;
   } else {
     result = `
-        <div class="mb-4 modal-body">
+        <div class="mb-4 p-3">
             ${generateCustomerSectionBody({
               condition: order.delivery.condition,
               finalDate: order.delivery.finalDate,
@@ -314,23 +314,25 @@ function generateOrderHistoryBody(order) {
 }
 
 function generateOrderHistoryRow(order, index) {
-  return ` 
-    <div class="accordion-header his-header border-bottom" id="heading2${index}">
-        <button class="accordion-button collapsed  his-action" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2${index}" 
-        aria-expanded="false" aria-controls="collapse2${index}"></button>
-        <span class="his-col">${order.history[index].action}</span>
-        <span class="his-col">${order.history[index].changedBy ? order.history[index].changedBy : "AQA User"}</span>
-        <span class="his-col">${convertToDateAndTime(order.history[index].changedOn)}</span>
-    </div>
-    <div id="collapse2${index}" class="accordion-collapse collapse" aria-labelledby="heading2${index}">
-        ${generateOrderHistoryNestedRows(order, index)}
+  return `
+    <div class="accordion"> 
+      <div class="accordion-header his-header border-bottom" id="heading2${index}">
+          <button class="accordion-button collapsed his-action" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2${index}" 
+          aria-expanded="false" aria-controls="collapse2${index}"></button>
+          <span class="his-col">${order.history[index].action}</span>
+          <span class="his-col">${order.history[index].changedBy ? order.history[index].changedBy : "AQA User"}</span>
+          <span class="his-col">${convertToDateAndTime(order.history[index].changedOn)}</span>
+      </div>
+      <div id="collapse2${index}" class="accordion-collapse collapse" aria-labelledby="heading2${index}">
+          ${generateOrderHistoryNestedRows(order, index)}
+      </div>
     </div>`;
 }
 
 function generateOrderHistoryNestedRows(order, index) {
   return `
     <div class="mb-3">
-        <div class="d-flex justify-content-around py-3 his-row">
+        <div class="d-flex justify-content-around py-3 border-bottom">
             <span class="his-action"></span>
             <span class="fw-bold his-col"></span>
             <span class="fw-bold his-col">Previous</span>
@@ -493,11 +495,11 @@ function generateSavedComments(order) {
 function generateComment(comment) {
   const createdBy = "AQA User";
   return `
-    <div class="comment-card shadow-sm rounded mx-3 my-3 p-3">
+    <div class="shadow-sm rounded mx-3 my-3 p-3 border">
         <div class="d-flex justify-content-between align-items-center">
-            <p class="comment-text m-0" style="word-break: break-word;">${replaceLineBreaksWithBrTag(comment.text)}</p>
+            <p class="m-0" style="word-break: break-word;">${replaceLineBreaksWithBrTag(comment.text)}</p>
             <div class="d-flex align-items-center">
-                <button class="btn btn-link text-danger delete-comment" title="Delete" name="delete-comment" id="${
+                <button class="btn btn-link text-danger" title="Delete" name="delete-comment" id="${
                   comment._id
                 }" onclick="deleteCommentOnClick(this)">
                     <i class="bi bi-trash"></i>
@@ -505,8 +507,8 @@ function generateComment(comment) {
             </div>
         </div>
         <div class="d-flex justify-content-between mt-2 text-muted small">
-            <span class="comment-author text-primary">${createdBy}</span>
-            <span class="comment-date">${convertToDateAndTime(comment.createdOn)}</span>
+            <span class="text-primary">${createdBy}</span>
+            <span>${convertToDateAndTime(comment.createdOn)}</span>
         </div>
     </div>
     `;

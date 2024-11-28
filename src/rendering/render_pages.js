@@ -112,7 +112,6 @@ async function renderEditProductPage(id) {
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditProductLayout(edit_product_props, emptyProduct);
   renderSpinnerInContainer("#edit-product-container");
   const response = await ProductsService.getProducts(id);
-  console.log(response);
   if (response && response.status === 200) {
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditProductLayout(
       edit_product_props,
@@ -273,6 +272,7 @@ async function renderLandingPage(options = {}) {
 }
 
 async function renderHomePage(options = {}) {
+  switchTheme(window.localStorage.getItem("theme"));
   sideMenuActivateElement(options.path);
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(defaultMetrics);
   showHomeSpinners();

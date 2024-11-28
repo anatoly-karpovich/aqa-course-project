@@ -1,5 +1,6 @@
 const token = getAuthorizationCookie();
 token ? renderPages["Landing"](landingProps) : renderPages["Sign In"]();
+switchTheme(getStoredTheme());
 
 const state = {
   filtering: _.cloneDeep(filters),
