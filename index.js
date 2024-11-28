@@ -2,36 +2,6 @@ const token = getAuthorizationCookie();
 token ? renderPages["Landing"](landingProps) : renderPages["Sign In"]();
 switchTheme(getStoredTheme());
 
-const state = {
-  filtering: _.cloneDeep(filters),
-  search: {
-    customers: "",
-    products: "",
-    orders: "",
-  },
-  sorting: {
-    customers: {
-      sortField: "createdOn",
-      sortOrder: "desc",
-    },
-    products: {
-      sortField: "createdOn",
-      sortOrder: "desc",
-    },
-    orders: {
-      sortField: "createdOn",
-      sortOrder: "desc",
-    },
-  },
-  notifications: {},
-  sideMenuElementForRed: getRandomArbitrary(1, 3),
-  data: {
-    customers: [],
-    products: [],
-    orders: [],
-  },
-};
-
 async function sideMenuClickHandler(page) {
   switch (page) {
     case "Home":
@@ -51,3 +21,8 @@ async function sideMenuClickHandler(page) {
       break;
   }
 }
+
+window.onload = () => {
+  // Все файлы загружены
+  console.log("All scripts are loaded.");
+};
