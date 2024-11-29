@@ -13,7 +13,7 @@ function generateSidebar(options) {
       </ul> 
 
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" role="switch" id="sp-theme-switch" onclick="switchTheme()" ${
+        <input class="form-check-input" type="checkbox" role="switch" id="sp-theme-switch" onclick="switchTheme(null, this)" ${
           getStoredTheme() === "dark" ? "checked" : ""
         }>
         <label class="form-check-label" for="sp-theme-switch">Dark mode</label>
@@ -98,17 +98,15 @@ function addEventListenersToSidemenu(options) {
   });
 }
 
-function switchTheme(storedTheme) {
+function switchTheme(storedTheme, toggle) {
   let toDark;
   if (storedTheme) {
     toDark = storedTheme === "dark";
-    applyTheme(toDark);
-  } else {
-    const toggle = document.querySelector("#sp-theme-switch");
+  } else if (toggle) {
     toDark = typeof toggle.getAttribute("checked") !== "string";
     toDark ? toggle.setAttribute("checked", "") : toggle.removeAttribute("checked");
-    applyTheme(toDark);
   }
+  applyTheme(toDark);
   storeTheme(toDark ? "dark" : "light");
 }
 
