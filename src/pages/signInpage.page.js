@@ -108,7 +108,7 @@ function renderSignInPage() {
     setSpinnerToButton(submit);
     const response = await SignInService.signIn(credentials);
     if (response.status === 200) {
-      document.cookie = `Authorization=${response.data.token}`;
+      document.cookie = `Authorization=${response.headers.authorization}`;
       signIn.classList.add("disabled");
       signIn.parentNode.removeChild(signIn);
       await renderLandingPage(landingProps);

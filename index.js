@@ -1,5 +1,8 @@
 const token = getAuthorizationCookie();
 token ? renderPages["Landing"](landingProps) : renderPages["Sign In"]();
+if (!getStoredTheme) {
+  storeTheme("light");
+}
 switchTheme(getStoredTheme());
 
 async function sideMenuClickHandler(page) {
@@ -21,8 +24,3 @@ async function sideMenuClickHandler(page) {
       break;
   }
 }
-
-window.onload = () => {
-  // Все файлы загружены
-  console.log("All scripts are loaded.");
-};
