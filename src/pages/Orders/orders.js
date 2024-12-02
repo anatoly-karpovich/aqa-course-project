@@ -132,10 +132,12 @@ function renderOrdersTable(orders, options) {
 async function getOrdersAndRenderTable() {
   showTableSpinner();
   const sortedOrders = (await getSortedOrders()).data.Orders;
-  OrdersProps.tableProps.currentSortingField.direction = state.sorting.orders.sortOrder;
-  OrdersProps.tableProps.currentSortingField.name =
-    state.sorting.orders.sortField === "_id"
-      ? idToOrderNumber[state.sorting.orders.sortField]
-      : replaceApiToFeKeys[state.sorting.orders.sortField];
-  renderOrdersTable(sortedOrders, OrdersProps);
+  if (state.checkPage(PAGES.ORDERS)) {
+    OrdersProps.tableProps.currentSortingField.direction = state.sorting.orders.sortOrder;
+    OrdersProps.tableProps.currentSortingField.name =
+      state.sorting.orders.sortField === "_id"
+        ? idToOrderNumber[state.sorting.orders.sortField]
+        : replaceApiToFeKeys[state.sorting.orders.sortField];
+    renderOrdersTable(sortedOrders, OrdersProps);
+  }
 }

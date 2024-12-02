@@ -133,3 +133,16 @@ const ORDER_HISTORY_ACTIONS = {
   RECEIVED_ALL: "All products received",
   CANCELED: "Order canceled",
 };
+
+const PAGES = {
+  HOME: "Home",
+  PRODUCTS: "Products",
+  ADD_NEW_PRODUCT: "Add New Product",
+  EDIT_PRODUCT: "Edit Product",
+  CUSTOMERS: "Customers",
+  CUSTOMER_DETAILS: "Customer details",
+  ADD_NEW_CUSTOMER: "Add New Customer",
+  EDIT_CUSTOMER: "Edit Customer",
+  ORDERS: "Orders",
+  ORDER_DETAILS: "Order details",
+};

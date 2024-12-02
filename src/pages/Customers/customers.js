@@ -162,7 +162,9 @@ function renderCustomersTable(customers, options) {
 async function getCustomersAndRenderTable() {
   showTableSpinner();
   const sortedCustomers = (await getSortedCustomers()).data.Customers;
-  CustomerProps.tableProps.currentSortingField.direction = state.sorting.customers.sortOrder;
-  CustomerProps.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.customers.sortField];
-  renderCustomersTable(sortedCustomers, CustomerProps);
+  if (state.checkPage(PAGES.CUSTOMERS)) {
+    CustomerProps.tableProps.currentSortingField.direction = state.sorting.customers.sortOrder;
+    CustomerProps.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.customers.sortField];
+    renderCustomersTable(sortedCustomers, CustomerProps);
+  }
 }

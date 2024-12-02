@@ -9,6 +9,7 @@ const renderPages = {
 
 //Customers Section
 async function renderCustomersPage(options = CustomerProps) {
+  state.page = PAGES.CUSTOMERS;
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderCustomersPageLayout(options, {
     data: { Customers: [] },
   });
@@ -19,6 +20,7 @@ async function renderCustomersPage(options = CustomerProps) {
 }
 
 function renderAddNewCustomerPage(options = add_new_customer_props) {
+  state.page = PAGES.ADD_NEW_CUSTOMER;
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderAddNewCustomerLayout(options);
   sideMenuActivateElement(options.path);
   addEventListelersToAddNewCustomerPage();
@@ -37,24 +39,27 @@ async function renderCustomerDetailsModal(id) {
 }
 
 async function renderCustomerDetailsPage(id) {
+  state.page = PAGES.CUSTOMER_DETAILS;
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createCustomerDetailsPageLayout(emptyCustomer, []);
   showCustomerDetailsSpinners();
   const [customer, orders] = await Promise.all([CustomersService.getCustomers(id), CustomersService.getOrders(id)]);
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createCustomerDetailsPageLayout(
-    customer.data.Customer,
-    orders.data.Orders
-  );
+  if (customer.ok && orders.ok && state.checkPage(PAGES.CUSTOMER_DETAILS))
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createCustomerDetailsPageLayout(
+      customer.data.Customer,
+      orders.data.Orders
+    );
   scrollToSection(`#${CONTENT_CONTAINER_ID}`);
 }
 
 async function renderEditCustomerPage(id) {
+  state.page = PAGES.EDIT_CUSTOMER;
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditCustomerLayout(
     edit_customer_props,
     emptyCustomer
   );
   renderSpinnerInContainer("#edit-customer-container");
   const response = await CustomersService.getCustomers(id);
-  if (response.status === 200) {
+  if (response.status === 200 && state.checkPage(PAGES.EDIT_CUSTOMER)) {
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditCustomerLayout(
       edit_customer_props,
       response.data.Customer
@@ -72,6 +77,7 @@ function renderDeleteCustomerModal(id) {
 
 //Products Section
 async function renderProductsPage(options = ProductsProps) {
+  state.page = PAGES.PRODUCTS;
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderProductsPageLayout(options, {
     data: { Products: [] },
   });
@@ -82,6 +88,7 @@ async function renderProductsPage(options = ProductsProps) {
 }
 
 function renderAddNewProductPage(options = add_new_product_props) {
+  state.page = PAGES.ADD_NEW_PRODUCT;
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderAddNewProductLayout(options);
   sideMenuActivateElement(options.path);
   addEventListelersToAddNewProductPage();
@@ -95,16 +102,19 @@ async function renderProductDetailsModal(id) {
   createDetailsModal(product_details_props(id), { Product: { ...emptyProduct, ...{ _id: id } } });
   renderSpinnerInContainer("#details-modal-container");
   const response = await ProductsService.getProducts(id);
-  if (response.status === 200) {
-    setDataToProductDetailsModal(product_details_props(id), response.data);
-    sideMenuActivateElement("Products");
-  } else {
-    handleApiErrors(response);
+  if (state.checkPage(PAGES.PRODUCTS)) {
+    if (response.status === 200) {
+      setDataToProductDetailsModal(product_details_props(id), response.data);
+      sideMenuActivateElement("Products");
+    } else {
+      handleApiErrors(response);
+    }
   }
   hideSpinners();
 }
 
 async function renderEditProductPage(id) {
+  state.page = PAGES.EDIT_PRODUCT;
   if (modalWrap) {
     removeDetailsModal();
   }
@@ -112,7 +122,7 @@ async function renderEditProductPage(id) {
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditProductLayout(edit_product_props, emptyProduct);
   renderSpinnerInContainer("#edit-product-container");
   const response = await ProductsService.getProducts(id);
-  if (response && response.status === 200) {
+  if (response && response.status === 200 && state.checkPage(PAGES.EDIT_PRODUCT)) {
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditProductLayout(
       edit_product_props,
       response.data.Product
@@ -125,6 +135,7 @@ async function renderEditProductPage(id) {
 
 //Orders Section
 async function renderOrdersPage(options = OrdersProps) {
+  state.page = PAGES.ORDERS;
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrdersPageLayout(options, { data: { Orders: [] } });
   sideMenuActivateElement(options.path);
   await getOrdersAndRenderTable();
@@ -133,6 +144,7 @@ async function renderOrdersPage(options = OrdersProps) {
 }
 
 async function renderOrderDetailsPage(id, withScroll = true) {
+  state.page = PAGES.ORDER_DETAILS;
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(
     Order_Details_Props,
     state.order ?? emptyOrder
@@ -143,58 +155,64 @@ async function renderOrderDetailsPage(id, withScroll = true) {
     scrollToSection(`#${CONTENT_CONTAINER_ID}`);
   }
   const [order, customers] = await Promise.all([OrdersService.getOrders(id), CustomersService.getCustomers()]);
-  if (order && order.status === 200 && customers.status === 200) {
-    sideMenuActivateElement("Orders");
-    state.order = order.data.Order;
-    state.customers = customers.data.Customers;
-    state["activeTab"] = state["activeTab"] ?? "comments";
-    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(
-      Order_Details_Props,
-      order.data.Order
-    );
-    addEventListelersToOrderDetailsPage();
-    activateTab();
-  } else {
-    handleApiErrors(order);
-    handleApiErrors(customers);
+  if (state.checkPage(PAGES.ORDER_DETAILS)) {
+    if (order && order.status === 200 && customers.status === 200) {
+      sideMenuActivateElement("Orders");
+      state.order = order.data.Order;
+      state.customers = customers.data.Customers;
+      state["activeTab"] = state["activeTab"] ?? "comments";
+      document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(
+        Order_Details_Props,
+        order.data.Order
+      );
+      addEventListelersToOrderDetailsPage();
+      activateTab();
+    } else {
+      handleApiErrors(order);
+      handleApiErrors(customers);
+    }
   }
-  hideSpinner();
 }
 
 async function renderReceivingOrderDetailsPage(receiveButton) {
+  state.page = PAGES.ORDER_DETAILS;
   setSpinnerToButton(receiveButton);
   const order = await OrdersService.getOrders(state.order._id);
-  if (order && order.status === 200) {
-    hideSpinner();
-    sideMenuActivateElement("Orders");
-    state.order = order.data.Order;
-    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(
-      Order_Details_Props,
-      order.data.Order,
-      true
-    );
-    addEventListelersToOrderDetailsPage();
-    activateTab();
-  } else {
-    handleApiErrors(order);
+  if (state.checkPage(PAGES.ORDER_DETAILS)) {
+    if (order && order.status === 200) {
+      hideSpinner();
+      sideMenuActivateElement("Orders");
+      state.order = order.data.Order;
+      document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(
+        Order_Details_Props,
+        order.data.Order,
+        true
+      );
+      addEventListelersToOrderDetailsPage();
+      activateTab();
+    } else {
+      handleApiErrors(order);
+    }
   }
 }
 
 async function renderCreateOrderModal() {
+  state.page = PAGES.ORDERS;
   createAddOrderModal({ customers: [], products: [] });
   showAddOrderModalSpinner();
   const [customers, products] = await Promise.all([
     CustomersService.getSorted({ sortField: "name", sortOrder: "asc" }),
     ProductsService.getSortedProducts({ sortField: "name", sortOrder: "asc" }),
   ]);
-  if (customers.status === 200 && products.status === 200) {
-    setDataToAddOrderModal({ customers: customers.data.Customers, products: products.data.Products });
-    hideSpinners();
-    sideMenuActivateElement("Orders");
-  } else {
-    handleApiErrors(customers);
-    handleApiErrors(products);
-  }
+  if (state.checkPage(PAGES.ORDERS))
+    if (customers.status === 200 && products.status === 200) {
+      setDataToAddOrderModal({ customers: customers.data.Customers, products: products.data.Products });
+      hideSpinners();
+      sideMenuActivateElement("Orders");
+    } else {
+      handleApiErrors(customers);
+      handleApiErrors(products);
+    }
 }
 
 function renderScheduleDeliveryPage() {
@@ -258,6 +276,7 @@ async function renderEditProductsModal() {
 
 //Home section
 async function renderLandingPage(options = {}) {
+  state.page = PAGES.HOME;
   document.querySelector("body").innerHTML = renderLandingPageLayout(options);
   document.querySelector("#signOut").addEventListener("click", () => {
     localStorage.removeItem("token");
@@ -272,6 +291,7 @@ async function renderLandingPage(options = {}) {
 }
 
 async function renderHomePage(options = {}) {
+  state.page = PAGES.HOME;
   switchTheme(window.localStorage.getItem("theme"));
   sideMenuActivateElement(options.path);
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(defaultMetrics);
@@ -282,15 +302,17 @@ async function renderHomePage(options = {}) {
     defaultMetrics.customers.customerGrowth
   );
   const metrics = await MetricsService.get();
-  if (metrics.status === 200) {
-    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(metrics.data.Metrics);
-    loadCharts(
-      metrics.data.Metrics.orders.ordersCountPerDay,
-      metrics.data.Metrics.products.topProducts,
-      metrics.data.Metrics.customers.customerGrowth
-    );
-  } else {
-    handleApiErrors(metrics);
+  if (state.checkPage(PAGES.HOME)) {
+    if (metrics.status === 200) {
+      document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(metrics.data.Metrics);
+      loadCharts(
+        metrics.data.Metrics.orders.ordersCountPerDay,
+        metrics.data.Metrics.products.topProducts,
+        metrics.data.Metrics.customers.customerGrowth
+      );
+    } else {
+      handleApiErrors(metrics);
+    }
   }
 }
 

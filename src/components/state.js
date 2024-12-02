@@ -1,5 +1,5 @@
 const state = {
-  filtering: _.cloneDeep(filters),
+  filtering: {},
   search: {
     customers: "",
     products: "",
@@ -26,4 +26,15 @@ const state = {
     products: [],
     orders: [],
   },
+  page: "",
+  checkPage(page) {
+    return this.page === page || !this.page;
+  },
 };
+
+for (const f in FILTER_VALUES) {
+  state.filtering[f] = FILTER_VALUES[f].reduce((acc, value) => {
+    acc[value] = false;
+    return acc;
+  }, {});
+}
