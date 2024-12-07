@@ -43,12 +43,13 @@ async function renderCustomerDetailsPage(id) {
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createCustomerDetailsPageLayout(emptyCustomer, []);
   showCustomerDetailsSpinners();
   const [customer, orders] = await Promise.all([CustomersService.getCustomers(id), CustomersService.getOrders(id)]);
-  if (customer.ok && orders.ok && state.checkPage(PAGES.CUSTOMER_DETAILS))
+  if (customer.status === 200 && orders.status === 200 && state.checkPage(PAGES.CUSTOMER_DETAILS)) {
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createCustomerDetailsPageLayout(
       customer.data.Customer,
       orders.data.Orders
     );
-  scrollToSection(`#${CONTENT_CONTAINER_ID}`);
+    scrollToSection(`#${CONTENT_CONTAINER_ID}`);
+  }
 }
 
 async function renderEditCustomerPage(id) {
