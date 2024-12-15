@@ -2,7 +2,6 @@ function renderLandingPageLayout(options = landingProps) {
   return `
     ${getIconSvgHTML()}
     <div id="sidemenu">
-    ${spinner()}
         <div class="contentWrapper">
                 ${generateSidebar(options)}
                 <div id="root"></div>

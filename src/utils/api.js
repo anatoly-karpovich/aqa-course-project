@@ -20,7 +20,7 @@ async function sendRequest(options) {
       return err.response;
     }
   } finally {
-    hideSpinner();
+    // hideSpinner();
   }
   return response;
 }
@@ -61,7 +61,7 @@ async function submitEntiti(options, notificationOprions) {
       break;
   }
 
-  hideSpinner();
+  // hideSpinner();
   if (response.data.IsSuccess) {
     clearAllInputs(options.inputs);
     renderNotification(notificationOprions);
@@ -101,7 +101,7 @@ async function submitDelivery(orderId, delivery) {
   } else {
     handleApiErrors(response, true);
   }
-  hideSpinner();
+  // hideSpinner();
 }
 
 async function submitReceivedProducts(_id, products) {
@@ -112,7 +112,7 @@ async function submitReceivedProducts(_id, products) {
   } else {
     handleApiErrors(response, true);
   }
-  hideSpinner();
+  // hideSpinner();
 }
 
 async function submitComment(_id, comment) {

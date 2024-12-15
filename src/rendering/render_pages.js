@@ -31,7 +31,7 @@ async function renderCustomerDetailsModal(id) {
   const response = await CustomersService.getCustomers(id);
   if (response.status === 200) {
     createDetailsModal(customer_details_props(id), response.data);
-    hideSpinner();
+    // hideSpinner();
     sideMenuActivateElement("Customers");
   } else {
     handleApiErrors(response);
@@ -181,7 +181,7 @@ async function renderReceivingOrderDetailsPage(receiveButton) {
   const order = await OrdersService.getOrders(state.order._id);
   if (state.checkPage(PAGES.ORDER_DETAILS)) {
     if (order && order.status === 200) {
-      hideSpinner();
+      // hideSpinner();
       sideMenuActivateElement("Orders");
       state.order = order.data.Order;
       document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(

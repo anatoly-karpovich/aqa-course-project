@@ -90,7 +90,7 @@ function renderCustomersOptions(options, data) {
 }
 
 async function showNotificationAfterDeleteRequest(response, notificationOptions, pageProps) {
-  hideSpinner();
+  // hideSpinner();
   if (response.status === 204) {
     await renderPages[pageProps.path](pageProps);
     renderNotification(notificationOptions);
@@ -100,7 +100,7 @@ async function showNotificationAfterDeleteRequest(response, notificationOptions,
 }
 
 async function showNotificationOnOrderDetailsPage(response, notificationOptions) {
-  hideSpinner();
+  // hideSpinner();
   if (response.status === 200) {
     await renderOrderDetailsPage(state.order._id);
     renderNotification(notificationOptions);

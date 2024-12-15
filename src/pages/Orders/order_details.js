@@ -216,7 +216,6 @@ function handleSelectAllCheckbox() {
 
 function getReceivingProducts() {
   const products = [];
-  console.log(document.querySelectorAll(notReceivedProductsCheckboxesSelector));
   $(notReceivedProductsCheckboxesSelector).each(function () {
     if ($(this).prop("checked")) {
       const id = $(this).prop("value");

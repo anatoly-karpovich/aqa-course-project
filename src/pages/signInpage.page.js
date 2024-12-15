@@ -118,6 +118,6 @@ function renderSignInPage() {
         true
       );
     }
-    hideSpinner();
+    // hideSpinner();
   });
 }
