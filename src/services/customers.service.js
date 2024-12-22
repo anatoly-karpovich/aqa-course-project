@@ -43,12 +43,12 @@ class CustomersService {
     const options = {
       method: "put",
       baseURL: BASE_URL,
-      url: ENDPOINTS.Customers,
+      url: ENDPOINTS["Get Customer By Id"](customer._id),
       headers: {
         Authorization: getAuthorizationCookie(),
         ["Content-Type"]: "application/json",
       },
-      data: customer,
+      data: _.omit(customer, ["_id"]),
     };
     return sendRequest(options);
   }

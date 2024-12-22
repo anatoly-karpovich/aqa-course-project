@@ -43,12 +43,12 @@ class ProductsService {
     const options = {
       method: "put",
       baseURL: BASE_URL,
-      url: ENDPOINTS.Products,
+      url: ENDPOINTS["Get Product By Id"](product._id),
       headers: {
         Authorization: getAuthorizationCookie(),
         ["Content-Type"]: "application/json",
       },
-      data: product,
+      data: _.omit(product, "_id"),
     };
     return sendRequest(options);
   }
