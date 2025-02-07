@@ -317,7 +317,7 @@ async function renderHomePage(options = {}) {
   }
 }
 
-const indexForRed = _.random(1, 3);
+// const indexForRed = _.random(1, 3);
 function sideMenuActivateElement(value) {
   const li = document.querySelectorAll(`ul.nav a`);
   li.forEach((el) => {
@@ -327,10 +327,10 @@ function sideMenuActivateElement(value) {
       el.classList.remove("bg-danger");
     }
   });
-  const index = findNodeIndexByInnerText(`ul.nav a`, value);
-  if (index === indexForRed) {
-    li[index].classList.add("bg-danger");
-  } else {
-    li[index].classList.add("active");
-  }
+  // const index = findNodeIndexByInnerText(`ul.nav a`, value);
+  // if (index === indexForRed) {
+  // li[index].classList.add("bg-danger");
+  // } else {
+  li[index].classList.add("active");
+  // }
 }
