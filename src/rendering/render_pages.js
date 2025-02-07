@@ -327,7 +327,7 @@ function sideMenuActivateElement(value) {
       el.classList.remove("bg-danger");
     }
   });
-  // const index = findNodeIndexByInnerText(`ul.nav a`, value);
+  const index = findNodeIndexByInnerText(`ul.nav a`, value);
   // if (index === indexForRed) {
   // li[index].classList.add("bg-danger");
   // } else {
