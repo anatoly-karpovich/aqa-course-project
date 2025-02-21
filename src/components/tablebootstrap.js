@@ -1,10 +1,10 @@
-function generateTableBootstrap(data = [], options) {
+function generateTableBootstrap(data = [], options, sorting) {
   const layout = `
     <div class="position-relative" id="table-container">
       <table class="table table-striped tableWrapper" id="${options.tableProps.id}">
           <thead>
               <tr>
-                  ${generateTableHeaders(Object.keys(_.omit(data[0], "Id")), options)}
+                  ${generateTableHeaders(Object.keys(_.omit(data[0], "Id")), options, sorting)}
               </tr>
           </thead>
           <tbody>
@@ -16,12 +16,12 @@ function generateTableBootstrap(data = [], options) {
   return layout;
 }
 
-function generateTableHeaders(titles = [], options) {
+function generateTableHeaders(titles = [], options, sorting) {
   return titles.length
     ? titles
         .map((title) =>
           options.tableProps.sortableFields.includes(title)
-            ? generateTableHeaderWithSorting(title, options)
+            ? generateTableHeaderWithSorting(title, options, sorting)
             : generateTableHeader(title)
         )
         .join("") + `<th scope="col" style="text-align:center">Actions</th>`
@@ -63,17 +63,18 @@ function generateTableHeader(headerName) {
   `;
 }
 
-function generateTableHeaderWithSorting(headerName, options) {
-  const isCurrentSortingField = options.tableProps.currentSortingField.name === headerName;
-  const direction = `direction="${isCurrentSortingField ? options.tableProps.currentSortingField.direction : "asc"}"`;
+function generateTableHeaderWithSorting(headerName, options, sorting) {
+  const isCurrentSortingField =
+    replaceApiToFeKeys[sorting.sortField] === headerName || idToOrderNumber[sorting.sortField] === headerName;
+  const direction = isCurrentSortingField ? `direction="${sorting.sortOrder}"` : "";
   return `
   <th scope="col">
     <div class="d-flex justify-content-start align-items-center">
         <div style="cursor: pointer"
         onclick="${options.tableProps.sortFunction.name}(this)" 
         current="${isCurrentSortingField}"
-        ${isCurrentSortingField ? direction : ""}>${headerName}</div>
-        ${isCurrentSortingField ? generateSortButton(options.tableProps.currentSortingField.direction) : ""}
+        ${direction}>${headerName}</div>
+        ${isCurrentSortingField ? generateSortButton(sorting.sortOrder) : ""}
     </div>
   </th>
   `;

@@ -158,16 +158,17 @@ function transformProductsForTable(products) {
   });
 }
 
-function renderProductsTable(products, options) {
-  $('[data-name="table-products"]').html(generateTableBootstrap(transformProductsForTable(products), options));
+function renderProductsTable(products, options, sorting) {
+  $('[data-name="table-products"]').html(generateTableBootstrap(transformProductsForTable(products), options, sorting));
 }
 
 async function getProductsAndRenderTable() {
   showTableSpinner();
-  const sortedProducts = (await getSortedProducts()).data.Products;
+  const response = (await getSortedProducts()).data;
+  const { Products: sortedProducts, sorting } = response;
   if (state.checkPage(PAGES.PRODUCTS)) {
     ProductsProps.tableProps.currentSortingField.direction = state.sorting.products.sortOrder;
     ProductsProps.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.products.sortField];
-    renderProductsTable(sortedProducts, ProductsProps);
+    renderProductsTable(sortedProducts, ProductsProps, sorting);
   }
 }

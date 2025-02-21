@@ -155,16 +155,19 @@ function transformCustomersForTable(customers) {
   });
 }
 
-function renderCustomersTable(customers, options) {
-  $('[data-name="table-customers"]').html(generateTableBootstrap(transformCustomersForTable(customers), options));
+function renderCustomersTable(customers, options, sorting) {
+  $('[data-name="table-customers"]').html(
+    generateTableBootstrap(transformCustomersForTable(customers), options, sorting)
+  );
 }
 
 async function getCustomersAndRenderTable() {
   showTableSpinner();
-  const sortedCustomers = (await getSortedCustomers()).data.Customers;
+  const response = (await getSortedCustomers()).data;
+  const { Customers: sortedCustomers, sorting } = response;
   if (state.checkPage(PAGES.CUSTOMERS)) {
     CustomerProps.tableProps.currentSortingField.direction = state.sorting.customers.sortOrder;
     CustomerProps.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.customers.sortField];
-    renderCustomersTable(sortedCustomers, CustomerProps);
+    renderCustomersTable(sortedCustomers, CustomerProps, sorting);
   }
 }

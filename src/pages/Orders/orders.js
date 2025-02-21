@@ -125,19 +125,20 @@ function transformOrdersForTable(orders) {
   });
 }
 
-function renderOrdersTable(orders, options) {
-  $('[data-name="table-orders"]').html(generateTableBootstrap(transformOrdersForTable(orders), options));
+function renderOrdersTable(orders, options, sorting) {
+  $('[data-name="table-orders"]').html(generateTableBootstrap(transformOrdersForTable(orders), options, sorting));
 }
 
 async function getOrdersAndRenderTable() {
   showTableSpinner();
-  const sortedOrders = (await getSortedOrders()).data.Orders;
+  const response = (await getSortedOrders()).data;
+  const { Orders: sortedOrders, sorting } = response;
   if (state.checkPage(PAGES.ORDERS)) {
     OrdersProps.tableProps.currentSortingField.direction = state.sorting.orders.sortOrder;
     OrdersProps.tableProps.currentSortingField.name =
       state.sorting.orders.sortField === "_id"
         ? idToOrderNumber[state.sorting.orders.sortField]
         : replaceApiToFeKeys[state.sorting.orders.sortField];
-    renderOrdersTable(sortedOrders, OrdersProps);
+    renderOrdersTable(sortedOrders, OrdersProps, sorting);
   }
 }

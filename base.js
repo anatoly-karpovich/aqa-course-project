@@ -3,8 +3,8 @@ const CONTENT_CONTAINER_ID = "root";
 const CONTENT_ID = "contentInner";
 const PAGE_TITLE_ID = "title";
 
-const BASE_URL = "https://aqa-course-project.app/";
-// const BASE_URL = "http://localhost:5000";
+// const BASE_URL = "https://aqa-course-project.app/";
+const BASE_URL = "http://localhost:5000";
 
 const NUMBER_KEYS = ["amount", "price", "flat", "house"];
 
@@ -17,7 +17,7 @@ const FILTER_VALUES = {
   orders: ["Draft", "In Process", "Partially Received", "Received", "Canceled"],
 };
 
-const DATE_AND_TIME_FORMAT = "YYYY/MM/DD HH:mm";
+const DATE_AND_TIME_FORMAT = "YYYY/MM/DD HH:mm:ss";
 const DATE_FORMAT = "YYYY/MM/DD";
 
 const dateKeys = ["createdOn", "createdAt"];
