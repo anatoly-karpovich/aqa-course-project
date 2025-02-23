@@ -12,4 +12,17 @@ class SignInService {
     };
     return sendRequest(options);
   }
+
+  static async signOut() {
+    const options = {
+      method: "post",
+      baseURL: BASE_URL,
+      url: ENDPOINTS.Logout,
+      headers: {
+        Authorization: getAuthorizationCookie(),
+        ["Content-Type"]: "application/json",
+      },
+    };
+    return sendRequest(options);
+  }
 }

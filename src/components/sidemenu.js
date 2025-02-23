@@ -28,7 +28,7 @@ function generateSidebar(options) {
 <!--     <li><a class="dropdown-item" href="#">Settings</a></li>
           <li><a class="dropdown-item" href="#">Profile</a></li> 
           <li><hr class="dropdown-divider"></li> -->
-          <li><a class="dropdown-item" id="signOut" href="#">Sign out</a></li>
+          <li><a class="dropdown-item" id="signOut" href="#" onclick="signOutHandler()">Sign out</a></li>
         </ul>
       </div>
     </div>
@@ -142,4 +142,20 @@ function currencyExchangeSection() {
         <label id="exchange-result" class="mt-2 d-none">Result:</label>
       </div>
   `;
+}
+
+async function signOutHandler() {
+  setSpinnerToBody();
+  const response = await SignInService.signOut();
+  if (response.status !== 200) {
+    handleApiErrors(response);
+    hideSpinners();
+    return renderNotification({ message: response.data.ErrorMessage }, true);
+  }
+  hideSpinners();
+  localStorage.removeItem("token");
+  removeAuthorizationCookie();
+  document.querySelector("#sidemenu").parentNode.removeChild(document.querySelector("#sidemenu"));
+  renderSignInPage();
+  state.notifications = {};
 }

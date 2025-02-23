@@ -87,3 +87,7 @@ function setSpinnerToButton(button) {
   button.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
   button.setAttribute("disabled", "");
 }
+
+function setSpinnerToBody() {
+  renderSpinnerInContainer("body");
+}

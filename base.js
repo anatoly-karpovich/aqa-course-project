@@ -23,7 +23,8 @@ const DATE_FORMAT = "YYYY/MM/DD";
 const dateKeys = ["createdOn", "createdAt"];
 
 const ENDPOINTS = {
-  ["Login"]: `${BASE_URL}/api/login/`,
+  ["Login"]: `${BASE_URL}/api/login`,
+  ["Logout"]: `${BASE_URL}/api/logout`,
   ["Customers"]: `${BASE_URL}/api/customers`,
   ["Get Customer By Id"]: (id) => `${BASE_URL}/api/customers/${id}/`,
   ["Get Customer Orders"]: (id) => `${BASE_URL}/api/customers/${id}/orders`,

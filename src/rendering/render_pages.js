@@ -279,13 +279,6 @@ async function renderEditProductsModal() {
 async function renderLandingPage(options = {}) {
   state.page = PAGES.HOME;
   document.querySelector("body").innerHTML = renderLandingPageLayout(options);
-  document.querySelector("#signOut").addEventListener("click", () => {
-    localStorage.removeItem("token");
-    removeAuthorizationCookie();
-    document.querySelector("#sidemenu").parentNode.removeChild(document.querySelector("#sidemenu"));
-    renderSignInPage();
-    state.notifications = {};
-  });
   await renderHomePage(homeProps);
   addEventListenersToSidemenu();
   renderNotificationContainer();
