@@ -27,6 +27,7 @@ const state = {
     orders: [],
   },
   page: "",
+  user: {},
   checkPage(page) {
     return this.page === page || !this.page;
   },

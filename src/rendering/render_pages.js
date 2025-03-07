@@ -5,6 +5,7 @@ const renderPages = {
   Customers: renderCustomersPage,
   Products: renderProductsPage,
   Orders: renderOrdersPage,
+  Managers: renderManagersPage,
 };
 
 //Customers Section
@@ -273,6 +274,13 @@ async function renderEditProductsModal() {
   } else {
     handleApiErrors(products);
   }
+}
+
+//Managers
+
+async function renderManagersPage(options = ManagersProps) {
+  state.page = PAGES.MANAGERS;
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createManagersPageLayout(options);
 }
 
 //Home section

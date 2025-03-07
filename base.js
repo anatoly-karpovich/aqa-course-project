@@ -3,8 +3,8 @@ const CONTENT_CONTAINER_ID = "root";
 const CONTENT_ID = "contentInner";
 const PAGE_TITLE_ID = "title";
 
-const BASE_URL = "https://aqa-course-project.app/";
-// const BASE_URL = "http://localhost:5000";
+// const BASE_URL = "https://aqa-course-project.app/";
+const BASE_URL = "http://localhost:5000";
 
 const NUMBER_KEYS = ["amount", "price", "flat", "house"];
 
@@ -146,4 +146,5 @@ const PAGES = {
   EDIT_CUSTOMER: "Edit Customer",
   ORDERS: "Orders",
   ORDER_DETAILS: "Order details",
+  MANAGERS: "Managers",
 };

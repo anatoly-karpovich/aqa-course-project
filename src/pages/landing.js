@@ -30,6 +30,10 @@ const landingProps = {
         name: "Customers",
         xlink: "#people-circle",
       },
+      {
+        name: "Managers",
+        xlink: "#geo-fill",
+      },
     ],
   },
 };

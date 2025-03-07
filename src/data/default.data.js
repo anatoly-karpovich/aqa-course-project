@@ -950,6 +950,14 @@ const defaultMetrics = {
 const emptyOrder = {
   _id: "-",
   status: "Draft",
+  assignedManager: {
+    _id: "67c4ea03c38902141f13ee94",
+    username: "test@gmail.com",
+    firstName: "Anatoly",
+    lastName: "Karpovich",
+    roles: ["USER"],
+    createdOn: "2025/03/03 00:30:11",
+  },
   customer: {
     _id: "-",
     email: "-",
@@ -996,7 +1004,15 @@ const emptyOrder = {
       total_price: 0,
       delivery: null,
       changedOn: "2024-11-24T01:15:00.000Z",
-      action: "Order created",
+      action: ORDER_HISTORY_ACTIONS.CREATED,
+      performer: {
+        _id: "67c4ea03c38902141f13ee94",
+        username: "test@gmail.com",
+        firstName: "Anatoly",
+        lastName: "Karpovich",
+        roles: ["USER"],
+        createdOn: "2025/03/03 00:30:11",
+      },
     },
   ],
 };

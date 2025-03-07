@@ -78,8 +78,12 @@ function generateOrderDetailsInfoBar(order) {
         <span class="fst-italic">${order._id}</span>
     </div>
     <div class="d-flex justify-content-start p-horizontal-20 mb-3">
-        <span class="strong-details fw-bold">Assigned Manageer: </span>
-        <span class="fst-italic">AQA User</span>
+        <span class="strong-details fw-bold">Assigned Manager: </span>
+        <span class="fst-italic">${
+          order.assignedManager?.firstName
+            ? order.assignedManager.firstName + " " + order.assignedManager.lastName
+            : "-"
+        }</span>
     </div>
     <div class="d-flex justify-content-between p-horizontal-20 mb-3">
         <div class="d-flext justify-content-start">
@@ -320,7 +324,9 @@ function generateOrderHistoryRow(order, index) {
           <button class="accordion-button collapsed his-action" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2${index}" 
           aria-expanded="false" aria-controls="collapse2${index}"></button>
           <span class="his-col">${order.history[index].action}</span>
-          <span class="his-col">${order.history[index].changedBy ? order.history[index].changedBy : "AQA User"}</span>
+          <span class="his-col">${order.history[index].performer.firstName} ${
+    order.history[index].performer.lastName
+  }</span>
           <span class="his-col">${convertToDateAndTime(order.history[index].changedOn)}</span>
       </div>
       <div id="collapse2${index}" class="accordion-collapse collapse" aria-labelledby="heading2${index}">
