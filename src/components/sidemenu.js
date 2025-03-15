@@ -28,8 +28,12 @@ function generateSidebar(options) {
         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
           <li><a class="dropdown-item" href="#" id="profile" 
           onclick="profileHandler('${user?._id}',event)">Profile</a></li> 
-          <li><a class="dropdown-item" href="#" id="change-password" 
-          onclick="changePasswordHandler('${user?._id}',event)">Change Password</a></li>
+          ${
+            user?.roles.includes(ROLES.ADMIN)
+              ? ""
+              : `          <li><a class="dropdown-item" href="#" id="change-password" 
+          onclick="changePasswordHandler('${user?._id}',event)">Change Password</a></li>`
+          }
           <li><hr class="dropdown-divider"></li> 
           <li><a class="dropdown-item" id="signOut" href="#" onclick="signOutHandler()">Sign out</a></li>
         </ul>
