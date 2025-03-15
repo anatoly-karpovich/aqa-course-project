@@ -5,6 +5,7 @@ function renderConfirmationModal(id, options) {
     confirmationModalWrap.remove();
   }
   confirmationModalWrap = document.createElement("div");
+  confirmationModalWrap.setAttribute("modal", "");
   confirmationModalWrap.insertAdjacentHTML(
     "afterbegin",
     `
@@ -42,7 +43,7 @@ function renderConfirmationModal(id, options) {
 }
 
 function removeConfimationModal() {
-  confirmationModalWrap.remove();
+  document.querySelector("[modal]").parentNode.removeChild(document.querySelector("[modal]"));
   confirmationModalWrap = null;
   $("body").removeClass("modal-open");
   $("body").removeAttr("style");

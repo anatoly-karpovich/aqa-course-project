@@ -96,9 +96,9 @@ function validatePassword() {
   const passwordInput = document.getElementById("inputPassword");
   const passwordError = document.getElementById("error-inputPassword");
   const password = passwordInput.value;
-  if (!password) {
+  if (!password || password.length < 8) {
     passwordInput.classList.add("is-invalid");
-    passwordError.innerText = "Password is required.";
+    passwordError.innerText = "Password can't be less then 8 characters.";
     return false;
   } else {
     passwordInput.classList.remove("is-invalid");
@@ -131,13 +131,14 @@ function validateConfirmPassword() {
 }
 
 function validateAddManagerForm() {
-  const isValid = [
-    validateUsernameField,
-    validateFirstName,
-    validateLastName,
-    validatePassword,
-    validateConfirmPassword,
-  ].every((validationFunc) => validationFunc());
+  let isValid = true;
+  [validateUsernameField, validateFirstName, validateLastName, validatePassword, validateConfirmPassword].forEach(
+    (validationFunc) => {
+      if (!validationFunc()) {
+        isValid = false;
+      }
+    }
+  );
 
   const saveButton = $("#save-new-manager");
 
@@ -159,6 +160,7 @@ function clearAddManagerForm(event) {
   [confirmPasswordInput, passwordInput, usernameInput, firstNameInput, lastNameInput].forEach(
     (input) => (input.value = "")
   );
+  validateAddManagerForm();
 }
 
 async function saveNewManager(event) {

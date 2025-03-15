@@ -65,4 +65,18 @@ class ManagersService {
     };
     return sendRequest(options);
   }
+
+  static async changePassword(id, passwords) {
+    const options = {
+      method: "patch",
+      baseURL: BASE_URL,
+      url: ENDPOINTS["Change Manager Password"](id),
+      headers: {
+        Authorization: getAuthorizationCookie(),
+        ["Content-Type"]: "application/json",
+      },
+      data: passwords,
+    };
+    return sendRequest(options);
+  }
 }

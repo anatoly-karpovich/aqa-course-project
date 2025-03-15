@@ -38,14 +38,14 @@ const layout = `
         <!-- Email input -->
         <div class="form-outline mb-4">
           <input type="email" id="emailinput" class="form-control form-control-lg"
-            placeholder="Enter a valid email address" />
+            placeholder="Enter a valid email address" autocomplete="off" />
           <label class="form-label" for="emailinput">Email address</label>
         </div>
 
         <!-- Password input -->
         <div class="form-outline mb-3">
           <input type="password" id="passwordinput" class="form-control form-control-lg"
-            placeholder="Enter password" />
+            placeholder="Enter password" autocomplete="off" />
           <label class="form-label" for="passwordinput">Password</label>
           <h4 id="errorMessage">Credentials are required</h4>
         </div>

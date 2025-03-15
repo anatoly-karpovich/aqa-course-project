@@ -1,26 +1,34 @@
 function generateManagerDetailsPageLayout(user, orders) {
+  const performer = JSON.parse(window.localStorage.getItem("user"));
   return `
 <div class="card shadow-sm p-4 mb-5 bg-body rounded page-title-margin position-relative" id="manager-info-container">
     <div class="back-link" onclick="renderManagersPage();">
         <i class="bi bi-arrow-left me-2"></i> Managers
     </div>
     <div class="card-body" style="margin: 0 12px 0 12px;">
-        <div class="card-title mb-4 d-flex justify-content-start align-items-center">
-            <h3>Manager Details</h3>
-            <button class="btn edit-pencil" id="edit-manager-pencil" title="Edit Manager" 
-            onclick="renderEditManagerPage(event,'${user._id}')">
-                <i class="bi bi-pencil-fill"></i>
-            </button>
-            ${
-              user._id === JSON.parse(window.localStorage.getItem("user"))._id
-                ? `<button class="btn btn-secondary ms-2 btn-sm" id="change-password-button" title="Change Password" onclick="renderChangePasswordPage(event,'${user._id}')">
-                <i class="bi bi-key-fill"></i> Change Password
-            </button>`
-                : ""
-            }
-
-        </div>
-
+            <div class="card-title mb-4 d-flex justify-content-start align-items-center">
+                <h3>Manager Details</h3>
+                ${
+                  validateUserToEdit(user, performer) && false
+                    ? `<button class="btn edit-pencil" id="edit-manager-pencil" title="Edit Manager" 
+                onclick="renderEditManagerPage(event,'${user._id}')">
+                    <i class="bi bi-pencil-fill"></i>
+                </button>`
+                    : ""
+                }
+                ${
+                  validateUserToEdit(user, performer) && !user.roles.includes(ROLES.ADMIN)
+                    ? `<button class="btn btn-secondary ms-2 btn-sm" id="change-password-button" title="Change Password" onclick="createChangePasswordModal(event,'${user._id}')">
+                    <i class="bi bi-key-fill"></i> Change Password
+                </button>`
+                    : ""
+                }
+                ${
+                  validateUserToEdit(user, performer) && !user.roles.includes(ROLES.ADMIN)
+                    ? `<button class="btn btn-danger btn-sm ms-3" id="delete-manager" onclick="renderDeleteManagerModal('${user._id}');">Delete</button>`
+                    : ""
+                }
+            </div>      
         <div class="row g-4">
             <div class="col-md-6">
                 <h5 class="d-flex align-items-center"><i class="bi bi-person-circle me-1"></i> Username</h5>
@@ -77,4 +85,46 @@ function renderEditManagerPage(event, managerId) {
 
 function renderChangePasswordPage(event, managerId) {
   event.preventDefault();
+}
+
+function validateUserToEdit(user, performer) {
+  return user._id === performer._id || performer.roles.includes(ROLES.ADMIN);
+}
+
+const delete_manager_confirmation_opts = {
+  title: '<i class="bi bi-trash me-2"></i> Delete Manager',
+  body: "Are you sure you want to delete manager?",
+  deleteFunction: "deleteManager",
+  buttons: {
+    success: {
+      name: "Yes, Delete",
+      id: "delete-manager-modal-btn",
+    },
+    cancel: {
+      name: "Cancel",
+      id: "cancel-manager-modal-btn",
+    },
+  },
+};
+
+async function deleteManager(id, confirmButton) {
+  setSpinnerToButton(confirmButton);
+  $('[name="confirmation-modal"] button.btn-secondary').prop("disabled", true);
+  confirmButton.innerHTML = buttonSpinner;
+  const response = await ManagersService.deleteManager(id);
+  removeConfimationModal();
+
+  const manager = JSON.parse(window.localStorage.getItem("user"));
+  if (manager._id === id && !manager.roles.includes(ROLES.ADMIN)) {
+    await signOutHandler();
+  } else {
+    await showNotificationAfterDeleteRequest(
+      response,
+      { message: SUCCESS_MESSAGES["Manager Successfully Updated"]("Manager") },
+      ManagersProps
+    );
+    if (response.data.IsSuccess) {
+      await renderManagersPage();
+    }
+  }
 }

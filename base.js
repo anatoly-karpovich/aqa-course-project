@@ -40,6 +40,7 @@ const ENDPOINTS = {
   ["Metrics"]: `${BASE_URL}/api/metrics`,
   ["Managers"]: `${BASE_URL}/api/users`,
   ["Get Manager By Id"]: (id) => `${BASE_URL}/api/users/${id}/`,
+  ["Change Manager Password"]: (id) => `${BASE_URL}/api/users/password/${id}`,
 };
 
 const SUCCESS_MESSAGES = {
@@ -58,6 +59,8 @@ const SUCCESS_MESSAGES = {
   ["Comment Successfully Created"]: `Comment was successfully posted`,
   ["Comment Successfully Deleted"]: `Comment was successfully deleted`,
   ["New Manager Added"]: "Manager was successfully created",
+  ["Manager Successfully Updated"]: (name) => `${name} was successfully updated`,
+  ["Password Successfully Changed"]: "Password was successfully changed",
 };
 
 const ERROR_MESSAGES = {
@@ -156,4 +159,9 @@ const PAGES = {
   MANAGERS: "Managers",
   ADD_MANAGER: "Add Manager",
   MANAGER_DETAILS: "Manager details",
+};
+
+const ROLES = {
+  ADMIN: "ADMIN",
+  USER: "USER",
 };

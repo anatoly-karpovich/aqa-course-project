@@ -7,6 +7,7 @@ async function createEditProductsModal(data) {
     editProductsModalWrap.remove();
   }
   editProductsModalWrap = document.createElement("div");
+  editProductsModalWrap.setAttribute("modal", "");
   editProductsModalWrap.insertAdjacentHTML(
     "afterbegin",
     `
@@ -119,7 +120,7 @@ function generateEditProductsModalBody() {
 }
 
 function removeEditProductsModal() {
-  editProductsModalWrap.remove();
+  document.querySelector("[modal]").parentNode.removeChild(document.querySelector("[modal]"));
   editProductsModalWrap = null;
   $("body").removeClass("modal-open");
   $("body").removeAttr("style");

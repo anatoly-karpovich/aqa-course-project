@@ -316,6 +316,10 @@ async function renderManagerDetailsPage(id) {
   sideMenuActivateElement(ManagersProps.path);
 }
 
+function renderDeleteManagerModal(id) {
+  renderConfirmationModal(id, delete_manager_confirmation_opts);
+}
+
 //Home section
 async function renderLandingPage(options = {}) {
   state.page = PAGES.HOME;
