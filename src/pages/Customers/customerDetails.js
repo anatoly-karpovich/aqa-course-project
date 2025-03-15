@@ -103,7 +103,7 @@ function createCustomerDetailsPageLayout(customerData, orders) {
 
 function emptyOrdersTableRow() {
   return `
-    <tr><td colspan="5" class="fs-italic">${NO_ORDERS_IN_TABLE}</td></tr>
+    <tr><td colspan="5" class="fs-italic">${NO_RECORDS_IN_TABLE}</td></tr>
     `;
 }
 

@@ -109,7 +109,7 @@ function renderSignInPage() {
     const response = await SignInService.signIn(credentials);
     if (response.status === 200) {
       document.cookie = `Authorization=${response.headers.authorization}`;
-      window.localStorage.setItem("X-User-Name", response.data.User.firstName);
+      window.localStorage.setItem("user", JSON.stringify(response.data.User));
       state.user = response.data.User;
       signIn.classList.add("disabled");
       signIn.parentNode.removeChild(signIn);

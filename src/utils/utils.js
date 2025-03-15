@@ -315,6 +315,7 @@ function getLastMonths(amount) {
 }
 
 function seachButtonHandler(input) {
+  if (state.page === PAGES.MANAGERS) return;
   const text = input.value;
   const searchButton = $("[id*=search-]");
   text.trim() ? searchButton.prop("disabled", false) : searchButton.prop("disabled", true);
