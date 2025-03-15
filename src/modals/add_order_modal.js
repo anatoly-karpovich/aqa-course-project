@@ -9,6 +9,7 @@ function createAddOrderModal(data) {
   }
   orderModalWrap = document.createElement("div");
   orderModalWrap.id = `add-order-modal-id`;
+  orderModalWrap.setAttribute("modal", "");
   orderModalWrap.insertAdjacentHTML(
     "afterbegin",
     `
@@ -203,7 +204,7 @@ function generateAddOrderProductInput(options) {
 }
 
 function removeAddOrderModal() {
-  orderModalWrap.remove();
+  document.querySelector("[modal]").parentNode.removeChild(document.querySelector("[modal]"));
   orderModalWrap = null;
   $("body").removeClass("modal-open");
   $("body").removeAttr("style");

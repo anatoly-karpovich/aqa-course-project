@@ -46,7 +46,9 @@ function searchBar(buttons) {
           <input class="form-control me-2" type="search" placeholder="Type a value..." maxlength="40" aria-label="Search" oninput="seachButtonHandler(this)">
           ${generateButton(buttons.search)}
         </form>
-        <button class="btn btn-outline-primary ms-2 d-flex justify-content-start" id="filter">
+        <button class="btn btn-outline-primary ms-2 d-flex justify-content-start" id="filter" ${
+          state.page === PAGES.MANAGERS ? "disabled" : ""
+        }>
             <i class="bi bi-funnel me-2"></i> Filter
         </button>       
       </div>

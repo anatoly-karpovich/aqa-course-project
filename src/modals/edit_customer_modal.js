@@ -8,6 +8,7 @@ function createEditCustomerModal(data) {
     editCustomerModalWrap.remove();
   }
   editCustomerModalWrap = document.createElement("div");
+  editCustomerModalWrap.setAttribute("modal", "");
   editCustomerModalWrap.insertAdjacentHTML(
     "afterbegin",
     `
@@ -72,7 +73,7 @@ function generateEditCustomerModalBody() {
 }
 
 function removeEditCustomerModal() {
-  editCustomerModalWrap.remove();
+  document.querySelector("[modal]").parentNode.removeChild(document.querySelector("[modal]"));
   editCustomerModalWrap = null;
   $("body").removeClass("modal-open");
   $("body").removeAttr("style");

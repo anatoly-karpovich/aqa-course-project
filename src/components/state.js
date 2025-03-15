@@ -18,6 +18,10 @@ const state = {
       sortField: "createdOn",
       sortOrder: "desc",
     },
+    managers: {
+      sortField: "createdOn",
+      sortOrder: "desc",
+    },
   },
   notifications: {},
   sideMenuElementForRed: Math.random() * (3 - 1) + 1,

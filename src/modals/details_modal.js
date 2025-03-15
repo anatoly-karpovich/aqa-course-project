@@ -11,6 +11,7 @@ function createDetailsModal(options = {}, data = {}) {
   }
   modalWrap = document.createElement("div");
   modalWrap.id = `${options.path}-details-modal-id`;
+  modalWrap.setAttribute("modal", "");
   modalWrap.insertAdjacentHTML(
     "afterbegin",
     `
@@ -86,7 +87,7 @@ function replaceBooleanToYesNo(value) {
 }
 
 function removeDetailsModal() {
-  modalWrap.remove();
+  document.querySelector("[modal]").parentNode.removeChild(document.querySelector("[modal]"));
   modalWrap = null;
   $("body").removeClass("modal-open");
   $("body").removeAttr("style");

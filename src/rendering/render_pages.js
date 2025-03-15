@@ -280,7 +280,44 @@ async function renderEditProductsModal() {
 
 async function renderManagersPage(options = ManagersProps) {
   state.page = PAGES.MANAGERS;
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createManagersPageLayout(options);
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createManagersPageLayout(options, {
+    Users: [],
+  });
+  showTableSpinner();
+  const response = await ManagersService.getManagers();
+  if (response.status === 200 && state.checkPage(PAGES.MANAGERS)) {
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createManagersPageLayout(options, response.data);
+  } else {
+    handleApiErrors(response);
+  }
+  sideMenuActivateElement(options.path);
+}
+
+async function renderAddManagerPage() {
+  state.page = PAGES.ADD_MANAGER;
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = generateAddManagerPageLayout();
+  sideMenuActivateElement(ManagersProps.path);
+  // addEventListelersToAddManagerPage();
+}
+
+async function renderManagerDetailsPage(id) {
+  state.page = PAGES.MANAGER_DETAILS;
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = generateManagerDetailsPageLayout(emptyManager, []);
+  showManagerDetailsSpinners();
+  const response = await ManagersService.getManagers(id);
+  if (response.status === 200 && state.checkPage(PAGES.MANAGER_DETAILS)) {
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = generateManagerDetailsPageLayout(
+      response.data.User,
+      response.data.Orders
+    );
+  } else {
+    handleApiErrors(response);
+  }
+  sideMenuActivateElement(ManagersProps.path);
+}
+
+function renderDeleteManagerModal(id) {
+  renderConfirmationModal(id, delete_manager_confirmation_opts);
 }
 
 //Home section

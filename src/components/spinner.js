@@ -91,3 +91,8 @@ function setSpinnerToButton(button) {
 function setSpinnerToBody() {
   renderSpinnerInContainer("body");
 }
+
+function showManagerDetailsSpinners() {
+  renderSpinnerInContainer("#manager-info-container");
+  renderSpinnerInContainer("#manager-orders-container");
+}

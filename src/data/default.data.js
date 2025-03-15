@@ -1016,3 +1016,12 @@ const emptyOrder = {
     },
   ],
 };
+
+const emptyManager = {
+  _id: "67c4ea03c38902141f13ee94",
+  username: "test@gmail.com",
+  firstName: "Anatoly",
+  lastName: "Karpovich",
+  roles: ["USER"],
+  createdOn: "2025/03/03 00:30:11",
+};

@@ -13,6 +13,7 @@ function renderFiltersModal(page) {
     filtersModalWrap.remove();
   }
   filtersModalWrap = document.createElement("div");
+  filtersModalWrap.setAttribute("modal", "");
   filtersModalWrap.insertAdjacentHTML(
     "afterbegin",
     `
@@ -108,7 +109,7 @@ function createFilterCheckbox(page, name) {
 }
 
 function removeFiltersModal() {
-  filtersModalWrap.remove();
+  document.querySelector("[modal]").parentNode.removeChild(document.querySelector("[modal]"));
   filtersModalWrap = null;
   $("body").removeClass("modal-open");
   $("body").removeAttr("style");
