@@ -29,7 +29,7 @@ function generateSidebar(options) {
           <li><a class="dropdown-item" href="#" id="profile" 
           onclick="profileHandler('${user._id}',event)">Profile</a></li> 
           <li><a class="dropdown-item" href="#" id="change-password" 
-          onlick="changePasswordHandler()">Change Password</a></li>
+          onclick="changePasswordHandler('${user._id}',event)">Change Password</a></li>
           <li><hr class="dropdown-divider"></li> 
           <li><a class="dropdown-item" id="signOut" href="#" onclick="signOutHandler()">Sign out</a></li>
         </ul>
@@ -170,6 +170,11 @@ async function profileHandler(id, event) {
   await renderManagerDetailsPage(id);
 }
 
-async function changePasswordHandler(event) {
+async function changePasswordHandler(id, event) {
   event.preventDefault();
+  if (state.page !== PAGES.MANAGER_DETAILS) {
+    await renderManagerDetailsPage(id);
+    state.page = PAGES.MANAGER_DETAILS;
+  }
+  createChangePasswordModal(id, event);
 }

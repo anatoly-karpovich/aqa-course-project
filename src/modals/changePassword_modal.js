@@ -1,7 +1,7 @@
 let changePasswordModalWrap = null;
 const changePasswordModalId = "edit-customer-modal";
 
-function createChangePasswordModal(event, id) {
+function createChangePasswordModal(id, event) {
   event.preventDefault();
   if (changePasswordModalWrap !== null) {
     changePasswordModalWrap.remove();
@@ -40,7 +40,7 @@ function createChangePasswordModal(event, id) {
                             </div>
                         </div>
                         <div class="modal-footer mx-4">
-                          <button type="submit" class="btn btn-primary mr-10" id="update-password-btn" disabled onclick="changePasswordHandler('${id}');">Update Password</button>
+                          <button type="submit" class="btn btn-primary mr-10" id="update-password-btn" disabled onclick="changePassword('${id}');">Update Password</button>
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancel-password-modal-btn" onclick="removeChangePasswordModal();">Cancel</button>
                         </div>
                     </div>
@@ -64,7 +64,7 @@ function removeChangePasswordModal() {
   }
 }
 
-async function changePasswordHandler(id, button) {
+async function changePassword(id, button) {
   const oldPassword = document.getElementById("modal-currentPassword").value;
   const newPassword = document.getElementById("modal-newPassword").value;
   renderSpinnerInContainer("#change-password-form");

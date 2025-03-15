@@ -18,7 +18,7 @@ function generateManagerDetailsPageLayout(user, orders) {
                 }
                 ${
                   validateUserToEdit(user, performer) && !user.roles.includes(ROLES.ADMIN)
-                    ? `<button class="btn btn-secondary ms-2 btn-sm" id="change-password-button" title="Change Password" onclick="createChangePasswordModal(event,'${user._id}')">
+                    ? `<button class="btn btn-secondary ms-2 btn-sm" id="change-password-button" title="Change Password" onclick="createChangePasswordModal('${user._id}',event)">
                     <i class="bi bi-key-fill"></i> Change Password
                 </button>`
                     : ""
