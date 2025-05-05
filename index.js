@@ -11,9 +11,9 @@ async function router() {
   if (!token) {
     renderPages["Sign In"]();
   }
-  if (!document.querySelector("#sidebar")) {
-    renderLandingPage();
-  }
+  // if (!document.querySelector("#sidebar")) {
+  //   renderLandingPage();
+  // }
 
   const hash = window.location.hash || "#/";
   console.log(hash);
