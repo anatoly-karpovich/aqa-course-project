@@ -295,11 +295,11 @@ async function renderManagersPage(options = ManagersProps) {
   showTableSpinner();
   const response = await ManagersService.getManagers();
   if (response.status === 200 && state.checkPage(PAGES.MANAGERS)) {
+    sideMenuActivateElement(options.path);
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createManagersPageLayout(options, response.data);
   } else {
     handleApiErrors(response);
   }
-  sideMenuActivateElement(options.path);
 }
 
 async function renderAddManagerPage() {
