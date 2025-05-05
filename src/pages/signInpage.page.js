@@ -91,6 +91,7 @@ const layout = `
 </section>`;
 
 function renderSignInPage() {
+  setRoute(ROUTES.SIGNIN);
   if (document.querySelector("#sidemenu")) {
     document.querySelector("#sidemenu").parentNode.removeChild(document.querySelector("#sidemenu"));
   }

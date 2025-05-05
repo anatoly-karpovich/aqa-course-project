@@ -115,11 +115,12 @@ function transformOrdersForTable(orders) {
     return {
       [replaceApiToFeKeys._id]: el._id,
       [idToOrderNumber._id]: el._id,
-      [replaceApiToFeKeys.name]: el.customer.name,
+      // [replaceApiToFeKeys.name]: el.customer.name,
       [replaceApiToFeKeys.email]: el.customer.email,
       [replaceApiToFeKeys.price]: `$${el.total_price}`,
       [replaceApiToFeKeys.delivery]: el.delivery ? convertToDate(el.delivery.finalDate) : "-",
       [replaceApiToFeKeys.status]: el.status,
+      [replaceApiToFeKeys.assignedManager]: `${el.assignedManager?.firstName} ${el.assignedManager?.lastName}` ?? "-",
       [replaceApiToFeKeys.createdOn]: convertToDateAndTime(el.createdOn),
     };
   });

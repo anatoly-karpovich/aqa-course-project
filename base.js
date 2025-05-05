@@ -127,6 +127,7 @@ const replaceApiToFeKeys = {
   lastName: "Last Name",
   username: "Username",
   roles: "Roles",
+  assignedManager: "Assigned Manager",
 };
 
 const idToOrderNumber = {
@@ -164,4 +165,26 @@ const PAGES = {
 const ROLES = {
   ADMIN: "ADMIN",
   USER: "USER",
+};
+
+const ROUTES = {
+  ORDERS: "/orders",
+  ORDER_DETAILS: (id) => `/orders/${id}`,
+  ORDER_EDIT_DELIVERY: (id) => `/orders/${id}/edit-delivery`,
+  ORDER_SCHEDULE_DELIVERY: (id) => `/orders/${id}/schedule-delivery`,
+  CUSTOMERS: "/customers",
+  CUSTOMER_DETAILS: (id) => `/customers/${id}`,
+  CUSTOMER_EDIT: (id) => `/customers/${id}/edit`,
+  CUSTOMER_ADD: (id) => `/customers/${id}/add`,
+  PRODUCTS: "/products",
+  PRODUCT_DETAILS: (id) => `/products/${id}`,
+  PRODUCT_EDIT: (id) => `/products/${id}/edit`,
+  PRODUCT_ADD: (id) => `/products/${id}/add`,
+  MANAGERS: "/managers",
+  MANAGER_DETAILS: (id) => `/managers/${id}`,
+  MANAGER_EDIT: (id) => `/managers/${id}/edit`,
+  MANAGER_ADD: (id) => `/managers/${id}/add`,
+  SIGNIN: "/login",
+  HOME: "/",
+  NOT_FOUND: "/page-not-found",
 };

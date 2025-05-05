@@ -347,3 +347,7 @@ function convertToDate(value) {
 function convertToFullDateAndTime(value) {
   return moment(value).format("LLL");
 }
+
+function setRoute(route) {
+  window.location.hash = `#${route}`;
+}

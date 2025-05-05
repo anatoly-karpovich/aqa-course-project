@@ -10,6 +10,7 @@ const renderPages = {
 
 //Customers Section
 async function renderCustomersPage(options = CustomerProps) {
+  setRoute(ROUTES.CUSTOMERS);
   state.page = PAGES.CUSTOMERS;
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderCustomersPageLayout(options, {
     data: { Customers: [] },
@@ -22,6 +23,7 @@ async function renderCustomersPage(options = CustomerProps) {
 
 function renderAddNewCustomerPage(options = add_new_customer_props) {
   state.page = PAGES.ADD_NEW_CUSTOMER;
+  setRoute(ROUTES.ADD_NEW_CUSTOMER);
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderAddNewCustomerLayout(options);
   sideMenuActivateElement(options.path);
   addEventListelersToAddNewCustomerPage();
@@ -40,6 +42,7 @@ async function renderCustomerDetailsModal(id) {
 }
 
 async function renderCustomerDetailsPage(id) {
+  setRoute(ROUTES.CUSTOMER_DETAILS(id));
   state.page = PAGES.CUSTOMER_DETAILS;
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createCustomerDetailsPageLayout(emptyCustomer, []);
   showCustomerDetailsSpinners();
@@ -54,6 +57,7 @@ async function renderCustomerDetailsPage(id) {
 }
 
 async function renderEditCustomerPage(id) {
+  setRoute(ROUTES.CUSTOMER_EDIT(id));
   state.page = PAGES.EDIT_CUSTOMER;
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditCustomerLayout(
     edit_customer_props,
@@ -79,6 +83,7 @@ function renderDeleteCustomerModal(id) {
 
 //Products Section
 async function renderProductsPage(options = ProductsProps) {
+  setRoute(ROUTES.PRODUCTS);
   state.page = PAGES.PRODUCTS;
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderProductsPageLayout(options, {
     data: { Products: [] },
@@ -90,6 +95,7 @@ async function renderProductsPage(options = ProductsProps) {
 }
 
 function renderAddNewProductPage(options = add_new_product_props) {
+  setRoute(ROUTES.ADD_NEW_PRODUCT);
   state.page = PAGES.ADD_NEW_PRODUCT;
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderAddNewProductLayout(options);
   sideMenuActivateElement(options.path);
@@ -116,6 +122,7 @@ async function renderProductDetailsModal(id) {
 }
 
 async function renderEditProductPage(id) {
+  setRoute(ROUTES.PRODUCT_EDIT(id));
   state.page = PAGES.EDIT_PRODUCT;
   if (modalWrap) {
     removeDetailsModal();
@@ -137,6 +144,7 @@ async function renderEditProductPage(id) {
 
 //Orders Section
 async function renderOrdersPage(options = OrdersProps) {
+  setRoute(ROUTES.ORDERS);
   state.page = PAGES.ORDERS;
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrdersPageLayout(options, { data: { Orders: [] } });
   sideMenuActivateElement(options.path);
@@ -146,6 +154,7 @@ async function renderOrdersPage(options = OrdersProps) {
 }
 
 async function renderOrderDetailsPage(id, withScroll = true) {
+  setRoute(ROUTES.ORDER_DETAILS(id));
   state.page = PAGES.ORDER_DETAILS;
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(
     Order_Details_Props,
@@ -294,6 +303,7 @@ async function renderManagersPage(options = ManagersProps) {
 }
 
 async function renderAddManagerPage() {
+  setRoute(ROUTES.ADD_MANAGER);
   state.page = PAGES.ADD_MANAGER;
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = generateAddManagerPageLayout();
   sideMenuActivateElement(ManagersProps.path);
@@ -301,6 +311,7 @@ async function renderAddManagerPage() {
 }
 
 async function renderManagerDetailsPage(id) {
+  setRoute(ROUTES.MANAGER_DETAILS(id));
   state.page = PAGES.MANAGER_DETAILS;
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = generateManagerDetailsPageLayout(emptyManager, []);
   showManagerDetailsSpinners();
@@ -321,7 +332,7 @@ function renderDeleteManagerModal(id) {
 }
 
 //Home section
-async function renderLandingPage(options = {}) {
+async function renderLandingPage(options = landingProps) {
   state.page = PAGES.HOME;
   document.querySelector("body").innerHTML = renderLandingPageLayout(options);
   await renderHomePage(homeProps);
@@ -353,6 +364,7 @@ async function renderHomePage(options = {}) {
       handleApiErrors(metrics);
     }
   }
+  setRoute(ROUTES.HOME);
 }
 
 // const indexForRed = _.random(1, 3);
@@ -361,14 +373,29 @@ function sideMenuActivateElement(value) {
   li.forEach((el) => {
     if (el.classList.contains("active")) {
       el.classList.remove("active");
-    } else if (el.classList.contains("bg-danger")) {
-      el.classList.remove("bg-danger");
     }
   });
   const index = findNodeIndexByInnerText(`ul.nav a`, value);
-  // if (index === indexForRed) {
-  // li[index].classList.add("bg-danger");
-  // } else {
+
   li[index].classList.add("active");
-  // }
+}
+
+function renderNotFoundPage() {
+  const currentPath = window.location.hash;
+
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = `
+    <div class="d-flex flex-column justify-content-center align-items-center vh-100 text-center p-3">
+      <img src="https://cdn-icons-png.flaticon.com/512/2748/2748558.png" alt="Sad face" style="width: 150px; margin-bottom: 20px;" />
+      <h1 class="display-1 fw-bold text-danger">404</h1>
+      <p class="fs-3">
+        <span class="text-danger">Oops!</span> Page not found.
+      </p>
+      <p class="lead">
+        We couldn't find a page for: <code>${currentPath}</code>
+      </p>
+      <a href="#/" class="btn btn-primary mt-3" onclick="renderLandingPage()">
+        Back to Home
+      </a>
+    </div>
+  `;
 }
