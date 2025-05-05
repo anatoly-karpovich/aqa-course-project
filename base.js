@@ -185,6 +185,6 @@ const ROUTES = {
   MANAGER_EDIT: (id) => `/managers/${id}/edit`,
   MANAGER_ADD: (id) => `/managers/${id}/add`,
   SIGNIN: "/login",
-  HOME: "/",
+  HOME: "/home",
   NOT_FOUND: "/page-not-found",
 };
