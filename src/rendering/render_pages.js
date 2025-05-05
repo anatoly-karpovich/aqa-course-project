@@ -393,7 +393,7 @@ function renderNotFoundPage() {
       <p class="lead">
         We couldn't find a page for: <code>${currentPath}</code>
       </p>
-      <a href="#/" class="btn btn-primary mt-3" onclick="renderLandingPage()">
+      <a href="#/" class="btn btn-primary mt-3" onclick="renderHomePage()">
         Back to Home
       </a>
     </div>

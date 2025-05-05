@@ -11,9 +11,11 @@ async function router() {
   if (!token) {
     renderPages["Sign In"]();
   }
-  // if (!document.querySelector("#sidebar")) {
-  //   renderLandingPage();
-  // }
+  if (!document.querySelector("#sidebar") && !document.querySelector("#emailinput")) {
+    const token = getAuthorizationCookie();
+    token ? renderPages["Landing"](landingProps) : renderPages["Sign In"]();
+    return;
+  }
 
   const hash = window.location.hash || "#/";
   console.log(hash);
