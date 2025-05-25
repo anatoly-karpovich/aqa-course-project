@@ -32,6 +32,24 @@ const state = {
   },
   page: "",
   user: {},
+  pagination: {
+    customers: {
+      page: 1,
+      limit: 10,
+    },
+    products: {
+      page: 1,
+      limit: 10,
+    },
+    orders: {
+      page: 1,
+      limit: 10,
+    },
+    managers: {
+      page: 1,
+      limit: 10,
+    },
+  },
   checkPage(page) {
     return this.page === page || !this.page;
   },

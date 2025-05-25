@@ -1,4 +1,4 @@
-function generateTableBootstrap(data = [], options, sorting) {
+function generateTableBootstrap(data = [], options, sorting, paginationHTML = "") {
   const layout = `
     <div class="position-relative" id="table-container">
       <table class="table table-striped tableWrapper" id="${options.tableProps.id}">
@@ -11,6 +11,7 @@ function generateTableBootstrap(data = [], options, sorting) {
               ${generateTableBody(data, options)}
           </tbody>
       </table>
+      ${paginationHTML}
     </div>
     `;
   return layout;
@@ -126,4 +127,81 @@ async function sortOrdersInTable(header) {
     Object.keys(idToOrderNumber).find((key) => idToOrderNumber[key] === fieldName);
   state.sorting.orders.sortOrder = direction;
   await getOrdersAndRenderTable();
+}
+
+function renderPaginationControls(entity, total, currentPage, limit) {
+  const totalPages = Math.ceil(total / limit);
+  if (totalPages <= 1 && limit === total) return "";
+
+  const maxVisible = 9;
+  let pageButtons = [];
+
+  // Always show first page
+  pageButtons.push(1);
+
+  let start = Math.max(2, currentPage - 3);
+  let end = Math.min(totalPages - 1, currentPage + 3);
+
+  if (start > 2) {
+    pageButtons.push("...");
+  }
+
+  for (let i = start; i <= end; i++) {
+    pageButtons.push(i);
+  }
+
+  if (end < totalPages - 1) {
+    pageButtons.push("...");
+  }
+
+  // Always show last page (if more than 1 page)
+  if (totalPages > 1) {
+    pageButtons.push(totalPages);
+  }
+
+  // 👉 Сборка HTML
+  let html = `<div class="d-flex justify-content-end align-items-center flex-wrap mt-3 gap-3">`;
+
+  html += `
+    <div class="d-flex align-items-center">
+      <label class="me-2 mb-0 fw-semibold">Items on page:</label>
+      <select class="form-select form-select-sm w-auto" onchange="onLimitChange('${entity}', this)" id="pagination-select">
+        ${[10, 25, 50, 100]
+          .map((val) => `<option value="${val}" ${val === limit ? "selected" : ""}>${val}</option>`)
+          .join("")}
+      </select>
+    </div>`;
+
+  html += `<div class="d-flex flex-wrap" id="pagination-buttons">`;
+
+  for (const p of pageButtons) {
+    if (p === "...") {
+      html += `<span class="mx-2 text-muted">...</span>`;
+    } else {
+      html += `
+        <button class="btn btn-sm ${p === currentPage ? "btn-primary" : "btn-outline-primary"} mx-1"
+          onclick="onPaginationClick('${entity}', ${p})" id="pagination-button-${p}">
+          ${p}
+        </button>`;
+    }
+  }
+
+  html += `</div></div>`;
+  return html;
+}
+
+function onLimitChange(entity, selectElement) {
+  const newLimit = parseInt(selectElement.value);
+  state.pagination[entity].limit = newLimit;
+  state.pagination[entity].page = 1;
+  if (entity === "customers") getCustomersAndRenderTable();
+  else if (entity === "products") getProductsAndRenderTable();
+  else if (entity === "orders") getOrdersAndRenderTable();
+}
+
+function onPaginationClick(entity, newPage) {
+  state.pagination[entity].page = newPage;
+  if (entity === "customers") getCustomersAndRenderTable();
+  else if (entity === "products") getProductsAndRenderTable();
+  else if (entity === "orders") getOrdersAndRenderTable();
 }

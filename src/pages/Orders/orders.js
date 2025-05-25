@@ -132,13 +132,25 @@ function renderOrdersTable(orders, options, sorting) {
 async function getOrdersAndRenderTable() {
   showTableSpinner();
   const response = (await getSortedOrders()).data;
-  const { Orders: sortedOrders, sorting } = response;
+  const { Orders: sortedOrders, sorting, total, page, limit } = response;
+
+  const totalPages = Math.max(Math.ceil(total / limit), 1);
+  if (sortedOrders.length === 0 && page > totalPages) {
+    state.pagination.orders.page = totalPages;
+    return await getOrdersAndRenderTable(); // 🔁 повторный запрос
+  }
+
   if (state.checkPage(PAGES.ORDERS)) {
     OrdersProps.tableProps.currentSortingField.direction = state.sorting.orders.sortOrder;
     OrdersProps.tableProps.currentSortingField.name =
       state.sorting.orders.sortField === "_id"
         ? idToOrderNumber[state.sorting.orders.sortField]
         : replaceApiToFeKeys[state.sorting.orders.sortField];
-    renderOrdersTable(sortedOrders, OrdersProps, sorting);
+
+    const transformed = transformOrdersForTable(sortedOrders);
+    const pagination = renderPaginationControls("orders", total, page, limit);
+    const tableHTML = generateTableBootstrap(transformed, OrdersProps, sorting, pagination);
+
+    $('[data-name="table-orders"]').html(tableHTML);
   }
 }

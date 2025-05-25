@@ -165,10 +165,22 @@ function renderProductsTable(products, options, sorting) {
 async function getProductsAndRenderTable() {
   showTableSpinner();
   const response = (await getSortedProducts()).data;
-  const { Products: sortedProducts, sorting } = response;
+  const { Products: sortedProducts, sorting, total, page, limit } = response;
+
+  const totalPages = Math.max(Math.ceil(total / limit), 1);
+  if (sortedProducts.length === 0 && page > totalPages) {
+    state.pagination.products.page = totalPages;
+    return await getProductsAndRenderTable(); // повторный запрос
+  }
+
   if (state.checkPage(PAGES.PRODUCTS)) {
     ProductsProps.tableProps.currentSortingField.direction = state.sorting.products.sortOrder;
     ProductsProps.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.products.sortField];
-    renderProductsTable(sortedProducts, ProductsProps, sorting);
+
+    const transformed = transformProductsForTable(sortedProducts);
+    const pagination = renderPaginationControls("products", total, page, limit);
+
+    const tableHTML = generateTableBootstrap(transformed, ProductsProps, sorting, pagination);
+    $('[data-name="table-products"]').html(tableHTML);
   }
 }

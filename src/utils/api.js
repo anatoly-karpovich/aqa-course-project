@@ -141,13 +141,18 @@ async function deleteComment(_id, commentId) {
 }
 
 async function getSortedProducts() {
-  const searchString = state.search["products"];
-  const filterOnPage = [...Object.keys(state.filtering["products"]).filter((c) => state.filtering["products"][c])];
+  const searchString = state.search.products;
+  const filterOnPage = Object.keys(state.filtering.products).filter((c) => state.filtering.products[c]);
+  const { page, limit } = state.pagination.products;
+
   const params = {
     ...(filterOnPage.length && { manufacturer: filterOnPage }),
     ...(searchString && { search: searchString }),
     ...state.sorting.products,
+    page,
+    limit,
   };
+
   const response = await ProductsService.getSortedProducts(params);
   if (response.data.IsSuccess) {
     return response;
@@ -159,11 +164,16 @@ async function getSortedProducts() {
 async function getSortedCustomers() {
   const searchString = state.search.customers;
   const filterOnPage = [...Object.keys(state.filtering.customers).filter((c) => state.filtering.customers[c])];
+  const { page, limit } = state.pagination.customers;
+
   const params = {
     ...(filterOnPage.length && { country: filterOnPage }),
     ...(searchString && { search: searchString }),
     ...state.sorting.customers,
+    page,
+    limit,
   };
+
   const response = await CustomersService.getSorted(params);
   if (response.data.IsSuccess) {
     return response;
@@ -174,12 +184,17 @@ async function getSortedCustomers() {
 
 async function getSortedOrders() {
   const searchString = state.search.orders;
-  const filterOnPage = [...Object.keys(state.filtering.orders).filter((c) => state.filtering.orders[c])];
+  const filterOnPage = Object.keys(state.filtering.orders).filter((c) => state.filtering.orders[c]);
+  const { page, limit } = state.pagination.orders;
+
   const params = {
     ...(filterOnPage.length && { status: filterOnPage }),
     ...(searchString && { search: searchString }),
     ...state.sorting.orders,
+    page,
+    limit,
   };
+
   const response = await OrdersService.getSorted(params);
   if (response.data.IsSuccess) {
     return response;
@@ -197,7 +212,7 @@ function generateUrlParams(params) {
         url += `${url.length === 1 ? "" : "&"}${key}=${value.replaceAll(" ", "%20")}`;
       }
     } else {
-      url += `${url.length === 1 ? "" : "&"}${key}=${params[key].replaceAll(" ", "%20")}`;
+      url += `${url.length === 1 ? "" : "&"}${key}=${String(params[key]).replaceAll(" ", "%20")}`;
     }
   }
   return url;

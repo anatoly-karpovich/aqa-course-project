@@ -164,10 +164,24 @@ function renderCustomersTable(customers, options, sorting) {
 async function getCustomersAndRenderTable() {
   showTableSpinner();
   const response = (await getSortedCustomers()).data;
-  const { Customers: sortedCustomers, sorting } = response;
+  const { Customers: sortedCustomers, sorting, total, page, limit } = response;
+
+  const totalPages = Math.max(Math.ceil(total / limit), 1);
+
+  // ⚠️ Если пришёл пустой массив, а текущая страница выше допустимой
+  if (sortedCustomers.length === 0 && page > totalPages) {
+    state.pagination.customers.page = totalPages;
+    return await getCustomersAndRenderTable(); // 🔁 Повторный запрос
+  }
+
   if (state.checkPage(PAGES.CUSTOMERS)) {
     CustomerProps.tableProps.currentSortingField.direction = state.sorting.customers.sortOrder;
     CustomerProps.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.customers.sortField];
-    renderCustomersTable(sortedCustomers, CustomerProps, sorting);
+
+    const transformed = transformCustomersForTable(sortedCustomers);
+    const pagination = renderPaginationControls("customers", total, page, limit);
+
+    const tableHTML = generateTableBootstrap(transformed, CustomerProps, sorting, pagination);
+    $('[data-name="table-customers"]').html(tableHTML);
   }
 }
