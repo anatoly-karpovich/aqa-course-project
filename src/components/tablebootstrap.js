@@ -154,7 +154,6 @@ function renderPaginationControls(entity, total, currentPage, limit) {
     pageButtons.push("...");
   }
 
-  // Always show last page (if more than 1 page)
   if (totalPages > 1) {
     pageButtons.push(totalPages);
   }
@@ -162,6 +161,7 @@ function renderPaginationControls(entity, total, currentPage, limit) {
   // 👉 Сборка HTML
   let html = `<div class="d-flex justify-content-end align-items-center flex-wrap mt-3 gap-3">`;
 
+  // Select
   html += `
     <div class="d-flex align-items-center">
       <label class="me-2 mb-0 fw-semibold">Items on page:</label>
@@ -172,7 +172,16 @@ function renderPaginationControls(entity, total, currentPage, limit) {
       </select>
     </div>`;
 
+  // Страницы + стрелки
   html += `<div class="d-flex flex-wrap" id="pagination-buttons">`;
+
+  // ← Prev
+  html += `
+    <button class="btn btn-link btn-sm"
+      onclick="onPaginationClick('${entity}', ${currentPage - 1})"
+      ${currentPage === 1 ? "disabled" : ""} title="Previous">
+      <i class="bi bi-chevron-compact-left"></i>
+    </button>`;
 
   for (const p of pageButtons) {
     if (p === "...") {
@@ -185,6 +194,14 @@ function renderPaginationControls(entity, total, currentPage, limit) {
         </button>`;
     }
   }
+
+  // → Next
+  html += `
+    <button class="btn btn-link btn-sm"
+      onclick="onPaginationClick('${entity}', ${currentPage + 1})"
+      ${currentPage === totalPages ? "disabled" : ""} title="Next">
+      <i class="bi bi-chevron-compact-right"></i>
+    </button>`;
 
   html += `</div></div>`;
   return html;
