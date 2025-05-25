@@ -133,35 +133,9 @@ function renderPaginationControls(entity, total, currentPage, limit) {
   const totalPages = Math.ceil(total / limit);
   if (totalPages <= 1 && limit === total) return "";
 
-  const maxVisible = 9;
-  let pageButtons = [];
+  let html = `<div class="d-flex justify-content-end align-items-center flex-wrap mt-3 gap-3" id="pagination-controls">`;
 
-  // Always show first page
-  pageButtons.push(1);
-
-  let start = Math.max(2, currentPage - 3);
-  let end = Math.min(totalPages - 1, currentPage + 3);
-
-  if (start > 2) {
-    pageButtons.push("...");
-  }
-
-  for (let i = start; i <= end; i++) {
-    pageButtons.push(i);
-  }
-
-  if (end < totalPages - 1) {
-    pageButtons.push("...");
-  }
-
-  if (totalPages > 1) {
-    pageButtons.push(totalPages);
-  }
-
-  // 👉 Сборка HTML
-  let html = `<div class="d-flex justify-content-end align-items-center flex-wrap mt-3 gap-3">`;
-
-  // Select
+  // Select "Items on page"
   html += `
     <div class="d-flex align-items-center">
       <label class="me-2 mb-0 fw-semibold">Items on page:</label>
@@ -172,24 +146,50 @@ function renderPaginationControls(entity, total, currentPage, limit) {
       </select>
     </div>`;
 
-  // Страницы + стрелки
+  // Страницы и стрелки
   html += `<div class="d-flex flex-wrap" id="pagination-buttons">`;
 
   // ← Prev
   html += `
-    <button class="btn btn-link btn-sm"
+    <button class="btn btn-sm btn-link"
       onclick="onPaginationClick('${entity}', ${currentPage - 1})"
       ${currentPage === 1 ? "disabled" : ""} title="Previous">
-      <i class="bi bi-chevron-compact-left"></i>
+      <i class="bi bi-chevron-left"></i>
     </button>`;
 
-  for (const p of pageButtons) {
+  // Логика отображения страниц
+  const buttons = [];
+  const maxVisible = 9;
+
+  buttons.push(1); // всегда первая
+
+  if (totalPages <= maxVisible) {
+    for (let i = 2; i <= totalPages; i++) buttons.push(i);
+  } else {
+    if (currentPage <= 5) {
+      for (let i = 2; i <= 8; i++) buttons.push(i);
+      buttons.push("...");
+      buttons.push(totalPages);
+    } else if (currentPage >= totalPages - 4) {
+      buttons.push("...");
+      for (let i = totalPages - 7; i <= totalPages; i++) buttons.push(i);
+    } else {
+      buttons.push("...");
+      for (let i = currentPage - 3; i <= currentPage + 3; i++) buttons.push(i);
+      buttons.push("...");
+      buttons.push(totalPages);
+    }
+  }
+
+  for (const p of buttons) {
     if (p === "...") {
       html += `<span class="mx-2 text-muted">...</span>`;
     } else {
+      const isActive = p === currentPage;
       html += `
-        <button class="btn btn-sm ${p === currentPage ? "btn-primary" : "btn-outline-primary"} mx-1"
-          onclick="onPaginationClick('${entity}', ${p})" id="pagination-button-${p}">
+        <button class="btn btn-sm ${isActive ? "btn-primary" : "btn-outline-primary"} mx-1"
+                onclick="onPaginationClick('${entity}', ${p})"
+                ${isActive ? 'aria-current="page"' : ""}>
           ${p}
         </button>`;
     }
@@ -197,28 +197,44 @@ function renderPaginationControls(entity, total, currentPage, limit) {
 
   // → Next
   html += `
-    <button class="btn btn-link btn-sm"
+    <button class="btn btn-sm btn-link"
       onclick="onPaginationClick('${entity}', ${currentPage + 1})"
       ${currentPage === totalPages ? "disabled" : ""} title="Next">
-      <i class="bi bi-chevron-compact-right"></i>
+      <i class="bi bi-chevron-right"></i>
     </button>`;
 
   html += `</div></div>`;
   return html;
 }
 
-function onLimitChange(entity, selectElement) {
+async function onLimitChange(entity, selectElement) {
   const newLimit = parseInt(selectElement.value);
   state.pagination[entity].limit = newLimit;
   state.pagination[entity].page = 1;
-  if (entity === "customers") getCustomersAndRenderTable();
-  else if (entity === "products") getProductsAndRenderTable();
-  else if (entity === "orders") getOrdersAndRenderTable();
+  if (entity === "customers") await getCustomersAndRenderTable();
+  else if (entity === "products") await getProductsAndRenderTable();
+  else if (entity === "orders") await getOrdersAndRenderTable();
+
+  const pagination = document.querySelector(`#pagination-controls`);
+  if (pagination) {
+    pagination.scrollIntoView({
+      behavior: "instant",
+      block: "center", // прокрутка к верхнему краю
+    });
+  }
 }
 
-function onPaginationClick(entity, newPage) {
+async function onPaginationClick(entity, newPage) {
   state.pagination[entity].page = newPage;
-  if (entity === "customers") getCustomersAndRenderTable();
-  else if (entity === "products") getProductsAndRenderTable();
-  else if (entity === "orders") getOrdersAndRenderTable();
+  if (entity === "customers") await getCustomersAndRenderTable();
+  else if (entity === "products") await getProductsAndRenderTable();
+  else if (entity === "orders") await getOrdersAndRenderTable();
+
+  const pagination = document.querySelector(`#pagination-controls`);
+  if (pagination) {
+    pagination.scrollIntoView({
+      behavior: "instant",
+      block: "center", // прокрутка к верхнему краю
+    });
+  }
 }
