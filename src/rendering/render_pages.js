@@ -327,6 +327,7 @@ async function renderLandingPage(options = {}) {
   await renderHomePage(homeProps);
   addEventListenersToSidemenu();
   renderNotificationContainer();
+  await startNotificationPolling();
 }
 
 async function renderHomePage(options = {}) {

@@ -59,6 +59,10 @@ function showEditProductsModalSpinner() {
   renderSpinnerInContainer("#edit-products-section");
 }
 
+function showNotificationPopoverSpinner() {
+  renderSpinnerInContainer("#notification-popover-container");
+}
+
 function renderSpinnerInContainer(contaierSelector = "") {
   const contaier = document.querySelector(contaierSelector);
   const overlay = document.createElement("div");
