@@ -1,5 +1,10 @@
 const token = getAuthorizationCookie();
-token ? renderPages["Landing"](landingProps) : renderPages["Sign In"]();
+if (token) {
+  renderPages["Landing"](landingProps);
+} else {
+  renderPages["Sign In"]();
+}
+
 if (!getStoredTheme) {
   storeTheme("light");
 }

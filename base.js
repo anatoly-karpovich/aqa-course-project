@@ -26,9 +26,11 @@ const ENDPOINTS = {
   ["Login"]: `${BASE_URL}/api/login`,
   ["Logout"]: `${BASE_URL}/api/logout`,
   ["Customers"]: `${BASE_URL}/api/customers`,
+  ["Customers All"]: `${BASE_URL}/api/customers/all`,
   ["Get Customer By Id"]: (id) => `${BASE_URL}/api/customers/${id}/`,
   ["Get Customer Orders"]: (id) => `${BASE_URL}/api/customers/${id}/orders`,
   ["Products"]: `${BASE_URL}/api/products`,
+  ["Products All"]: `${BASE_URL}/api/products/all`,
   ["Get Product By Id"]: (id) => `${BASE_URL}/api/products/${id}/`,
   ["Orders"]: `${BASE_URL}/api/orders`,
   ["Get Order By Id"]: (id) => `${BASE_URL}/api/orders/${id}/`,
@@ -41,6 +43,9 @@ const ENDPOINTS = {
   ["Managers"]: `${BASE_URL}/api/users`,
   ["Get Manager By Id"]: (id) => `${BASE_URL}/api/users/${id}/`,
   ["Change Manager Password"]: (id) => `${BASE_URL}/api/users/password/${id}`,
+  ["Notifications"]: `${BASE_URL}/api/notifications`,
+  ["Notification by Id"]: (id) => `${BASE_URL}/api/notifications/${id}/read`,
+  ["Notification read all"]: `${BASE_URL}/api/notifications/mark-all-read`,
 };
 
 const SUCCESS_MESSAGES = {
