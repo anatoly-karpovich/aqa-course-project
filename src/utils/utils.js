@@ -347,3 +347,14 @@ function convertToDate(value) {
 function convertToFullDateAndTime(value) {
   return moment(value).format("LLL");
 }
+
+function convertAssignedManagerToUI(assignedManager) {
+  return `${assignedManager.firstName} ${assignedManager.lastName}`;
+}
+
+function createManagerDetailsLink(assignedManager) {
+  return `
+  <a href="#" class="text-body fst-italic align-middle" title="Open Manager Details page" id="assigned-manager-link" onclick="renderManagerDetailsPage('${
+    assignedManager._id
+  }')">${convertAssignedManagerToUI(assignedManager)}</a>`;
+}

@@ -59,6 +59,10 @@ function showEditProductsModalSpinner() {
   renderSpinnerInContainer("#edit-products-section");
 }
 
+function showEditAssignedManagerModalSpinner() {
+  renderSpinnerInContainer("#assign-manager-modal-container");
+}
+
 function showNotificationPopoverSpinner() {
   renderSpinnerInContainer("#notification-popover-container");
 }

@@ -46,6 +46,8 @@ const ENDPOINTS = {
   ["Notifications"]: `${BASE_URL}/api/notifications`,
   ["Notification by Id"]: (id) => `${BASE_URL}/api/notifications/${id}/read`,
   ["Notification read all"]: `${BASE_URL}/api/notifications/mark-all-read`,
+  ["Assign Manager"]: (orderId, managerId) => `${BASE_URL}/api/orders/${orderId}/assign-manager/${managerId}`,
+  ["Unassign Manager"]: (orderId) => `${BASE_URL}/api/orders/${orderId}/unassign-manager`,
 };
 
 const SUCCESS_MESSAGES = {
@@ -66,6 +68,8 @@ const SUCCESS_MESSAGES = {
   ["New Manager Added"]: "Manager was successfully created",
   ["Manager Successfully Updated"]: (name) => `${name} was successfully updated`,
   ["Password Successfully Changed"]: "Password was successfully changed",
+  ["Manager Assigned"]: "Manager was successfully assigned to the order",
+  ["Manager Unassigned"]: "Manager was successfully unassigned from the order",
 };
 
 const ERROR_MESSAGES = {
@@ -132,6 +136,7 @@ const replaceApiToFeKeys = {
   lastName: "Last Name",
   username: "Username",
   roles: "Roles",
+  assignedManager: "Assigned Manager",
 };
 
 const idToOrderNumber = {
@@ -148,6 +153,8 @@ const ORDER_HISTORY_ACTIONS = {
   RECEIVED: "Received",
   RECEIVED_ALL: "All products received",
   CANCELED: "Order canceled",
+  MANAGER_ASSIGNED: "Manager Assigned",
+  MANAGER_UNASSIGNED: "Manager Unassigned",
 };
 
 const PAGES = {

@@ -77,13 +77,13 @@ function generateOrderDetailsInfoBar(order) {
         <span class="strong-details fw-bold">Order number: </span>
         <span class="fst-italic">${order._id}</span>
     </div>
-    <div class="d-flex justify-content-start p-horizontal-20 mb-3">
+    <div class="d-flex justify-content-start p-horizontal-20 mb-3 align-items-center">
         <span class="strong-details fw-bold">Assigned Manager: </span>
-        <span class="fst-italic">${
+        ${
           order.assignedManager?.firstName
-            ? order.assignedManager.firstName + " " + order.assignedManager.lastName
-            : "-"
-        }</span>
+            ? generateEditAssignedManagerSection(order)
+            : '<span class="fst-italic" style="cursor: pointer"><u onclick="renderAssigneManagerModal()">Click to select manager</u></span>'
+        }
     </div>
     <div class="d-flex justify-content-between p-horizontal-20 mb-3">
         <div class="d-flext justify-content-start">
@@ -92,6 +92,18 @@ function generateOrderDetailsInfoBar(order) {
         </div>
             ${generateCancelOrderButton(order)}
     </div>`;
+}
+
+function generateEditAssignedManagerSection(order) {
+  return `
+  <div  >
+    ${createManagerDetailsLink(order.assignedManager)}
+    <button class="btn btn-sm" title="Edit Assigned Manager" onclick="renderAssigneManagerModal()"><i class="bi bi-pencil-fill"></i></button>
+    <button class="btn btn-sm text-danger" title="Remove Assigned Manager" onclick="renderRemoveAssignedManagerModal('${
+      order._id
+    }')"><i class="bi bi-x-lg"></i></button>
+  </div>
+  `;
 }
 
 function generateRefreshOrderButton(order) {
@@ -358,6 +370,8 @@ const orderHistoryRowByActionMapper = {
   [ORDER_HISTORY_ACTIONS.REQUIRED_PRODUCTS_CHANGED]: generateOrderChangedRequestedProductsHistoryRows,
   [ORDER_HISTORY_ACTIONS.RECEIVED]: generateOrderReceiveProductsHistoryRows,
   [ORDER_HISTORY_ACTIONS.RECEIVED_ALL]: generateOrderReceiveProductsHistoryRows,
+  [ORDER_HISTORY_ACTIONS.MANAGER_ASSIGNED]: generateOrderChangedManagerHistoryRows,
+  [ORDER_HISTORY_ACTIONS.MANAGER_UNASSIGNED]: generateOrderChangedManagerHistoryRows,
 };
 
 function generateDeliveryInHistoryRows(order, index) {
@@ -422,6 +436,22 @@ function generateOrderChangedStatusHistoryRows(order, index) {
         <span class="his-col his-nested-row fst-italic">${replaceApiToFeKeys["status"]}</span>
         <span class="his-col fst-italic">${previous ? previous.status : "-"}</span>
         <span class="his-col fst-italic">${updated.status}</span>
+    </div>`;
+}
+
+function generateOrderChangedManagerHistoryRows(order, index) {
+  let previous = index === order.history.length - 1 ? null : order.history[index + 1];
+  let updated = order.history[index];
+  return `
+    <div class="d-flex justify-content-around py-3 border-bottom">
+        <span class="his-action"></span>
+        <span class="his-col his-nested-row fst-italic">${replaceApiToFeKeys["assignedManager"]}</span>
+        <span class="his-col fst-italic">${
+          previous && previous.assignedManager ? convertAssignedManagerToUI(previous.assignedManager) : "Not assigned"
+        }</span>
+        <span class="his-col fst-italic">${
+          updated.assignedManager ? convertAssignedManagerToUI(updated.assignedManager) : "Not assigned"
+        }</span>
     </div>`;
 }
 

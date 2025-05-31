@@ -233,6 +233,10 @@ function renderCancelOrderModal() {
   renderConfirmationModal("Canceled", cancel_order_confirmation_opts);
 }
 
+function renderRemoveAssignedManagerModal(orderId) {
+  renderConfirmationModal(orderId, unsassign_manager_confirmation_opts);
+}
+
 function renderProcessOrderModal() {
   renderConfirmationModal("In Process", process_order_confirmation_opts);
 }
@@ -261,6 +265,16 @@ async function renderEditCustomerModal() {
     // hideSpinner();
   } else {
     handleApiErrors(customers);
+  }
+}
+
+async function renderAssigneManagerModal() {
+  const managers = (await ManagersService.getManagers()).data.Users;
+  const current = state.order.assignedManager;
+  createEditManagerModal(managers, current ? current._id : null);
+  const activeItem = document.querySelector("#assign-manager-modal-container li.active");
+  if (activeItem) {
+    setTimeout(() => activeItem.scrollIntoView({ block: "center", behavior: "smooth" }), 300);
   }
 }
 

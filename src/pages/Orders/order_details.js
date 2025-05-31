@@ -45,6 +45,22 @@ const cancel_order_confirmation_opts = {
   },
 };
 
+const unsassign_manager_confirmation_opts = {
+  title: '<i class="bi bi-person-fill-x me-2 text-danger"></i> Unassign Manager',
+  body: "Are you sure you want to unassign manager from order?",
+  deleteFunction: "unassignManager",
+  buttons: {
+    success: {
+      name: "Yes, Unassign",
+      id: "cancel-order-modal-btn",
+    },
+    cancel: {
+      name: "Cancel",
+      id: "cancel-confirmation-order-modal-btn",
+    },
+  },
+};
+
 const process_order_confirmation_opts = {
   title: "Process Order",
   body: "Are you sure you want to process the order? ",
@@ -97,6 +113,17 @@ async function changeOrderStatus(status, button) {
   const response = await OrdersService.changeOrderStatus(state.order._id, status);
   removeConfimationModal();
   await showNotificationOnOrderDetailsPage(response, { message: SUCCESS_MESSAGES[`Order ${status}`] });
+}
+
+async function unassignManager(orderId, button) {
+  setSpinnerToButton(button);
+  const response = await OrdersService.unassignManager(orderId);
+  removeConfimationModal();
+  if (response.status === 200) {
+    await showNotificationOnOrderDetailsPage(response, { message: SUCCESS_MESSAGES["Manager Unassigned"] });
+  } else {
+    renderNotification({ message: response.data.ErrorMessage }, true);
+  }
 }
 
 function addEventListelersToOrderDetailsPage() {
