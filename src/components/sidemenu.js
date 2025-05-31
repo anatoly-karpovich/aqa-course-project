@@ -243,13 +243,14 @@ async function renderNotifications(data) {
   } else {
     const response = await NotificationsService.getNotifications();
     if (response.status !== 200) {
-      handleApiErrors();
+      handleApiErrors(response);
       return;
     }
     notifications = response.data.Notifications;
     handleNotificationBadge(notifications);
   }
-  if (notifications.some((n) => !n.read)) readAllbutton.removeAttribute("disabled");
+  const hasUnread = notifications.some((n) => !n.read);
+  hasUnread ? readAllbutton.removeAttribute("disabled") : readAllbutton.setAttribute("disabled", "");
 
   list.innerHTML = "";
   if (notifications.length) {
