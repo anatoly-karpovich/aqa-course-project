@@ -62,6 +62,7 @@ const SUCCESS_MESSAGES = {
   ["Delivery Saved"]: "Delivery was successfully saved",
   ["Order Canceled"]: "Order was successfully canceled",
   ["Order In Process"]: "Order processing was successfully started",
+  ["Order Draft"]: "Order was successfully reopened",
   ["Products Successfully Received"]: `Products were successfully received`,
   ["Comment Successfully Created"]: `Comment was successfully posted`,
   ["Comment Successfully Deleted"]: `Comment was successfully deleted`,
@@ -155,6 +156,7 @@ const ORDER_HISTORY_ACTIONS = {
   CANCELED: "Order canceled",
   MANAGER_ASSIGNED: "Manager Assigned",
   MANAGER_UNASSIGNED: "Manager Unassigned",
+  REOPENED: "Order reopened",
 };
 
 const PAGES = {
@@ -176,4 +178,12 @@ const PAGES = {
 const ROLES = {
   ADMIN: "ADMIN",
   USER: "USER",
+};
+
+const ORDER_STATUSES = {
+  DRAFT: "Draft",
+  IN_PROCESS: "In Process",
+  PARTIALLY_RECEIVED: "Partially Received",
+  RECEIVED: "Received",
+  CANCELED: "Canceled",
 };

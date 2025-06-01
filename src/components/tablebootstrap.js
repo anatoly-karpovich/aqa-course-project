@@ -49,7 +49,18 @@ function generateTableRow(obj = {}, options) {
 
   let actions = "";
   if (options && options.tableProps.buttons) {
-    actions = "<td>" + options.tableProps.buttons.map((btn) => generateButton(btn, obj.Id)).join("") + "</td>";
+    actions =
+      "<td>" +
+      options.tableProps.buttons.reduce((result, btn) => {
+        if (!btn.isVisible) result += generateButton(btn, obj.Id);
+        else {
+          if (btn.isVisible(obj)) {
+            result += generateButton(btn, obj.Id);
+          }
+        }
+        return result;
+      }, "") +
+      "</td>";
   }
   return row + actions;
 }

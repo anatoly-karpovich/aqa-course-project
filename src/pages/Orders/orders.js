@@ -76,6 +76,20 @@ const OrdersProps = {
         classlist: "btn btn-link table-btn",
         onclick: "renderOrderDetailsPage",
       },
+      // {
+      //   nestedItems: `<i class="bi bi-arrow-repeat"></i>`,
+      //   title: "Reorder",
+      //   classlist: "btn btn-link table-btn",
+      //   onclick: "renderOrderDetailsPage",
+      //   isVisible: (order) => order.Status === ORDER_STATUSES.RECEIVED,
+      // },
+      {
+        nestedItems: `<i class="bi bi-box-arrow-in-right"></i>`,
+        title: "Reopen",
+        classlist: "btn btn-link table-btn",
+        onclick: "renderReopenOrderModal",
+        isVisible: (order) => order.Status === ORDER_STATUSES.CANCELED,
+      },
     ],
   },
 };

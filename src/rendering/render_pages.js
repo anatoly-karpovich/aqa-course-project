@@ -147,9 +147,10 @@ async function renderOrdersPage(options = OrdersProps) {
 
 async function renderOrderDetailsPage(id, withScroll = true) {
   state.page = PAGES.ORDER_DETAILS;
+  const initialData = state.order ?? emptyOrder;
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(
     Order_Details_Props,
-    state.order ?? emptyOrder
+    initialData
   );
   showOrderDetailsSpinners();
 
@@ -235,6 +236,10 @@ function renderCancelOrderModal() {
 
 function renderRemoveAssignedManagerModal(orderId) {
   renderConfirmationModal(orderId, unsassign_manager_confirmation_opts);
+}
+
+function renderReopenOrderModal(orderId) {
+  renderConfirmationModal(ORDER_STATUSES.DRAFT, reopern_order_confirmation_opts(orderId));
 }
 
 function renderProcessOrderModal() {

@@ -90,10 +90,17 @@ function generateOrderDetailsInfoBar(order) {
             ${generateProcessOrReceiveButton(order)}
             ${generateRefreshOrderButton(order)}
         </div>
-            ${generateCancelOrderButton(order)}
+            ${generateOrderStatusButton(order)}
     </div>`;
 }
 
+function generateOrderStatusButton(order) {
+  if (order.status === ORDER_STATUSES.DRAFT || order.status === ORDER_STATUSES.IN_PROCESS) {
+    return generateCancelOrderButton();
+  } else if (order.status === ORDER_STATUSES.CANCELED) {
+    return `<div><button class="btn btn-outline-success btn-sm" id="reopen-order" onclick="renderReopenOrderModal('${order._id}')">Reopen Order</button></div>`;
+  } else return "";
+}
 function generateEditAssignedManagerSection(order) {
   return `
   <div  >
@@ -112,10 +119,8 @@ function generateRefreshOrderButton(order) {
     : `<button class="btn btn-link btn-sm" id="refresh-order">Refresh Order <i class="bi bi-arrow-clockwise"></i></button>`;
 }
 
-function generateCancelOrderButton(order) {
-  return order.status === "Draft" || order.status === "In Process"
-    ? `<div><button class="btn btn-outline-danger btn-sm" id="cancel-order">Cancel Order</button></div>`
-    : "";
+function generateCancelOrderButton() {
+  return `<div><button class="btn btn-outline-danger btn-sm" id="cancel-order">Cancel Order</button></div>`;
 }
 
 function generateProcessOrReceiveButton(order) {
@@ -335,7 +340,7 @@ function generateOrderHistoryRow(order, index) {
       <div class="accordion-header his-header border-bottom" id="heading2${index}">
           <button class="accordion-button collapsed his-action" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2${index}" 
           aria-expanded="false" aria-controls="collapse2${index}"></button>
-          <span class="his-col">${order.history[index].action}</span>
+          <span class="his-col">${order.history[index].action ?? "Untracked Action"}</span>
           <span class="his-col">${order.history[index].performer.firstName} ${
     order.history[index].performer.lastName
   }</span>
@@ -356,7 +361,11 @@ function generateOrderHistoryNestedRows(order, index) {
             <span class="fw-bold his-col">Previous</span>
             <span class="fw-bold his-col">Updated</span>
         </div>
-            ${orderHistoryRowByActionMapper[order.history[index].action](order, index)}
+            ${
+              orderHistoryRowByActionMapper[order.history[index].action]
+                ? orderHistoryRowByActionMapper[order.history[index].action](order, index)
+                : orderHistoryRowByActionMapper[ORDER_HISTORY_ACTIONS.CREATED](order, index)
+            }
     </div>`;
 }
 
@@ -372,6 +381,7 @@ const orderHistoryRowByActionMapper = {
   [ORDER_HISTORY_ACTIONS.RECEIVED_ALL]: generateOrderReceiveProductsHistoryRows,
   [ORDER_HISTORY_ACTIONS.MANAGER_ASSIGNED]: generateOrderChangedManagerHistoryRows,
   [ORDER_HISTORY_ACTIONS.MANAGER_UNASSIGNED]: generateOrderChangedManagerHistoryRows,
+  [ORDER_HISTORY_ACTIONS.REOPENED]: generateOrderChangedStatusHistoryRows,
 };
 
 function generateDeliveryInHistoryRows(order, index) {
