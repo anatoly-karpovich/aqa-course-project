@@ -338,10 +338,9 @@ function renderDeleteManagerModal(id) {
 async function renderLandingPage(options = {}) {
   state.page = PAGES.HOME;
   document.querySelector("body").innerHTML = renderLandingPageLayout(options);
-  await renderHomePage(homeProps);
+  await Promise.allSettled([getNotificationsAndHangleBadge(), renderHomePage(homeProps)]);
   addEventListenersToSidemenu();
   renderNotificationContainer();
-  await startNotificationPolling();
 }
 
 async function renderHomePage(options = {}) {

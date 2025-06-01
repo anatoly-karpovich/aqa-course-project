@@ -327,3 +327,12 @@ function handleNotificationBadge(notifications) {
   badge.textContent = unread;
   badge.style.display = unread ? "inline-block" : "none";
 }
+
+async function getNotificationsAndHangleBadge() {
+  const response = await NotificationsService.getNotifications();
+  if (response.status !== 200) {
+    handleApiErrors(response);
+  } else {
+    handleNotificationBadge(response.data.Notifications);
+  }
+}
