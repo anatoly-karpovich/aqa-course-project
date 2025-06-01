@@ -341,6 +341,7 @@ async function renderLandingPage(options = {}) {
   await Promise.allSettled([getNotificationsAndHangleBadge(), renderHomePage(homeProps)]);
   addEventListenersToSidemenu();
   renderNotificationContainer();
+  connectSocket();
 }
 
 async function renderHomePage(options = {}) {

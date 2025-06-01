@@ -91,7 +91,7 @@ const layout = `
 </section>`;
 
 function renderSignInPage() {
-  socket.disconnect();
+  socket && socket.disconnect();
   if (document.querySelector("#sidemenu")) {
     document.querySelector("#sidemenu").parentNode.removeChild(document.querySelector("#sidemenu"));
   }
