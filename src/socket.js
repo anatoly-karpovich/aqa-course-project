@@ -14,7 +14,7 @@ socket.on("disconnect", function () {
   console.log("Socket disconnected!");
 });
 
-socket.on("new_notification", async function (payload) {
+socket.on("new_notification", function (payload) {
   console.log("Emited event:", payload);
-  await getNotificationsAndHangleBadge();
+  setNumberOfNotificationsToBadge(payload.unreadAmount);
 });

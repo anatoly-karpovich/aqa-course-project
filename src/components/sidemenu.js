@@ -322,10 +322,14 @@ async function markAllNotificationsAsRead(event) {
 }
 
 function handleNotificationBadge(notifications) {
-  const badge = document.getElementById("notification-badge");
   const unread = notifications.filter((n) => !n.read).length;
-  badge.textContent = unread;
-  badge.style.display = unread ? "inline-block" : "none";
+  setNumberOfNotificationsToBadge(unread);
+}
+
+function setNumberOfNotificationsToBadge(unreadAmount) {
+  const badge = document.getElementById("notification-badge");
+  badge.textContent = unreadAmount;
+  badge.style.display = unreadAmount ? "inline-block" : "none";
 }
 
 async function getNotificationsAndHangleBadge() {
