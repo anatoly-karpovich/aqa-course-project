@@ -20,6 +20,12 @@ function hideSpinners() {
   }
 }
 
+function removeSpinnerFromButton(button, innerText) {
+  button.innerHTML = "";
+  button.innerText = innerText;
+  button.removeAttribute("disabled");
+}
+
 function showHomeSpinners() {
   renderSpinnerInContainer("#total-orders-container");
   renderSpinnerInContainer("#total-revenue-container");

@@ -10,368 +10,489 @@ const renderPages = {
 
 //Customers Section
 async function renderCustomersPage(options = CustomerProps) {
-  state.page = PAGES.CUSTOMERS;
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderCustomersPageLayout(options, {
-    data: { Customers: [] },
-  });
-  sideMenuActivateElement(options.path);
-  await getCustomersAndRenderTable();
-  addEventListelersToCustomersPage();
-  renderChipsFromState("customers");
+  try {
+    state.page = PAGES.CUSTOMERS;
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderCustomersPageLayout(options, {
+      data: { Customers: [] },
+    });
+    sideMenuActivateElement(options.path);
+    await getCustomersAndRenderTable();
+    addEventListelersToCustomersPage();
+    renderChipsFromState("customers");
+  } catch (e) {
+    renderErrorPage();
+  }
 }
 
 function renderAddNewCustomerPage(options = add_new_customer_props) {
-  state.page = PAGES.ADD_NEW_CUSTOMER;
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderAddNewCustomerLayout(options);
-  sideMenuActivateElement(options.path);
-  addEventListelersToAddNewCustomerPage();
+  try {
+    state.page = PAGES.ADD_NEW_CUSTOMER;
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderAddNewCustomerLayout(options);
+    sideMenuActivateElement(options.path);
+    addEventListelersToAddNewCustomerPage();
+  } catch (e) {
+    renderErrorPage();
+  }
 }
 
 async function renderCustomerDetailsModal(id) {
-  // showSpinner();
-  const response = await CustomersService.getCustomers(id);
-  if (response.status === 200) {
-    createDetailsModal(customer_details_props(id), response.data);
-    // hideSpinner();
-    sideMenuActivateElement("Customers");
-  } else {
-    handleApiErrors(response);
+  try {
+    // showSpinner();
+    const response = await CustomersService.getCustomers(id);
+    if (response.status === 200) {
+      createDetailsModal(customer_details_props(id), response.data);
+      // hideSpinner();
+      sideMenuActivateElement("Customers");
+    } else {
+      handleApiErrors(response);
+    }
+  } catch (e) {
+    renderErrorPage();
   }
 }
 
 async function renderCustomerDetailsPage(id) {
-  state.page = PAGES.CUSTOMER_DETAILS;
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createCustomerDetailsPageLayout(emptyCustomer, []);
-  showCustomerDetailsSpinners();
-  const [customer, orders] = await Promise.all([CustomersService.getCustomers(id), CustomersService.getOrders(id)]);
-  if (customer.status === 200 && orders.status === 200 && state.checkPage(PAGES.CUSTOMER_DETAILS)) {
-    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createCustomerDetailsPageLayout(
-      customer.data.Customer,
-      orders.data.Orders
-    );
-    scrollToSection(`#${CONTENT_CONTAINER_ID}`);
+  try {
+    state.page = PAGES.CUSTOMER_DETAILS;
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createCustomerDetailsPageLayout(emptyCustomer, []);
+    showCustomerDetailsSpinners();
+    const [customer, orders] = await Promise.all([CustomersService.getCustomers(id), CustomersService.getOrders(id)]);
+    if (customer.status === 200 && orders.status === 200 && state.checkPage(PAGES.CUSTOMER_DETAILS)) {
+      document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createCustomerDetailsPageLayout(
+        customer.data.Customer,
+        orders.data.Orders
+      );
+      scrollToSection(`#${CONTENT_CONTAINER_ID}`);
+    }
+  } catch (e) {
+    renderErrorPage();
   }
 }
 
 async function renderEditCustomerPage(id) {
-  state.page = PAGES.EDIT_CUSTOMER;
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditCustomerLayout(
-    edit_customer_props,
-    emptyCustomer
-  );
-  renderSpinnerInContainer("#edit-customer-container");
-  const response = await CustomersService.getCustomers(id);
-  if (response.status === 200 && state.checkPage(PAGES.EDIT_CUSTOMER)) {
+  try {
+    state.page = PAGES.EDIT_CUSTOMER;
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditCustomerLayout(
       edit_customer_props,
-      response.data.Customer
+      emptyCustomer
     );
-    sideMenuActivateElement("Customers");
-    addListenersToEditCustomerPage();
-  } else {
-    handleApiErrors(response);
+    renderSpinnerInContainer("#edit-customer-container");
+    const response = await CustomersService.getCustomers(id);
+    if (response.status === 200 && state.checkPage(PAGES.EDIT_CUSTOMER)) {
+      document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditCustomerLayout(
+        edit_customer_props,
+        response.data.Customer
+      );
+      sideMenuActivateElement("Customers");
+      addListenersToEditCustomerPage();
+    } else {
+      handleApiErrors(response);
+    }
+  } catch (e) {
+    renderErrorPage();
   }
 }
 
 function renderDeleteCustomerModal(id) {
-  renderConfirmationModal(id, delete_customer_confirmation_opts);
+  try {
+    renderConfirmationModal(id, delete_customer_confirmation_opts);
+  } catch (e) {
+    renderErrorPage();
+  }
 }
 
 //Products Section
 async function renderProductsPage(options = ProductsProps) {
-  state.page = PAGES.PRODUCTS;
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderProductsPageLayout(options, {
-    data: { Products: [] },
-  });
-  sideMenuActivateElement(options.path);
-  await getProductsAndRenderTable();
-  addEventListelersToProductsPage();
-  renderChipsFromState("products");
+  try {
+    state.page = PAGES.PRODUCTS;
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderProductsPageLayout(options, {
+      data: { Products: [] },
+    });
+    sideMenuActivateElement(options.path);
+    await getProductsAndRenderTable();
+    addEventListelersToProductsPage();
+    renderChipsFromState("products");
+  } catch (e) {
+    renderErrorPage();
+  }
 }
 
 function renderAddNewProductPage(options = add_new_product_props) {
-  state.page = PAGES.ADD_NEW_PRODUCT;
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderAddNewProductLayout(options);
-  sideMenuActivateElement(options.path);
-  addEventListelersToAddNewProductPage();
+  try {
+    state.page = PAGES.ADD_NEW_PRODUCT;
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderAddNewProductLayout(options);
+    sideMenuActivateElement(options.path);
+    addEventListelersToAddNewProductPage();
+  } catch (e) {
+    renderErrorPage();
+  }
 }
 
 function renderDeleteProductModal(id) {
-  renderConfirmationModal(id, delete_product_confirmation_opts);
+  try {
+    renderConfirmationModal(id, delete_product_confirmation_opts);
+  } catch (e) {
+    renderErrorPage();
+  }
 }
 
 async function renderProductDetailsModal(id) {
-  createDetailsModal(product_details_props(id), { Product: { ...emptyProduct, ...{ _id: id } } });
-  renderSpinnerInContainer("#details-modal-container");
-  const response = await ProductsService.getProducts(id);
-  if (state.checkPage(PAGES.PRODUCTS)) {
-    if (response.status === 200) {
-      setDataToProductDetailsModal(product_details_props(id), response.data);
-      sideMenuActivateElement("Products");
-    } else {
-      handleApiErrors(response);
+  try {
+    createDetailsModal(product_details_props(id), { Product: { ...emptyProduct, ...{ _id: id } } });
+    renderSpinnerInContainer("#details-modal-container");
+    const response = await ProductsService.getProducts(id);
+    if (state.checkPage(PAGES.PRODUCTS)) {
+      if (response.status === 200) {
+        setDataToProductDetailsModal(product_details_props(id), response.data);
+        sideMenuActivateElement("Products");
+      } else {
+        handleApiErrors(response);
+      }
     }
+    hideSpinners();
+  } catch (e) {
+    renderErrorPage();
   }
-  hideSpinners();
 }
 
 async function renderEditProductPage(id) {
-  state.page = PAGES.EDIT_PRODUCT;
-  if (modalWrap) {
-    removeDetailsModal();
-  }
-  sideMenuActivateElement("Products");
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditProductLayout(edit_product_props, emptyProduct);
-  renderSpinnerInContainer("#edit-product-container");
-  const response = await ProductsService.getProducts(id);
-  if (response && response.status === 200 && state.checkPage(PAGES.EDIT_PRODUCT)) {
-    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditProductLayout(
-      edit_product_props,
-      response.data.Product
-    );
-    addListenersToEditProductPage();
-  } else {
-    handleApiErrors(response);
+  try {
+    state.page = PAGES.EDIT_PRODUCT;
+    if (modalWrap) {
+      removeDetailsModal();
+    }
+    sideMenuActivateElement("Products");
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditProductLayout(edit_product_props, emptyProduct);
+    renderSpinnerInContainer("#edit-product-container");
+    const response = await ProductsService.getProducts(id);
+    if (response && response.status === 200 && state.checkPage(PAGES.EDIT_PRODUCT)) {
+      document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditProductLayout(
+        edit_product_props,
+        response.data.Product
+      );
+      addListenersToEditProductPage();
+    } else {
+      handleApiErrors(response);
+    }
+  } catch (e) {
+    renderErrorPage();
   }
 }
 
 //Orders Section
 async function renderOrdersPage(options = OrdersProps) {
-  state.page = PAGES.ORDERS;
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrdersPageLayout(options, { data: { Orders: [] } });
-  sideMenuActivateElement(options.path);
-  await getOrdersAndRenderTable();
-  addEventListelersToOrdersPage();
-  renderChipsFromState("orders");
+  try {
+    state.page = PAGES.ORDERS;
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrdersPageLayout(options, { data: { Orders: [] } });
+    sideMenuActivateElement(options.path);
+    await getOrdersAndRenderTable();
+    addEventListelersToOrdersPage();
+    renderChipsFromState("orders");
+  } catch (e) {
+    renderErrorPage();
+  }
 }
 
 async function renderOrderDetailsPage(id, withScroll = true) {
-  state.page = PAGES.ORDER_DETAILS;
-  const initialData = state.order ?? emptyOrder;
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(
-    Order_Details_Props,
-    initialData
-  );
-  showOrderDetailsSpinners();
+  try {
+    state.page = PAGES.ORDER_DETAILS;
+    const initialData = state.order ?? emptyOrder;
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(
+      Order_Details_Props,
+      initialData
+    );
+    showOrderDetailsSpinners();
 
-  if (withScroll) {
-    scrollToSection(`#${CONTENT_CONTAINER_ID}`);
-  }
-  const [order, customers] = await Promise.all([OrdersService.getOrders(id), CustomersService.getCustomers()]);
-  if (state.checkPage(PAGES.ORDER_DETAILS)) {
-    if (order && order.status === 200 && customers.status === 200) {
-      sideMenuActivateElement("Orders");
-      state.order = order.data.Order;
-      state.customers = customers.data.Customers;
-      state["activeTab"] = state["activeTab"] ?? "comments";
-      document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(
-        Order_Details_Props,
-        order.data.Order
-      );
-      addEventListelersToOrderDetailsPage();
-      activateTab();
-    } else {
-      handleApiErrors(order);
-      handleApiErrors(customers);
+    if (withScroll) {
+      scrollToSection(`#${CONTENT_CONTAINER_ID}`);
     }
+    const [order, customers] = await Promise.all([OrdersService.getOrders(id), CustomersService.getCustomers()]);
+    if (state.checkPage(PAGES.ORDER_DETAILS)) {
+      if (order && order.status === 200 && customers.status === 200) {
+        sideMenuActivateElement("Orders");
+        state.order = order.data.Order;
+        state.customers = customers.data.Customers;
+        state["activeTab"] = state["activeTab"] ?? "comments";
+        document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(
+          Order_Details_Props,
+          order.data.Order
+        );
+        addEventListelersToOrderDetailsPage();
+        activateTab();
+      } else {
+        handleApiErrors(order);
+        handleApiErrors(customers);
+      }
+    }
+  } catch (e) {
+    renderErrorPage();
   }
 }
 
 async function renderReceivingOrderDetailsPage(receiveButton) {
-  state.page = PAGES.ORDER_DETAILS;
-  setSpinnerToButton(receiveButton);
-  const order = await OrdersService.getOrders(state.order._id);
-  if (state.checkPage(PAGES.ORDER_DETAILS)) {
-    if (order && order.status === 200) {
-      // hideSpinner();
-      sideMenuActivateElement("Orders");
-      state.order = order.data.Order;
-      document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(
-        Order_Details_Props,
-        order.data.Order,
-        true
-      );
-      addEventListelersToOrderDetailsPage();
-      activateTab();
-    } else {
-      handleApiErrors(order);
+  try {
+    state.page = PAGES.ORDER_DETAILS;
+    setSpinnerToButton(receiveButton);
+    const order = await OrdersService.getOrders(state.order._id);
+    if (state.checkPage(PAGES.ORDER_DETAILS)) {
+      if (order && order.status === 200) {
+        sideMenuActivateElement("Orders");
+        state.order = order.data.Order;
+        document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(
+          Order_Details_Props,
+          order.data.Order,
+          true
+        );
+        addEventListelersToOrderDetailsPage();
+        activateTab();
+      } else {
+        handleApiErrors(order);
+      }
     }
+  } catch (e) {
+    renderErrorPage();
   }
 }
 
 async function renderCreateOrderModal() {
-  state.page = PAGES.ORDERS;
-  createAddOrderModal({ customers: [], products: [] });
-  showAddOrderModalSpinner();
-  const [customers, products] = await Promise.all([
-    CustomersService.getSorted({ sortField: "name", sortOrder: "asc" }),
-    ProductsService.getSortedProducts({ sortField: "name", sortOrder: "asc" }),
-  ]);
-  if (state.checkPage(PAGES.ORDERS))
-    if (customers.status === 200 && products.status === 200) {
-      setDataToAddOrderModal({ customers: customers.data.Customers, products: products.data.Products });
-      hideSpinners();
-      sideMenuActivateElement("Orders");
-    } else {
-      handleApiErrors(customers);
-      handleApiErrors(products);
-    }
+  try {
+    state.page = PAGES.ORDERS;
+    createAddOrderModal({ customers: [], products: [] });
+    showAddOrderModalSpinner();
+    const [customers, products] = await Promise.all([
+      CustomersService.getSorted({ sortField: "name", sortOrder: "asc" }),
+      ProductsService.getSortedProducts({ sortField: "name", sortOrder: "asc" }),
+    ]);
+    if (state.checkPage(PAGES.ORDERS))
+      if (customers.status === 200 && products.status === 200) {
+        setDataToAddOrderModal({ customers: customers.data.Customers, products: products.data.Products });
+        hideSpinners();
+        sideMenuActivateElement("Orders");
+      } else {
+        handleApiErrors(customers);
+        handleApiErrors(products);
+      }
+  } catch (e) {
+    renderErrorPage();
+  }
 }
 
 function renderScheduleDeliveryPage() {
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderScheduleDeliveryLayout(delivery_props);
-  sideMenuActivateElement(delivery_props.path);
-  addEventListelersToScheduleDeliveryPage();
+  try {
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderScheduleDeliveryLayout(delivery_props);
+    sideMenuActivateElement(delivery_props.path);
+    addEventListelersToScheduleDeliveryPage();
+  } catch (e) {
+    renderErrorPage();
+  }
 }
 
 function renderEditDeliveryPage() {
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditDeliveryLayout(delivery_props);
-  sideMenuActivateElement(delivery_props.path);
-  addEventListelersToEditDeliveryPage();
+  try {
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditDeliveryLayout(delivery_props);
+    sideMenuActivateElement(delivery_props.path);
+    addEventListelersToEditDeliveryPage();
+  } catch (e) {
+    renderErrorPage();
+  }
 }
 
 function renderCancelOrderModal() {
-  renderConfirmationModal("Canceled", cancel_order_confirmation_opts);
+  try {
+    renderConfirmationModal("Canceled", cancel_order_confirmation_opts);
+  } catch (e) {
+    renderErrorPage();
+  }
 }
 
 function renderRemoveAssignedManagerModal(orderId) {
-  renderConfirmationModal(orderId, unsassign_manager_confirmation_opts);
+  try {
+    renderConfirmationModal(orderId, unsassign_manager_confirmation_opts);
+  } catch (e) {
+    renderErrorPage();
+  }
 }
 
 function renderReopenOrderModal(orderId) {
-  renderConfirmationModal(ORDER_STATUSES.DRAFT, reopern_order_confirmation_opts(orderId));
+  try {
+    renderConfirmationModal(ORDER_STATUSES.DRAFT, reopern_order_confirmation_opts(orderId));
+  } catch (e) {
+    renderErrorPage();
+  }
 }
 
 function renderProcessOrderModal() {
-  renderConfirmationModal("In Process", process_order_confirmation_opts);
+  try {
+    renderConfirmationModal("In Process", process_order_confirmation_opts);
+  } catch (e) {
+    renderErrorPage();
+  }
 }
 
 async function renderEditCustomerModal() {
-  edit_order_details_modal_props.data = _.cloneDeep(state.customers);
-  edit_order_details_modal_props.customers.options.values = edit_order_details_modal_props.data.map((c) => c.name);
-  edit_order_details_modal_props.customers.options.titles = edit_order_details_modal_props.data.map((c) => c.email);
-  edit_order_details_modal_props.customers.defaultValue = {
-    name: state.order.customer.name,
-    title: state.order.customer.email,
-  };
-  createEditCustomerModal();
-  showEditCustomerModalSpinner();
-  const customers = await CustomersService.getSorted({ sortField: "name", sortOrder: "asc" });
-  if (customers.status === 200) {
-    edit_order_details_modal_props.data = _.cloneDeep(customers.data.Customers);
+  try {
+    edit_order_details_modal_props.data = _.cloneDeep(state.customers);
     edit_order_details_modal_props.customers.options.values = edit_order_details_modal_props.data.map((c) => c.name);
     edit_order_details_modal_props.customers.options.titles = edit_order_details_modal_props.data.map((c) => c.email);
     edit_order_details_modal_props.customers.defaultValue = {
       name: state.order.customer.name,
       title: state.order.customer.email,
     };
-    // createEditCustomerModal(customers.data.Customers);
-    setDataToEditCustomerModal();
-    // hideSpinner();
-  } else {
-    handleApiErrors(customers);
+    createEditCustomerModal();
+    showEditCustomerModalSpinner();
+    const customers = await CustomersService.getCustomers();
+    if (customers.status === 200) {
+      edit_order_details_modal_props.data = _.cloneDeep(customers.data.Customers).sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
+      edit_order_details_modal_props.customers.options.values = edit_order_details_modal_props.data.map((c) => c.name);
+      edit_order_details_modal_props.customers.options.titles = edit_order_details_modal_props.data.map((c) => c.email);
+      edit_order_details_modal_props.customers.defaultValue = {
+        name: state.order.customer.name,
+        title: state.order.customer.email,
+      };
+      // createEditCustomerModal(customers.data.Customers);
+      setDataToEditCustomerModal();
+      // hideSpinner();
+    } else {
+      handleApiErrors(customers);
+    }
+  } catch (e) {
+    renderErrorPage();
   }
 }
 
 async function renderAssigneManagerModal() {
-  const managers = (await ManagersService.getManagers()).data.Users;
-  const current = state.order.assignedManager;
-  createEditManagerModal(managers, current ? current._id : null);
-  const activeItem = document.querySelector("#assign-manager-modal-container li.active");
-  if (activeItem) {
-    setTimeout(() => activeItem.scrollIntoView({ block: "center", behavior: "smooth" }), 300);
+  try {
+    const managers = (await ManagersService.getManagers()).data.Users;
+    const current = state.order.assignedManager;
+    createEditManagerModal(managers, current ? current._id : null);
+    const activeItem = document.querySelector("#assign-manager-modal-container li.active");
+    if (activeItem) {
+      setTimeout(() => activeItem.scrollIntoView({ block: "center", behavior: "smooth" }), 300);
+    }
+  } catch (e) {
+    renderErrorPage();
   }
 }
 
 async function renderEditProductsModal() {
-  await createEditProductsModal([state.order.products[0]]);
-  showEditProductsModalSpinner();
-  const products = await ProductsService.getSortedProducts({ sortField: "name", sortOrder: "asc" });
-  if (products.status === 200) {
-    setDataToEditProductsModal(products.data.Products);
-    sideMenuActivateElement("Orders");
-  } else {
-    handleApiErrors(products);
+  try {
+    await createEditProductsModal([state.order.products[0]]);
+    showEditProductsModalSpinner();
+    const products = await ProductsService.getProducts();
+    if (products.status === 200) {
+      setDataToEditProductsModal(products.data.Products.sort((a, b) => a.name.localeCompare(b.name)));
+      sideMenuActivateElement("Orders");
+    } else {
+      handleApiErrors(products);
+    }
+  } catch (e) {
+    renderErrorPage();
   }
 }
 
 //Managers
 
 async function renderManagersPage(options = ManagersProps) {
-  state.page = PAGES.MANAGERS;
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createManagersPageLayout(options, {
-    Users: [],
-  });
-  showTableSpinner();
-  const response = await ManagersService.getManagers();
-  if (response.status === 200 && state.checkPage(PAGES.MANAGERS)) {
-    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createManagersPageLayout(options, response.data);
-  } else {
-    handleApiErrors(response);
+  try {
+    state.page = PAGES.MANAGERS;
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createManagersPageLayout(options, {
+      Users: [],
+    });
+    showTableSpinner();
+    const response = await ManagersService.getManagers();
+    if (response.status === 200 && state.checkPage(PAGES.MANAGERS)) {
+      document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createManagersPageLayout(options, response.data);
+    } else {
+      handleApiErrors(response);
+    }
+    sideMenuActivateElement(options.path);
+  } catch (e) {
+    renderErrorPage();
   }
-  sideMenuActivateElement(options.path);
 }
 
 async function renderAddManagerPage() {
-  state.page = PAGES.ADD_MANAGER;
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = generateAddManagerPageLayout();
-  sideMenuActivateElement(ManagersProps.path);
-  // addEventListelersToAddManagerPage();
+  try {
+    state.page = PAGES.ADD_MANAGER;
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = generateAddManagerPageLayout();
+    sideMenuActivateElement(ManagersProps.path);
+    // addEventListelersToAddManagerPage();
+  } catch (e) {
+    renderErrorPage();
+  }
 }
 
 async function renderManagerDetailsPage(id) {
-  state.page = PAGES.MANAGER_DETAILS;
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = generateManagerDetailsPageLayout(emptyManager, []);
-  showManagerDetailsSpinners();
-  const response = await ManagersService.getManagers(id);
-  if (response.status === 200 && state.checkPage(PAGES.MANAGER_DETAILS)) {
-    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = generateManagerDetailsPageLayout(
-      response.data.User,
-      response.data.Orders
-    );
-  } else {
-    handleApiErrors(response);
+  try {
+    state.page = PAGES.MANAGER_DETAILS;
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = generateManagerDetailsPageLayout(emptyManager, []);
+    showManagerDetailsSpinners();
+    const response = await ManagersService.getManagers(id);
+    if (response.status === 200 && state.checkPage(PAGES.MANAGER_DETAILS)) {
+      document.getElementById(CONTENT_CONTAINER_ID).innerHTML = generateManagerDetailsPageLayout(
+        response.data.User,
+        response.data.Orders
+      );
+    } else {
+      handleApiErrors(response);
+    }
+    sideMenuActivateElement(ManagersProps.path);
+  } catch (e) {
+    renderErrorPage();
   }
-  sideMenuActivateElement(ManagersProps.path);
 }
 
 function renderDeleteManagerModal(id) {
-  renderConfirmationModal(id, delete_manager_confirmation_opts);
+  try {
+    renderConfirmationModal(id, delete_manager_confirmation_opts);
+  } catch (e) {
+    renderErrorPage();
+  }
 }
 
 //Home section
 async function renderLandingPage(options = {}) {
-  state.page = PAGES.HOME;
-  document.querySelector("body").innerHTML = renderLandingPageLayout(options);
-  await Promise.allSettled([getNotificationsAndHangleBadge(), renderHomePage(homeProps)]);
-  addEventListenersToSidemenu();
-  renderNotificationContainer();
-  connectSocket();
+  try {
+    state.page = PAGES.HOME;
+    document.querySelector("body").innerHTML = renderLandingPageLayout(options);
+    await Promise.allSettled([getNotificationsAndHangleBadge(), renderHomePage(homeProps)]);
+    addEventListenersToSidemenu();
+    renderNotificationContainer();
+    connectSocket();
+  } catch (e) {
+    renderErrorPage();
+  }
 }
 
 async function renderHomePage(options = {}) {
-  state.page = PAGES.HOME;
-  switchTheme(window.localStorage.getItem("theme"));
-  sideMenuActivateElement(options.path);
-  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(defaultMetrics);
-  showHomeSpinners();
-  loadCharts(
-    defaultMetrics.orders.ordersCountPerDay,
-    defaultMetrics.products.topProducts,
-    defaultMetrics.customers.customerGrowth
-  );
-  const metrics = await MetricsService.get();
-  if (state.checkPage(PAGES.HOME)) {
-    if (metrics.status === 200) {
-      document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(metrics.data.Metrics);
-      loadCharts(
-        metrics.data.Metrics.orders.ordersCountPerDay,
-        metrics.data.Metrics.products.topProducts,
-        metrics.data.Metrics.customers.customerGrowth
-      );
-    } else {
-      handleApiErrors(metrics);
+  try {
+    state.page = PAGES.HOME;
+    switchTheme(window.localStorage.getItem("theme"));
+    sideMenuActivateElement(options.path);
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(defaultMetrics);
+    showHomeSpinners();
+    loadCharts(
+      defaultMetrics.orders.ordersCountPerDay,
+      defaultMetrics.products.topProducts,
+      defaultMetrics.customers.customerGrowth
+    );
+    const metrics = await MetricsService.get();
+    if (state.checkPage(PAGES.HOME)) {
+      if (metrics.status === 200) {
+        document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(metrics.data.Metrics);
+        loadCharts(
+          metrics.data.Metrics.orders.ordersCountPerDay,
+          metrics.data.Metrics.products.topProducts,
+          metrics.data.Metrics.customers.customerGrowth
+        );
+      } else {
+        handleApiErrors(metrics);
+      }
     }
+  } catch (e) {
+    renderErrorPage();
   }
 }
 

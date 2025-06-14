@@ -45,6 +45,10 @@ function handleApiErrors(response, errorToNotification = false) {
   }
 }
 
+function renderErrorPage(status) {
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderErrorPageLayout(status);
+}
+
 async function submitEntiti(options, notificationOprions) {
   let response;
   switch (options.path) {

@@ -539,7 +539,7 @@ function generateSavedComments(order) {
 }
 
 function generateComment(comment) {
-  const createdBy = "AQA User";
+  const createdBy = comment.createdBy ?? "AQA User";
   return `
     <div class="shadow-sm rounded mx-3 my-3 p-3 border">
         <div class="d-flex justify-content-between align-items-center">

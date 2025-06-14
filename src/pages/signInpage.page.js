@@ -1,9 +1,9 @@
 const layout = `
 <div class="overlay">
-<div class="d-flex justify-content-center">
-  <div class="spinner-border" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
+  <div class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
   </div>
 </div>
 
@@ -116,6 +116,7 @@ function renderSignInPage() {
       signIn.parentNode.removeChild(signIn);
       await renderLandingPage(landingProps);
     } else {
+      removeSpinnerFromButton(submit, "Login");
       renderNotification(
         { message: response.data.ErrorMessage ? response.data.ErrorMessage : ERROR_MESSAGES["Connection Issue"] },
         true
