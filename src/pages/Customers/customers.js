@@ -10,7 +10,7 @@ function renderCustomersPageLayout(options = CustomerProps, response) {
         <div id="${PAGE_TITLE_ID}" class="p-horizontal-20">  
             <div class="page-header-flex">
                 ${generatePageTitle(options)}
-                ${generateButton(options.buttons.add)}
+                ${generateLinkButton(options.buttons.add)}
             </div>
                 ${searchBar(options.buttons)}
                 ${chipsSection()}
@@ -29,8 +29,9 @@ const CustomerProps = {
   classlist: "ml-20 fw-bold",
   buttons: {
     add: {
-      classlist: "btn btn-primary pageTitle page-title-header page-title-button",
+      classlist: "btn btn-primary pageTitle page-title-header page-title-button d-inline-flex align-items-center",
       name: "+ Add Customer",
+      href: ROUTES.CUSTOMER_ADD,
     },
     search: {
       classlist: "btn btn-primary d-flex justify-content-center align-items-center",
@@ -54,13 +55,13 @@ const CustomerProps = {
         nestedItems: `<i class="bi bi-card-text"></i>`,
         title: "Details",
         classlist: "btn btn-link table-btn",
-        onclick: "renderCustomerDetailsPage",
+        href: ROUTES.CUSTOMER_DETAILS,
       },
       {
         nestedItems: `<i class="bi bi-pencil"></i>`,
         title: "Edit",
         classlist: "btn btn-link table-btn",
-        onclick: "renderEditCustomerPage",
+        href: ROUTES.CUSTOMER_EDIT,
       },
       {
         nestedItems: `<i class="bi bi-trash"></i>`,
@@ -119,7 +120,7 @@ async function deleteCustomer(id, confirmButton) {
 }
 
 function addEventListelersToCustomersPage() {
-  $("button.page-title-button").on("click", () => renderAddNewCustomerPage());
+  // $("button.page-title-button").on("click", () => renderAddNewCustomerPage());
   $(`#${CustomerProps.buttons.search.id}`).on("click", async (event) => {
     event.preventDefault();
     const value = $(`input[type="search"]`).val();
@@ -164,10 +165,24 @@ function renderCustomersTable(customers, options, sorting) {
 async function getCustomersAndRenderTable() {
   showTableSpinner();
   const response = (await getSortedCustomers()).data;
-  const { Customers: sortedCustomers, sorting } = response;
+  const { Customers: sortedCustomers, sorting, total, page, limit } = response;
+
+  const totalPages = Math.max(Math.ceil(total / limit), 1);
+
+  // ⚠️ Если пришёл пустой массив, а текущая страница выше допустимой
+  if (sortedCustomers.length === 0 && page > totalPages) {
+    state.pagination.customers.page = totalPages;
+    return await getCustomersAndRenderTable(); // 🔁 Повторный запрос
+  }
+
   if (state.checkPage(PAGES.CUSTOMERS)) {
     CustomerProps.tableProps.currentSortingField.direction = state.sorting.customers.sortOrder;
     CustomerProps.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.customers.sortField];
-    renderCustomersTable(sortedCustomers, CustomerProps, sorting);
+
+    const transformed = transformCustomersForTable(sortedCustomers);
+    const pagination = renderPaginationControls("customers", total, page, limit);
+
+    const tableHTML = generateTableBootstrap(transformed, CustomerProps, sorting, pagination);
+    $('[data-name="table-customers"]').html(tableHTML);
   }
 }

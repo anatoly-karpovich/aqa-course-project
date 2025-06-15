@@ -3,7 +3,7 @@ class ProductsService {
     const options = {
       method: "get",
       baseURL: BASE_URL,
-      url: id ? ENDPOINTS["Get Product By Id"](id) : ENDPOINTS.Products,
+      url: id ? ENDPOINTS["Get Product By Id"](id) : ENDPOINTS["Products All"],
       headers: {
         Authorization: getAuthorizationCookie(),
         ["Content-Type"]: "application/json",

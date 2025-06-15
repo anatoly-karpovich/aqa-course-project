@@ -32,8 +32,9 @@ const ProductsProps = {
   classlist: "ml-20 fw-bold",
   buttons: {
     add: {
-      classlist: "btn btn-primary page-title-header page-title-button",
+      classlist: "btn btn-primary page-title-header page-title-button d-inline-flex align-items-center",
       name: "+ Add Product",
+      href: ROUTES.PRODUCT_ADD,
     },
     search: {
       classlist: "btn btn-primary d-flex justify-content-center align-items-center",
@@ -63,7 +64,7 @@ const ProductsProps = {
         nestedItems: `<i class="bi bi-pencil"></i>`,
         title: "Edit",
         classlist: "btn btn-link table-btn",
-        onclick: "renderEditProductPage",
+        href: ROUTES.PRODUCT_EDIT,
       },
       {
         nestedItems: `<i class="bi bi-trash"></i>`,
@@ -114,14 +115,14 @@ const product_details_props = (id) => {
     path: "Product",
     buttons: {
       edit: {
-        onClickFunc: "renderEditProductPageFromModal",
+        href: ROUTES.PRODUCT_EDIT(id),
       },
     },
   };
 };
 
 function addEventListelersToProductsPage() {
-  $("button.page-title-button").on("click", () => renderAddNewProductPage());
+  // $("button.page-title-button").on("click", () => renderAddNewProductPage());
   $(`#${ProductsProps.buttons.search.id}`).on("click", async (event) => {
     event.preventDefault();
     const value = $(`input[type="search"]`).val();
@@ -165,10 +166,22 @@ function renderProductsTable(products, options, sorting) {
 async function getProductsAndRenderTable() {
   showTableSpinner();
   const response = (await getSortedProducts()).data;
-  const { Products: sortedProducts, sorting } = response;
+  const { Products: sortedProducts, sorting, total, page, limit } = response;
+
+  const totalPages = Math.max(Math.ceil(total / limit), 1);
+  if (sortedProducts.length === 0 && page > totalPages) {
+    state.pagination.products.page = totalPages;
+    return await getProductsAndRenderTable(); // повторный запрос
+  }
+
   if (state.checkPage(PAGES.PRODUCTS)) {
     ProductsProps.tableProps.currentSortingField.direction = state.sorting.products.sortOrder;
     ProductsProps.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.products.sortField];
-    renderProductsTable(sortedProducts, ProductsProps, sorting);
+
+    const transformed = transformProductsForTable(sortedProducts);
+    const pagination = renderPaginationControls("products", total, page, limit);
+
+    const tableHTML = generateTableBootstrap(transformed, ProductsProps, sorting, pagination);
+    $('[data-name="table-products"]').html(tableHTML);
   }
 }

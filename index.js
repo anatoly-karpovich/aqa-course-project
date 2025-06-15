@@ -7,32 +7,37 @@ if (!getStoredTheme) {
 switchTheme(getStoredTheme());
 
 async function router() {
-  const token = getAuthorizationCookie();
-  if (!token) {
-    renderPages["Sign In"]();
-  }
-  if (!document.querySelector("#sidebar") && !document.querySelector("#emailinput")) {
-    const token = getAuthorizationCookie();
-    token ? renderPages["Landing"](landingProps) : renderPages["Sign In"]();
-    return;
-  }
-
   const hash = window.location.hash || "#/";
-  console.log(hash);
   const path = hash.slice(2); // убираем '#/'
   console.log(path);
 
-  // if(path === '') {
-  //   renderPages["Landing"](landingProps)
-  // }
+  if (!document.querySelector("body div")) {
+    const token = getAuthorizationCookie();
+    if (token) {
+      renderPages["Landing"](landingProps);
+    } else {
+      renderPages["Sign In"]();
+      setRoute(ROUTES.SIGNIN);
+    }
+    return;
+  }
+
   // Home
-  if (path === "" || path === "home" || path === "/") {
-    await renderPages.Landing(landingProps);
+  if (path === "" || path === "/") {
+    setRoute(ROUTES.HOME);
+  } else if (path === "home") {
+    if (!document.querySelector("#sidebar") && !document.querySelector("#emailinput")) {
+      const token = getAuthorizationCookie();
+      token ? renderPages["Landing"](landingProps) : renderPages["Sign In"]();
+      return;
+    }
+    await renderHomePage(homeProps);
   }
 
   // Sign In
-  else if (path === "signin") {
-    await renderPages["Sign In"]();
+  else if (path === "login") {
+    const token = getAuthorizationCookie();
+    token ? setRoute(ROUTES.HOME) : renderPages["Sign In"]();
   }
 
   // Customers
@@ -64,7 +69,7 @@ async function router() {
 
   // Orders
   else if (path === "orders") {
-    await renderPages.Orders();
+    await renderOrdersPage();
   } else if (path === "orders/add") {
     await renderCreateOrderModal();
   } else if (/^orders\/[\w-]+\/edit-delivery$/.test(path)) {

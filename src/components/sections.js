@@ -77,21 +77,40 @@ function generateOrderDetailsInfoBar(order) {
         <span class="strong-details fw-bold">Order number: </span>
         <span class="fst-italic">${order._id}</span>
     </div>
-    <div class="d-flex justify-content-start p-horizontal-20 mb-3">
+    <div class="d-flex justify-content-start p-horizontal-20 mb-3 align-items-center">
         <span class="strong-details fw-bold">Assigned Manager: </span>
-        <span class="fst-italic">${
+        ${
           order.assignedManager?.firstName
-            ? order.assignedManager.firstName + " " + order.assignedManager.lastName
-            : "-"
-        }</span>
+            ? generateEditAssignedManagerSection(order)
+            : '<span class="fst-italic" style="cursor: pointer"><u onclick="renderAssigneManagerModal()">Click to select manager</u></span>'
+        }
     </div>
     <div class="d-flex justify-content-between p-horizontal-20 mb-3">
         <div class="d-flext justify-content-start">
             ${generateProcessOrReceiveButton(order)}
             ${generateRefreshOrderButton(order)}
         </div>
-            ${generateCancelOrderButton(order)}
+            ${generateOrderStatusButton(order)}
     </div>`;
+}
+
+function generateOrderStatusButton(order) {
+  if (order.status === ORDER_STATUSES.DRAFT || order.status === ORDER_STATUSES.IN_PROCESS) {
+    return generateCancelOrderButton();
+  } else if (order.status === ORDER_STATUSES.CANCELED) {
+    return `<div><button class="btn btn-outline-success btn-sm" id="reopen-order" onclick="renderReopenOrderModal('${order._id}')">Reopen Order</button></div>`;
+  } else return "";
+}
+function generateEditAssignedManagerSection(order) {
+  return `
+  <div>
+    ${createManagerDetailsLink(order.assignedManager)}
+    <button class="btn btn-sm" title="Edit Assigned Manager" onclick="renderAssigneManagerModal()"><i class="bi bi-pencil-fill"></i></button>
+    <button class="btn btn-sm text-danger" title="Remove Assigned Manager" onclick="renderRemoveAssignedManagerModal('${
+      order._id
+    }')"><i class="bi bi-x-lg"></i></button>
+  </div>
+  `;
 }
 
 function generateRefreshOrderButton(order) {
@@ -100,10 +119,8 @@ function generateRefreshOrderButton(order) {
     : `<button class="btn btn-link btn-sm" id="refresh-order">Refresh Order <i class="bi bi-arrow-clockwise"></i></button>`;
 }
 
-function generateCancelOrderButton(order) {
-  return order.status === "Draft" || order.status === "In Process"
-    ? `<div><button class="btn btn-outline-danger btn-sm" id="cancel-order">Cancel Order</button></div>`
-    : "";
+function generateCancelOrderButton() {
+  return `<div><button class="btn btn-outline-danger btn-sm" id="cancel-order">Cancel Order</button></div>`;
 }
 
 function generateProcessOrReceiveButton(order) {
@@ -270,18 +287,21 @@ function generateOrderDeliveryTabBody(order) {
 
 function handleDeliveryButton(order) {
   if (order.delivery && order.status === "Draft") {
-    return generateDeliveryButton(order.delivery);
+    return generateDeliveryButton(order);
   } else if (!order.delivery && order.status === "Draft") {
-    return generateDeliveryButton(order.delivery);
+    return generateDeliveryButton(order);
   } else return "";
 }
 
-function generateDeliveryButton(delivery) {
+function generateDeliveryButton(order) {
+  const { delivery, _id } = order;
   return `
     <div class="section-footer btn-tab">
-    <button class="btn btn-outline-primary page-title-header page-title-button" id="delivery-btn">${
-      delivery ? "Edit" : "Schedule"
-    } Delivery</button>
+    <a href="${
+      delivery ? ROUTES.ORDER_EDIT_DELIVERY(_id) : ROUTES.ORDER_SCHEDULE_DELIVERY(_id)
+    }" class="btn btn-outline-primary page-title-header page-title-button" id="delivery-btn">${
+    delivery ? "Edit" : "Schedule"
+  } Delivery</a>
     </div>`;
 }
 
@@ -323,7 +343,7 @@ function generateOrderHistoryRow(order, index) {
       <div class="accordion-header his-header border-bottom" id="heading2${index}">
           <button class="accordion-button collapsed his-action" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2${index}" 
           aria-expanded="false" aria-controls="collapse2${index}"></button>
-          <span class="his-col">${order.history[index].action}</span>
+          <span class="his-col">${order.history[index].action ?? "Untracked Action"}</span>
           <span class="his-col">${order.history[index].performer.firstName} ${
     order.history[index].performer.lastName
   }</span>
@@ -344,7 +364,11 @@ function generateOrderHistoryNestedRows(order, index) {
             <span class="fw-bold his-col">Previous</span>
             <span class="fw-bold his-col">Updated</span>
         </div>
-            ${orderHistoryRowByActionMapper[order.history[index].action](order, index)}
+            ${
+              orderHistoryRowByActionMapper[order.history[index].action]
+                ? orderHistoryRowByActionMapper[order.history[index].action](order, index)
+                : orderHistoryRowByActionMapper[ORDER_HISTORY_ACTIONS.CREATED](order, index)
+            }
     </div>`;
 }
 
@@ -358,6 +382,9 @@ const orderHistoryRowByActionMapper = {
   [ORDER_HISTORY_ACTIONS.REQUIRED_PRODUCTS_CHANGED]: generateOrderChangedRequestedProductsHistoryRows,
   [ORDER_HISTORY_ACTIONS.RECEIVED]: generateOrderReceiveProductsHistoryRows,
   [ORDER_HISTORY_ACTIONS.RECEIVED_ALL]: generateOrderReceiveProductsHistoryRows,
+  [ORDER_HISTORY_ACTIONS.MANAGER_ASSIGNED]: generateOrderChangedManagerHistoryRows,
+  [ORDER_HISTORY_ACTIONS.MANAGER_UNASSIGNED]: generateOrderChangedManagerHistoryRows,
+  [ORDER_HISTORY_ACTIONS.REOPENED]: generateOrderChangedStatusHistoryRows,
 };
 
 function generateDeliveryInHistoryRows(order, index) {
@@ -422,6 +449,22 @@ function generateOrderChangedStatusHistoryRows(order, index) {
         <span class="his-col his-nested-row fst-italic">${replaceApiToFeKeys["status"]}</span>
         <span class="his-col fst-italic">${previous ? previous.status : "-"}</span>
         <span class="his-col fst-italic">${updated.status}</span>
+    </div>`;
+}
+
+function generateOrderChangedManagerHistoryRows(order, index) {
+  let previous = index === order.history.length - 1 ? null : order.history[index + 1];
+  let updated = order.history[index];
+  return `
+    <div class="d-flex justify-content-around py-3 border-bottom">
+        <span class="his-action"></span>
+        <span class="his-col his-nested-row fst-italic">${replaceApiToFeKeys["assignedManager"]}</span>
+        <span class="his-col fst-italic">${
+          previous && previous.assignedManager ? convertAssignedManagerToUI(previous.assignedManager) : "Not assigned"
+        }</span>
+        <span class="his-col fst-italic">${
+          updated.assignedManager ? convertAssignedManagerToUI(updated.assignedManager) : "Not assigned"
+        }</span>
     </div>`;
 }
 
@@ -499,7 +542,7 @@ function generateSavedComments(order) {
 }
 
 function generateComment(comment) {
-  const createdBy = "AQA User";
+  const createdBy = comment.createdBy ?? "AQA User";
   return `
     <div class="shadow-sm rounded mx-3 my-3 p-3 border">
         <div class="d-flex justify-content-between align-items-center">

@@ -26,9 +26,11 @@ const ENDPOINTS = {
   ["Login"]: `${BASE_URL}/api/login`,
   ["Logout"]: `${BASE_URL}/api/logout`,
   ["Customers"]: `${BASE_URL}/api/customers`,
+  ["Customers All"]: `${BASE_URL}/api/customers/all`,
   ["Get Customer By Id"]: (id) => `${BASE_URL}/api/customers/${id}/`,
   ["Get Customer Orders"]: (id) => `${BASE_URL}/api/customers/${id}/orders`,
   ["Products"]: `${BASE_URL}/api/products`,
+  ["Products All"]: `${BASE_URL}/api/products/all`,
   ["Get Product By Id"]: (id) => `${BASE_URL}/api/products/${id}/`,
   ["Orders"]: `${BASE_URL}/api/orders`,
   ["Get Order By Id"]: (id) => `${BASE_URL}/api/orders/${id}/`,
@@ -41,6 +43,11 @@ const ENDPOINTS = {
   ["Managers"]: `${BASE_URL}/api/users`,
   ["Get Manager By Id"]: (id) => `${BASE_URL}/api/users/${id}/`,
   ["Change Manager Password"]: (id) => `${BASE_URL}/api/users/password/${id}`,
+  ["Notifications"]: `${BASE_URL}/api/notifications`,
+  ["Notification by Id"]: (id) => `${BASE_URL}/api/notifications/${id}/read`,
+  ["Notification read all"]: `${BASE_URL}/api/notifications/mark-all-read`,
+  ["Assign Manager"]: (orderId, managerId) => `${BASE_URL}/api/orders/${orderId}/assign-manager/${managerId}`,
+  ["Unassign Manager"]: (orderId) => `${BASE_URL}/api/orders/${orderId}/unassign-manager`,
 };
 
 const SUCCESS_MESSAGES = {
@@ -55,12 +62,15 @@ const SUCCESS_MESSAGES = {
   ["Delivery Saved"]: "Delivery was successfully saved",
   ["Order Canceled"]: "Order was successfully canceled",
   ["Order In Process"]: "Order processing was successfully started",
+  ["Order Draft"]: "Order was successfully reopened",
   ["Products Successfully Received"]: `Products were successfully received`,
   ["Comment Successfully Created"]: `Comment was successfully posted`,
   ["Comment Successfully Deleted"]: `Comment was successfully deleted`,
   ["New Manager Added"]: "Manager was successfully created",
   ["Manager Successfully Updated"]: (name) => `${name} was successfully updated`,
   ["Password Successfully Changed"]: "Password was successfully changed",
+  ["Manager Assigned"]: "Manager was successfully assigned to the order",
+  ["Manager Unassigned"]: "Manager was successfully unassigned from the order",
 };
 
 const ERROR_MESSAGES = {
@@ -128,6 +138,7 @@ const replaceApiToFeKeys = {
   username: "Username",
   roles: "Roles",
   assignedManager: "Assigned Manager",
+  assignedManager: "Assigned Manager",
 };
 
 const idToOrderNumber = {
@@ -144,6 +155,9 @@ const ORDER_HISTORY_ACTIONS = {
   RECEIVED: "Received",
   RECEIVED_ALL: "All products received",
   CANCELED: "Order canceled",
+  MANAGER_ASSIGNED: "Manager Assigned",
+  MANAGER_UNASSIGNED: "Manager Unassigned",
+  REOPENED: "Order reopened",
 };
 
 const PAGES = {
@@ -167,24 +181,32 @@ const ROLES = {
   USER: "USER",
 };
 
+const ORDER_STATUSES = {
+  DRAFT: "Draft",
+  IN_PROCESS: "In Process",
+  PARTIALLY_RECEIVED: "Partially Received",
+  RECEIVED: "Received",
+  CANCELED: "Canceled",
+};
+
 const ROUTES = {
-  ORDERS: "/orders",
-  ORDER_DETAILS: (id) => `/orders/${id}`,
-  ORDER_EDIT_DELIVERY: (id) => `/orders/${id}/edit-delivery`,
-  ORDER_SCHEDULE_DELIVERY: (id) => `/orders/${id}/schedule-delivery`,
-  CUSTOMERS: "/customers",
-  CUSTOMER_DETAILS: (id) => `/customers/${id}`,
-  CUSTOMER_EDIT: (id) => `/customers/${id}/edit`,
-  CUSTOMER_ADD: (id) => `/customers/${id}/add`,
-  PRODUCTS: "/products",
-  PRODUCT_DETAILS: (id) => `/products/${id}`,
-  PRODUCT_EDIT: (id) => `/products/${id}/edit`,
-  PRODUCT_ADD: (id) => `/products/${id}/add`,
-  MANAGERS: "/managers",
-  MANAGER_DETAILS: (id) => `/managers/${id}`,
-  MANAGER_EDIT: (id) => `/managers/${id}/edit`,
-  MANAGER_ADD: (id) => `/managers/${id}/add`,
-  SIGNIN: "/login",
-  HOME: "/home",
-  NOT_FOUND: "/page-not-found",
+  ORDERS: "#/orders",
+  ORDER_DETAILS: (id) => `#/orders/${id}`,
+  ORDER_EDIT_DELIVERY: (id) => `#/orders/${id}/edit-delivery`,
+  ORDER_SCHEDULE_DELIVERY: (id) => `#/orders/${id}/schedule-delivery`,
+  CUSTOMERS: "#/customers",
+  CUSTOMER_DETAILS: (id) => `#/customers/${id}`,
+  CUSTOMER_EDIT: (id) => `#/customers/${id}/edit`,
+  CUSTOMER_ADD: `#/customers/add`,
+  PRODUCTS: "#/products",
+  PRODUCT_DETAILS: (id) => `#/products/${id}`,
+  PRODUCT_EDIT: (id) => `#/products/${id}/edit`,
+  PRODUCT_ADD: `#/products/add`,
+  MANAGERS: "#/managers",
+  MANAGER_DETAILS: (id) => `#/managers/${id}`,
+  MANAGER_EDIT: (id) => `#/managers/${id}/edit`,
+  MANAGER_ADD: `#/managers/add`,
+  SIGNIN: "#/login",
+  HOME: "#/home",
+  NOT_FOUND: "#/page-not-found",
 };

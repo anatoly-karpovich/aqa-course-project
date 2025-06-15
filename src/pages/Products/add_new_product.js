@@ -1,7 +1,7 @@
 function renderAddNewProductLayout(options = add_new_product_props) {
   return `
   <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
-    ${backLink(renderProductsPage, "Products")}
+    ${backLink(ROUTES.PRODUCTS, "Products")}
     <div id="${PAGE_TITLE_ID}" class="page-header-title">
         ${generatePageTitle(options)}
     </div>

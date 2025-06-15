@@ -2,9 +2,7 @@ function generateAddManagerPageLayout() {
   return `
 <div class="d-flex justify-content-center">
     <div class="shadow-sm p-3 mb-5 bg-body rounded page-title-margin col-md-6">
-        <div class="back-link" onclick="renderManagersPage();">
-            <i class="bi bi-arrow-left me-2"></i> Managers
-        </div>
+        ${backLink(ROUTES.MANAGERS, "Managers")}
         <div id="title" class="page-header-title">
             <h2 class="page-title-text">Add New Manager</h2>
         </div>

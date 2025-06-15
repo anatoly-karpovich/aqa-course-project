@@ -1,7 +1,7 @@
 function renderOrderDetailsPageLayout(options = Order_Details_Props, order, isReceivingOn = false) {
   return `
     <div class="bg-body rounded p-3" id="order-details-header">
-        ${backLink(renderOrdersPage, "Orders")}
+        ${backLink(ROUTES.ORDERS, "Orders")}
         <div id="${PAGE_TITLE_ID}" class="p-horizontal-20">  
             <div class="page-header-flex">
                 <h2 class="${options.classlist}">Order Details</h2>
@@ -45,6 +45,22 @@ const cancel_order_confirmation_opts = {
   },
 };
 
+const unsassign_manager_confirmation_opts = {
+  title: '<i class="bi bi-person-fill-x me-2 text-danger"></i> Unassign Manager',
+  body: "Are you sure you want to unassign manager from order?",
+  deleteFunction: "unassignManager",
+  buttons: {
+    success: {
+      name: "Yes, Unassign",
+      id: "cancel-order-modal-btn",
+    },
+    cancel: {
+      name: "Cancel",
+      id: "cancel-confirmation-order-modal-btn",
+    },
+  },
+};
+
 const process_order_confirmation_opts = {
   title: "Process Order",
   body: "Are you sure you want to process the order? ",
@@ -60,6 +76,26 @@ const process_order_confirmation_opts = {
       id: "process-confirmation-order-modal-btn",
     },
   },
+};
+
+const reopern_order_confirmation_opts = (id) => {
+  return {
+    title: "Reopen Order",
+    body: "Are you sure you want to reopen the order? ",
+    deleteFunction: "changeOrderStatus",
+    id,
+    buttons: {
+      success: {
+        name: "Yes, Reopen",
+        id: "reopen-order-modal-btn",
+        class: "btn-primary",
+      },
+      cancel: {
+        name: "Cancel",
+        id: "reopen-confirmation-order-modal-btn",
+      },
+    },
+  };
 };
 
 const edit_order_details_modal_props = {
@@ -90,27 +126,38 @@ const edit_order_details_modal_props = {
   data: {},
 };
 
-async function changeOrderStatus(status, button) {
+async function changeOrderStatus(status, button, id) {
   const cancelBtn = document.querySelector(".modal-footer-mr button.btn-secondary");
   cancelBtn.setAttribute("disabled", "");
   setSpinnerToButton(button);
-  const response = await OrdersService.changeOrderStatus(state.order._id, status);
+  const response = await OrdersService.changeOrderStatus(id && id !== "null" ? id : state.order._id, status);
   removeConfimationModal();
   await showNotificationOnOrderDetailsPage(response, { message: SUCCESS_MESSAGES[`Order ${status}`] });
 }
 
+async function unassignManager(orderId, button) {
+  setSpinnerToButton(button);
+  const response = await OrdersService.unassignManager(orderId);
+  removeConfimationModal();
+  if (response.status === 200) {
+    await showNotificationOnOrderDetailsPage(response, { message: SUCCESS_MESSAGES["Manager Unassigned"] });
+  } else {
+    renderNotification({ message: response.data.ErrorMessage }, true);
+  }
+}
+
 function addEventListelersToOrderDetailsPage() {
-  $("#delivery-btn").on("click", (e) => {
-    e.preventDefault();
-    if (state.order.delivery) {
-      renderEditDeliveryPage();
-    } else {
-      renderScheduleDeliveryPage();
-    }
-  });
+  // $("#delivery-btn").on("click", (e) => {
+  //   e.preventDefault();
+  //   if (state.order.delivery) {
+  //     renderEditDeliveryPage();
+  //   } else {
+  //     renderScheduleDeliveryPage();
+  //   }
+  // });
 
   $("#order-details-header").on("click", (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     switch (e.target.id) {
       case "cancel-order": {
         renderCancelOrderModal(state.order._id);
@@ -176,7 +223,7 @@ function addEventListelersToOrderDetailsPage() {
   });
 
   $(`#order-details-tabs-section`).on("click", (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     switch (e.target.id) {
       case "delivery-tab": {

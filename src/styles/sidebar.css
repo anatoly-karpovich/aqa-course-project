@@ -26,14 +26,14 @@ main {
   flex-shrink: 0;
   width: 1.5rem;
   height: 100vh;
-  background-color: rgba(0, 0, 0, .1);
-  border: solid rgba(0, 0, 0, .15);
+  background-color: rgba(0, 0, 0, 0.1);
+  border: solid rgba(0, 0, 0, 0.15);
   border-width: 1px 0;
-  box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+  box-shadow: inset 0 0.5em 1.5em rgba(0, 0, 0, 0.1), inset 0 0.125em 0.5em rgba(0, 0, 0, 0.15);
 }
 
 .bi {
-  vertical-align: -.125em;
+  vertical-align: -0.125em;
   pointer-events: none;
   fill: currentColor;
 }
@@ -49,16 +49,16 @@ main {
 .btn-toggle {
   display: inline-flex;
   align-items: center;
-  padding: .25rem .5rem;
+  padding: 0.25rem 0.5rem;
   font-weight: 600;
-  color: rgba(0, 0, 0, .65);
+  color: rgba(0, 0, 0, 0.65);
   background-color: transparent;
   border: 0;
 }
 
 .btn-toggle:hover,
 .btn-toggle:focus {
-  color: rgba(0, 0, 0, .85);
+  color: rgba(0, 0, 0, 0.85);
   background-color: #d2f4ea;
 }
 
@@ -66,12 +66,12 @@ main {
   width: 1.25em;
   line-height: 0;
   content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
-  transition: transform .35s ease;
-  transform-origin: .5em 50%;
+  transition: transform 0.35s ease;
+  transform-origin: 0.5em 50%;
 }
 
 .btn-toggle[aria-expanded="true"] {
-  color: rgba(0, 0, 0, .85);
+  color: rgba(0, 0, 0, 0.85);
 }
 
 .btn-toggle[aria-expanded="true"]::before {
@@ -80,8 +80,8 @@ main {
 
 .btn-toggle-nav a {
   display: inline-flex;
-  padding: .1875rem .5rem;
-  margin-top: .125rem;
+  padding: 0.1875rem 0.5rem;
+  margin-top: 0.125rem;
   margin-left: 1.25rem;
   text-decoration: none;
 }
@@ -102,7 +102,6 @@ main {
 .lh-tight {
   line-height: 1.25;
 }
-
 
 .contentWrapper {
   display: flex;
@@ -145,7 +144,6 @@ body.loading {
   margin: 20px;
 }
 
-
 .notification-wrapper {
   position: fixed;
   top: 10px;
@@ -179,7 +177,7 @@ body.loading {
 .page-header-flex {
   display: flex;
   justify-content: space-between;
-  margin: 20px 0px 20px 0px !important
+  margin: 20px 0px 20px 0px !important;
 }
 
 .dis-flex {
@@ -193,7 +191,7 @@ body.loading {
 
 .page-header-title {
   justify-content: space-between;
-  margin-top: 20px !important
+  margin-top: 20px !important;
 }
 
 .strong-details {
@@ -212,19 +210,16 @@ body.loading {
   margin-right: 15px;
 }
 
-.tableWrapper tbody>tr>td {
+.tableWrapper tbody > tr > td {
   text-align: left;
   vertical-align: middle;
   word-break: break-word;
 }
 
-.tableWrapper thead>tr>th {
+.tableWrapper thead > tr > th {
   text-align: left;
   vertical-align: middle;
 }
-
-
-
 
 .modal-header {
   padding: 1rem 2.5rem;
@@ -244,7 +239,7 @@ body.loading {
 }
 
 .modal-filters-wrapper {
-  width: 400px
+  width: 400px;
 }
 
 .d-width {
@@ -252,10 +247,8 @@ body.loading {
 }
 
 .ml-5 {
-  margin-left: 5px
+  margin-left: 5px;
 }
-
-
 
 .col-lg-4 {
   display: flex;
@@ -263,19 +256,19 @@ body.loading {
   justify-content: center;
   align-items: center;
   text-align: center;
-  margin: 50px 0px
+  margin: 50px 0px;
 }
 
 tr:has(td):hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-button[title='Delete']:focus {
-  box-shadow: 0 0 0 0.25rem rgba(220 53 69 / 40%)!important
+button[title="Delete"]:focus {
+  box-shadow: 0 0 0 0.25rem rgba(220 53 69 / 40%) !important;
 }
 
 .table-btn {
-  margin: 5px 3px; 
+  margin: 5px 3px;
 }
 
 .tableWrapper > tbody > tr > td:last-child {
@@ -292,7 +285,7 @@ button[title='Delete']:focus {
 }
 
 .form-margin {
-  margin: 0px 20px 0px 20px
+  margin: 0px 20px 0px 20px;
 }
 
 .mr-10 {
@@ -300,7 +293,7 @@ button[title='Delete']:focus {
 }
 
 .page-title-margin {
-  margin: 20px !important
+  margin: 20px !important;
 }
 
 .page-title-text {
@@ -321,9 +314,9 @@ button[title='Delete']:focus {
 }
 
 .page-title-border {
-  border-bottom: 2px solid black; 
-  padding-bottom: 5px; 
-  margin-right:25px
+  border-bottom: 2px solid black;
+  padding-bottom: 5px;
+  margin-right: 25px;
 }
 
 .clear-btn {
@@ -331,8 +324,8 @@ button[title='Delete']:focus {
 }
 
 .form-action-section {
-  margin-top: 35px; 
-  display: flex; 
+  margin-top: 35px;
+  display: flex;
   justify-content: space-between;
 }
 
@@ -354,7 +347,7 @@ button[title='Delete']:focus {
   padding-bottom: 0.5rem;
 }
 
-label.form-label:not([for=textareaNotes]):after {
+label.form-label:not([for="textareaNotes"]):after {
   position: relative;
   left: 1px;
   display: inline-block;
@@ -363,7 +356,7 @@ label.form-label:not([for=textareaNotes]):after {
 }
 
 #chip-buttons {
-  margin: 20px 20px 0 20px
+  margin: 20px 20px 0 20px;
 }
 
 .chip {
@@ -407,7 +400,7 @@ label.form-label:not([for=textareaNotes]):after {
 }
 
 .closebtn {
-  vertical-align: -.1em;
+  vertical-align: -0.1em;
   fill: currentColor;
   cursor: pointer;
   margin-left: 5px;
@@ -450,7 +443,7 @@ label.form-label:not([for=textareaNotes]):after {
 }
 
 .h-m-width {
-max-width: 1090px;;
+  max-width: 1090px;
 }
 
 .section-header {
@@ -461,8 +454,8 @@ max-width: 1090px;;
   justify-content: start;
   padding: 1rem 1rem;
   border-bottom: 1px solid #dee2e6;
-  border-top-left-radius: calc(.3rem - 1px);
-  border-top-right-radius: calc(.3rem - 1px);
+  border-top-left-radius: calc(0.3rem - 1px);
+  border-top-right-radius: calc(0.3rem - 1px);
 }
 
 .section-body {
@@ -481,7 +474,7 @@ max-width: 1090px;;
   flex-shrink: 0;
   align-items: center;
   justify-content: flex-end;
-  padding: .75rem;
+  padding: 0.75rem;
   padding-right: 0;
 }
 
@@ -495,7 +488,7 @@ max-width: 1090px;;
 }
 
 .btn-tab {
-  justify-content: flex-start!important;
+  justify-content: flex-start !important;
   margin-left: 7px;
 }
 
@@ -575,7 +568,7 @@ button.accordion-button:focus {
 }
 
 .edit-pencil:focus {
-  box-shadow: 0 0 0 .25rem rgba(13,110,253,.5);
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.5);
 }
 
 .received-label {
@@ -585,8 +578,8 @@ button.accordion-button:focus {
   justify-content: end;
 }
 
-button[name='sort-button']:focus {
-  box-shadow: none
+button[name="sort-button"]:focus {
+  box-shadow: none;
 }
 
 .back-link {
@@ -597,7 +590,7 @@ button[name='sort-button']:focus {
   cursor: pointer;
   /* font-style: italic; */
   text-decoration: underline;
-  color: #0d6efd
+  color: #0d6efd;
 }
 
 input[type="date"] {
@@ -605,4 +598,34 @@ input[type="date"] {
   min-width: 150px;
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
+}
+
+#notification-badge {
+  font-size: 0.75rem;
+  display: inline-block;
+}
+.list-group-item.fw-bold {
+  /* background-color: #23272b !important; */
+}
+.list-group-item {
+  border: none;
+  border-bottom: 1px solid #343a40 !important;
+}
+
+#notification-list {
+  max-height: 320px; /* или любое другое значение, например 400px */
+  overflow-y: auto;
+}
+
+#notification-list .list-group-item {
+  white-space: normal; /* позволяет переносить текст */
+  word-break: break-word; /* переносит длинные слова/ссылки */
+  line-height: 1.4;
+  display: block; /* сбросить flex если был */
+}
+#notification-list .order-link {
+  word-break: break-all; /* переносит номер заказа, если что */
+  color: #0d6efd; /* стиль для ссылки */
+  text-decoration: underline;
+  cursor: pointer;
 }

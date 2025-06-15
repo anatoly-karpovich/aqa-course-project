@@ -30,9 +30,9 @@ const ManagersProps = {
   classlist: "ml-20 fw-bold",
   buttons: {
     add: {
-      classlist: "btn btn-primary pageTitle page-title-header page-title-button",
+      classlist: "btn btn-primary pageTitle page-title-header page-title-button d-inline-flex align-items-center",
       name: "+ Add Manager",
-      onclick: "renderAddManagerPage",
+      href: ROUTES.MANAGER_ADD,
     },
     search: {
       classlist: "btn btn-primary d-flex justify-content-center align-items-center",
@@ -57,7 +57,7 @@ const ManagersProps = {
         nestedItems: `<i class="bi bi-card-text"></i>`,
         title: "Details",
         classlist: "btn btn-link table-btn",
-        onclick: "renderManagerDetailsPage",
+        href: ROUTES.MANAGER_DETAILS,
       },
       // {
       //   nestedItems: `<i class="bi bi-pencil"></i>`,

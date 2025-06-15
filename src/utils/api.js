@@ -27,22 +27,28 @@ async function sendRequest(options) {
 
 function logout() {
   removeAuthorizationCookie();
-  renderSignInPage();
+  setRoute(ROUTES.SIGNIN);
 }
 
 function handleApiErrors(response, errorToNotification = false) {
   if (response.status === 401) {
     logout();
   } else {
-    if (errorToNotification && response.status < 500) {
+    if (response.status === 404) {
+      renderNotFoundPage();
+    } else if (errorToNotification && response.status < 500) {
       renderNotification(
         { message: response.data.ErrorMessage ? response.data.ErrorMessage : ERROR_MESSAGES["Connection Issue"] },
         true
       );
     } else {
-      document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderErrorPageLayout(response.status);
+      renderErrorPage(response.status);
     }
   }
+}
+
+function renderErrorPage(status) {
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderErrorPageLayout(status);
 }
 
 async function submitEntiti(options, notificationOprions) {
@@ -67,11 +73,11 @@ async function submitEntiti(options, notificationOprions) {
     renderNotification(notificationOprions);
     switch (options.path) {
       case "Products":
-        await renderProductsPage();
+        setRoute(ROUTES.PRODUCTS);
         break;
 
       case "Customers":
-        await renderCustomersPage();
+        setRoute(ROUTES.CUSTOMERS);
         break;
     }
   } else {
@@ -89,7 +95,7 @@ async function submitOrder(orderData, closeModalFunc) {
       : renderNotification({ message: SUCCESS_MESSAGES["New Order Added"] })
     : handleApiErrors(response, true);
   if (closeModalFunc) closeModalFunc();
-  orderData._id ? await renderOrderDetailsPage(orderData._id, true) : await renderOrdersPage();
+  orderData._id ? setRoute(ROUTES.ORDER_DETAILS(orderData._id)) : setRoute(ROUTES.ORDERS);
 }
 
 async function submitDelivery(orderId, delivery) {
@@ -97,7 +103,8 @@ async function submitDelivery(orderId, delivery) {
   const response = await OrdersService.submitDelivery(orderId, delivery);
   if (response.data.IsSuccess) {
     renderNotification({ message: SUCCESS_MESSAGES["Delivery Saved"] });
-    await renderOrderDetailsPage(orderId);
+    // await renderOrderDetailsPage(orderId);
+    setRoute(ROUTES.ORDER_DETAILS(orderId));
   } else {
     handleApiErrors(response, true);
   }
@@ -141,13 +148,18 @@ async function deleteComment(_id, commentId) {
 }
 
 async function getSortedProducts() {
-  const searchString = state.search["products"];
-  const filterOnPage = [...Object.keys(state.filtering["products"]).filter((c) => state.filtering["products"][c])];
+  const searchString = state.search.products;
+  const filterOnPage = Object.keys(state.filtering.products).filter((c) => state.filtering.products[c]);
+  const { page, limit } = state.pagination.products;
+
   const params = {
     ...(filterOnPage.length && { manufacturer: filterOnPage }),
     ...(searchString && { search: searchString }),
     ...state.sorting.products,
+    page,
+    limit,
   };
+
   const response = await ProductsService.getSortedProducts(params);
   if (response.data.IsSuccess) {
     return response;
@@ -159,11 +171,16 @@ async function getSortedProducts() {
 async function getSortedCustomers() {
   const searchString = state.search.customers;
   const filterOnPage = [...Object.keys(state.filtering.customers).filter((c) => state.filtering.customers[c])];
+  const { page, limit } = state.pagination.customers;
+
   const params = {
     ...(filterOnPage.length && { country: filterOnPage }),
     ...(searchString && { search: searchString }),
     ...state.sorting.customers,
+    page,
+    limit,
   };
+
   const response = await CustomersService.getSorted(params);
   if (response.data.IsSuccess) {
     return response;
@@ -174,12 +191,17 @@ async function getSortedCustomers() {
 
 async function getSortedOrders() {
   const searchString = state.search.orders;
-  const filterOnPage = [...Object.keys(state.filtering.orders).filter((c) => state.filtering.orders[c])];
+  const filterOnPage = Object.keys(state.filtering.orders).filter((c) => state.filtering.orders[c]);
+  const { page, limit } = state.pagination.orders;
+
   const params = {
     ...(filterOnPage.length && { status: filterOnPage }),
     ...(searchString && { search: searchString }),
     ...state.sorting.orders,
+    page,
+    limit,
   };
+
   const response = await OrdersService.getSorted(params);
   if (response.data.IsSuccess) {
     return response;
@@ -197,7 +219,7 @@ function generateUrlParams(params) {
         url += `${url.length === 1 ? "" : "&"}${key}=${value.replaceAll(" ", "%20")}`;
       }
     } else {
-      url += `${url.length === 1 ? "" : "&"}${key}=${params[key].replaceAll(" ", "%20")}`;
+      url += `${url.length === 1 ? "" : "&"}${key}=${String(params[key]).replaceAll(" ", "%20")}`;
     }
   }
   return url;

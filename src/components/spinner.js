@@ -20,6 +20,12 @@ function hideSpinners() {
   }
 }
 
+function removeSpinnerFromButton(button, innerText) {
+  button.innerHTML = "";
+  button.innerText = innerText;
+  button.removeAttribute("disabled");
+}
+
 function showHomeSpinners() {
   renderSpinnerInContainer("#total-orders-container");
   renderSpinnerInContainer("#total-revenue-container");
@@ -57,6 +63,14 @@ function showEditCustomerModalSpinner() {
 
 function showEditProductsModalSpinner() {
   renderSpinnerInContainer("#edit-products-section");
+}
+
+function showEditAssignedManagerModalSpinner() {
+  renderSpinnerInContainer("#assign-manager-modal-container");
+}
+
+function showNotificationPopoverSpinner() {
+  renderSpinnerInContainer("#notification-popover-container");
 }
 
 function renderSpinnerInContainer(contaierSelector = "") {

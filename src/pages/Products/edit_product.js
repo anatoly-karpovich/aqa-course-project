@@ -10,7 +10,7 @@ function renderEditProductLayout(options = edit_product_props, data = {}) {
 
   return `
     <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin position-relative" id="edit-product-container">
-    ${backLink(renderProductsPage, "Products")}
+    ${backLink(ROUTES.PRODUCTS, "Products")}
     <div id="${PAGE_TITLE_ID}" class="page-header-title">
       ${generatePageTitle(options, data.name)}
     </div>

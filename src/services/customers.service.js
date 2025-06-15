@@ -3,7 +3,7 @@ class CustomersService {
     const options = {
       method: "get",
       baseURL: BASE_URL,
-      url: id ? ENDPOINTS["Get Customer By Id"](id) : ENDPOINTS.Customers,
+      url: id ? ENDPOINTS["Get Customer By Id"](id) : ENDPOINTS["Customers All"],
       headers: {
         Authorization: getAuthorizationCookie(),
         ["Content-Type"]: "application/json",

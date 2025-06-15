@@ -2,7 +2,7 @@ function createCustomerDetailsPageLayout(customerData, orders) {
   return `
     <!-- Customer Details Card -->
     <div class="card shadow-sm p-4 mb-5 bg-body rounded page-title-margin position-relative" id="customer-info-container">
-        ${backLink(renderCustomersPage, "Customers")}
+        ${backLink(ROUTES.CUSTOMERS, "Customers")}
         <div class="card-body" style="margin: 0 12px 0 12px;">
                 <div class="card-title mb-4 d-flex justify-content-start align-items-center">
                     <h3>Customer Details</h3>
@@ -119,9 +119,7 @@ function customerDetailsDataSection(key, value) {
 function customerOrderRow(order) {
   return `
     <tr>
-        <td><button class="btn btn-link text-decoration-none" onclick="renderOrderDetailsPage('${order._id}')">${
-    order._id
-  }</button></td>
+        <td><a href="${ROUTES.ORDER_DETAILS(order._id)}" class="btn btn-link text-decoration-none">${order._id}</a></td>
         <td>$${order.total_price}</td>
         <td class="${getOrderStatusRowColor(order.status)}">${order.status}</td>
         <td>${formatDateToDateAndTime(order.createdOn)}</td>

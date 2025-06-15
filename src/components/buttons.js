@@ -1,4 +1,5 @@
 function generateButton(options, id) {
+  if (options.href) return generateLinkButton(options, id);
   return `
     <button 
     ${options?.type ? "type=" + '"' + options.type + '" ' : ""}
@@ -10,6 +11,24 @@ function generateButton(options, id) {
     >${options?.name ? options.name : ""}
     ${options?.nestedItems ? options.nestedItems : ""}
     </button>
+    `;
+}
+
+function generateLinkButton(options, id) {
+  return `
+    <a 
+    ${options?.type ? "type=" + '"' + options.type + '" ' : ""}
+    ${
+      options?.href ? "href=" + '"' + (typeof options.href === "function" ? options.href(id) : options.href) + '" ' : ""
+    }
+    ${options?.id ? "id=" + '"' + options.id + '" ' : ""}
+    ${options?.classlist ? "class=" + '"' + options.classlist + '" ' : ""}
+    ${options?.title ? "title=" + '"' + options.title + '" ' : ""}
+    ${options?.onclick ? "onClick=" + '"' + options.onclick + "(" + (id ? "'" + id + "'" : "") + ")" + '" ' : ""}
+    ${options?.disabled ? "disabled " : ""}
+    >${options?.name ? options.name : ""}
+    ${options?.nestedItems ? options.nestedItems : ""}
+    </a>
     `;
 }
 
@@ -133,8 +152,8 @@ function generateEditPencilButton(options) {
   </button>`;
 }
 
-function backLink(onClick, text) {
-  return `<div class="back-link" onclick="${onClick.name}();"><i class="bi bi-arrow-left me-2"></i> ${text}</div>`;
+function backLink(href, text) {
+  return `<a href="${href}" class="back-link"><i class="bi bi-arrow-left me-2"></i> ${text}</a>`;
 }
 
 function createOptions(selectSelector, arrayOfOptions) {

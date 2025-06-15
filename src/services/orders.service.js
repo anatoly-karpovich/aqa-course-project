@@ -134,4 +134,28 @@ class OrdersService {
     };
     return sendRequest(options);
   }
+
+  static async assignManager(orderId, managerId) {
+    return sendRequest({
+      method: "put",
+      baseURL: BASE_URL,
+      url: ENDPOINTS["Assign Manager"](orderId, managerId),
+      headers: {
+        Authorization: getAuthorizationCookie(),
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  static async unassignManager(orderId) {
+    return sendRequest({
+      method: "put",
+      baseURL: BASE_URL,
+      url: ENDPOINTS["Unassign Manager"](orderId),
+      headers: {
+        Authorization: getAuthorizationCookie(),
+        "Content-Type": "application/json",
+      },
+    });
+  }
 }

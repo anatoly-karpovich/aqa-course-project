@@ -47,11 +47,11 @@ const OrdersProps = {
     id: "table-orders",
     defaultHeaders: [
       idToOrderNumber._id,
-      replaceApiToFeKeys.name,
       replaceApiToFeKeys.email,
       replaceApiToFeKeys.price,
       replaceApiToFeKeys.delivery,
       replaceApiToFeKeys.status,
+      replaceApiToFeKeys.assignedManager,
       replaceApiToFeKeys.createdOn,
     ],
     sortableFields: [
@@ -61,6 +61,7 @@ const OrdersProps = {
       replaceApiToFeKeys.price,
       replaceApiToFeKeys.delivery,
       replaceApiToFeKeys.status,
+      replaceApiToFeKeys.assignedManager,
       replaceApiToFeKeys.createdOn,
     ],
     currentSortingField: {
@@ -73,7 +74,21 @@ const OrdersProps = {
         nestedItems: `<i class="bi bi-card-text"></i>`,
         title: "Details",
         classlist: "btn btn-link table-btn",
-        onclick: "renderOrderDetailsPage",
+        href: ROUTES.ORDER_DETAILS,
+      },
+      // {
+      //   nestedItems: `<i class="bi bi-arrow-repeat"></i>`,
+      //   title: "Reorder",
+      //   classlist: "btn btn-link table-btn",
+      //   onclick: "renderOrderDetailsPage",
+      //   isVisible: (order) => order.Status === ORDER_STATUSES.RECEIVED,
+      // },
+      {
+        nestedItems: `<i class="bi bi-box-arrow-in-right"></i>`,
+        title: "Reopen",
+        classlist: "btn btn-link table-btn",
+        onclick: "renderReopenOrderModal",
+        isVisible: (order) => order.Status === ORDER_STATUSES.CANCELED,
       },
     ],
   },
@@ -115,12 +130,11 @@ function transformOrdersForTable(orders) {
     return {
       [replaceApiToFeKeys._id]: el._id,
       [idToOrderNumber._id]: el._id,
-      // [replaceApiToFeKeys.name]: el.customer.name,
       [replaceApiToFeKeys.email]: el.customer.email,
       [replaceApiToFeKeys.price]: `$${el.total_price}`,
       [replaceApiToFeKeys.delivery]: el.delivery ? convertToDate(el.delivery.finalDate) : "-",
       [replaceApiToFeKeys.status]: el.status,
-      [replaceApiToFeKeys.assignedManager]: `${el.assignedManager?.firstName} ${el.assignedManager?.lastName}` ?? "-",
+      [replaceApiToFeKeys.assignedManager]: el.assignedManager ? createManagerDetailsLink(el.assignedManager) : "-",
       [replaceApiToFeKeys.createdOn]: convertToDateAndTime(el.createdOn),
     };
   });
@@ -133,13 +147,25 @@ function renderOrdersTable(orders, options, sorting) {
 async function getOrdersAndRenderTable() {
   showTableSpinner();
   const response = (await getSortedOrders()).data;
-  const { Orders: sortedOrders, sorting } = response;
+  const { Orders: sortedOrders, sorting, total, page, limit } = response;
+
+  const totalPages = Math.max(Math.ceil(total / limit), 1);
+  if (sortedOrders.length === 0 && page > totalPages) {
+    state.pagination.orders.page = totalPages;
+    return await getOrdersAndRenderTable(); // 🔁 повторный запрос
+  }
+
   if (state.checkPage(PAGES.ORDERS)) {
     OrdersProps.tableProps.currentSortingField.direction = state.sorting.orders.sortOrder;
     OrdersProps.tableProps.currentSortingField.name =
       state.sorting.orders.sortField === "_id"
         ? idToOrderNumber[state.sorting.orders.sortField]
         : replaceApiToFeKeys[state.sorting.orders.sortField];
-    renderOrdersTable(sortedOrders, OrdersProps, sorting);
+
+    const transformed = transformOrdersForTable(sortedOrders);
+    const pagination = renderPaginationControls("orders", total, page, limit);
+    const tableHTML = generateTableBootstrap(transformed, OrdersProps, sorting, pagination);
+
+    $('[data-name="table-orders"]').html(tableHTML);
   }
 }

@@ -1,4 +1,4 @@
-function generateTableBootstrap(data = [], options, sorting) {
+function generateTableBootstrap(data = [], options, sorting, paginationHTML = "") {
   const layout = `
     <div class="position-relative" id="table-container">
       <table class="table table-striped tableWrapper" id="${options.tableProps.id}">
@@ -11,6 +11,7 @@ function generateTableBootstrap(data = [], options, sorting) {
               ${generateTableBody(data, options)}
           </tbody>
       </table>
+      ${paginationHTML}
     </div>
     `;
   return layout;
@@ -48,7 +49,18 @@ function generateTableRow(obj = {}, options) {
 
   let actions = "";
   if (options && options.tableProps.buttons) {
-    actions = "<td>" + options.tableProps.buttons.map((btn) => generateButton(btn, obj.Id)).join("") + "</td>";
+    actions =
+      "<td>" +
+      options.tableProps.buttons.reduce((result, btn) => {
+        if (!btn.isVisible) result += generateButton(btn, obj.Id);
+        else {
+          if (btn.isVisible(obj)) {
+            result += generateButton(btn, obj.Id);
+          }
+        }
+        return result;
+      }, "") +
+      "</td>";
   }
   return row + actions;
 }
@@ -126,4 +138,114 @@ async function sortOrdersInTable(header) {
     Object.keys(idToOrderNumber).find((key) => idToOrderNumber[key] === fieldName);
   state.sorting.orders.sortOrder = direction;
   await getOrdersAndRenderTable();
+}
+
+function renderPaginationControls(entity, total, currentPage, limit) {
+  const totalPages = Math.ceil(total / limit);
+  if (totalPages <= 1 && limit === total) return "";
+
+  let html = `<div class="d-flex justify-content-end align-items-center flex-wrap mt-3 gap-3" id="pagination-controls">`;
+
+  // Select "Items on page"
+  html += `
+    <div class="d-flex align-items-center">
+      <label class="me-2 mb-0 fw-semibold">Items on page:</label>
+      <select class="form-select form-select-sm w-auto" onchange="onLimitChange('${entity}', this)" id="pagination-select">
+        ${[10, 25, 50, 100]
+          .map((val) => `<option value="${val}" ${val === limit ? "selected" : ""}>${val}</option>`)
+          .join("")}
+      </select>
+    </div>`;
+
+  // Страницы и стрелки
+  html += `<div class="d-flex flex-wrap" id="pagination-buttons">`;
+
+  // ← Prev
+  html += `
+    <button class="btn btn-sm btn-link"
+      onclick="onPaginationClick('${entity}', ${currentPage - 1})"
+      ${currentPage === 1 ? "disabled" : ""} title="Previous">
+      <i class="bi bi-chevron-left"></i>
+    </button>`;
+
+  // Логика отображения страниц
+  const buttons = [];
+  const maxVisible = 9;
+
+  buttons.push(1); // всегда первая
+
+  if (totalPages <= maxVisible) {
+    for (let i = 2; i <= totalPages; i++) buttons.push(i);
+  } else {
+    if (currentPage <= 5) {
+      for (let i = 2; i <= 8; i++) buttons.push(i);
+      buttons.push("...");
+      buttons.push(totalPages);
+    } else if (currentPage >= totalPages - 4) {
+      buttons.push("...");
+      for (let i = totalPages - 7; i <= totalPages; i++) buttons.push(i);
+    } else {
+      buttons.push("...");
+      for (let i = currentPage - 3; i <= currentPage + 3; i++) buttons.push(i);
+      buttons.push("...");
+      buttons.push(totalPages);
+    }
+  }
+
+  for (const p of buttons) {
+    if (p === "...") {
+      html += `<span class="mx-2 text-muted">...</span>`;
+    } else {
+      const isActive = p === currentPage;
+      html += `
+        <button class="btn btn-sm ${isActive ? "btn-primary" : "btn-outline-primary"} mx-1"
+                onclick="onPaginationClick('${entity}', ${p})"
+                ${isActive ? 'aria-current="page"' : ""}>
+          ${p}
+        </button>`;
+    }
+  }
+
+  // → Next
+  html += `
+    <button class="btn btn-sm btn-link"
+      onclick="onPaginationClick('${entity}', ${currentPage + 1})"
+      ${currentPage === totalPages ? "disabled" : ""} title="Next">
+      <i class="bi bi-chevron-right"></i>
+    </button>`;
+
+  html += `</div></div>`;
+  return html;
+}
+
+async function onLimitChange(entity, selectElement) {
+  const newLimit = parseInt(selectElement.value);
+  state.pagination[entity].limit = newLimit;
+  state.pagination[entity].page = 1;
+  if (entity === "customers") await getCustomersAndRenderTable();
+  else if (entity === "products") await getProductsAndRenderTable();
+  else if (entity === "orders") await getOrdersAndRenderTable();
+
+  const pagination = document.querySelector(`#pagination-controls`);
+  if (pagination) {
+    pagination.scrollIntoView({
+      behavior: "instant",
+      block: "center", // прокрутка к верхнему краю
+    });
+  }
+}
+
+async function onPaginationClick(entity, newPage) {
+  state.pagination[entity].page = newPage;
+  if (entity === "customers") await getCustomersAndRenderTable();
+  else if (entity === "products") await getProductsAndRenderTable();
+  else if (entity === "orders") await getOrdersAndRenderTable();
+
+  const pagination = document.querySelector(`#pagination-controls`);
+  if (pagination) {
+    pagination.scrollIntoView({
+      behavior: "instant",
+      block: "center", // прокрутка к верхнему краю
+    });
+  }
 }

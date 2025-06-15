@@ -19,7 +19,7 @@ function renderHomePageLayout(metrics) {
               <i class="bi bi-list-check display-4 mb-3"></i>
               <h5 class="card-title">Orders</h5>
               <p class="card-text">Manage and process orders from customers and managers.</p>
-              <button class="btn btn-primary" id="orders-from-home" onclick="renderOrdersPage()">View Orders</button>
+              <a href="#/orders" class="btn btn-primary" id="orders-from-home">View Orders</a>
             </div>
           </div>
         </div>
@@ -30,7 +30,7 @@ function renderHomePageLayout(metrics) {
               <i class="bi bi-box-seam display-4 mb-3"></i>
               <h5 class="card-title">Products</h5>
               <p class="card-text">Manage and update product listings, including editing and deleting.</p>
-              <button href="/products" class="btn btn-primary" id="products-from-home" onclick="renderProductsPage()">View Products</button>
+              <a href="#/products" class="btn btn-primary" id="products-from-home">View Products</a>
             </div>
           </div>
         </div>
@@ -41,7 +41,7 @@ function renderHomePageLayout(metrics) {
               <i class="bi bi-people display-4 mb-3"></i>
               <h5 class="card-title">Customers</h5>
               <p class="card-text">View and manage customer information and interactions.</p>
-              <button href="/customers" class="btn btn-primary" id="customers-from-home" onclick="renderCustomersPage()">View Customers</button>
+              <a href="#/customers" class="btn btn-primary" id="customers-from-home">View Customers</a>
             </div>
           </div>
         </div>
