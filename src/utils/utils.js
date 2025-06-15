@@ -103,7 +103,7 @@ async function showNotificationAfterDeleteRequest(response, notificationOptions,
 async function showNotificationOnOrderDetailsPage(response, notificationOptions) {
   // hideSpinner();
   if (response.status === 200) {
-    await renderOrderDetailsPage(state?.order?._id ?? response.data.Order._id);
+    setRoute(ROUTES.ORDER_DETAILS(state?.order?._id ?? response.data.Order._id));
     renderNotification(notificationOptions);
   } else {
     handleApiErrors(response, true);

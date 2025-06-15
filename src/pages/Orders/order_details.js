@@ -89,6 +89,7 @@ const reopern_order_confirmation_opts = (id) => {
         name: "Yes, Reopen",
         id: "reopen-order-modal-btn",
         class: "btn-primary",
+        href: ROUTES.ORDER_DETAILS(id),
       },
       cancel: {
         name: "Cancel",
