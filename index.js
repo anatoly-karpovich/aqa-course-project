@@ -1,5 +1,3 @@
-// const token = getAuthorizationCookie();
-// token ? renderPages["Landing"](landingProps) : renderPages["Sign In"]();
 router();
 if (!getStoredTheme) {
   storeTheme("light");
@@ -7,12 +5,12 @@ if (!getStoredTheme) {
 switchTheme(getStoredTheme());
 
 async function router() {
+  const token = getAuthorizationCookie();
+
   const hash = window.location.hash || "#/";
   const path = hash.slice(2); // убираем '#/'
-  console.log(path);
 
   if (!document.querySelector("body div")) {
-    const token = getAuthorizationCookie();
     if (token) {
       renderPages["Landing"](landingProps);
     } else {
@@ -27,7 +25,6 @@ async function router() {
     setRoute(ROUTES.HOME);
   } else if (path === "home") {
     if (!document.querySelector("#sidebar") && !document.querySelector("#emailinput")) {
-      const token = getAuthorizationCookie();
       token ? renderPages["Landing"](landingProps) : renderPages["Sign In"]();
       return;
     }
@@ -36,7 +33,6 @@ async function router() {
 
   // Sign In
   else if (path === "login") {
-    const token = getAuthorizationCookie();
     token ? setRoute(ROUTES.HOME) : renderPages["Sign In"]();
   }
 
@@ -62,10 +58,6 @@ async function router() {
     const id = path.split("/")[1];
     await renderEditProductPage(id);
   }
-  // else if (/^products\/[\w-]+$/.test(path)) {
-  //   const id = path.split("/")[1];
-  //   await renderProductDetailsModal(id);
-  // }
 
   // Orders
   else if (path === "orders") {
@@ -106,28 +98,3 @@ async function router() {
 
 window.addEventListener("hashchange", router);
 window.addEventListener("load", router);
-
-async function sideMenuClickHandler(page) {
-  switch (page) {
-    case "Home":
-      // renderPages[page](homeProps);
-      break;
-
-    case "Products":
-      // renderPages[page](ProductsProps);
-      break;
-
-    case "Customers":
-      // renderPages[page](CustomerProps);
-      break;
-
-    case "Orders":
-      // renderPages[page](OrdersProps);
-      break;
-
-    case "Managers": {
-      // renderPages[page](ManagersProps);
-      break;
-    }
-  }
-}

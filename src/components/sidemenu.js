@@ -72,7 +72,7 @@ function generateSidebarItem(items = []) {
       (el, index) => `<li>
     <a href="#/${el.name.toLowerCase()}" class="nav-link ${index === 0 ? "active" : ""} text-white" name="${el.name}" ${
         index === 0 ? 'aria-current="page"' : ""
-      } onClick="sideMenuClickHandler('${el.name}');">
+      }>
       <svg class="bi me-2" width="16" height="16"><use xlink:href="${el.xlink}"></use></svg>
       ${el.name}
     </a>

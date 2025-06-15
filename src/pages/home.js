@@ -168,7 +168,9 @@ function createRecentOrderRow(order) {
         <td>${order.customer.name}</td>
         <td>${order.status}</td>
         <td>${order.total_price}</td>
-        <td><button class="btn btn-link" onclick="renderOrderDetailsPage('${order._id}')"><i class="bi bi-card-text"></i></button></td>
+        <td><a href=${ROUTES.ORDER_DETAILS(
+          order._id
+        )} class="btn btn-link" title="Order Details"><i class="bi bi-card-text"></i></a></td>
     </tr>
     `;
 }
@@ -200,7 +202,9 @@ function createTopCustomersRow(customer) {
               <tr>
                 <td scope="col">${customer.customerName}</td>
                 <td scope="col">$${customer.totalSpent}</td>
-                <td><button class="btn btn-link" onclick="renderCustomerDetailsPage('${customer._id}')"><i class="bi bi-card-text"></i></button></td>
+                <td><a href="${ROUTES.CUSTOMER_DETAILS(
+                  customer._id
+                )}" class="btn btn-link" title="Customer Details"><i class="bi bi-card-text"></i></a></td>
               </tr>
     `;
 }
