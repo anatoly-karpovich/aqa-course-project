@@ -94,6 +94,22 @@ const delete_customer_confirmation_opts = {
   },
 };
 
+const delete_customer_on_customers_confirmation_opts = {
+  title: '<i class="bi bi-trash me-2"></i> Delete Customer',
+  body: "Are you sure you want to delete customer?",
+  deleteFunction: "deleteCustomerOnCustomers",
+  buttons: {
+    success: {
+      name: "Yes, Delete",
+      id: "delete-customer-modal-btn",
+    },
+    cancel: {
+      name: "Cancel",
+      id: "cancel-customer-modal.btn",
+    },
+  },
+};
+
 const customer_details_props = (id) => {
   return {
     id,
@@ -117,6 +133,20 @@ async function deleteCustomer(id, confirmButton) {
     { message: SUCCESS_MESSAGES["Customer Successfully Deleted"]("Customer") },
     CustomerProps
   );
+}
+
+async function deleteCustomerOnCustomers(id, confirmButton) {
+  setSpinnerToButton(confirmButton);
+  $('[name="confirmation-modal"] button.btn-secondary').prop("disabled", true);
+  confirmButton.innerHTML = buttonSpinner;
+  const response = await CustomersService.deleteCustomer(id);
+  removeConfimationModal();
+  if (response.status === 204) {
+    getCustomersAndRenderTable();
+    renderNotification({ message: SUCCESS_MESSAGES["Customer Successfully Deleted"]("Customer") });
+  } else {
+    handleApiErrors(response, true);
+  }
 }
 
 function addEventListelersToCustomersPage() {

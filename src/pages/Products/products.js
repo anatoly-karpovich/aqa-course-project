@@ -92,6 +92,22 @@ const delete_product_confirmation_opts = {
   },
 };
 
+const delete_product_on_products_confirmation_opts = {
+  title: '<i class="bi bi-trash me-2"></i> Delete Product',
+  body: "Are you sure you want to delete product?",
+  deleteFunction: "deleteProductOnProducts",
+  buttons: {
+    success: {
+      name: "Yes, Delete",
+      id: "delete-product-modal-btn",
+    },
+    cancel: {
+      name: "Cancel",
+      id: "cancel-product-modal.btn",
+    },
+  },
+};
+
 async function deleteProduct(id, confirmButton) {
   setSpinnerToButton(confirmButton);
   $('[name="confirmation-modal"] button.btn-secondary').prop("disabled", true);
@@ -102,6 +118,20 @@ async function deleteProduct(id, confirmButton) {
     { message: SUCCESS_MESSAGES["Product Successfully Deleted"]("Product") },
     ProductsProps
   );
+}
+
+async function deleteProductOnProducts(id, confirmButton) {
+  setSpinnerToButton(confirmButton);
+  $('[name="confirmation-modal"] button.btn-secondary').prop("disabled", true);
+  const response = await ProductsService.deleteProduct(id);
+  removeConfimationModal();
+  if (response.status === 204) {
+    // await renderPages[pageProps.path](pageProps);
+    getProductsAndRenderTable();
+    renderNotification({ message: SUCCESS_MESSAGES["Product Successfully Deleted"]("Product") });
+  } else {
+    handleApiErrors(response, true);
+  }
 }
 
 function renderEditProductPageFromModal(id) {

@@ -102,7 +102,11 @@ async function renderEditCustomerPage(id) {
 
 function renderDeleteCustomerModal(id) {
   try {
-    renderConfirmationModal(id, delete_customer_confirmation_opts);
+    if (document.querySelector("#table-container")) {
+      renderConfirmationModal(id, delete_customer_on_customers_confirmation_opts);
+    } else {
+      renderConfirmationModal(id, delete_customer_confirmation_opts);
+    }
   } catch (e) {
     console.error(e);
     renderErrorPage();
@@ -140,7 +144,11 @@ function renderAddNewProductPage(options = add_new_product_props) {
 
 function renderDeleteProductModal(id) {
   try {
-    renderConfirmationModal(id, delete_product_confirmation_opts);
+    if (document.getElementById("table-container")) {
+      renderConfirmationModal(id, delete_product_on_products_confirmation_opts);
+    } else {
+      renderConfirmationModal(id, delete_product_confirmation_opts);
+    }
   } catch (e) {
     console.error(e);
     renderErrorPage();
