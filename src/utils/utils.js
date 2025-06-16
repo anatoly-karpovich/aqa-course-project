@@ -103,7 +103,7 @@ async function showNotificationAfterDeleteRequest(response, notificationOptions,
 async function showNotificationOnOrderDetailsPage(response, notificationOptions) {
   // hideSpinner();
   if (response.status === 200) {
-    setRoute(ROUTES.ORDER_DETAILS(state?.order?._id ?? response.data.Order._id));
+    await renderOrderDetailsPage(state?.order?._id ?? response.data.Order._id);
     renderNotification(notificationOptions);
   } else {
     handleApiErrors(response, true);
@@ -364,4 +364,8 @@ function createManagerDetailsLink(assignedManager) {
 
 function setRoute(route) {
   window.location.hash = route;
+}
+
+function isOnOrderDetails(orderId) {
+  return document.getElementById("order-details-header") && window.location.href.includes(`orders/${orderId}`);
 }

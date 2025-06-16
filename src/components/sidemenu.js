@@ -304,7 +304,8 @@ async function clickOnNitificationOrderLink(orderId, event) {
   event.preventDefault();
   const popover = document.getElementById("notification-popover");
   popover.style.display = "none";
-  await renderOrderDetailsPage(orderId);
+  console.log(window.location.href);
+  isOnOrderDetails(orderId) ? await renderOrderDetailsPage(orderId) : setRoute(ROUTES.ORDER_DETAILS(orderId));
 }
 
 async function markAllNotificationsAsRead(event) {

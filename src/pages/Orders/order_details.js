@@ -99,6 +99,26 @@ const reopern_order_confirmation_opts = (id) => {
   };
 };
 
+const reopern_order_on_details_confirmation_opts = (id) => {
+  return {
+    title: "Reopen Order",
+    body: "Are you sure you want to reopen the order? ",
+    deleteFunction: "changeOrderStatus",
+    id,
+    buttons: {
+      success: {
+        name: "Yes, Reopen",
+        id: "reopen-order-modal-btn",
+        class: "btn-primary",
+      },
+      cancel: {
+        name: "Cancel",
+        id: "reopen-confirmation-order-modal-btn",
+      },
+    },
+  };
+};
+
 const edit_order_details_modal_props = {
   customers: {
     divClasslist: "col-md-12",
@@ -133,7 +153,13 @@ async function changeOrderStatus(status, button, id) {
   setSpinnerToButton(button);
   const response = await OrdersService.changeOrderStatus(id && id !== "null" ? id : state.order._id, status);
   removeConfimationModal();
-  await showNotificationOnOrderDetailsPage(response, { message: SUCCESS_MESSAGES[`Order ${status}`] });
+  if (response.status === 200) {
+    const orderId = state?.order?._id ?? response.data.Order._id;
+    isOnOrderDetails(orderId) ? await renderOrderDetailsPage(orderId) : setRoute(ROUTES.ORDER_DETAILS(orderId));
+    renderNotification({ message: SUCCESS_MESSAGES[`Order ${status}`] });
+  } else {
+    handleApiErrors(response, true);
+  }
 }
 
 async function unassignManager(orderId, button) {

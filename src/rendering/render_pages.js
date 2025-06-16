@@ -344,7 +344,13 @@ function renderRemoveAssignedManagerModal(orderId) {
 
 function renderReopenOrderModal(orderId) {
   try {
-    renderConfirmationModal(ORDER_STATUSES.DRAFT, reopern_order_confirmation_opts(orderId));
+    isOnOrderDetails(orderId);
+    renderConfirmationModal(
+      ORDER_STATUSES.DRAFT,
+      isOnOrderDetails(orderId)
+        ? reopern_order_on_details_confirmation_opts(orderId)
+        : reopern_order_confirmation_opts(orderId)
+    );
   } catch (e) {
     console.error(e);
     renderErrorPage();
