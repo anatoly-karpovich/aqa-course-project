@@ -98,3 +98,40 @@ async function router() {
 
 window.addEventListener("hashchange", router);
 window.addEventListener("load", router);
+
+async function sideMenuClickHandler(page) {
+  switch (page) {
+    // case "Home":
+    //   renderPages[page](homeProps);
+    //   break;
+
+    case "Products":
+      {
+        if (window.location.hash.endsWith("/products")) {
+          await getProductsAndRenderTable();
+        }
+      }
+      break;
+
+    case "Customers":
+      {
+        if (window.location.hash.endsWith("/customers")) {
+          await getCustomersAndRenderTable();
+        }
+      }
+      break;
+
+    case "Orders":
+      {
+        if (window.location.hash.endsWith("/orders")) {
+          await getOrdersAndRenderTable();
+        }
+      }
+      break;
+
+    // case "Managers": {
+    //   renderPages[page](ManagersProps);
+    //   break;
+    // }
+  }
+}

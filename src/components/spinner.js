@@ -79,7 +79,7 @@ function renderSpinnerInContainer(contaierSelector = "") {
   overlay.classList.add("overlay-spinner");
   overlay.classList.add("rounded");
   overlay.innerHTML = `
-        <div class="spinner-container${contaierSelector.includes("table") ? "" : "-center"}">
+        <div class="spinner-container-center"}">
             <div class="spinner-border text-secondary" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
