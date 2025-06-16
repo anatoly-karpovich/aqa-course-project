@@ -32,8 +32,9 @@ const ProductsProps = {
   classlist: "ml-20 fw-bold",
   buttons: {
     add: {
-      classlist: "btn btn-primary page-title-header page-title-button",
+      classlist: "btn btn-primary page-title-header page-title-button d-inline-flex align-items-center",
       name: "+ Add Product",
+      href: ROUTES.PRODUCT_ADD,
     },
     search: {
       classlist: "btn btn-primary d-flex justify-content-center align-items-center",
@@ -63,7 +64,7 @@ const ProductsProps = {
         nestedItems: `<i class="bi bi-pencil"></i>`,
         title: "Edit",
         classlist: "btn btn-link table-btn",
-        onclick: "renderEditProductPage",
+        href: ROUTES.PRODUCT_EDIT,
       },
       {
         nestedItems: `<i class="bi bi-trash"></i>`,
@@ -91,6 +92,22 @@ const delete_product_confirmation_opts = {
   },
 };
 
+const delete_product_on_products_confirmation_opts = {
+  title: '<i class="bi bi-trash me-2"></i> Delete Product',
+  body: "Are you sure you want to delete product?",
+  deleteFunction: "deleteProductOnProducts",
+  buttons: {
+    success: {
+      name: "Yes, Delete",
+      id: "delete-product-modal-btn",
+    },
+    cancel: {
+      name: "Cancel",
+      id: "cancel-product-modal.btn",
+    },
+  },
+};
+
 async function deleteProduct(id, confirmButton) {
   setSpinnerToButton(confirmButton);
   $('[name="confirmation-modal"] button.btn-secondary').prop("disabled", true);
@@ -101,6 +118,20 @@ async function deleteProduct(id, confirmButton) {
     { message: SUCCESS_MESSAGES["Product Successfully Deleted"]("Product") },
     ProductsProps
   );
+}
+
+async function deleteProductOnProducts(id, confirmButton) {
+  setSpinnerToButton(confirmButton);
+  $('[name="confirmation-modal"] button.btn-secondary').prop("disabled", true);
+  const response = await ProductsService.deleteProduct(id);
+  removeConfimationModal();
+  if (response.status === 204) {
+    // await renderPages[pageProps.path](pageProps);
+    getProductsAndRenderTable();
+    renderNotification({ message: SUCCESS_MESSAGES["Product Successfully Deleted"]("Product") });
+  } else {
+    handleApiErrors(response, true);
+  }
 }
 
 function renderEditProductPageFromModal(id) {
@@ -114,14 +145,14 @@ const product_details_props = (id) => {
     path: "Product",
     buttons: {
       edit: {
-        onClickFunc: "renderEditProductPageFromModal",
+        href: ROUTES.PRODUCT_EDIT(id),
       },
     },
   };
 };
 
 function addEventListelersToProductsPage() {
-  $("button.page-title-button").on("click", () => renderAddNewProductPage());
+  // $("button.page-title-button").on("click", () => renderAddNewProductPage());
   $(`#${ProductsProps.buttons.search.id}`).on("click", async (event) => {
     event.preventDefault();
     const value = $(`input[type="search"]`).val();

@@ -92,7 +92,8 @@ function renderCustomersOptions(options, data) {
 async function showNotificationAfterDeleteRequest(response, notificationOptions, pageProps) {
   // hideSpinner();
   if (response.status === 204) {
-    await renderPages[pageProps.path](pageProps);
+    // await renderPages[pageProps.path](pageProps);
+    setRoute(ROUTES[pageProps.path.toUpperCase()]);
     renderNotification(notificationOptions);
   } else {
     handleApiErrors(response, true);
@@ -354,7 +355,17 @@ function convertAssignedManagerToUI(assignedManager) {
 
 function createManagerDetailsLink(assignedManager) {
   return `
-  <a href="#" class="text-body fst-italic align-middle" title="Open Manager Details page" id="assigned-manager-link" onclick="renderManagerDetailsPage('${
+  <a href="${ROUTES.MANAGER_DETAILS(
     assignedManager._id
-  }')">${convertAssignedManagerToUI(assignedManager)}</a>`;
+  )}" class="text-body fst-italic align-middle" title="Open Manager Details page" id="assigned-manager-link">${convertAssignedManagerToUI(
+    assignedManager
+  )}</a>`;
+}
+
+function setRoute(route) {
+  window.location.hash = route;
+}
+
+function isOnOrderDetails(orderId) {
+  return document.getElementById("order-details-header") && window.location.href.includes(`orders/${orderId}`);
 }

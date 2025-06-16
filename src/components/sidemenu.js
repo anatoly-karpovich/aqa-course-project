@@ -27,16 +27,16 @@ function generateSidebar(options) {
             <strong>${user ? user.firstName : "RELOGIN!"}</strong>
           </a>
           <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-            <li><a class="dropdown-item" href="#" id="profile" 
-            onclick="profileHandler('${user?._id}',event)">Profile</a></li> 
+            <li><button class="dropdown-item" id="profile" 
+            onclick="profileHandler('${user?._id}',event)">Profile</button></li> 
             ${
               user?.roles.includes(ROLES.ADMIN)
                 ? ""
-                : `          <li><a class="dropdown-item" href="#" id="change-password" 
-            onclick="changePasswordHandler('${user?._id}',event)">Change Password</a></li>`
+                : `          <li><button class="dropdown-item" id="change-password" 
+            onclick="changePasswordHandler('${user?._id}',event)">Change Password</button></li>`
             }
             <li><hr class="dropdown-divider"></li> 
-            <li><a class="dropdown-item" id="signOut" href="#" onclick="signOutHandler()">Sign out</a></li>
+            <li><button class="dropdown-item" id="signOut" onclick="signOutHandler()">Sign out</button></li>
           </ul>
         </div>
       <div class="d-flex flex-column align-items-center me-3" style="position: relative;">
@@ -70,7 +70,7 @@ function generateSidebarItem(items = []) {
   return items
     .map(
       (el, index) => `<li>
-    <a href="#" class="nav-link ${index === 0 ? "active" : ""} text-white" name="${el.name}" ${
+    <a href="#/${el.name.toLowerCase()}" class="nav-link ${index === 0 ? "active" : ""} text-white" name="${el.name}" ${
         index === 0 ? 'aria-current="page"' : ""
       } onClick="sideMenuClickHandler('${el.name}');">
       <svg class="bi me-2" width="16" height="16"><use xlink:href="${el.xlink}"></use></svg>
@@ -210,7 +210,7 @@ async function signOutHandler() {
   localStorage.removeItem("token");
   removeAuthorizationCookie();
   document.querySelector("#sidemenu").parentNode.removeChild(document.querySelector("#sidemenu"));
-  renderSignInPage();
+  setRoute(ROUTES.SIGNIN);
   state.notifications = {};
 }
 
@@ -218,13 +218,15 @@ async function profileHandler(id, event) {
   event.preventDefault();
   id = id ?? JSON.parse(window.localStorage.getItem("user"))?._id;
   if (!id) await signOutHandler();
-  await renderManagerDetailsPage(id);
+  // await renderManagerDetailsPage(id);
+  setRoute(ROUTES.MANAGER_DETAILS(id));
 }
 
 async function changePasswordHandler(id, event) {
   event.preventDefault();
   if (state.page !== PAGES.MANAGER_DETAILS) {
-    await renderManagerDetailsPage(id);
+    // await renderManagerDetailsPage(id);
+    setRoute(ROUTES.MANAGER_DETAILS(id));
     state.page = PAGES.MANAGER_DETAILS;
   }
   createChangePasswordModal(id, event);
@@ -302,7 +304,8 @@ async function clickOnNitificationOrderLink(orderId, event) {
   event.preventDefault();
   const popover = document.getElementById("notification-popover");
   popover.style.display = "none";
-  await renderOrderDetailsPage(orderId);
+  console.log(window.location.href);
+  isOnOrderDetails(orderId) ? await renderOrderDetailsPage(orderId) : setRoute(ROUTES.ORDER_DETAILS(orderId));
 }
 
 async function markAllNotificationsAsRead(event) {

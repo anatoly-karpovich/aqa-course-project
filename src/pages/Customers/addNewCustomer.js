@@ -1,7 +1,7 @@
 function renderAddNewCustomerLayout(options = add_new_customer_props) {
   return `
   <div class="shadow-sm p-3 mb-5 bg-body rounded  page-title-margin">
-    ${backLink(renderCustomersPage, "Customers")}
+    ${backLink(options.buttons.back.href, "Customers")}
     <div id="${PAGE_TITLE_ID}" class="page-header-title">
       ${generatePageTitle(options)}
     </div>
@@ -151,6 +151,7 @@ const add_new_customer_props = {
     back: {
       id: "back-to-customers-page",
       name: "Back",
+      href: ROUTES.CUSTOMERS,
     },
     clear: {
       id: "clear-inputs",

@@ -1,7 +1,7 @@
 function renderOrderDetailsPageLayout(options = Order_Details_Props, order, isReceivingOn = false) {
   return `
     <div class="bg-body rounded p-3" id="order-details-header">
-        ${backLink(renderOrdersPage, "Orders")}
+        ${backLink(ROUTES.ORDERS, "Orders")}
         <div id="${PAGE_TITLE_ID}" class="p-horizontal-20">  
             <div class="page-header-flex">
                 <h2 class="${options.classlist}">Order Details</h2>
@@ -89,6 +89,27 @@ const reopern_order_confirmation_opts = (id) => {
         name: "Yes, Reopen",
         id: "reopen-order-modal-btn",
         class: "btn-primary",
+        href: ROUTES.ORDER_DETAILS(id),
+      },
+      cancel: {
+        name: "Cancel",
+        id: "reopen-confirmation-order-modal-btn",
+      },
+    },
+  };
+};
+
+const reopern_order_on_details_confirmation_opts = (id) => {
+  return {
+    title: "Reopen Order",
+    body: "Are you sure you want to reopen the order? ",
+    deleteFunction: "changeOrderStatus",
+    id,
+    buttons: {
+      success: {
+        name: "Yes, Reopen",
+        id: "reopen-order-modal-btn",
+        class: "btn-primary",
       },
       cancel: {
         name: "Cancel",
@@ -132,7 +153,13 @@ async function changeOrderStatus(status, button, id) {
   setSpinnerToButton(button);
   const response = await OrdersService.changeOrderStatus(id && id !== "null" ? id : state.order._id, status);
   removeConfimationModal();
-  await showNotificationOnOrderDetailsPage(response, { message: SUCCESS_MESSAGES[`Order ${status}`] });
+  if (response.status === 200) {
+    const orderId = state?.order?._id ?? response.data.Order._id;
+    isOnOrderDetails(orderId) ? await renderOrderDetailsPage(orderId) : setRoute(ROUTES.ORDER_DETAILS(orderId));
+    renderNotification({ message: SUCCESS_MESSAGES[`Order ${status}`] });
+  } else {
+    handleApiErrors(response, true);
+  }
 }
 
 async function unassignManager(orderId, button) {
@@ -147,17 +174,17 @@ async function unassignManager(orderId, button) {
 }
 
 function addEventListelersToOrderDetailsPage() {
-  $("#delivery-btn").on("click", (e) => {
-    e.preventDefault();
-    if (state.order.delivery) {
-      renderEditDeliveryPage();
-    } else {
-      renderScheduleDeliveryPage();
-    }
-  });
+  // $("#delivery-btn").on("click", (e) => {
+  //   e.preventDefault();
+  //   if (state.order.delivery) {
+  //     renderEditDeliveryPage();
+  //   } else {
+  //     renderScheduleDeliveryPage();
+  //   }
+  // });
 
   $("#order-details-header").on("click", (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     switch (e.target.id) {
       case "cancel-order": {
         renderCancelOrderModal(state.order._id);
@@ -223,7 +250,7 @@ function addEventListelersToOrderDetailsPage() {
   });
 
   $(`#order-details-tabs-section`).on("click", (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     switch (e.target.id) {
       case "delivery-tab": {

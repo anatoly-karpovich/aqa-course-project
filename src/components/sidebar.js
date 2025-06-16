@@ -1,6 +1,6 @@
 function _createSidebar() {
-  const sidemenu = document.createElement('div')
-  sidemenu.id = "sidemenu"
+  const sidemenu = document.createElement("div");
+  sidemenu.id = "sidemenu";
   sidemenu.insertAdjacentHTML(
     "afterbegin",
     `
@@ -121,7 +121,7 @@ function _createSidebar() {
           <li><a class="dropdown-item" href="#">Settings</a></li>
           <li><a class="dropdown-item" href="#">Profile</a></li>
           <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" id="signOut" href="#">Sign out</a></li>
+          <li><button class="dropdown-item" id="signOut">Sign out</button></li>
         </ul>
       </div>
     </div>
@@ -134,33 +134,20 @@ function _createSidebar() {
 
     </div>
   </div>
-      `)
-      
-    // document.body.appendChild(sidemenu);
-    document.body.prepend(sidemenu);
-    sidemenu.querySelector('#signOut').addEventListener('click', () => {
-      localStorage.removeItem('token')
-      sidemenu.parentNode.removeChild(sidemenu)
-      renderSignInPage()
-    })
+      `
+  );
 
-
+  // document.body.appendChild(sidemenu);
+  document.body.prepend(sidemenu);
+  sidemenu.querySelector("#signOut").addEventListener("click", () => {
+    localStorage.removeItem("token");
+    // sidemenu.parentNode.removeChild(sidemenu);
+    setRoute(ROUTES.SIGNIN);
+  });
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-{/* <ul class="nav nav-pills flex-column mb-auto">
+{
+  /* <ul class="nav nav-pills flex-column mb-auto">
 <li>
   <a href="#" class="nav-link active text-white" aria-current="page" onClick="sideMenuClickHandler(0);">
     <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
@@ -191,10 +178,11 @@ function _createSidebar() {
     Customers
   </a>
 </li>
-</ul> */}
+</ul> */
+}
 
-
-{/* <ul class="nav flex-column">
+{
+  /* <ul class="nav flex-column">
       <li class="nav-item">
         <a class="nav-link active" onClick="sideMenuClickHandler(0);" href="#">Dashboard</a>
       </li>
@@ -207,4 +195,5 @@ function _createSidebar() {
       <li class="nav-item">
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
       </li>
-    </ul> */}
+    </ul> */
+}

@@ -103,7 +103,7 @@ function generateOrderStatusButton(order) {
 }
 function generateEditAssignedManagerSection(order) {
   return `
-  <div  >
+  <div>
     ${createManagerDetailsLink(order.assignedManager)}
     <button class="btn btn-sm" title="Edit Assigned Manager" onclick="renderAssigneManagerModal()"><i class="bi bi-pencil-fill"></i></button>
     <button class="btn btn-sm text-danger" title="Remove Assigned Manager" onclick="renderRemoveAssignedManagerModal('${
@@ -287,18 +287,21 @@ function generateOrderDeliveryTabBody(order) {
 
 function handleDeliveryButton(order) {
   if (order.delivery && order.status === "Draft") {
-    return generateDeliveryButton(order.delivery);
+    return generateDeliveryButton(order);
   } else if (!order.delivery && order.status === "Draft") {
-    return generateDeliveryButton(order.delivery);
+    return generateDeliveryButton(order);
   } else return "";
 }
 
-function generateDeliveryButton(delivery) {
+function generateDeliveryButton(order) {
+  const { delivery, _id } = order;
   return `
     <div class="section-footer btn-tab">
-    <button class="btn btn-outline-primary page-title-header page-title-button" id="delivery-btn">${
-      delivery ? "Edit" : "Schedule"
-    } Delivery</button>
+    <a href="${
+      delivery ? ROUTES.ORDER_EDIT_DELIVERY(_id) : ROUTES.ORDER_SCHEDULE_DELIVERY(_id)
+    }" class="btn btn-outline-primary page-title-header page-title-button" id="delivery-btn">${
+    delivery ? "Edit" : "Schedule"
+  } Delivery</a>
     </div>`;
 }
 

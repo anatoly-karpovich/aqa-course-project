@@ -27,20 +27,22 @@ async function sendRequest(options) {
 
 function logout() {
   removeAuthorizationCookie();
-  renderSignInPage();
+  setRoute(ROUTES.SIGNIN);
 }
 
 function handleApiErrors(response, errorToNotification = false) {
   if (response.status === 401) {
     logout();
   } else {
-    if (errorToNotification && response.status < 500) {
+    if (response.status === 404) {
+      renderNotFoundPage();
+    } else if (errorToNotification && response.status < 500) {
       renderNotification(
         { message: response.data.ErrorMessage ? response.data.ErrorMessage : ERROR_MESSAGES["Connection Issue"] },
         true
       );
     } else {
-      document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderErrorPageLayout(response.status);
+      renderErrorPage(response.status);
     }
   }
 }
@@ -71,11 +73,11 @@ async function submitEntiti(options, notificationOprions) {
     renderNotification(notificationOprions);
     switch (options.path) {
       case "Products":
-        await renderProductsPage();
+        setRoute(ROUTES.PRODUCTS);
         break;
 
       case "Customers":
-        await renderCustomersPage();
+        setRoute(ROUTES.CUSTOMERS);
         break;
     }
   } else {
@@ -93,7 +95,7 @@ async function submitOrder(orderData, closeModalFunc) {
       : renderNotification({ message: SUCCESS_MESSAGES["New Order Added"] })
     : handleApiErrors(response, true);
   if (closeModalFunc) closeModalFunc();
-  orderData._id ? await renderOrderDetailsPage(orderData._id, true) : await renderOrdersPage();
+  orderData._id ? setRoute(ROUTES.ORDER_DETAILS(orderData._id)) : setRoute(ROUTES.ORDERS);
 }
 
 async function submitDelivery(orderId, delivery) {
@@ -101,7 +103,8 @@ async function submitDelivery(orderId, delivery) {
   const response = await OrdersService.submitDelivery(orderId, delivery);
   if (response.data.IsSuccess) {
     renderNotification({ message: SUCCESS_MESSAGES["Delivery Saved"] });
-    await renderOrderDetailsPage(orderId);
+    // await renderOrderDetailsPage(orderId);
+    setRoute(ROUTES.ORDER_DETAILS(orderId));
   } else {
     handleApiErrors(response, true);
   }

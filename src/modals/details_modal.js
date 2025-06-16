@@ -34,9 +34,7 @@ function createDetailsModal(options = {}, data = {}) {
           
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary mr-10" onClick="${options.buttons.edit.onClickFunc}('${
-      data[options.path]._id
-    }');">Edit ${options.path}</button>
+        <a href="${options.buttons.edit.href}" type="button" class="btn btn-primary mr-10">Edit ${options.path}</a>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="removeDetailsModal();">Cancel</button>
       </div>
     </div>

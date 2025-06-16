@@ -187,3 +187,25 @@ const ORDER_STATUSES = {
   RECEIVED: "Received",
   CANCELED: "Canceled",
 };
+
+const ROUTES = {
+  ORDERS: "#/orders",
+  ORDER_DETAILS: (id) => `#/orders/${id}`,
+  ORDER_EDIT_DELIVERY: (id) => `#/orders/${id}/edit-delivery`,
+  ORDER_SCHEDULE_DELIVERY: (id) => `#/orders/${id}/schedule-delivery`,
+  CUSTOMERS: "#/customers",
+  CUSTOMER_DETAILS: (id) => `#/customers/${id}`,
+  CUSTOMER_EDIT: (id) => `#/customers/${id}/edit`,
+  CUSTOMER_ADD: `#/customers/add`,
+  PRODUCTS: "#/products",
+  PRODUCT_DETAILS: (id) => `#/products/${id}`,
+  PRODUCT_EDIT: (id) => `#/products/${id}/edit`,
+  PRODUCT_ADD: `#/products/add`,
+  MANAGERS: "#/managers",
+  MANAGER_DETAILS: (id) => `#/managers/${id}`,
+  MANAGER_EDIT: (id) => `#/managers/${id}/edit`,
+  MANAGER_ADD: `#/managers/add`,
+  SIGNIN: "#/login",
+  HOME: "#/home",
+  NOT_FOUND: "#/page-not-found",
+};

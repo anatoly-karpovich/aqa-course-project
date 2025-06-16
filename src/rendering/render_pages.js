@@ -20,6 +20,7 @@ async function renderCustomersPage(options = CustomerProps) {
     addEventListelersToCustomersPage();
     renderChipsFromState("customers");
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -31,6 +32,7 @@ function renderAddNewCustomerPage(options = add_new_customer_props) {
     sideMenuActivateElement(options.path);
     addEventListelersToAddNewCustomerPage();
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -47,6 +49,7 @@ async function renderCustomerDetailsModal(id) {
       handleApiErrors(response);
     }
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -63,8 +66,11 @@ async function renderCustomerDetailsPage(id) {
         orders.data.Orders
       );
       scrollToSection(`#${CONTENT_CONTAINER_ID}`);
+    } else {
+      customer.status !== 200 ? handleApiErrors(customer, true) : handleApiErrors(orders, true);
     }
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -89,14 +95,20 @@ async function renderEditCustomerPage(id) {
       handleApiErrors(response);
     }
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
 
 function renderDeleteCustomerModal(id) {
   try {
-    renderConfirmationModal(id, delete_customer_confirmation_opts);
+    if (document.querySelector("#table-container")) {
+      renderConfirmationModal(id, delete_customer_on_customers_confirmation_opts);
+    } else {
+      renderConfirmationModal(id, delete_customer_confirmation_opts);
+    }
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -113,6 +125,7 @@ async function renderProductsPage(options = ProductsProps) {
     addEventListelersToProductsPage();
     renderChipsFromState("products");
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -124,14 +137,20 @@ function renderAddNewProductPage(options = add_new_product_props) {
     sideMenuActivateElement(options.path);
     addEventListelersToAddNewProductPage();
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
 
 function renderDeleteProductModal(id) {
   try {
-    renderConfirmationModal(id, delete_product_confirmation_opts);
+    if (document.getElementById("table-container")) {
+      renderConfirmationModal(id, delete_product_on_products_confirmation_opts);
+    } else {
+      renderConfirmationModal(id, delete_product_confirmation_opts);
+    }
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -151,6 +170,7 @@ async function renderProductDetailsModal(id) {
     }
     hideSpinners();
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -175,6 +195,7 @@ async function renderEditProductPage(id) {
       handleApiErrors(response);
     }
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -189,6 +210,7 @@ async function renderOrdersPage(options = OrdersProps) {
     addEventListelersToOrdersPage();
     renderChipsFromState("orders");
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -225,6 +247,7 @@ async function renderOrderDetailsPage(id, withScroll = true) {
       }
     }
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -250,6 +273,7 @@ async function renderReceivingOrderDetailsPage(receiveButton) {
       }
     }
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -273,6 +297,7 @@ async function renderCreateOrderModal() {
         handleApiErrors(products);
       }
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -283,6 +308,7 @@ function renderScheduleDeliveryPage() {
     sideMenuActivateElement(delivery_props.path);
     addEventListelersToScheduleDeliveryPage();
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -293,6 +319,7 @@ function renderEditDeliveryPage() {
     sideMenuActivateElement(delivery_props.path);
     addEventListelersToEditDeliveryPage();
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -301,6 +328,7 @@ function renderCancelOrderModal() {
   try {
     renderConfirmationModal("Canceled", cancel_order_confirmation_opts);
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -309,14 +337,22 @@ function renderRemoveAssignedManagerModal(orderId) {
   try {
     renderConfirmationModal(orderId, unsassign_manager_confirmation_opts);
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
 
 function renderReopenOrderModal(orderId) {
   try {
-    renderConfirmationModal(ORDER_STATUSES.DRAFT, reopern_order_confirmation_opts(orderId));
+    isOnOrderDetails(orderId);
+    renderConfirmationModal(
+      ORDER_STATUSES.DRAFT,
+      isOnOrderDetails(orderId)
+        ? reopern_order_on_details_confirmation_opts(orderId)
+        : reopern_order_confirmation_opts(orderId)
+    );
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -325,6 +361,7 @@ function renderProcessOrderModal() {
   try {
     renderConfirmationModal("In Process", process_order_confirmation_opts);
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -358,6 +395,7 @@ async function renderEditCustomerModal() {
       handleApiErrors(customers);
     }
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -372,6 +410,7 @@ async function renderAssigneManagerModal() {
       setTimeout(() => activeItem.scrollIntoView({ block: "center", behavior: "smooth" }), 300);
     }
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -388,6 +427,7 @@ async function renderEditProductsModal() {
       handleApiErrors(products);
     }
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -409,6 +449,7 @@ async function renderManagersPage(options = ManagersProps) {
     }
     sideMenuActivateElement(options.path);
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -420,6 +461,7 @@ async function renderAddManagerPage() {
     sideMenuActivateElement(ManagersProps.path);
     // addEventListelersToAddManagerPage();
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -440,6 +482,7 @@ async function renderManagerDetailsPage(id) {
     }
     sideMenuActivateElement(ManagersProps.path);
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -448,11 +491,13 @@ function renderDeleteManagerModal(id) {
   try {
     renderConfirmationModal(id, delete_manager_confirmation_opts);
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
 
 //Home section
+
 async function renderLandingPage(options = {}) {
   try {
     state.page = PAGES.HOME;
@@ -462,6 +507,7 @@ async function renderLandingPage(options = {}) {
     renderNotificationContainer();
     connectSocket();
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -492,6 +538,7 @@ async function renderHomePage(options = {}) {
       }
     }
   } catch (e) {
+    console.error(e);
     renderErrorPage();
   }
 }
@@ -502,14 +549,29 @@ function sideMenuActivateElement(value) {
   li.forEach((el) => {
     if (el.classList.contains("active")) {
       el.classList.remove("active");
-    } else if (el.classList.contains("bg-danger")) {
-      el.classList.remove("bg-danger");
     }
   });
   const index = findNodeIndexByInnerText(`ul.nav a`, value);
-  // if (index === indexForRed) {
-  // li[index].classList.add("bg-danger");
-  // } else {
+
   li[index].classList.add("active");
-  // }
+}
+
+function renderNotFoundPage() {
+  const currentPath = window.location.hash;
+
+  document.getElementById(CONTENT_CONTAINER_ID).innerHTML = `
+    <div class="d-flex flex-column justify-content-center align-items-center vh-100 text-center p-3">
+      <img src="https://cdn-icons-png.flaticon.com/512/2748/2748558.png" alt="Sad face" style="width: 150px; margin-bottom: 20px;" />
+      <h1 class="display-1 fw-bold text-danger">404</h1>
+      <p class="fs-3">
+        <span class="text-danger">Oops!</span> Page not found.
+      </p>
+      <p class="lead">
+        We couldn't find a page for: <code>${currentPath}</code>
+      </p>
+      <a href="${ROUTES.HOME}" class="btn btn-primary mt-3">
+        Back to Home
+      </a>
+    </div>
+  `;
 }

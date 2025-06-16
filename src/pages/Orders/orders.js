@@ -74,7 +74,7 @@ const OrdersProps = {
         nestedItems: `<i class="bi bi-card-text"></i>`,
         title: "Details",
         classlist: "btn btn-link table-btn",
-        onclick: "renderOrderDetailsPage",
+        href: ROUTES.ORDER_DETAILS,
       },
       // {
       //   nestedItems: `<i class="bi bi-arrow-repeat"></i>`,

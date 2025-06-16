@@ -10,7 +10,7 @@ function renderCustomersPageLayout(options = CustomerProps, response) {
         <div id="${PAGE_TITLE_ID}" class="p-horizontal-20">  
             <div class="page-header-flex">
                 ${generatePageTitle(options)}
-                ${generateButton(options.buttons.add)}
+                ${generateLinkButton(options.buttons.add)}
             </div>
                 ${searchBar(options.buttons)}
                 ${chipsSection()}
@@ -29,8 +29,9 @@ const CustomerProps = {
   classlist: "ml-20 fw-bold",
   buttons: {
     add: {
-      classlist: "btn btn-primary pageTitle page-title-header page-title-button",
+      classlist: "btn btn-primary pageTitle page-title-header page-title-button d-inline-flex align-items-center",
       name: "+ Add Customer",
+      href: ROUTES.CUSTOMER_ADD,
     },
     search: {
       classlist: "btn btn-primary d-flex justify-content-center align-items-center",
@@ -54,13 +55,13 @@ const CustomerProps = {
         nestedItems: `<i class="bi bi-card-text"></i>`,
         title: "Details",
         classlist: "btn btn-link table-btn",
-        onclick: "renderCustomerDetailsPage",
+        href: ROUTES.CUSTOMER_DETAILS,
       },
       {
         nestedItems: `<i class="bi bi-pencil"></i>`,
         title: "Edit",
         classlist: "btn btn-link table-btn",
-        onclick: "renderEditCustomerPage",
+        href: ROUTES.CUSTOMER_EDIT,
       },
       {
         nestedItems: `<i class="bi bi-trash"></i>`,
@@ -81,6 +82,22 @@ const delete_customer_confirmation_opts = {
   title: '<i class="bi bi-trash me-2"></i> Delete Customer',
   body: "Are you sure you want to delete customer?",
   deleteFunction: "deleteCustomer",
+  buttons: {
+    success: {
+      name: "Yes, Delete",
+      id: "delete-customer-modal-btn",
+    },
+    cancel: {
+      name: "Cancel",
+      id: "cancel-customer-modal.btn",
+    },
+  },
+};
+
+const delete_customer_on_customers_confirmation_opts = {
+  title: '<i class="bi bi-trash me-2"></i> Delete Customer',
+  body: "Are you sure you want to delete customer?",
+  deleteFunction: "deleteCustomerOnCustomers",
   buttons: {
     success: {
       name: "Yes, Delete",
@@ -118,8 +135,22 @@ async function deleteCustomer(id, confirmButton) {
   );
 }
 
+async function deleteCustomerOnCustomers(id, confirmButton) {
+  setSpinnerToButton(confirmButton);
+  $('[name="confirmation-modal"] button.btn-secondary').prop("disabled", true);
+  confirmButton.innerHTML = buttonSpinner;
+  const response = await CustomersService.deleteCustomer(id);
+  removeConfimationModal();
+  if (response.status === 204) {
+    getCustomersAndRenderTable();
+    renderNotification({ message: SUCCESS_MESSAGES["Customer Successfully Deleted"]("Customer") });
+  } else {
+    handleApiErrors(response, true);
+  }
+}
+
 function addEventListelersToCustomersPage() {
-  $("button.page-title-button").on("click", () => renderAddNewCustomerPage());
+  // $("button.page-title-button").on("click", () => renderAddNewCustomerPage());
   $(`#${CustomerProps.buttons.search.id}`).on("click", async (event) => {
     event.preventDefault();
     const value = $(`input[type="search"]`).val();

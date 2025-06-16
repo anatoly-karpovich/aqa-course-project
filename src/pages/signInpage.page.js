@@ -92,10 +92,12 @@ const layout = `
 
 function renderSignInPage() {
   socket && socket.disconnect();
+  if (document.getElementById("signInPage")) return;
   if (document.querySelector("#sidemenu")) {
     document.querySelector("#sidemenu").parentNode.removeChild(document.querySelector("#sidemenu"));
   }
   const signIn = document.createElement("div");
+  signIn.id = "signInPage";
   signIn.insertAdjacentHTML("afterbegin", layout);
   document.body.prepend(signIn);
 
@@ -114,7 +116,8 @@ function renderSignInPage() {
       state.user = response.data.User;
       signIn.classList.add("disabled");
       signIn.parentNode.removeChild(signIn);
-      await renderLandingPage(landingProps);
+      // await renderLandingPage(landingProps);
+      setRoute(ROUTES.HOME);
     } else {
       removeSpinnerFromButton(submit, "Login");
       renderNotification(
