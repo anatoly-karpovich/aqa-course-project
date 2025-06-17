@@ -1,6 +1,6 @@
 #root {
   width: 100%;
-  margin-left: 221px;
+  /* margin-left: 221px; */
 }
 
 html {
@@ -18,8 +18,8 @@ main {
 }
 
 #sidebar {
-  height: 100vh;
-  position: fixed;
+  /* height: 100vh;
+  position: fixed; */
 }
 
 .b-example-divider {
@@ -105,7 +105,7 @@ main {
 
 .contentWrapper {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 #contentInner {

@@ -1,0 +1,96 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: var(--bs-dark);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-right,
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-menu {
+  position: relative;
+  cursor: pointer;
+}
+
+.user-dropdown,
+.notifications-dropdown,
+.module-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--bs-dark);
+  padding: 0.5rem;
+  border-radius: 5px;
+  min-width: 150px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* .user-dropdown a,
+.module-dropdown a {
+  display: block;
+  padding: 0.5rem;
+  text-decoration: none;
+  color: white;
+} */
+
+/* .user-dropdown a:hover,
+.module-dropdown a:hover {
+  background-color: #444;
+} */
+
+.badge {
+  background-color: red;
+  border-radius: 50%;
+  padding: 0.25em 0.5em;
+  font-size: 0.75rem;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+}
+
+.module-dropdown {
+  top: 11.5%;
+  left: 0;
+  background-color: var(--bs-dark);
+  border: 1px solid #444;
+  border-radius: 5px;
+  padding: 0.5rem 0;
+  min-width: 100px; /* чтобы не схлопнулась совсем */
+  max-width: 135px; /* ограничь, если пунктов будет много */
+  white-space: nowrap; /* строки не переносятся */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 1050;
+}
+
+/* Активное состояние — выезжает вниз */
+.module-dropdown.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.module-dropdown a {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+}
+
+.module-dropdown a:hover {
+  background-color: #343a40;
+}

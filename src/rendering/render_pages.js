@@ -545,15 +545,14 @@ async function renderHomePage(options = {}) {
 
 // const indexForRed = _.random(1, 3);
 function sideMenuActivateElement(value) {
-  const li = document.querySelectorAll(`ul.nav a`);
-  li.forEach((el) => {
-    if (el.classList.contains("active")) {
-      el.classList.remove("active");
-    }
-  });
-  const index = findNodeIndexByInnerText(`ul.nav a`, value);
-
-  li[index].classList.add("active");
+  // const li = document.querySelectorAll(`ul.nav a`);
+  // li.forEach((el) => {
+  //   if (el.classList.contains("active")) {
+  //     el.classList.remove("active");
+  //   }
+  // });
+  // const index = findNodeIndexByInnerText(`ul.nav a`, value);
+  // li[index].classList.add("active");
 }
 
 function renderNotFoundPage() {
