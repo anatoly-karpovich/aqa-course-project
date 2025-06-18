@@ -117,7 +117,15 @@ function addEventListelersToAddOrderModal() {
         return add_order_modal_props.data.products.find((p) => p.name === rp)._id;
       }),
     };
-    await submitOrder(orderData, removeAddOrderModal);
+
+    const response = await OrdersService.createOrder(orderData);
+    removeAddOrderModal();
+    if (response.data.IsSuccess) {
+      renderNotification({ message: SUCCESS_MESSAGES["New Order Added"] });
+      await renderOrdersPage();
+    } else {
+      handleApiErrors(response, true);
+    }
   });
 }
 
