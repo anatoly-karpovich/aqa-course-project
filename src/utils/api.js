@@ -96,7 +96,11 @@ async function submitOrder(orderData, closeModalFunc) {
       : renderNotification({ message: SUCCESS_MESSAGES["New Order Added"] })
     : handleApiErrors(response, true);
   if (closeModalFunc) closeModalFunc();
-  orderData._id ? setRoute(ROUTES.ORDER_DETAILS(orderData._id)) : setRoute(ROUTES.ORDERS);
+  if (isOnOrderDetails(orderData._id)) {
+    await renderOrderDetailsPage(orderData._id);
+  } else {
+    orderData._id ? setRoute(ROUTES.ORDER_DETAILS(orderData._id)) : setRoute(ROUTES.ORDERS);
+  }
 }
 
 async function submitDelivery(orderId, delivery) {
