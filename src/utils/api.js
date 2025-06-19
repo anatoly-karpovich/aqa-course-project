@@ -42,6 +42,7 @@ function handleApiErrors(response, errorToNotification = false) {
         true
       );
     } else {
+      activateNavigationMenuItem();
       renderErrorPage(response.status);
     }
   }

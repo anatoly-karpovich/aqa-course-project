@@ -242,8 +242,8 @@ async function renderOrderDetailsPage(id, withScroll = true) {
         addEventListelersToOrderDetailsPage();
         activateTab();
       } else {
-        handleApiErrors(order);
-        handleApiErrors(customers);
+        const errorResponse = [order, customers].find((r) => r.status !== 200);
+        handleApiErrors(errorResponse);
       }
     }
   } catch (e) {
@@ -556,6 +556,7 @@ function sideMenuActivateElement(value) {
 }
 
 function renderNotFoundPage() {
+  activateNavigationMenuItem();
   const currentPath = window.location.hash;
 
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = `

@@ -1,18 +1,24 @@
 function generateHeaderLayout() {
   const user = JSON.parse(window.localStorage.getItem("user"));
   return `
-  <header class="navbar" id="${SIDEBAR_ID}">
+  <header class="navbar border-bottom shadow-sm bg-body" id="${SIDEBAR_ID}">
     <div class="navbar-left position-relative">
-      <button id="menu-toggle" class="btn btn-link text-white" onclick="openMenu()"><i class="bi bi-list"></i></button>
+      <span class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none pe-auto text-body">
+        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+        <span class="fs-4">Sales Portal</span>
+      </span>
+      <div class="ms-3 position-relative navbar-left">
+        ${navigationMenuOptions.map(createNavigationMenuItem).join("")}
+      </div>
     </div>
 
     <div class="navbar-right me-4">
       <div class="notifications">
         <button id="notification-bell" title="Notifications" class="btn btn-link">
           <i class="bi bi-bell"></i>
-          <span class="badge">3</span>
+          <span class="badge" id="notification-badge">3</span>
         </button>
-        <div class="notifications-dropdown d-none" id="notifications-dropdown">
+        <div class="notifications-dropdown d-none" id="notifications-popover">
           <!-- заполнится нотификациями -->
         </div>
       </div>
@@ -20,7 +26,7 @@ function generateHeaderLayout() {
       <button id="theme-toggle" title="Switch theme" class="btn btn-link"><i class="bi bi-moon"></i></button>
 
       <div class="user-menu">
-        <strong><a href="${ROUTES.MANAGER_DETAILS(user._id)}" class="text-white">${
+        <strong><a href="${ROUTES.MANAGER_DETAILS(user._id)}" class="text-body text-decoration-none fs-5">${
     user ? user.firstName : "RELOGIN!"
   }</a></strong>
         <div class="user-dropdown d-none" id="user-dropdown">
@@ -31,17 +37,7 @@ function generateHeaderLayout() {
       <button class="btn btn-link" title="Sign Out" id="signOut" onclick="signOutHandler()"><i class="bi bi-door-open"></i></button>
     </div>
   </header>
-
-  <nav class="module-dropdown position-fixed ms-1" id="module-menu">
-    ${navigationMenuOptions.map(createNavigationMenuItem).join("")}
-  </nav>
   `;
-}
-
-function openMenu() {
-  const moduleMenu = document.getElementById("module-menu");
-  // moduleMenu.classList.toggle("d-none");
-  moduleMenu.classList.toggle("show");
 }
 
 function toggleNotificationsModal() {
@@ -49,38 +45,30 @@ function toggleNotificationsModal() {
   notificationsContainer.classList.toggle("d-none");
 }
 
-document.addEventListener("click", (e) => {
-  const moduleMenu = document.getElementById("module-menu");
-  if (moduleMenu.classList.contains("show") && !moduleMenu.contains(e.target) && e.target.id !== "menu-toggle") {
-    moduleMenu.classList.remove("show");
-  }
-});
-
-function createNavigationMenuItem({ href, icon, text }) {
+function createNavigationMenuItem({ href, text }) {
   return `
-    <div>
-      <a class="d-flex justify-content-start align-items-center" href="${href}" onclick="closeNavigationMenu()">${icon}</i>${text}</a>
+    <div name="module-item">
+      <a class="d-flex justify-content-start align-items-center fs-5 text-decoration-none me-2 text-body cursor-pointer" href="${href}" name="${text.toLowerCase()}" onclick="activateNavigationMenuItem('${text.toLowerCase()}')">${text}</a>
     </div>
   `;
 }
 
-function closeNavigationMenu() {
-  const moduleMenu = document.getElementById("module-menu");
-  moduleMenu.classList.remove("show");
+function activateNavigationMenuItem(itemName) {
+  const elements = document.querySelectorAll('[name="module-item"] a');
+  elements.forEach((el) => {
+    el.classList.remove("active");
+    el.classList.add("text-body");
+  });
+  const item = document.querySelector(`[name="${itemName}"]`);
+  if (!item) return;
+  item.classList.add("active");
+  item.classList.remove("text-body");
 }
 
 const navigationMenuOptions = [
-  { href: ROUTES.HOME, icon: '<i class="bi bi-house me-2">', text: "Home" },
-  { href: ROUTES.ORDERS, icon: '<i class="bi bi-cart4 me-2"></i>', text: "Orders" },
-  { href: ROUTES.PRODUCTS, icon: '<i class="bi bi-grid me-2"></i>', text: "Products" },
-  { href: ROUTES.CUSTOMERS, icon: '<i class="bi bi-people me-2"></i>', text: "Customers" },
-  { href: ROUTES.MANAGERS, icon: '<i class="bi bi-person-video me-2"></i>', text: "Managers" },
+  { href: ROUTES.HOME, text: "Home" },
+  { href: ROUTES.ORDERS, text: "Orders" },
+  { href: ROUTES.PRODUCTS, text: "Products" },
+  { href: ROUTES.CUSTOMERS, text: "Customers" },
+  { href: ROUTES.MANAGERS, text: "Managers" },
 ];
-
-/*
-    <a href="#/home"><i class="bi bi-house me-2"></i>Home</a>
-  <a href="#/orders">Orders</a>
-  <a href="#/products">Products</a>
-  <a href="#/customers">Customers</a>
-  <a href="#/managers">Managers</a>
-  */
