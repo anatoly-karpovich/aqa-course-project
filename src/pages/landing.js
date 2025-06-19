@@ -1,6 +1,7 @@
 function renderLandingPageLayout(options = landingProps) {
   return `
     <div id="sidemenu">
+    ${getIconSvgHTML()}
         <div class="contentWrapper">
                 ${generateHeaderLayout(options)}
                 <div id="root"></div>

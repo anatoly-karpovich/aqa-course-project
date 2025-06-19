@@ -1,45 +1,3 @@
-// function generateHeaderLayout() {
-//   const user = JSON.parse(window.localStorage.getItem("user"));
-//   return `
-//   <header class="navbar border-bottom shadow-sm bg-body" id="${SIDEBAR_ID}">
-//     <div class="navbar-left position-relative">
-//       <span class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none pe-auto text-body">
-//         <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-//         <span class="fs-4">Sales Portal</span>
-//       </span>
-//       <div class="ms-3 position-relative navbar-left">
-//         ${navigationMenuOptions.map(createNavigationMenuItem).join("")}
-//       </div>
-//     </div>
-
-//     <div class="navbar-right me-4">
-//       <div class="notifications">
-//         <button id="notification-bell" title="Notifications" class="btn btn-link">
-//           <i class="bi bi-bell"></i>
-//           <span class="badge" id="notification-badge">3</span>
-//         </button>
-//         <div class="notifications-dropdown d-none" id="notifications-popover">
-//           <!-- заполнится нотификациями -->
-//         </div>
-//       </div>
-
-//       <button id="theme-toggle" title="Switch theme" class="btn btn-link"><i class="bi bi-moon"></i></button>
-
-//       <div class="user-menu">
-//         <strong><a href="${ROUTES.MANAGER_DETAILS(user._id)}" class="text-body text-decoration-none fs-5">${
-//     user ? user.firstName : "RELOGIN!"
-//   }</a></strong>
-//         <div class="user-dropdown d-none" id="user-dropdown">
-//           <a href="#/managers/123">Profile</a>
-//           <a href="#" id="signout-btn"><i class="bi bi-box-arrow-right"></i> Logout</a>
-//         </div>
-//       </div>
-//       <button class="btn btn-link" title="Sign Out" id="signOut" onclick="signOutHandler()"><i class="bi bi-door-open"></i></button>
-//     </div>
-//   </header>
-//   `;
-// }
-
 function generateHeaderLayout() {
   const user = JSON.parse(window.localStorage.getItem("user"));
   return `
@@ -70,32 +28,26 @@ function generateHeaderLayout() {
            <i class="bi bi-bell fs-5"></i>
            <span class="badge" id="notification-badge"></span>
          </button>
-          <!-- <div class="notifications-dropdown d-none" id="notifications-popover">
-           заполнится нотификациями 
-         </div> -->
-         <div id="notification-popover" class="card shadow bg-dark text-light d-none">
+         <div id="notification-popover" class="card shadow bg-body text-body d-none">
            <div class="position-relative" id="notification-popover-container">  
-            <div class="card-header d-flex justify-content-between align-items-center border-0 pb-1 bg-dark" style="border-bottom: 1px solid #343a40 !important;">
+            <div class="card-header d-flex justify-content-between align-items-center border-0 bg-body" style="border-bottom: 1px solid #343a40 !important;">
               <span class="fw-bold">Notifications</span>
               <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2" id="mark-all-read" style="font-size: 0.85rem;" onclick="markAllNotificationsAsRead(event)">Read All</button>
             </div>
-            <ul class="list-group list-group-flush" id="notification-list" style="max-height: 320px; overflow-y: auto;">
-            </ul>
+            <ul class="list-group list-group-flush" id="notification-list" style="overflow-y: auto;"></ul>
            </div>
         </div>
        </div>
 
     <!-- Переключатель темы -->
-    <button id="theme-toggle" class="btn btn-link"><i class="bi bi-moon fs-5"></i></button>
+    <button id="theme-toggle" class="btn btn-link" onclick="switchTheme(null)"><i class="bi bi-moon fs-5"></i></button>
 
     <!-- Профиль -->
-    <div class="dropdown">
-      <a class="d-flex align-items-center text-body text-decoration-none dropdown-toggle" href="#" data-bs-toggle="dropdown">
+    <div id="user-menu-button">
+      <a class="d-flex align-items-center text-body text-decoration-none" href="${ROUTES.MANAGER_DETAILS(user._id)}">
         <strong>${user?.firstName ?? "User"}</strong>
       </a>
-      <ul class="dropdown-menu dropdown-menu-end">
-        <li><a class="dropdown-item" href="${ROUTES.MANAGER_DETAILS(user._id)}">Profile</a></li>
-      </ul>
+
     </div>
 
     <!-- Логаут -->
@@ -118,30 +70,15 @@ function generateHeaderLayout() {
         .map(
           ({ href, text }) =>
             `<div name="module-item">
-              <a class="nav-link link-body-emphasis d-flex justify-content-center fs-4" href="${href}" data-bs-dismiss="offcanvas" name="${text.toLowerCase()}" onclick="handleMobileNavigationClick(event, '${href}', '${text.toLowerCase()}')">${text}</a>
+              <a class="nav-link link-body-emphasis d-flex justify-content-center fs-4" 
+                href="${href}" data-bs-dismiss="offcanvas" 
+                name="${text.toLowerCase()}" 
+                onclick="handleMobileNavigationClick(event, '${href}', '${text.toLowerCase()}')">${text}</a>
              </div>`
         )
         .join("")}
     </nav>
-
     <hr>
-
-    <!-- Уведомления -->
-    <button class="btn btn-outline-secondary w-100" data-bs-dismiss="offcanvas"
-            onclick="document.getElementById('notification-bell').click()">
-      <i class="bi bi-bell me-2"></i>Notifications
-    </button>
-
-    <!-- Переключатель темы -->
-    <button id="theme-toggle-m" class="btn btn-outline-secondary w-100">
-      <i class="bi bi-moon me-2"></i>Switch theme
-    </button>
-
-    <!-- Профиль -->
-    <a class="btn btn-outline-primary w-100" href="${ROUTES.MANAGER_DETAILS(user._id)}">
-      <i class="bi bi-person-circle me-2"></i>Profile
-    </a>
-
     <!-- Логаут -->
     <button class="btn btn-outline-danger w-100" onclick="signOutHandler()">
       <i class="bi bi-box-arrow-right me-2"></i>Logout
@@ -181,6 +118,7 @@ function createNavigationMenuItem({ href, text }) {
 document.addEventListener("click", (event) => {
   const notificationPopover = document.getElementById("notification-popover");
   const notificationBell = document.getElementById("notification-bell");
+
   if (
     notificationPopover &&
     !notificationPopover.contains(event.target) &&
@@ -217,4 +155,154 @@ function handleMobileNavigationClick(event, href, itemName) {
   event.preventDefault(); // не дай браузеру перейти по <a>
   activateNavigationMenuItem(itemName);
   setRoute(href); // вручную навигация
+}
+
+function switchTheme(storedTheme) {
+  let toDark;
+  const themeSwitcher = document.getElementById("theme-toggle");
+  if (storedTheme) {
+    toDark = storedTheme === "dark";
+  } else if (themeSwitcher) {
+    toDark = themeSwitcher.innerHTML === themeIcons.light;
+  } else {
+    toDark = true;
+  }
+  storeTheme(toDark ? "dark" : "light");
+  applyTheme(toDark);
+}
+
+function applyTheme(toDark) {
+  const themeSwitcher = document.getElementById("theme-toggle");
+
+  if (toDark) {
+    if (themeSwitcher) {
+      document.querySelector("#sidemenu").style["background-color"] = "rgb(78, 78, 78)";
+      themeSwitcher.innerHTML = themeIcons.dark;
+    }
+    document.querySelector("html").style["background-color"] = "rgb(78, 78, 78)";
+  } else {
+    if (document.querySelector("#sidemenu")) {
+      document.querySelector("#sidemenu").style["background-color"] = "rgb(241, 237, 237)";
+      themeSwitcher.innerHTML = themeIcons.light;
+    }
+    document.querySelector("html").style["background-color"] = "rgb(241, 237, 237)";
+  }
+  document.querySelector("html").setAttribute("data-bs-theme", toDark ? "dark" : "light");
+}
+
+function getStoredTheme() {
+  return window.localStorage.getItem("theme");
+}
+
+function storeTheme(theme) {
+  window.localStorage.setItem("theme", theme);
+}
+
+const themeIcons = {
+  dark: '<i class="bi bi-moon fs-5"></i>',
+  light: '<i class="bi bi-sun fs-5"></i>',
+};
+
+async function renderNotifications(data) {
+  const badge = document.getElementById("notification-badge");
+
+  const list = document.getElementById("notification-list");
+
+  const readAllbutton = document.getElementById("mark-all-read");
+
+  let notifications;
+  if (data) {
+    notifications = data;
+  } else {
+    const response = await NotificationsService.getNotifications();
+    if (response.status !== 200) {
+      handleApiErrors(response);
+      return;
+    }
+    notifications = response.data.Notifications;
+    handleNotificationBadge(notifications);
+  }
+  const hasUnread = notifications.some((n) => !n.read);
+  hasUnread ? readAllbutton.removeAttribute("disabled") : readAllbutton.setAttribute("disabled", "");
+
+  list.innerHTML = "";
+  if (notifications.length) {
+    notifications.forEach((n) => {
+      const li = document.createElement("li");
+      li.className = "list-group-item bg-body text-body border-0 border-bottom";
+      li.innerHTML = `<div style="cursor:pointer;" data-read="${
+        n.read
+      }" onclick="clickOnNotification(this,event)" data-notificationId="${
+        n._id
+      }"><small class="fst-italic fw-light">${formatDateToDateAndTime(n.createdAt)}</small><br><span ${
+        n.read ? "" : "class='fw-bold'"
+      }>${n.message}</span><br></div><a href="#" onclick="clickOnNitificationOrderLink('${
+        n.orderId
+      }',event)">Order Details</a>`;
+      list.appendChild(li);
+    });
+  } else {
+    const li = document.createElement("li");
+    li.className = "list-group-item bg-dark text-light border-0 border-bottom";
+    li.innerHTML = `<span class="fst-italic">No notifications</span>`;
+    list.appendChild(li);
+  }
+
+  // Обновить бейдж
+  const unread = notifications.filter((n) => !n.read).length;
+  badge.textContent = unread;
+  badge.style.display = unread ? "inline-block" : "none";
+}
+
+async function clickOnNotification(target, event) {
+  event.preventDefault();
+  const notificationId = target.getAttribute("data-notificationId");
+  const isRead = target.getAttribute("data-read");
+  if (isRead === "true") return;
+  showNotificationPopoverSpinner();
+  const response = await NotificationsService.readNotification(notificationId);
+  if (response.status !== 200) {
+    handleApiErrors(response);
+    renderNotification({ message: response.data.ErrorMessage }, true);
+  } else {
+    handleNotificationBadge(response.data.Notifications);
+    await renderNotifications(response.data.Notifications);
+  }
+  hideSpinners();
+}
+
+async function markAllNotificationsAsRead(event) {
+  event.preventDefault();
+  showNotificationPopoverSpinner();
+  const response = await NotificationsService.readAllNotifications();
+  if (response.status !== 200) {
+    handleApiErrors(response);
+    renderNotification({ message: response.data.ErrorMessage }, true);
+  } else {
+    handleNotificationBadge(response.data.Notifications);
+    await renderNotifications(response.data.Notifications);
+    const readAllbutton = document.getElementById("mark-all-read");
+    readAllbutton.setAttribute("disabled", "");
+  }
+  hideSpinners();
+}
+
+function handleNotificationBadge(notifications) {
+  const unread = notifications.filter((n) => !n.read).length;
+  setNumberOfNotificationsToBadge(unread);
+}
+
+function setNumberOfNotificationsToBadge(unreadAmount) {
+  const badge = document.getElementById("notification-badge");
+  badge.textContent = unreadAmount;
+  badge.style.display = unreadAmount ? "inline-block" : "none";
+}
+
+async function getNotificationsAndHangleBadge() {
+  const response = await NotificationsService.getNotifications();
+  if (response.status !== 200) {
+    handleApiErrors(response);
+  } else {
+    handleNotificationBadge(response.data.Notifications);
+  }
 }

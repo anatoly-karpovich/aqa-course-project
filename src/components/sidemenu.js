@@ -152,39 +152,6 @@ function addEventListenersToSidemenu(options) {
   // });
 }
 
-function switchTheme(storedTheme, toggle) {
-  let toDark;
-  if (storedTheme) {
-    toDark = storedTheme === "dark";
-  } else if (toggle) {
-    toDark = typeof toggle.getAttribute("checked") !== "string";
-    toDark ? toggle.setAttribute("checked", "") : toggle.removeAttribute("checked");
-  }
-  applyTheme(toDark);
-  storeTheme(toDark ? "dark" : "light");
-}
-
-function applyTheme(toDark) {
-  if (toDark) {
-    if (document.querySelector("#sidemenu"))
-      document.querySelector("#sidemenu").style["background-color"] = "rgb(78, 78, 78)";
-    document.querySelector("html").style["background-color"] = "rgb(78, 78, 78)";
-  } else {
-    if (document.querySelector("#sidemenu"))
-      document.querySelector("#sidemenu").style["background-color"] = "rgb(241, 237, 237)";
-    document.querySelector("html").style["background-color"] = "rgb(241, 237, 237)";
-  }
-  document.querySelector("html").setAttribute("data-bs-theme", toDark ? "dark" : "light");
-}
-
-function getStoredTheme() {
-  return window.localStorage.getItem("theme");
-}
-
-function storeTheme(theme) {
-  window.localStorage.setItem("theme", theme);
-}
-
 function currencyExchangeSection() {
   return `
         <div class="mb-auto mt-5">
@@ -218,120 +185,14 @@ async function profileHandler(id, event) {
   event.preventDefault();
   id = id ?? JSON.parse(window.localStorage.getItem("user"))?._id;
   if (!id) await signOutHandler();
-  // await renderManagerDetailsPage(id);
   setRoute(ROUTES.MANAGER_DETAILS(id));
 }
 
 async function changePasswordHandler(id, event) {
   event.preventDefault();
   if (state.page !== PAGES.MANAGER_DETAILS) {
-    // await renderManagerDetailsPage(id);
     setRoute(ROUTES.MANAGER_DETAILS(id));
     state.page = PAGES.MANAGER_DETAILS;
   }
   createChangePasswordModal(id, event);
-}
-
-async function renderNotifications(data) {
-  const badge = document.getElementById("notification-badge");
-
-  const list = document.getElementById("notification-list");
-
-  const readAllbutton = document.getElementById("mark-all-read");
-
-  let notifications;
-  if (data) {
-    notifications = data;
-  } else {
-    const response = await NotificationsService.getNotifications();
-    if (response.status !== 200) {
-      handleApiErrors(response);
-      return;
-    }
-    notifications = response.data.Notifications;
-    handleNotificationBadge(notifications);
-  }
-  const hasUnread = notifications.some((n) => !n.read);
-  hasUnread ? readAllbutton.removeAttribute("disabled") : readAllbutton.setAttribute("disabled", "");
-
-  list.innerHTML = "";
-  if (notifications.length) {
-    notifications.forEach((n) => {
-      const li = document.createElement("li");
-      li.className = "list-group-item bg-dark text-light border-0 border-bottom";
-      li.innerHTML = `<div style="cursor:pointer;" data-read="${
-        n.read
-      }" onclick="clickOnNotification(this,event)" data-notificationId="${
-        n._id
-      }"><small class="fst-italic fw-light">${formatDateToDateAndTime(n.createdAt)}</small><br><span ${
-        n.read ? "" : "class='fw-bold'"
-      }>${n.message}</span><br></div><a href="#" onclick="clickOnNitificationOrderLink('${
-        n.orderId
-      }',event)">Order Details</a>`;
-      list.appendChild(li);
-    });
-  } else {
-    const li = document.createElement("li");
-    li.className = "list-group-item bg-dark text-light border-0 border-bottom";
-    li.innerHTML = `<span class="fst-italic">No notifications</span>`;
-    list.appendChild(li);
-  }
-
-  // Обновить бейдж
-  const unread = notifications.filter((n) => !n.read).length;
-  badge.textContent = unread;
-  badge.style.display = unread ? "inline-block" : "none";
-}
-
-async function clickOnNotification(target, event) {
-  event.preventDefault();
-  const notificationId = target.getAttribute("data-notificationId");
-  const isRead = target.getAttribute("data-read");
-  if (isRead === "true") return;
-  showNotificationPopoverSpinner();
-  const response = await NotificationsService.readNotification(notificationId);
-  if (response.status !== 200) {
-    handleApiErrors(response);
-    renderNotification({ message: response.data.ErrorMessage }, true);
-  } else {
-    handleNotificationBadge(response.data.Notifications);
-    await renderNotifications(response.data.Notifications);
-  }
-  hideSpinners();
-}
-
-async function markAllNotificationsAsRead(event) {
-  event.preventDefault();
-  showNotificationPopoverSpinner();
-  const response = await NotificationsService.readAllNotifications();
-  if (response.status !== 200) {
-    handleApiErrors(response);
-    renderNotification({ message: response.data.ErrorMessage }, true);
-  } else {
-    handleNotificationBadge(response.data.Notifications);
-    await renderNotifications(response.data.Notifications);
-    const readAllbutton = document.getElementById("mark-all-read");
-    readAllbutton.setAttribute("disabled", "");
-  }
-  hideSpinners();
-}
-
-function handleNotificationBadge(notifications) {
-  const unread = notifications.filter((n) => !n.read).length;
-  setNumberOfNotificationsToBadge(unread);
-}
-
-function setNumberOfNotificationsToBadge(unreadAmount) {
-  const badge = document.getElementById("notification-badge");
-  badge.textContent = unreadAmount;
-  badge.style.display = unreadAmount ? "inline-block" : "none";
-}
-
-async function getNotificationsAndHangleBadge() {
-  const response = await NotificationsService.getNotifications();
-  if (response.status !== 200) {
-    handleApiErrors(response);
-  } else {
-    handleNotificationBadge(response.data.Notifications);
-  }
 }
