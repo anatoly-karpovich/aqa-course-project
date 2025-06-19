@@ -1,7 +1,8 @@
 function generateTableBootstrap(data = [], options, sorting, paginationHTML = "") {
   const layout = `
     <div class="position-relative" id="table-container">
-      <table class="table table-striped tableWrapper" id="${options.tableProps.id}">
+      <div class="table-responsive">
+        <table class="table table-striped tableWrapper" id="${options.tableProps.id}">
           <thead>
               <tr>
                   ${generateTableHeaders(Object.keys(_.omit(data[0], "Id")), options, sorting)}
@@ -10,7 +11,8 @@ function generateTableBootstrap(data = [], options, sorting, paginationHTML = ""
           <tbody>
               ${generateTableBody(data, options)}
           </tbody>
-      </table>
+        </table>
+      </div>
       ${paginationHTML}
     </div>
     `;

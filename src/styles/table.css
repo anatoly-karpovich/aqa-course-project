@@ -23,3 +23,8 @@
   align-items: center;
   height: 100%;
 }
+
+.table td:last-child {
+  position: sticky;
+  right: 0;
+}
