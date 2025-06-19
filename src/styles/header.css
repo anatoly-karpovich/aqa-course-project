@@ -52,8 +52,8 @@
   padding: 0.25em 0.5em;
   font-size: 0.75rem;
   position: absolute;
-  top: -5px;
-  right: -5px;
+  top: -10px !important;
+  /* right: -5px; */
 }
 
 .module-dropdown {
@@ -97,7 +97,21 @@
   font-weight: 600;
 }
 
-[name="module-item"] a:active {
+[name="module-item"] a.active {
   --bs-text-opacity: 1;
   color: rgba(var(--bs-primary-rgb), var(--bs-text-opacity)) !important;
+}
+
+#notification-popover {
+  position: absolute;
+  z-index: 999;
+}
+
+#mobileOffcanvas {
+  opacity: 90%;
+  width: 100%;
+}
+
+.sp_btn-close {
+  padding: calc(var(--bs-offcanvas-padding-y) * 0.5) calc(var(--bs-offcanvas-padding-x) * 0.5);
 }

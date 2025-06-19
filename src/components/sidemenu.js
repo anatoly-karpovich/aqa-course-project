@@ -132,17 +132,17 @@ function addEventListenersToSidemenu(options) {
   const markAllReadBtn = document.getElementById("mark-all-read");
 
   // Показать/скрыть popover
-  bell.onclick = async function (e) {
-    e.stopPropagation();
-    if (popover.style.display === "none") {
-      popover.style.display = "block";
-      showNotificationPopoverSpinner();
-      await renderNotifications();
-    } else {
-      popover.style.display = "none";
-    }
-    hideSpinners();
-  };
+  // bell.onclick = async function (e) {
+  //   e.stopPropagation();
+  //   if (popover.classList.contains("d-none")) {
+  //     popover.classList.remove("d-none");
+  //     showNotificationPopoverSpinner();
+  //     await renderNotifications();
+  //   } else {
+  //     popover.classList.add("d-none");
+  //   }
+  //   hideSpinners();
+  // };
 
   // Закрывать popover по клику вне его
   // document.addEventListener("click", (e) => {
@@ -298,14 +298,6 @@ async function clickOnNotification(target, event) {
     await renderNotifications(response.data.Notifications);
   }
   hideSpinners();
-}
-
-async function clickOnNitificationOrderLink(orderId, event) {
-  event.preventDefault();
-  const popover = document.getElementById("notification-popover");
-  popover.style.display = "none";
-  console.log(window.location.href);
-  isOnOrderDetails(orderId) ? await renderOrderDetailsPage(orderId) : setRoute(ROUTES.ORDER_DETAILS(orderId));
 }
 
 async function markAllNotificationsAsRead(event) {

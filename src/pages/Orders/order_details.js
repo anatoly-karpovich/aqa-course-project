@@ -1,6 +1,6 @@
 function renderOrderDetailsPageLayout(options = Order_Details_Props, order, isReceivingOn = false) {
   return `
-    <div class="bg-body rounded p-3" id="order-details-header">
+    <div class="bg-body p-3" id="order-details-header">
         ${backLink(ROUTES.ORDERS, "Orders")}
         <div id="${PAGE_TITLE_ID}" class="p-horizontal-20">  
             <div class="page-header-flex">

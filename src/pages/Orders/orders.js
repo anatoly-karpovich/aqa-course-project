@@ -9,7 +9,7 @@ function renderOrdersPageLayout(options = OrdersProps, response = {}) {
   state.data.orders = data;
 
   return `
-    <div class="bg-body rounded p-3">
+    <div class="bg-body p-3">
         <div id="${PAGE_TITLE_ID}" class="p-horizontal-20">  
             <div class="page-header-flex">
                 ${generatePageTitle(options)}
