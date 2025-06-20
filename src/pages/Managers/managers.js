@@ -26,7 +26,7 @@ function createManagersPageLayout(options = ManagersProps, response) {
 
 const ManagersProps = {
   path: "Managers",
-  title: "Mananers List",
+  title: "Managers List",
   classlist: "ml-20 fw-bold",
   buttons: {
     add: {
