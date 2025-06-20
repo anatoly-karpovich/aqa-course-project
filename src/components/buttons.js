@@ -59,10 +59,9 @@ function deleteButton(id, name) {
 function searchBar(buttons) {
   return `
 
-    <div class="d-flex justify-content-between">
-      <div class="d-flex justify-content-start">
+    <div class="d-flex flex-wrap align-items-center gap-2">
         <form class="d-flex search-bar">
-          <input class="form-control me-2" type="search" placeholder="Type a value..." maxlength="40" aria-label="Search" oninput="seachButtonHandler(this)">
+          <input class="form-control me-2" id="search" type="search" placeholder="Type a value..." maxlength="40" aria-label="Search" oninput="seachButtonHandler(this)">
           ${generateButton(buttons.search)}
         </form>
         <button class="btn btn-outline-primary ms-2 d-flex justify-content-start" id="filter" ${
@@ -70,7 +69,6 @@ function searchBar(buttons) {
         }>
             <i class="bi bi-funnel me-2"></i> Filter
         </button>       
-      </div>
     </div>
 
 `;
