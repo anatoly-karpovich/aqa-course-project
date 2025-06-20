@@ -58,7 +58,7 @@ function generateManagerDetailsPageLayout(user, orders) {
     <div class="card-body">
         <h3 class="card-title">Assigned Orders</h3>
         <div class="table-responsive">
-            <table class="table table-striped tableWrapper" id="table-orders" style="table-layout: fixed; width: 100%;">
+            <table class="table table-striped tableWrapper" id="table-orders" name="table-with-no-actions" style="table-layout: fixed; width: 100%;">
                 <thead>
                     <tr>
                         <th scope="col" style="white-space: nowrap; text-align: left;">Order Number</th>

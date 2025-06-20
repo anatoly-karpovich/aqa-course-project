@@ -24,7 +24,7 @@
   height: 100%;
 }
 
-.table td:last-child {
+.table:not([name="table-with-no-actions"]) td:last-child {
   position: sticky;
   right: 0;
 }

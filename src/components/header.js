@@ -176,16 +176,16 @@ function applyTheme(toDark) {
 
   if (toDark) {
     if (themeSwitcher) {
-      document.querySelector("#sidemenu").style["background-color"] = "rgb(78, 78, 78)";
+      document.querySelector("#sidemenu").style["background-color"] = themeBgColors.dark;
       themeSwitcher.innerHTML = themeIcons.dark;
     }
-    document.querySelector("html").style["background-color"] = "rgb(78, 78, 78)";
+    document.querySelector("html").style["background-color"] = themeBgColors.dark;
   } else {
     if (document.querySelector("#sidemenu")) {
-      document.querySelector("#sidemenu").style["background-color"] = "rgb(241, 237, 237)";
+      document.querySelector("#sidemenu").style["background-color"] = themeBgColors.light;
       themeSwitcher.innerHTML = themeIcons.light;
     }
-    document.querySelector("html").style["background-color"] = "rgb(241, 237, 237)";
+    document.querySelector("html").style["background-color"] = themeBgColors.light;
   }
   document.querySelector("html").setAttribute("data-bs-theme", toDark ? "dark" : "light");
 }
@@ -199,8 +199,13 @@ function storeTheme(theme) {
 }
 
 const themeIcons = {
-  dark: '<i class="bi bi-moon fs-5"></i>',
-  light: '<i class="bi bi-sun fs-5"></i>',
+  light: '<i class="bi bi-moon fs-5"></i>',
+  dark: '<i class="bi bi-sun fs-5"></i>',
+};
+
+const themeBgColors = {
+  light: "rgb(241, 237, 237)",
+  dark: "rgb(78, 78, 78)",
 };
 
 async function renderNotifications(data) {

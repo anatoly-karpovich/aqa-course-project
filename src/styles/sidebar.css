@@ -146,19 +146,14 @@ body.loading {
 
 .notification-wrapper {
   position: fixed;
-  top: 10px;
-  left: calc(50% - 110px);
+  top: 20px;
+  left: 50%;
   display: flex;
-  /* justify-content: center; */
+  transform: translateX(-50%);
   flex-direction: column;
   z-index: 9999;
   align-items: center;
 }
-
-/* .toast {
-  margin-top: 20px;
-  opacity: 0.3;
-} */
 
 .error-message-for-input {
   font-size: 0.7rem;
@@ -432,18 +427,19 @@ label.form-label:not([for="textareaNotes"]):after {
 }
 
 .s-width {
-  width: 550px;
+  max-width: 49%;
+  min-width: 43%;
 }
 
 .d-tabs {
   background-color: #fff;
   margin: 0 20px 20px 20px;
   display: inline-block;
-  width: 1120px;
+  width: 98%;
 }
 
 .h-m-width {
-  max-width: 1090px;
+  max-width: 100%;
 }
 
 .section-header {
@@ -485,6 +481,8 @@ label.form-label:not([for="textareaNotes"]):after {
 .s-span {
   text-align: left;
   width: 50%;
+  word-break: break-word;
+  word-wrap: break-word;
 }
 
 .btn-tab {
@@ -517,6 +515,8 @@ label.form-label:not([for="textareaNotes"]):after {
   width: 30%;
   display: flex;
   align-items: center;
+  word-break: break-word;
+  word-wrap: break-word;
 }
 
 .his-action {
@@ -628,4 +628,18 @@ input[type="date"] {
   color: #0d6efd; /* стиль для ссылки */
   text-decoration: underline;
   cursor: pointer;
+}
+
+#order-status-bar-container {
+  flex-direction: row;
+}
+
+@media (max-width: 991.98px) {
+  .s-width {
+    max-width: 100% !important;
+  }
+
+  #order-status-bar-container {
+    flex-direction: column;
+  }
 }

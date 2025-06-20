@@ -9,7 +9,7 @@ function renderOrderDetailsPageLayout(options = Order_Details_Props, order, isRe
                 ${generateOrderDetailsHeaderSection(order)}
         </div>
     </div>      
-        <div class="d-flex justify-content-start" id="order-details-body">
+        <div class="d-flex justify-content-around flex-wrap" id="order-details-body">
             ${generateCustomerSection(order)}
             ${generateProductsSection(order, isReceivingOn)}
         </div>
