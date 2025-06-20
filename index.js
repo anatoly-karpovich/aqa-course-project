@@ -128,25 +128,28 @@ async function sideMenuClickHandler(page) {
     //   renderPages[page](homeProps);
     //   break;
 
-    case "Products":
+    case "products":
       {
         if (window.location.hash.endsWith("/products")) {
+          activateNavigationMenuItem("products");
           await getProductsAndRenderTable();
         }
       }
       break;
 
-    case "Customers":
+    case "customers":
       {
         if (window.location.hash.endsWith("/customers")) {
+          activateNavigationMenuItem("customers");
           await getCustomersAndRenderTable();
         }
       }
       break;
 
-    case "Orders":
+    case "orders":
       {
         if (window.location.hash.endsWith("/orders")) {
+          activateNavigationMenuItem("orders");
           await getOrdersAndRenderTable();
         }
       }

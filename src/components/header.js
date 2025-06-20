@@ -110,7 +110,7 @@ async function clickOnNitificationOrderLink(orderId, event) {
 function createNavigationMenuItem({ href, text }) {
   return `
     <div name="module-item">
-      <a class="d-flex justify-content-start align-items-center fs-5 text-decoration-none me-2 text-body cursor-pointer" href="${href}" name="${text.toLowerCase()}" onclick="activateNavigationMenuItem('${text.toLowerCase()}')">${text}</a>
+      <a class="d-flex justify-content-start align-items-center fs-5 text-decoration-none me-2 text-body cursor-pointer" href="${href}" name="${text.toLowerCase()}" onclick="sideMenuClickHandler('${text.toLowerCase()}')">${text}</a>
     </div>
   `;
 }
@@ -151,7 +151,7 @@ const navigationMenuOptions = [
   { href: ROUTES.MANAGERS, text: "Managers" },
 ];
 
-function handleMobileNavigationClick(event, href, itemName) {
+async function handleMobileNavigationClick(event, href, itemName) {
   event.preventDefault(); // не дай браузеру перейти по <a>
   activateNavigationMenuItem(itemName);
   setRoute(href); // вручную навигация

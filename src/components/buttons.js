@@ -6,7 +6,7 @@ function generateButton(options, id) {
     ${options?.id ? "id=" + '"' + options.id + '" ' : ""}
     ${options?.classlist ? "class=" + '"' + options.classlist + '" ' : ""}
     ${options?.title ? "title=" + '"' + options.title + '" ' : ""}
-    ${options?.onclick ? "onClick=" + '"' + options.onclick + "(" + (id ? "'" + id + "'" : "") + ")" + '" ' : ""}
+    ${options?.onclick ? "onclick=" + '"' + options.onclick + "(" + (id ? "'" + id + "'" : "") + ")" + '" ' : ""}
     ${options?.disabled ? "disabled " : ""}
     >${options?.name ? options.name : ""}
     ${options?.nestedItems ? options.nestedItems : ""}
@@ -24,7 +24,7 @@ function generateLinkButton(options, id) {
     ${options?.id ? "id=" + '"' + options.id + '" ' : ""}
     ${options?.classlist ? "class=" + '"' + options.classlist + '" ' : ""}
     ${options?.title ? "title=" + '"' + options.title + '" ' : ""}
-    ${options?.onclick ? "onClick=" + '"' + options.onclick + "(" + (id ? "'" + id + "'" : "") + ")" + '" ' : ""}
+    ${options?.onclick ? "onclick=" + '"' + options.onclick + "(" + (id ? "'" + id + "'" : "") + ")" + '" ' : ""}
     ${options?.disabled ? "disabled " : ""}
     >${options?.name ? options.name : ""}
     ${options?.nestedItems ? options.nestedItems : ""}
