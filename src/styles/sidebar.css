@@ -623,6 +623,7 @@ input[type="date"] {
   line-height: 1.4;
   display: block; /* сбросить flex если был */
 }
+
 #notification-list .order-link {
   word-break: break-all; /* переносит номер заказа, если что */
   color: #0d6efd; /* стиль для ссылки */
@@ -642,4 +643,12 @@ input[type="date"] {
   #order-status-bar-container {
     flex-direction: column;
   }
+  .form-center {
+    width: 94%;
+    height: 94%;
+  }
+}
+
+.sp_mt {
+  margin-top: var(--bs-gutter-y);
 }

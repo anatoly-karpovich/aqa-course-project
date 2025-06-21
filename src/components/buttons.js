@@ -32,9 +32,11 @@ function generateLinkButton(options, id) {
     `;
 }
 
-function saveButton(id, name) {
+function saveButton(id, name, classes) {
   return `
-  <button type="submit" id="${id}" class="btn btn-primary form-buttons" disabled="">${name}</button>
+  <button type="submit" id="${id}" class="btn btn-primary form-buttons ${
+    classes ? classes : ""
+  }" disabled="">${name}</button>
   `;
 }
 
