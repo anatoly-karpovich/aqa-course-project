@@ -123,9 +123,7 @@ function customerOrderRow(order) {
         <td>$${order.total_price}</td>
         <td class="${getOrderStatusRowColor(order.status)}">${order.status}</td>
         <td>${formatDateToDateAndTime(order.createdOn)}</td>
-        <td style="white-space: nowrap; text-align: left;">${formatDateToDateAndTime(
-          order.history.at(-1).createdOn
-        )}</td>
+        <td style="text-align: left;">${formatDateToDateAndTime(order.history.at(-1).createdOn)}</td>
     </tr>`;
 }
 

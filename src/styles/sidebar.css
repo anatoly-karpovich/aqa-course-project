@@ -660,3 +660,8 @@ input[type="date"] {
 .sp_mt {
   margin-top: var(--bs-gutter-y);
 }
+
+.sp_break-wrap {
+  word-wrap: break-word;
+  word-break: break-word;
+}

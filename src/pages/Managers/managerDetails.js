@@ -61,11 +61,9 @@ function generateManagerDetailsPageLayout(user, orders) {
             <table class="table table-striped tableWrapper" id="table-orders" name="table-with-no-actions" style="table-layout: fixed; width: 100%;">
                 <thead>
                     <tr>
-                        <th scope="col" style="white-space: nowrap; text-align: left;">Order Number</th>
-                        <th scope="col" style="white-space: nowrap; text-align: left;">Price</th>
-                        <th scope="col" style="white-space: nowrap; text-align: left;">Status</th>
-                        <th scope="col" style="white-space: nowrap; text-align: left;">Created On</th>
-                        <th scope="col" style="white-space: nowrap; text-align: left;">Last Modified</th>
+                        ${["Order Number", "Price", "Status", "Created On", "Last Modified"]
+                          .map((title) => createManagerDetailsTh(title))
+                          .join("")}
                     </tr>
                 </thead>
                 <tbody>
@@ -75,8 +73,15 @@ function generateManagerDetailsPageLayout(user, orders) {
         </div>
     </div>
 </div>
-
     `;
+}
+
+function createManagerDetailsTh(title) {
+  return `
+    <th scope="col" style="text-align: left;"><div class="d-flex justify-content-start align-items-center">
+      <div class="sp_break-wrap">${title}</div>
+    </th>
+  `;
 }
 
 function renderEditManagerPage(event, managerId) {
