@@ -250,9 +250,11 @@ async function renderNotifications(data) {
         n.read
       }" onclick="clickOnNotification(this,event)" data-notificationId="${
         n._id
-      }"><small class="fst-italic fw-light">${formatDateToDateAndTime(n.createdAt)}</small><br><span ${
-        n.read ? "" : "class='fw-bold'"
-      }>${n.message}</span><br></div><a href="#" onclick="clickOnNitificationOrderLink('${
+      }"><small data-testId="notification-date" class="fst-italic fw-light">${formatDateToDateAndTime(
+        n.createdAt
+      )}</small><br><span ${n.read ? "" : "class='fw-bold'"} data-testId="notification-text">${
+        n.message
+      }</span><br></div><a href="#" data-testId="order-details-link" onclick="clickOnNitificationOrderLink('${
         n.orderId
       }',event)">Order Details</a>`;
       list.appendChild(li);
