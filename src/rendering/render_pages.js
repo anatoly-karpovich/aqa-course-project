@@ -302,25 +302,51 @@ async function renderCreateOrderModal() {
   }
 }
 
-function renderScheduleDeliveryPage() {
+async function renderScheduleDeliveryPage(id) {
   try {
-    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderScheduleDeliveryLayout(delivery_props);
-    sideMenuActivateElement(delivery_props.path);
-    addEventListelersToScheduleDeliveryPage();
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderScheduleDeliveryLayout(emptyOrder, delivery_props);
+    showDeliverySpinner();
+    const response = await OrdersService.getOrders(id);
+    if (response.status !== 200) {
+      handleApiErrors(response);
+      return;
+    }
+    const order = response.data.Order;
+    if (order.status === ORDER_STATUSES.DRAFT && !order.delivery) {
+      document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderScheduleDeliveryLayout(order, delivery_props);
+      sideMenuActivateElement(delivery_props.path);
+      addEventListelersToScheduleDeliveryPage(order);
+    } else {
+      renderErrorPage("Invalid order status for delivery");
+    }
   } catch (e) {
     console.error(e);
     renderErrorPage();
+  } finally {
+    hideSpinners();
   }
 }
 
-function renderEditDeliveryPage() {
+async function renderEditDeliveryPage(id) {
   try {
-    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditDeliveryLayout(delivery_props);
-    sideMenuActivateElement(delivery_props.path);
-    addEventListelersToEditDeliveryPage();
+    document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditDeliveryLayout(
+      emptyOrderWithDelivery,
+      delivery_props
+    );
+    showDeliverySpinner();
+    const order = (await OrdersService.getOrders(id)).data.Order;
+    if (order.status === ORDER_STATUSES.DRAFT && order.delivery) {
+      document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditDeliveryLayout(order, delivery_props);
+      sideMenuActivateElement(delivery_props.path);
+      addEventListelersToEditDeliveryPage(order);
+    } else {
+      renderErrorPage("Invalid order status for delivery");
+    }
   } catch (e) {
     console.error(e);
     renderErrorPage();
+  } finally {
+    hideSpinners();
   }
 }
 

@@ -962,7 +962,7 @@ const emptyOrder = {
     _id: "-",
     email: "-",
     name: "-",
-    country: "-",
+    country: "Belarus",
     city: "-",
     street: "-",
     house: "-",
@@ -1024,4 +1024,19 @@ const emptyManager = {
   lastName: "Karpovich",
   roles: ["USER"],
   createdOn: "2025/03/03 00:30:11",
+};
+
+const emptyOrderWithDelivery = {
+  ...structuredClone(emptyOrder),
+  delivery: {
+    address: {
+      country: "Germany",
+      city: "Arielleberg",
+      street: "Lucio Forest",
+      house: 31,
+      flat: 110,
+    },
+    finalDate: "2025-08-04T00:00:00.000Z",
+    condition: "Pickup",
+  },
 };

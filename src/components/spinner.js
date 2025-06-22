@@ -73,6 +73,10 @@ function showNotificationPopoverSpinner() {
   renderSpinnerInContainer("#notification-popover-container");
 }
 
+function showDeliverySpinner() {
+  renderSpinnerInContainer("#delivery-container");
+}
+
 function renderSpinnerInContainer(contaierSelector = "") {
   const contaier = document.querySelector(contaierSelector);
   const overlay = document.createElement("div");
