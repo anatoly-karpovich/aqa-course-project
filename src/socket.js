@@ -25,3 +25,8 @@ function connectSocket() {
     setNumberOfNotificationsToBadge(payload.unreadAmount);
   });
 }
+
+function disconnectSocket() {
+  socket && socket.disconnect();
+  socket = null;
+}

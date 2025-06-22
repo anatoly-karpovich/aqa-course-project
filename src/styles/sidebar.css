@@ -325,7 +325,6 @@ button[title="Delete"]:focus {
 }
 
 .search-bar {
-  margin-left: 20px;
   width: 500px;
 }
 
@@ -432,10 +431,9 @@ label.form-label:not([for="textareaNotes"]):after {
 }
 
 .d-tabs {
-  background-color: #fff;
-  margin: 0 20px 20px 20px;
+  /* margin: 0 20px 20px 20px; */
   display: inline-block;
-  width: 98%;
+  width: 100%;
 }
 
 .h-m-width {
@@ -638,14 +636,24 @@ input[type="date"] {
 @media (max-width: 991.98px) {
   .s-width {
     max-width: 100% !important;
+    width: 100%;
   }
 
   #order-status-bar-container {
     flex-direction: column;
   }
+
   .form-center {
     width: 94%;
     height: 94%;
+  }
+
+  #filter {
+    margin-left: 0 !important;
+  }
+
+  [name="add-button"] {
+    margin-right: 0 !important;
   }
 }
 

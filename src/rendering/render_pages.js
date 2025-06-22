@@ -503,9 +503,8 @@ async function renderLandingPage(options = {}) {
     state.page = PAGES.HOME;
     document.querySelector("body").innerHTML = renderLandingPageLayout(options);
     await Promise.allSettled([getNotificationsAndHangleBadge(), renderHomePage(homeProps)]);
-    addEventListenersToSidemenu();
     renderNotificationContainer();
-    connectSocket();
+    if (!socket) connectSocket();
   } catch (e) {
     console.error(e);
     renderErrorPage();

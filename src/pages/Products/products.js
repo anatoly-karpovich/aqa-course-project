@@ -11,7 +11,7 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
   return `      
       <div class="bg-body p-3">
         <div id="${PAGE_TITLE_ID}" class="p-horizontal-20">  
-            <div class="page-header-flex">
+            <div class="page-header-flex ml-20">
                 ${generatePageTitle(options)}
                 ${generateButton(options.buttons.add)}
             </div>
@@ -29,12 +29,13 @@ function renderProductsPageLayout(options = ProductsProps, response = {}) {
 const ProductsProps = {
   path: "Products",
   title: "Products List",
-  classlist: "ml-20 fw-bold",
+  classlist: "fw-bold",
   buttons: {
     add: {
       classlist: "btn btn-primary page-title-header page-title-button d-inline-flex align-items-center",
       name: "+ Add Product",
       href: ROUTES.PRODUCT_ADD,
+      attributes: ['name="add-button"'],
     },
     search: {
       classlist: "btn btn-primary d-flex justify-content-center align-items-center",

@@ -75,14 +75,14 @@ const layout = `
 <div
   class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5">
   <!-- Copyright -->
-  <div class="text-white mb-3 mb-md-0">
-    Copyright © 2023. All rights reserved.
+  <div class="text-body mb-3 mb-md-0">
+    Copyright © ${moment().year()}. All rights reserved.
   </div>
   <!-- Copyright -->
 
   <!-- Right -->
   <div>
-    <a href="https://www.linkedin.com/in/anatolykarpovich/" class="text-white">
+    <a href="https://www.linkedin.com/in/anatolykarpovich/" class="text-body">
       <i class="fab fa-linkedin-in"></i>
     </a>
   </div>
@@ -91,7 +91,7 @@ const layout = `
 </section>`;
 
 function renderSignInPage() {
-  socket && socket.disconnect();
+  disconnectSocket();
   if (document.getElementById("signInPage")) return;
   if (document.querySelector("#sidemenu")) {
     document.querySelector("#sidemenu").parentNode.removeChild(document.querySelector("#sidemenu"));
