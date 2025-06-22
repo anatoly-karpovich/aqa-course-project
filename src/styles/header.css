@@ -100,7 +100,7 @@
 
 #notification-popover {
   position: absolute;
-  z-index: 999;
+  z-index: 1999;
 }
 
 #mobileOffcanvas {

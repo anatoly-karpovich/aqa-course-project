@@ -28,15 +28,6 @@ function generateHeaderLayout() {
            <i class="bi bi-bell fs-5"></i>
            <span class="badge" id="notification-badge"></span>
          </button>
-         <div id="notification-popover" class="card shadow bg-body text-body d-none">
-           <div class="position-relative" id="notification-popover-container">  
-            <div class="card-header d-flex justify-content-between align-items-center border-0 bg-body" style="border-bottom: 1px solid #343a40 !important;">
-              <span class="fw-bold">Notifications</span>
-              <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2" id="mark-all-read" style="font-size: 0.85rem;" onclick="markAllNotificationsAsRead(event)">Read All</button>
-            </div>
-            <ul class="list-group list-group-flush" id="notification-list" style="overflow-y: auto;"></ul>
-           </div>
-        </div>
        </div>
 
     <!-- Переключатель темы -->
@@ -56,6 +47,18 @@ function generateHeaderLayout() {
     </button>
   </div>
 </header>
+<div id="notification-popover" class="card shadow bg-body text-body d-none navbar-right">
+  <div class="position-relative" id="notification-popover-container">  
+    <div class="card-header d-flex justify-content-between align-items-center border-0 bg-body" style="border-bottom: 1px solid #343a40 !important;">
+      <div class="d-flex justify-content-start align-items-center">
+        <span class="fw-bold">Notifications</span>
+        <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2 ms-2" id="mark-all-read" style="font-size: 0.85rem;" onclick="markAllNotificationsAsRead(event)">Read All</button>
+      </div>
+        <button type="button" class="btn-close ms-2 mt-1" onclick="toggleNotificationsModal()"></button>
+      </div>
+    <ul class="list-group list-group-flush" id="notification-list" style="overflow-y: auto;"></ul>
+  </div>
+</div>
 
 <!-- Off-canvas для мобилки -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileOffcanvas">
@@ -90,6 +93,14 @@ function generateHeaderLayout() {
 
 async function toggleNotificationsModal() {
   const notificationsContainer = document.querySelector("#notification-popover");
+  const bell = document.getElementById("notification-bell");
+
+  const rect = bell.getBoundingClientRect();
+
+  notificationsContainer.style.position = "fixed";
+  notificationsContainer.style.top = `${rect.bottom + 10}px`; // 10px отступ вниз
+  notificationsContainer.style.right = `0px`;
+  notificationsContainer.style.zIndex = 1060;
   if (notificationsContainer.classList.contains("d-none")) {
     notificationsContainer.classList.remove("d-none");
     showNotificationPopoverSpinner();
