@@ -73,7 +73,7 @@ const layout = `
   </div>
 </div>
 <div
-  class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5">
+  class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-body">
   <!-- Copyright -->
   <div class="text-body mb-3 mb-md-0">
     Copyright © ${moment().year()}. All rights reserved.
