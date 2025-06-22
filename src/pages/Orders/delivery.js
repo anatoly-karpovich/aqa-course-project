@@ -1,9 +1,8 @@
-function renderScheduleDeliveryLayout(options = delivery_props) {
-  const order = _.cloneDeep(state.order);
+function renderScheduleDeliveryLayout(order, options = delivery_props) {
   options.title = "Schedule Delivery";
 
   return `
-    <div class="shadow-sm p-3 mb-5 bg-body rounded form-center">
+    <div class="shadow-sm p-3 mb-5 bg-body rounded form-center position-relative" id="delivery-container">
         <div id="${PAGE_TITLE_ID}" class="page-header-title d-flex justify-content-around">
             <h2 class="fw-bold">${options.title}</h2>
         </div>
@@ -15,12 +14,19 @@ function renderScheduleDeliveryLayout(options = delivery_props) {
          
          ${generateFormSelectInput(options.inputs.delivery_location)}
          <section id="delivery-location-section" class="row g-2 d-flex justify-content-between s-loc-ml">
-          ${generateDeliverySectionBody("Home")}
+          ${generateDeliverySectionBody("Home", order)}
          </section>
             <div class="col-12  d-flex justify-content-around">
                 <div>
                     ${saveButton(options.buttons.save.id, options.buttons.save.name, "sp_mt")}
-                    ${backButton(options.buttons.back.id, options.buttons.back.name, "sp_mt")}
+                    ${generateLinkButton(
+                      {
+                        ...options.buttons.back,
+                        href: ROUTES.ORDER_DETAILS(order._id),
+                        classlist: "btn btn-secondary form-buttons sp_mt",
+                      },
+                      options.buttons.back.id
+                    )}
                 </div>
             </div>
         </form>
@@ -209,7 +215,7 @@ function createDeliveryRequestBody() {
   return delivery;
 }
 
-function addEventListelersToScheduleDeliveryPage() {
+function addEventListelersToScheduleDeliveryPage(order) {
   enableDatePicker();
   const deliverySection = $("section#delivery-location-section");
   const deliveryTypeSelect = $("select#inputType");
@@ -224,12 +230,12 @@ function addEventListelersToScheduleDeliveryPage() {
     setSpinnerToButton(submit);
     const deleteButton = document.getElementById(delivery_props.buttons.back.id);
     deleteButton.setAttribute("disabled", "");
-    await submitDelivery(state.order._id, createDeliveryRequestBody());
+    await submitDelivery(order._id, createDeliveryRequestBody());
   });
 
   cancelButton.on("click", async (e) => {
     e.preventDefault();
-    await renderOrderDetailsPage(state.order._id);
+    await renderOrderDetailsPage(order._id);
   });
 
   $(`#${delivery_props.formId}`).on("change", (e) => {
@@ -252,12 +258,12 @@ function addEventListelersToScheduleDeliveryPage() {
     switch (e.target.id) {
       case "inputLocation": {
         if (deliveryLocationSelect.val() === "Other" && deliveryTypeSelect.val() === "Delivery") {
-          deliverySection.html(generateDeliverySectionBody("Other"));
+          deliverySection.html(generateDeliverySectionBody("Other", order));
           $("section#delivery-location-section input").each(function () {
             $(this).prop("readonly", false);
           });
         } else if (deliveryLocationSelect.val() === "Home" && deliveryTypeSelect.val() === "Delivery") {
-          deliverySection.html(generateDeliverySectionBody("Home"));
+          deliverySection.html(generateDeliverySectionBody("Home", order));
         }
         break;
       }
@@ -265,9 +271,9 @@ function addEventListelersToScheduleDeliveryPage() {
         if (deliveryTypeSelect.val() === "Delivery") {
           deliveryLocationContainer.show();
           deliveryLocationSelect.val("Home");
-          deliverySection.html(generateDeliverySectionBody("Home"));
+          deliverySection.html(generateDeliverySectionBody("Home", order));
         } else {
-          deliverySection.html(generatePickupSectionBody());
+          deliverySection.html(generatePickupSectionBody(order));
           deliveryLocationContainer.hide();
         }
         break;
@@ -354,27 +360,27 @@ function setShopAddressByCountry(country) {
   $(`#${delivery_props.inputs.flat.id}`).val(address.flat);
 }
 
-function generateDeliverySectionBody(location) {
+function generateDeliverySectionBody(location, order) {
   const inputs = {
     country:
       location === "Home"
-        ? { ...delivery_props.inputs.countryInput, value: state.order.customer.country }
-        : { ...delivery_props.inputs.country, value: state.order.customer.country },
-    city: { ...delivery_props.inputs.city, value: state.order.customer.city },
-    street: { ...delivery_props.inputs.street, value: state.order.customer.street },
-    house: { ...delivery_props.inputs.house, value: state.order.customer.house },
-    flat: { ...delivery_props.inputs.flat, value: state.order.customer.flat },
+        ? { ...delivery_props.inputs.countryInput, value: order.customer.country }
+        : { ...delivery_props.inputs.country, value: order.customer.country },
+    city: { ...delivery_props.inputs.city, value: order.customer.city },
+    street: { ...delivery_props.inputs.street, value: order.customer.street },
+    house: { ...delivery_props.inputs.house, value: order.customer.house },
+    flat: { ...delivery_props.inputs.flat, value: order.customer.flat },
   };
   return generateFormInputs(inputs);
 }
 
-function generatePickupSectionBody() {
+function generatePickupSectionBody(order) {
   const inputs = {
-    country: { ...delivery_props.inputs.country, value: state.order.customer.country },
-    city: { ...delivery_props.inputs.city, value: shopAddressByCountry[state.order.customer.country].city },
-    street: { ...delivery_props.inputs.street, value: shopAddressByCountry[state.order.customer.country].street },
-    house: { ...delivery_props.inputs.house, value: shopAddressByCountry[state.order.customer.country].house },
-    flat: { ...delivery_props.inputs.flat, value: shopAddressByCountry[state.order.customer.country].flat },
+    country: { ...delivery_props.inputs.country, value: order.customer.country },
+    city: { ...delivery_props.inputs.city, value: shopAddressByCountry[order.customer.country].city },
+    street: { ...delivery_props.inputs.street, value: shopAddressByCountry[order.customer.country].street },
+    house: { ...delivery_props.inputs.house, value: shopAddressByCountry[order.customer.country].house },
+    flat: { ...delivery_props.inputs.flat, value: shopAddressByCountry[order.customer.country].flat },
   };
   return generateFormInputs(inputs);
 }
