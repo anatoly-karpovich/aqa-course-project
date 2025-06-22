@@ -242,8 +242,8 @@ async function renderOrderDetailsPage(id, withScroll = true) {
         addEventListelersToOrderDetailsPage();
         activateTab();
       } else {
-        handleApiErrors(order);
-        handleApiErrors(customers);
+        const errorResponse = [order, customers].find((r) => r.status !== 200);
+        handleApiErrors(errorResponse);
       }
     }
   } catch (e) {
@@ -503,9 +503,8 @@ async function renderLandingPage(options = {}) {
     state.page = PAGES.HOME;
     document.querySelector("body").innerHTML = renderLandingPageLayout(options);
     await Promise.allSettled([getNotificationsAndHangleBadge(), renderHomePage(homeProps)]);
-    addEventListenersToSidemenu();
     renderNotificationContainer();
-    connectSocket();
+    if (!socket) connectSocket();
   } catch (e) {
     console.error(e);
     renderErrorPage();
@@ -545,18 +544,18 @@ async function renderHomePage(options = {}) {
 
 // const indexForRed = _.random(1, 3);
 function sideMenuActivateElement(value) {
-  const li = document.querySelectorAll(`ul.nav a`);
-  li.forEach((el) => {
-    if (el.classList.contains("active")) {
-      el.classList.remove("active");
-    }
-  });
-  const index = findNodeIndexByInnerText(`ul.nav a`, value);
-
-  li[index].classList.add("active");
+  // const li = document.querySelectorAll(`ul.nav a`);
+  // li.forEach((el) => {
+  //   if (el.classList.contains("active")) {
+  //     el.classList.remove("active");
+  //   }
+  // });
+  // const index = findNodeIndexByInnerText(`ul.nav a`, value);
+  // li[index].classList.add("active");
 }
 
 function renderNotFoundPage() {
+  activateNavigationMenuItem();
   const currentPath = window.location.hash;
 
   document.getElementById(CONTENT_CONTAINER_ID).innerHTML = `

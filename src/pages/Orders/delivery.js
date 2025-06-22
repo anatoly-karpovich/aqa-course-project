@@ -8,7 +8,7 @@ function renderScheduleDeliveryLayout(options = delivery_props) {
             <h2 class="fw-bold">${options.title}</h2>
         </div>
         <form class="row g-3 form-with-inputs p-3" id="${options.formId}">
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between flex-wrap">
           ${generateFormSelectInput(options.inputs.type)}
           ${generateDatePicker()}
         </div>
@@ -17,10 +17,10 @@ function renderScheduleDeliveryLayout(options = delivery_props) {
          <section id="delivery-location-section" class="row g-2 d-flex justify-content-between s-loc-ml">
           ${generateDeliverySectionBody("Home")}
          </section>
-            <div class="col-12  d-flex justify-content-around" style="margin-top: 50px;">
+            <div class="col-12  d-flex justify-content-around">
                 <div>
-                    ${saveButton(options.buttons.save.id, options.buttons.save.name)}
-                    ${backButton(options.buttons.back.id, options.buttons.back.name)}
+                    ${saveButton(options.buttons.save.id, options.buttons.save.name, "sp_mt")}
+                    ${backButton(options.buttons.back.id, options.buttons.back.name, "sp_mt")}
                 </div>
             </div>
         </form>

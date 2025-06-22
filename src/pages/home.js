@@ -178,7 +178,7 @@ function createRecentOrderRow(order) {
 function recentOrdersTable(recentOrders) {
   return `
             <h4>Recent Orders</h4>
-            <div id="recent-orders-container">
+            <div id="recent-orders-container" class="table-responsive">
               <table class="table table-striped">
                 <thead>
                 <tr>
@@ -212,7 +212,7 @@ function createTopCustomersRow(customer) {
 function topCustomersTable(customers) {
   return `
             <h4>Top Customers</h4>
-            <div id="top-customers-container">
+            <div id="top-customers-container" class="table-responsive">
               <table class="table table-striped">
                   <thead>
                   <tr>

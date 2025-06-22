@@ -23,3 +23,9 @@
   align-items: center;
   height: 100%;
 }
+
+.table:not([name="table-with-no-actions"]) td:last-child,
+.table:not([name="table-with-no-actions"]) th:last-child {
+  position: sticky;
+  right: 0;
+}

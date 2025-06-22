@@ -1,6 +1,6 @@
 function renderOrderDetailsPageLayout(options = Order_Details_Props, order, isReceivingOn = false) {
   return `
-    <div class="bg-body rounded p-3" id="order-details-header">
+    <div class="bg-body p-3" id="order-details-header">
         ${backLink(ROUTES.ORDERS, "Orders")}
         <div id="${PAGE_TITLE_ID}" class="p-horizontal-20">  
             <div class="page-header-flex">
@@ -9,12 +9,14 @@ function renderOrderDetailsPageLayout(options = Order_Details_Props, order, isRe
                 ${generateOrderDetailsHeaderSection(order)}
         </div>
     </div>      
-        <div class="d-flex justify-content-start" id="order-details-body">
+        <div class="d-flex justify-content-between flex-wrap" id="order-details-body">
             ${generateCustomerSection(order)}
             ${generateProductsSection(order, isReceivingOn)}
         </div>
-        <div class="d-tabs shadow-sm p-3 mb-5 bg-body rounded position-relative" id="order-details-tabs-section">
+        <div class="mb-5 p-3 rounded bg-body position-relative page-title-margin shadow-sm" id="order-details-tabs-section">
+            <div class="d-tabs">        
             ${generateOrderDetailsTabs(order)}
+          </div>
         </div>
     </div>`;
 }

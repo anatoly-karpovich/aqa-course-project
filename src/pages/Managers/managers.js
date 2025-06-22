@@ -6,9 +6,9 @@ function createManagersPageLayout(options = ManagersProps, response) {
   // options.tableProps.currentSortingField.name = replaceApiToFeKeys[state.sorting.managers.sortField];
 
   return `
-        <div class="bg-body rounded p-3">
+        <div class="bg-body p-3">
           <div id="${PAGE_TITLE_ID}" class="p-horizontal-20">  
-              <div class="page-header-flex">
+              <div class="page-header-flex ml-20">
                   ${generatePageTitle(options)}
                   ${generateButton(options.buttons.add)}
               </div>
@@ -26,13 +26,14 @@ function createManagersPageLayout(options = ManagersProps, response) {
 
 const ManagersProps = {
   path: "Managers",
-  title: "Mananers List",
-  classlist: "ml-20 fw-bold",
+  title: "Managers List",
+  classlist: "fw-bold",
   buttons: {
     add: {
       classlist: "btn btn-primary pageTitle page-title-header page-title-button d-inline-flex align-items-center",
       name: "+ Add Manager",
       href: ROUTES.MANAGER_ADD,
+      attributes: ['name="add-button"'],
     },
     search: {
       classlist: "btn btn-primary d-flex justify-content-center align-items-center",

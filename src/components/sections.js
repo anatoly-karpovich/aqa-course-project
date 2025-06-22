@@ -1,6 +1,6 @@
 function generateCustomerSection(order) {
   return `
-    <div class="shadow-sm p-3 mb-5 bg-body rounded page-title-margin s-width mr-0 position-relative" id="customer-section">
+    <div class="shadow-sm p-3 mb-5 bg-body rounded page-title-margin s-width position-relative" id="customer-section">
         <div class="section-header">
             <h4 class="modal-title">Customer Details</h4>
             ${
@@ -73,24 +73,30 @@ function generateOrderDetailsHeaderSection(order) {
 
 function generateOrderDetailsInfoBar(order) {
   return `
-    <div class="d-flex justify-content-start p-horizontal-20 mb-1">
-        <span class="strong-details fw-bold">Order number: </span>
-        <span class="fst-italic">${order._id}</span>
+  <div class="d-flex justify-content-between flex-wrap">
+    <div class="d-flex justify-content-start flex-wrap">
+      <div class="d-flex justify-content-start p-horizontal-20 flex-wrap mb-3 align-items-center">
+          <span class="strong-details fw-bold">Order number: </span>
+          <span class="fst-italic">${order._id}</span>
+      </div>
+      <div class="d-flex justify-content-start p-horizontal-20 align-items-center flex-wrap mb-3">
+          <span class="strong-details fw-bold">Assigned Manager: </span>
+          ${
+            order.assignedManager?.firstName
+              ? generateEditAssignedManagerSection(order)
+              : '<span class="fst-italic" style="cursor: pointer"><u onclick="renderAssigneManagerModal()">Click to select manager</u></span>'
+          }
+      </div>
     </div>
-    <div class="d-flex justify-content-start p-horizontal-20 mb-3 align-items-center">
-        <span class="strong-details fw-bold">Assigned Manager: </span>
-        ${
-          order.assignedManager?.firstName
-            ? generateEditAssignedManagerSection(order)
-            : '<span class="fst-italic" style="cursor: pointer"><u onclick="renderAssigneManagerModal()">Click to select manager</u></span>'
-        }
+    <div class="ms-3 mb-3  align-items-center">
+      ${generateOrderStatusButton(order)}
     </div>
+  </div>
     <div class="d-flex justify-content-between p-horizontal-20 mb-3">
         <div class="d-flext justify-content-start">
             ${generateProcessOrReceiveButton(order)}
             ${generateRefreshOrderButton(order)}
         </div>
-            ${generateOrderStatusButton(order)}
     </div>`;
 }
 
@@ -141,23 +147,23 @@ function generateReceiveButton(order, isReceivingOn) {
 
 function generateOrderDetailsStatusBar(order) {
   return `
-    <div class="d-flex justify-content-between p-horizontal-20 h-m-width">
-        <div>
+    <div class="d-flex justify-content-between flex-wrap p-horizontal-20 h-m-width" id="order-status-bar-container">
+        <div class="me-2">
             <span class="fw-bold">Order Status</span>
             <br/>
             <span class="text-${order.status === "Canceled" ? "danger" : "primary"}">${order.status}</span>
         </div>
-        <div>
+        <div class="me-2">
             <span class="fw-bold">Total Price</span>
             <br/>
             <span class="text-primary">$${order.total_price}</span>
         </div>
-        <div>
+        <div class="me-2">
             <span class="fw-bold">Delivery</span>
             <br/>
             <span class="text-primary">${order.delivery ? convertToDate(order.delivery.finalDate) : "-"}</span>
         </div> 
-        <div>
+        <div class="me-2">
             <span class="fw-bold">Created On</span>
             <br/>
             <span class="text-primary">${convertToFullDateAndTime(order.createdOn)}</span>

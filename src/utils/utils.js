@@ -364,6 +364,18 @@ function createManagerDetailsLink(assignedManager) {
 
 function setRoute(route) {
   window.location.hash = route;
+  if (route.includes("login")) return;
+  else {
+    const menuItems = navigationMenuOptions.reduce((res, item) => {
+      res[item.text.toLowerCase()] = document.querySelector(`[name="${item.text.toLowerCase()}"]`);
+      return res;
+    }, {});
+    if (route.includes("customer")) activateNavigationMenuItem(menuItems.customers);
+    else if (route.includes("manager")) activateNavigationMenuItem(menuItems.managers);
+    else if (route.includes("product")) activateNavigationMenuItem(menuItems.products);
+    else if (route.includes("order")) activateNavigationMenuItem(menuItems.orders);
+    else activateNavigationMenuItem(menuItems.home);
+  }
 }
 
 function isOnOrderDetails(orderId) {
