@@ -35,7 +35,7 @@ function generateHeaderLayout() {
 
     <!-- Профиль -->
     <div id="user-menu-button">
-      <a class="d-flex align-items-center text-body text-decoration-none" href="${ROUTES.MANAGER_DETAILS(user._id)}">
+      <a class="d-flex align-items-center text-body text-decoration-none" href="${ROUTES.MANAGER_DETAILS(user?._id)}">
         <strong>${user?.firstName ?? "User"}</strong>
       </a>
 
