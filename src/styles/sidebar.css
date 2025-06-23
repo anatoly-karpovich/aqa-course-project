@@ -665,3 +665,7 @@ input[type="date"] {
   word-wrap: break-word;
   word-break: break-word;
 }
+
+.datepicker {
+  z-index: 3000 !important;
+}
