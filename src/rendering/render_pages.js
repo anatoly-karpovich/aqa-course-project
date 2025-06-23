@@ -283,10 +283,7 @@ async function renderCreateOrderModal() {
     state.page = PAGES.ORDERS;
     createAddOrderModal({ customers: [], products: [] });
     showAddOrderModalSpinner();
-    const [customers, products] = await Promise.all([
-      CustomersService.getSorted({ sortField: "name", sortOrder: "asc" }),
-      ProductsService.getSortedProducts({ sortField: "name", sortOrder: "asc" }),
-    ]);
+    const [customers, products] = await Promise.all([CustomersService.getCustomers(), ProductsService.getProducts()]);
     if (state.checkPage(PAGES.ORDERS))
       if (customers.status === 200 && products.status === 200) {
         setDataToAddOrderModal({ customers: customers.data.Customers, products: products.data.Products });
