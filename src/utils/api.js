@@ -14,6 +14,7 @@ async function sendRequest(options) {
   try {
     response = await request(options);
   } catch (err) {
+    return err.response;
     // console.log('Error', err.isAxiosError ? err.message : err)
     // console.log('Request URL:', options.method, options.url)
     if (err.response.status >= 400 && err.response.status < 500) {

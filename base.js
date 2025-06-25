@@ -75,6 +75,7 @@ const SUCCESS_MESSAGES = {
 
 const ERROR_MESSAGES = {
   ["Connection Issue"]: `Connection issue. Please try again later.`,
+  ["Order not created"]: "Failed to create an order. Please try again later.",
 };
 
 const VALIDATION_ERROR_MESSAGES = {

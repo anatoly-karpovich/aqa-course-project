@@ -75,9 +75,6 @@ async function router() {
   else if (path === "orders") {
     activateNavigationMenuItem("orders");
     await renderOrdersPage();
-  } else if (path === "orders/add") {
-    activateNavigationMenuItem("orders");
-    await renderCreateOrderModal();
   } else if (/^orders\/[\w-]+\/edit-delivery$/.test(path)) {
     const id = path.split("/")[1];
     activateNavigationMenuItem("orders");

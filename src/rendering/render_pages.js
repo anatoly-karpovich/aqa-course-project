@@ -283,16 +283,23 @@ async function renderCreateOrderModal() {
     state.page = PAGES.ORDERS;
     createAddOrderModal({ customers: [], products: [] });
     showAddOrderModalSpinner();
-    const [customers, products] = await Promise.all([CustomersService.getCustomers(), ProductsService.getProducts()]);
-    if (state.checkPage(PAGES.ORDERS))
+    const [customers, products] = (
+      await Promise.allSettled([CustomersService.getCustomers(), ProductsService.getProducts()])
+    ).map((r) => r.value);
+    if (state.checkPage(PAGES.ORDERS)) {
       if (customers.status === 200 && products.status === 200) {
         setDataToAddOrderModal({ customers: customers.data.Customers, products: products.data.Products });
         hideSpinners();
         sideMenuActivateElement("Orders");
+      } else if (customers.status === 401 || products.status === 401) {
+        removeAddOrderModal();
+        const response = [customers, products].find((r) => r.status === 401);
+        handleApiErrors(response);
       } else {
-        handleApiErrors(customers);
-        handleApiErrors(products);
+        removeAddOrderModal();
+        renderNotification({ message: ERROR_MESSAGES["Order not created"] }, true);
       }
+    }
   } catch (e) {
     console.error(e);
     renderErrorPage();

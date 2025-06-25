@@ -123,6 +123,8 @@ function addEventListelersToAddOrderModal() {
     if (response.data.IsSuccess) {
       renderNotification({ message: SUCCESS_MESSAGES["New Order Added"] });
       await renderOrdersPage();
+    } else if (response.status === 404 || response.status >= 500) {
+      renderNotification({ message: ERROR_MESSAGES["Order not created"] }, true);
     } else {
       handleApiErrors(response, true);
     }
@@ -212,7 +214,7 @@ function generateAddOrderProductInput(options) {
 }
 
 function removeAddOrderModal() {
-  document.querySelector("[modal]").parentNode.removeChild(document.querySelector("[modal]"));
+  document.querySelector("#add-order-modal").parentNode.removeChild(document.querySelector("#add-order-modal"));
   orderModalWrap = null;
   $("body").removeClass("modal-open");
   $("body").removeAttr("style");
