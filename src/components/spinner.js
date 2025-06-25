@@ -23,6 +23,7 @@ function hideSpinners() {
 function removeSpinnerFromButton(button, innerText) {
   button.innerHTML = "";
   button.innerText = innerText;
+  button.removeAttribute("style");
   button.removeAttribute("disabled");
 }
 

@@ -214,6 +214,7 @@ function generateAddOrderProductInput(options) {
 }
 
 function removeAddOrderModal() {
+  if (!document.querySelector("#add-order-modal")) return;
   document.querySelector("#add-order-modal").parentNode.removeChild(document.querySelector("#add-order-modal"));
   orderModalWrap = null;
   $("body").removeClass("modal-open");
