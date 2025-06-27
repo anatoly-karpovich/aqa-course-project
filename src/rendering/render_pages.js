@@ -398,15 +398,7 @@ function renderProcessOrderModal() {
 
 async function renderEditCustomerModal() {
   try {
-    edit_order_details_modal_props.data = _.cloneDeep(state.customers);
-    edit_order_details_modal_props.customers.options.values = edit_order_details_modal_props.data.map((c) => c.name);
-    edit_order_details_modal_props.customers.options.titles = edit_order_details_modal_props.data.map((c) => c.email);
-    edit_order_details_modal_props.customers.defaultValue = {
-      name: state.order.customer.name,
-      title: state.order.customer.email,
-    };
-    createEditCustomerModal();
-    showEditCustomerModalSpinner();
+    setSpinnerToButton(document.querySelector("#edit-customer-pencil"), { saveDimensions: false });
     const customers = await CustomersService.getCustomers();
     if (customers.status === 200) {
       edit_order_details_modal_props.data = _.cloneDeep(customers.data.Customers).sort((a, b) =>
@@ -418,11 +410,11 @@ async function renderEditCustomerModal() {
         name: state.order.customer.name,
         title: state.order.customer.email,
       };
-      // createEditCustomerModal(customers.data.Customers);
-      setDataToEditCustomerModal();
-      // hideSpinner();
-    } else {
+      createEditCustomerModal();
+    } else if (customers.status === 401) {
       handleApiErrors(customers);
+    } else {
+      renderNotification({ message: ERROR_MESSAGES["Unable to edit customer"] }, true);
     }
   } catch (e) {
     console.error(e);
@@ -447,14 +439,15 @@ async function renderAssigneManagerModal() {
 
 async function renderEditProductsModal() {
   try {
-    await createEditProductsModal([state.order.products[0]]);
-    showEditProductsModalSpinner();
+    const pencil = document.querySelector("#edit-products-pencil");
+    setSpinnerToButton(pencil);
     const products = await ProductsService.getProducts();
     if (products.status === 200) {
-      setDataToEditProductsModal(products.data.Products.sort((a, b) => a.name.localeCompare(b.name)));
-      sideMenuActivateElement("Orders");
-    } else {
+      createEditProductsModal(products.data.Products.sort((a, b) => a.name.localeCompare(b.name)));
+    } else if (products.status === 401) {
       handleApiErrors(products);
+    } else {
+      renderNotification({ message: ERROR_MESSAGES["Unable to edit product"] }, true);
     }
   } catch (e) {
     console.error(e);

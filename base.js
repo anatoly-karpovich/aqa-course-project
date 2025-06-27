@@ -79,6 +79,8 @@ const ERROR_MESSAGES = {
   ["Unable to create order"]: "Unable to create an order. Please try again later.",
   ["No customers"]: "No customers found. Please add one before creating an order.",
   ["No products"]: "No products found. Please add one before creating an order.",
+  ["Unable to edit customer"]: "Unable to edit customer. Please try again later.",
+  ["Unable to edit product"]: "Unable to edit product. Please try again later.",
 };
 
 const VALIDATION_ERROR_MESSAGES = {

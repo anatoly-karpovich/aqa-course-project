@@ -20,8 +20,8 @@ function hideSpinners() {
   }
 }
 
-function removeSpinnerFromButton(button, { innerText, innerHTML = "", style = null, disabled = false }) {
-  button.innerHTML = innerHTML ? innerHTML : "";
+function removeSpinnerFromButton(button, { innerText = "", innerHTML = "", style = null, disabled = false }) {
+  button.innerHTML += innerHTML ? innerHTML : "";
   button.innerText = innerText;
   style ? (button.style = style) : button.removeAttribute("style");
   disabled ? button.setAttribute("disabled", "") : button.removeAttribute("disabled");
@@ -96,12 +96,13 @@ function renderSpinnerInContainer(contaierSelector = "") {
 
 const buttonSpinner = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
 
-function setSpinnerToButton(button) {
-  const buttonWidth = button.offsetWidth;
-  const buttonHeight = button.offsetHeight;
-
-  button.style.width = `${buttonWidth}px`;
-  button.style.height = `${buttonHeight}px`;
+function setSpinnerToButton(button, { saveDimensions = true } = {}) {
+  if (saveDimensions) {
+    const buttonWidth = button.offsetWidth;
+    const buttonHeight = button.offsetHeight;
+    button.style.width = `${buttonWidth}px`;
+    button.style.height = `${buttonHeight}px`;
+  }
 
   button.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
   button.setAttribute("disabled", "");

@@ -211,10 +211,21 @@ function addEventListelersToOrderDetailsPage() {
     switch (e.target.id) {
       case "edit-customer-pencil": {
         await renderEditCustomerModal();
+        const pencil = document.querySelector("#edit-customer-pencil");
+        if (pencil) {
+          pencil.innerHTML = '<i class="bi bi-pencil-fill"></i>';
+          pencil.disabled = false;
+        }
+
         break;
       }
       case "edit-products-pencil": {
         await renderEditProductsModal();
+        const pencil = document.querySelector("#edit-products-pencil");
+        if (pencil) {
+          pencil.innerHTML = '<i class="bi bi-pencil-fill"></i>';
+          pencil.disabled = false;
+        }
         break;
       }
       case "start-receiving-products": {

@@ -1,7 +1,7 @@
 let editProductsModalWrap = null;
 const updateProductsButtonSelector = "div#edit-products-modal #update-products-btn";
 
-async function createEditProductsModal(data) {
+function createEditProductsModal(data) {
   setProductsToEditProductsModalProps(data);
   if (editProductsModalWrap !== null) {
     editProductsModalWrap.remove();
