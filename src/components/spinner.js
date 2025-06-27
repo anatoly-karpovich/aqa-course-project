@@ -78,6 +78,10 @@ function showDeliverySpinner() {
   renderSpinnerInContainer("#delivery-container");
 }
 
+function showAssignManagerSpinner() {
+  renderSpinnerInContainer("#assigned-manager-container");
+}
+
 function renderSpinnerInContainer(contaierSelector = "") {
   const contaier = document.querySelector(contaierSelector);
   const overlay = document.createElement("div");

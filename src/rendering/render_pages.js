@@ -424,6 +424,7 @@ async function renderEditCustomerModal() {
 
 async function renderAssigneManagerModal() {
   try {
+    showAssignManagerSpinner();
     const managers = (await ManagersService.getManagers()).data.Users;
     const current = state.order.assignedManager;
     createEditManagerModal(managers, current ? current._id : null);
@@ -434,6 +435,8 @@ async function renderAssigneManagerModal() {
   } catch (e) {
     console.error(e);
     renderErrorPage();
+  } finally {
+    hideSpinners();
   }
 }
 
