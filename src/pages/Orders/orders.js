@@ -99,37 +99,39 @@ function addEventListelersToOrdersPage() {
   $("button.page-title-button").on("click", async (e) => {
     e.preventDefault();
 
-    // await renderCreateOrderModal();
     setSpinnerToButton(e.target);
     try {
       const [customers, products] = (
         await Promise.allSettled([CustomersService.getCustomers(), ProductsService.getProducts()])
       ).map((r) => r.value);
       state.page = PAGES.ORDERS;
-      // createAddOrderModal({ customers: [], products: [] });
-      // showAddOrderModalSpinner();
-
-      // if (state.checkPage(PAGES.ORDERS)) {
-      if (customers.status === 200 && products.status === 200) {
-        // setDataToAddOrderModal({ customers: customers.data.Customers, products: products.data.Products });
+      if (
+        customers.status === 200 &&
+        products.status === 200 &&
+        products.data.Products.length > 0 &&
+        customers.data.Customers.length > 0
+      ) {
         createAddOrderModal({ customers: customers.data.Customers, products: products.data.Products });
         hideSpinners();
         sideMenuActivateElement("Orders");
+      } else if (customers.status === 200 && products.status === 200 && products.data.Products.length === 0) {
+        renderNotification({ message: ERROR_MESSAGES["No products"] }, true);
+      } else if (customers.status === 200 && products.status === 200 && customers.data.Customers.length === 0) {
+        renderNotification({ message: ERROR_MESSAGES["No customers"] }, true);
       } else if (customers.status === 401 || products.status === 401) {
         removeAddOrderModal();
         const response = [customers, products].find((r) => r.status === 401);
         handleApiErrors(response);
       } else {
         removeAddOrderModal();
-        renderNotification({ message: ERROR_MESSAGES["Order not created"] }, true);
+        renderNotification({ message: ERROR_MESSAGES["Unable to create order"] }, true);
       }
-      // }
     } catch (e) {
       console.error(e);
       renderErrorPage();
     } finally {
       hideSpinners();
-      removeSpinnerFromButton(e.target, "Create Order");
+      removeSpinnerFromButton(e.target, { innerText: "Create Order" });
     }
   });
 

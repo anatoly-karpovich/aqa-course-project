@@ -20,11 +20,11 @@ function hideSpinners() {
   }
 }
 
-function removeSpinnerFromButton(button, innerText) {
-  button.innerHTML = "";
+function removeSpinnerFromButton(button, { innerText, innerHTML = "", style = null, disabled = false }) {
+  button.innerHTML = innerHTML ? innerHTML : "";
   button.innerText = innerText;
-  button.removeAttribute("style");
-  button.removeAttribute("disabled");
+  style ? (button.style = style) : button.removeAttribute("style");
+  disabled ? button.setAttribute("disabled", "") : button.removeAttribute("disabled");
 }
 
 function showHomeSpinners() {

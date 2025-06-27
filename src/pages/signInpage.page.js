@@ -62,8 +62,7 @@ const layout = `
         </div>
 
         <div class="text-center text-lg-start mt-4 pt-2">
-          <button type="submit" class="btn btn-primary btn-lg"
-            style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+          <button type="submit" class="btn btn-primary btn-lg loginBtn">Login</button>
             <!-- <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
               class="link-danger">Register</a></p> -->
         </div>
@@ -119,7 +118,7 @@ function renderSignInPage() {
       // await renderLandingPage(landingProps);
       setRoute(ROUTES.HOME);
     } else {
-      removeSpinnerFromButton(submit, "Login");
+      removeSpinnerFromButton(submit, { innerText: "Login" });
       renderNotification(
         { message: response.data.ErrorMessage ? response.data.ErrorMessage : ERROR_MESSAGES["Connection Issue"] },
         true
