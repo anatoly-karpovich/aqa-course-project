@@ -59,13 +59,15 @@ function createEditManagerModal(managers, currentManagerId) {
     const selected = $("#manager-list .list-group-item.active").data("managerid");
     if (!selected) return;
     const response = await OrdersService.assignManager(state.order._id, selected);
-    if (response.status !== 200) {
-      renderNotification({ message: response.data.ErrorMessage }, true);
-    } else {
+    if (response.status === 200) {
       renderNotification({ message: SUCCESS_MESSAGES["Manager Assigned"] });
+      await renderOrderDetailsPage(state.order._id);
+    } else if (response.status === 401) {
+      handleApiErrors(response, true);
+    } else {
+      renderNotification({ message: ERROR_MESSAGES["Failed to assign manager"] }, true);
     }
     removeEditManagerModal();
-    await renderOrderDetailsPage(state.order._id);
   });
 
   $("#cancel-edit-manager-modal-btn").on("click", (e) => {

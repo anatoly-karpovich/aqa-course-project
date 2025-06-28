@@ -3,8 +3,8 @@ const CONTENT_CONTAINER_ID = "root";
 const CONTENT_ID = "contentInner";
 const PAGE_TITLE_ID = "title";
 
-const BASE_URL = "https://aqa-course-project.app";
-// const BASE_URL = "http://localhost:5000";
+// const BASE_URL = "https://aqa-course-project.app";
+const BASE_URL = "http://localhost:5000";
 
 const NUMBER_KEYS = ["amount", "price", "flat", "house"];
 
@@ -79,8 +79,12 @@ const ERROR_MESSAGES = {
   ["Unable to create order"]: "Unable to create an order. Please try again later.",
   ["No customers"]: "No customers found. Please add one before creating an order.",
   ["No products"]: "No products found. Please add one before creating an order.",
-  ["Unable to edit customer"]: "Unable to edit customer. Please try again later.",
-  ["Unable to edit product"]: "Unable to edit product. Please try again later.",
+  ["Unable to edit customer"]: "Unable to update customer. Please try again later.",
+  ["Unable to edit product"]: "Unable to update products. Please try again later.",
+  ["Unable to assign manager"]: "Unable to assign manager. Please try again later.",
+  ["Failed to assign manager"]: "Failed to assign manager. Please try again later.",
+  ["Failed to update customer"]: "Failed to update customer. Please try again later.",
+  ["Failed to update products"]: "Failed to update products. Please try again later.",
 };
 
 const VALIDATION_ERROR_MESSAGES = {

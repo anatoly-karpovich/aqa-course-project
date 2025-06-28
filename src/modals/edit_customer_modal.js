@@ -56,7 +56,22 @@ function createEditCustomerModal(data) {
     };
     const submit = document.querySelector("div.modal-footer #update-customer-btn");
     setSpinnerToButton(submit);
-    await submitOrder(orderData, removeEditCustomerModal);
+    try {
+      const response = await OrdersService.editOrder(orderData);
+      if (response.status === 200) {
+        renderNotification({ message: SUCCESS_MESSAGES["Order Successfully Updated"] });
+        await renderOrderDetailsPage(orderData._id);
+      } else if (response.status === 401) {
+        handleApiErrors(response, true);
+      } else {
+        renderNotification({ message: ERROR_MESSAGES["Failed to update customer"] }, true);
+      }
+    } catch (e) {
+      console.error(e);
+      renderErrorPage();
+    } finally {
+      removeEditCustomerModal();
+    }
   });
 
   $("div.modal-footer #cancel-edit-customer-modal-btn").on("click", (e) => {

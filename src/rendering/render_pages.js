@@ -425,12 +425,19 @@ async function renderEditCustomerModal() {
 async function renderAssigneManagerModal() {
   try {
     showAssignManagerSpinner();
-    const managers = (await ManagersService.getManagers()).data.Users;
-    const current = state.order.assignedManager;
-    createEditManagerModal(managers, current ? current._id : null);
-    const activeItem = document.querySelector("#assign-manager-modal-container li.active");
-    if (activeItem) {
-      setTimeout(() => activeItem.scrollIntoView({ block: "center", behavior: "smooth" }), 300);
+    const response = await ManagersService.getManagers();
+    if (response.status === 200) {
+      const managers = response.data.Users;
+      const current = state.order.assignedManager;
+      createEditManagerModal(managers, current ? current._id : null);
+      const activeItem = document.querySelector("#assign-manager-modal-container li.active");
+      if (activeItem) {
+        setTimeout(() => activeItem.scrollIntoView({ block: "center", behavior: "smooth" }), 300);
+      }
+    } else if (response.status === 401) {
+      handleApiErrors(response);
+    } else {
+      renderNotification({ message: ERROR_MESSAGES["Unable to assign manager"] }, true);
     }
   } catch (e) {
     console.error(e);
