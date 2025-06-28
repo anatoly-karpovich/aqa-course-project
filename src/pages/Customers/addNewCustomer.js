@@ -180,7 +180,22 @@ function addEventListelersToAddNewCustomerPage(options = add_new_customer_props.
         setSpinnerToButton(submitButton);
         const customer = getDataFromForm(`#${add_new_customer_props.formId}`);
         add_new_customer_props.requestOpts.body = customer;
-        await submitEntiti(add_new_customer_props, { message: SUCCESS_MESSAGES["New Customer Added"] });
+        try {
+          const response = await CustomersService.createCustomer(add_new_customer_props.requestOpts.body);
+          if (response.status === 200) {
+            renderNotification({ message: SUCCESS_MESSAGES["New Customer Added"] });
+            setRoute(ROUTES.CUSTOMERS);
+          } else if (response.status === 401) {
+            handleApiErrors(response, true);
+          } else if (response.status === 409) {
+            renderNotification({ message: ERROR_MESSAGES["Customer exists"] }, true);
+          } else {
+            renderNotification({ message: ERROR_MESSAGES["Failed to create customer"] }, true);
+          }
+        } catch (e) {
+          console.error(e);
+          renderErrorPage();
+        }
         break;
       }
 

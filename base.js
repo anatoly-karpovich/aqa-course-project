@@ -3,8 +3,8 @@ const CONTENT_CONTAINER_ID = "root";
 const CONTENT_ID = "contentInner";
 const PAGE_TITLE_ID = "title";
 
-// const BASE_URL = "https://aqa-course-project.app";
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "https://aqa-course-project.app";
+// const BASE_URL = "http://localhost:5000";
 
 const NUMBER_KEYS = ["amount", "price", "flat", "house"];
 
@@ -85,6 +85,9 @@ const ERROR_MESSAGES = {
   ["Failed to assign manager"]: "Failed to assign manager. Please try again later.",
   ["Failed to update customer"]: "Failed to update customer. Please try again later.",
   ["Failed to update products"]: "Failed to update products. Please try again later.",
+  ["Failed to create customer"]: "Failed to create customer. Please check the form.",
+  ["Customer exists"]: "Customer with this email already exists.",
+  ["Failed to create product"]: "Failed to create product. Please check the form.",
 };
 
 const VALIDATION_ERROR_MESSAGES = {
