@@ -120,7 +120,7 @@ function addEventListelersToAddOrderModal() {
 
     const response = await OrdersService.createOrder(orderData);
     removeAddOrderModal();
-    if (response.data.IsSuccess) {
+    if (response.status === 201) {
       renderNotification({ message: SUCCESS_MESSAGES["New Order Added"] });
       await renderOrdersPage();
     } else if (response.status === 404 || response.status >= 500) {
