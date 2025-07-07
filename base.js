@@ -71,6 +71,7 @@ const SUCCESS_MESSAGES = {
   ["Password Successfully Changed"]: "Password was successfully changed",
   ["Manager Assigned"]: "Manager was successfully assigned to the order",
   ["Manager Unassigned"]: "Manager was successfully unassigned from the order",
+  ["Exported"]: "Data was successfully exported",
 };
 
 const ERROR_MESSAGES = {
@@ -88,6 +89,7 @@ const ERROR_MESSAGES = {
   ["Failed to create customer"]: "Failed to create customer. Please check the form.",
   ["Customer exists"]: "Customer with this email already exists.",
   ["Failed to create product"]: "Failed to create product. Please check the form.",
+  ["Failed to export"]: "Failed to export. Please try again later.",
 };
 
 const VALIDATION_ERROR_MESSAGES = {

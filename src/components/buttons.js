@@ -72,9 +72,9 @@ function searchBar(buttons) {
           state.page === PAGES.MANAGERS ? "disabled" : ""
         }>
             <i class="bi bi-funnel me-2"></i> Filter
-        </button>       
+        </button>
+        <button id="export" class="btn btn-primary ms-2 page-title-button" onclick="createExportModal()">Export</button>       
     </div>
-
 `;
 }
 

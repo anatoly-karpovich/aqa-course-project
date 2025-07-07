@@ -1,7 +1,7 @@
 let changePasswordModalWrap = null;
 const changePasswordModalId = "edit-customer-modal";
 
-function createChangePasswordModal(id, event) {
+function renderChangePasswordModal(id, event) {
   event.preventDefault();
   if (changePasswordModalWrap !== null) {
     changePasswordModalWrap.remove();

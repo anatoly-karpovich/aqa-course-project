@@ -669,3 +669,11 @@ input[type="date"] {
 .datepicker {
   z-index: 3000 !important;
 }
+
+.label-required {
+  position: relative;
+  left: 1px;
+  display: inline-block;
+  content: "*";
+  color: #d0011b;
+}

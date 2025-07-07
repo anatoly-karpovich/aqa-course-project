@@ -381,3 +381,39 @@ function setRoute(route) {
 function isOnOrderDetails(orderId) {
   return document.getElementById("order-details-header") && window.location.href.includes(`orders/${orderId}`);
 }
+
+function exportJson(data) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: "application/json",
+  });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "data.json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function exportCsv(data) {
+  const csv = Papa.unparse(data);
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "data.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function formRadioHandler(event, form) {
+  const target = event.target;
+  if (target.tagName !== "INPUT" || target.type !== "radio") return;
+  const inputs = [...form.querySelectorAll('input[type="radio"]')];
+  inputs.forEach((input) => {
+    input.removeAttribute("checked");
+    if (input === target) {
+      input.setAttribute("checked", "");
+    }
+  });
+}

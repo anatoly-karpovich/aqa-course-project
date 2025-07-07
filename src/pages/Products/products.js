@@ -216,3 +216,11 @@ async function getProductsAndRenderTable() {
     $('[data-name="table-products"]').html(tableHTML);
   }
 }
+
+async function exportDataToFile(data, type) {
+  if (type === "json") {
+    exportJson(data);
+  } else if (type === "csv") {
+    exportCsv(data);
+  }
+}
