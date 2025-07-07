@@ -91,7 +91,7 @@ function renderCustomersOptions(options, data) {
 
 async function showNotificationAfterDeleteRequest(response, notificationOptions, pageProps) {
   // hideSpinner();
-  if (response.status === 204) {
+  if (response.status === STATUS_CODES.DELETED) {
     // await renderPages[pageProps.path](pageProps);
     setRoute(ROUTES[pageProps.path.toUpperCase()]);
     renderNotification(notificationOptions);
@@ -102,7 +102,7 @@ async function showNotificationAfterDeleteRequest(response, notificationOptions,
 
 async function showNotificationOnOrderDetailsPage(response, notificationOptions) {
   // hideSpinner();
-  if (response.status === 200) {
+  if (response.status === STATUS_CODES.OK) {
     await renderOrderDetailsPage(state?.order?._id ?? response.data.Order._id);
     renderNotification(notificationOptions);
   } else {

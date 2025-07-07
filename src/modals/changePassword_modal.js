@@ -69,7 +69,7 @@ async function changePassword(id, button) {
   const newPassword = document.getElementById("modal-newPassword").value;
   renderSpinnerInContainer("#change-password-form");
   const response = await ManagersService.changePassword(id, { oldPassword, newPassword });
-  if (!response.status >= 500) {
+  if (!response.status >= STATUS_CODES.INTERNAL_SERVER_ERROR) {
     handleApiErrors(response);
   } else if (!response.data.IsSuccess) {
     renderNotification({ message: response.data.ErrorMessage }, true);

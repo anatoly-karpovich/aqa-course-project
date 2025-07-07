@@ -155,7 +155,7 @@ async function changeOrderStatus(status, button, id) {
   setSpinnerToButton(button);
   const response = await OrdersService.changeOrderStatus(id && id !== "null" ? id : state.order._id, status);
   removeConfimationModal();
-  if (response.status === 200) {
+  if (response.status === STATUS_CODES.OK) {
     const orderId = state?.order?._id ?? response.data.Order._id;
     isOnOrderDetails(orderId) ? await renderOrderDetailsPage(orderId) : setRoute(ROUTES.ORDER_DETAILS(orderId));
     renderNotification({ message: SUCCESS_MESSAGES[`Order ${status}`] });
@@ -168,7 +168,7 @@ async function unassignManager(orderId, button) {
   setSpinnerToButton(button);
   const response = await OrdersService.unassignManager(orderId);
   removeConfimationModal();
-  if (response.status === 200) {
+  if (response.status === STATUS_CODES.OK) {
     await showNotificationOnOrderDetailsPage(response, { message: SUCCESS_MESSAGES["Manager Unassigned"] });
   } else {
     renderNotification({ message: response.data.ErrorMessage }, true);

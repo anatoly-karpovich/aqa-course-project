@@ -17,7 +17,7 @@ async function sendRequest(options) {
     return err.response;
     // console.log('Error', err.isAxiosError ? err.message : err)
     // console.log('Request URL:', options.method, options.url)
-    if (err.response.status >= 400 && err.response.status < 500) {
+    if (err.response.status >= STATUS_CODES.BAD_REQUEST && err.response.status < STATUS_CODES.INTERNAL_SERVER_ERROR) {
       return err.response;
     }
   } finally {
@@ -32,12 +32,12 @@ function logout() {
 }
 
 function handleApiErrors(response, errorToNotification = false) {
-  if (response.status === 401) {
+  if (response.status === STATUS_CODES.UNAUTHORIZED) {
     logout();
   } else {
-    if (response.status === 404) {
+    if (response.status === STATUS_CODES.NOT_FOUND) {
       renderNotFoundPage();
-    } else if (errorToNotification && response.status < 500) {
+    } else if (errorToNotification && response.status < STATUS_CODES.INTERNAL_SERVER_ERROR) {
       renderNotification(
         { message: response.data.ErrorMessage ? response.data.ErrorMessage : ERROR_MESSAGES["Connection Issue"] },
         true
@@ -143,7 +143,7 @@ async function submitComment(_id, comment) {
 async function deleteComment(_id, commentId) {
   const response = await OrdersService.deleteComment(_id, commentId);
   const orderResponse = await OrdersService.getOrders(state.order._id);
-  if (response.status === 204 && orderResponse.status === 200) {
+  if (response.status === STATUS_CODES.DELETED && orderResponse.status === STATUS_CODES.OK) {
     state.order = orderResponse.data.Order;
     renderNotification({ message: SUCCESS_MESSAGES["Comment Successfully Deleted"] });
     renderCommentsTab(orderResponse.data.Order);

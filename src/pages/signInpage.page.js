@@ -109,7 +109,7 @@ function renderSignInPage() {
     const credentials = { username: email.value, password: password.value };
     setSpinnerToButton(submit);
     const response = await SignInService.signIn(credentials);
-    if (response.status === 200) {
+    if (response.status === STATUS_CODES.OK) {
       document.cookie = `Authorization=${response.headers.authorization}`;
       window.localStorage.setItem("user", JSON.stringify(response.data.User));
       state.user = response.data.User;

@@ -70,10 +70,10 @@ function createEditProductsModal(data) {
     setSpinnerToButton(submit);
     try {
       const response = await OrdersService.editOrder(orderData);
-      if (response.status === 200) {
+      if (response.status === STATUS_CODES.OK) {
         renderNotification({ message: SUCCESS_MESSAGES["Order Successfully Updated"] });
         await renderOrderDetailsPage(orderData._id);
-      } else if (response.status === 401) {
+      } else if (response.status === STATUS_CODES.UNAUTHORIZED) {
         handleApiErrors(response, true);
       } else {
         renderNotification({ message: ERROR_MESSAGES["Failed to update products"] }, true);

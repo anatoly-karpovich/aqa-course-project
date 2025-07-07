@@ -120,10 +120,10 @@ function addEventListelersToAddOrderModal() {
 
     const response = await OrdersService.createOrder(orderData);
     removeAddOrderModal();
-    if (response.status === 201) {
+    if (response.status === STATUS_CODES.CREATED) {
       renderNotification({ message: SUCCESS_MESSAGES["New Order Added"] });
       await renderOrdersPage();
-    } else if (response.status === 404 || response.status >= 500) {
+    } else if (response.status === STATUS_CODES.NOT_FOUND || response.status >= STATUS_CODES.INTERNAL_SERVER_ERROR) {
       renderNotification({ message: ERROR_MESSAGES["Order not created"] }, true);
     } else {
       handleApiErrors(response, true);

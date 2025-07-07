@@ -182,12 +182,12 @@ function addEventListelersToAddNewCustomerPage(options = add_new_customer_props.
         add_new_customer_props.requestOpts.body = customer;
         try {
           const response = await CustomersService.createCustomer(add_new_customer_props.requestOpts.body);
-          if (response.status === 200) {
+          if (response.status === STATUS_CODES.OK) {
             renderNotification({ message: SUCCESS_MESSAGES["New Customer Added"] });
             setRoute(ROUTES.CUSTOMERS);
-          } else if (response.status === 401) {
+          } else if (response.status === STATUS_CODES.UNAUTHORIZED) {
             handleApiErrors(response, true);
-          } else if (response.status === 409) {
+          } else if (response.status === STATUS_CODES.CONFLICT) {
             renderNotification({ message: ERROR_MESSAGES["Customer exists"] }, true);
           } else {
             renderNotification({ message: ERROR_MESSAGES["Failed to create customer"] }, true);

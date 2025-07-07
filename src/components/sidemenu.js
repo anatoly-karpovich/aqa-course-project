@@ -168,7 +168,7 @@ function currencyExchangeSection() {
 async function signOutHandler() {
   setSpinnerToBody();
   const response = await SignInService.signOut();
-  if (response.status !== 200) {
+  if (response.status !== STATUS_CODES.OK) {
     handleApiErrors(response);
     hideSpinners();
     return renderNotification({ message: response.data.ErrorMessage }, true);

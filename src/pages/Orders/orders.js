@@ -106,21 +106,29 @@ function addEventListelersToOrdersPage() {
       ).map((r) => r.value);
       state.page = PAGES.ORDERS;
       if (
-        customers.status === 200 &&
-        products.status === 200 &&
+        customers.status === STATUS_CODES.OK &&
+        products.status === STATUS_CODES.OK &&
         products.data.Products.length > 0 &&
         customers.data.Customers.length > 0
       ) {
         createAddOrderModal({ customers: customers.data.Customers, products: products.data.Products });
         hideSpinners();
         sideMenuActivateElement("Orders");
-      } else if (customers.status === 200 && products.status === 200 && products.data.Products.length === 0) {
+      } else if (
+        customers.status === STATUS_CODES.OK &&
+        products.status === STATUS_CODES.OK &&
+        products.data.Products.length === 0
+      ) {
         renderNotification({ message: ERROR_MESSAGES["No products"] }, true);
-      } else if (customers.status === 200 && products.status === 200 && customers.data.Customers.length === 0) {
+      } else if (
+        customers.status === STATUS_CODES.OK &&
+        products.status === STATUS_CODES.OK &&
+        customers.data.Customers.length === 0
+      ) {
         renderNotification({ message: ERROR_MESSAGES["No customers"] }, true);
-      } else if (customers.status === 401 || products.status === 401) {
+      } else if (customers.status === STATUS_CODES.UNAUTHORIZED || products.status === STATUS_CODES.UNAUTHORIZED) {
         removeAddOrderModal();
-        const response = [customers, products].find((r) => r.status === 401);
+        const response = [customers, products].find((r) => r.status === STATUS_CODES.UNAUTHORIZED);
         handleApiErrors(response);
       } else {
         removeAddOrderModal();

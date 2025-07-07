@@ -142,7 +142,7 @@ async function deleteCustomerOnCustomers(id, confirmButton) {
   confirmButton.innerHTML = buttonSpinner;
   const response = await CustomersService.deleteCustomer(id);
   removeConfimationModal();
-  if (response.status === 204) {
+  if (response.status === STATUS_CODES.DELETED) {
     getCustomersAndRenderTable();
     renderNotification({ message: SUCCESS_MESSAGES["Customer Successfully Deleted"]("Customer") });
   } else {

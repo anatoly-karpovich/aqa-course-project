@@ -126,7 +126,7 @@ async function deleteProductOnProducts(id, confirmButton) {
   $('[name="confirmation-modal"] button.btn-secondary').prop("disabled", true);
   const response = await ProductsService.deleteProduct(id);
   removeConfimationModal();
-  if (response.status === 204) {
+  if (response.status === STATUS_CODES.DELETED) {
     // await renderPages[pageProps.path](pageProps);
     getProductsAndRenderTable();
     renderNotification({ message: SUCCESS_MESSAGES["Product Successfully Deleted"]("Product") });
