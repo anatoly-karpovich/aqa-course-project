@@ -20,10 +20,11 @@ function hideSpinners() {
   }
 }
 
-function removeSpinnerFromButton(button, innerText) {
-  button.innerHTML = "";
+function removeSpinnerFromButton(button, { innerText = "", innerHTML = "", style = null, disabled = false }) {
+  button.innerHTML += innerHTML ? innerHTML : "";
   button.innerText = innerText;
-  button.removeAttribute("disabled");
+  style ? (button.style = style) : button.removeAttribute("style");
+  disabled ? button.setAttribute("disabled", "") : button.removeAttribute("disabled");
 }
 
 function showHomeSpinners() {
@@ -77,6 +78,10 @@ function showDeliverySpinner() {
   renderSpinnerInContainer("#delivery-container");
 }
 
+function showAssignManagerSpinner() {
+  renderSpinnerInContainer("#assigned-manager-container");
+}
+
 function renderSpinnerInContainer(contaierSelector = "") {
   const contaier = document.querySelector(contaierSelector);
   const overlay = document.createElement("div");
@@ -95,12 +100,13 @@ function renderSpinnerInContainer(contaierSelector = "") {
 
 const buttonSpinner = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
 
-function setSpinnerToButton(button) {
-  const buttonWidth = button.offsetWidth;
-  const buttonHeight = button.offsetHeight;
-
-  button.style.width = `${buttonWidth}px`;
-  button.style.height = `${buttonHeight}px`;
+function setSpinnerToButton(button, { saveDimensions = true } = {}) {
+  if (saveDimensions) {
+    const buttonWidth = button.offsetWidth;
+    const buttonHeight = button.offsetHeight;
+    button.style.width = `${buttonWidth}px`;
+    button.style.height = `${buttonHeight}px`;
+  }
 
   button.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
   button.setAttribute("disabled", "");

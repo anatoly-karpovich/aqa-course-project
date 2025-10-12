@@ -79,13 +79,15 @@ function generateOrderDetailsInfoBar(order) {
           <span class="strong-details fw-bold">Order number: </span>
           <span class="fst-italic">${order._id}</span>
       </div>
-      <div class="d-flex justify-content-start p-horizontal-20 align-items-center flex-wrap mb-3">
+      <div class="d-flex justify-content-start p-horizontal-20 align-items-center flex-wrap mb-3 position-relative">
           <span class="strong-details fw-bold">Assigned Manager: </span>
-          ${
-            order.assignedManager?.firstName
-              ? generateEditAssignedManagerSection(order)
-              : '<span class="fst-italic" style="cursor: pointer"><u onclick="renderAssigneManagerModal()">Click to select manager</u></span>'
-          }
+            <div class="position-relative" id="assigned-manager-container">
+              ${
+                order.assignedManager?.firstName
+                  ? generateEditAssignedManagerSection(order)
+                  : '<span class="fst-italic" style="cursor: pointer"><u onclick="renderAssigneManagerModal()">Click to select manager</u></span>'
+              }
+            </div>
       </div>
     </div>
     <div class="ms-3 mb-3  align-items-center">

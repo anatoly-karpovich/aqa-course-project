@@ -12,7 +12,15 @@ function createManagersPageLayout(options = ManagersProps, response) {
                   ${generatePageTitle(options)}
                   ${generateButton(options.buttons.add)}
               </div>
-                  ${searchBar(options.buttons)}
+            <div class="d-flex flex-wrap align-items-center gap-2">
+                <form class="d-flex search-bar">
+                  <input class="form-control me-2" id="search" type="search" placeholder="Type a value..." maxlength="40" aria-label="Search" oninput="seachButtonHandler(this)">
+                  ${generateButton(options.buttons.search)}
+                </form>
+                <button class="btn btn-outline-primary ms-2 d-flex justify-content-start" id="filter" disabled>
+                    <i class="bi bi-funnel me-2"></i> Filter
+                </button>
+            </div>
                   ${chipsSection()}
           </div>
         </div>
@@ -87,7 +95,7 @@ function transformManagersForTable(managers) {
       [replaceApiToFeKeys._id]: el._id,
       [replaceApiToFeKeys.firstName]: el.firstName,
       [replaceApiToFeKeys.lastName]: el.lastName,
-      [replaceApiToFeKeys.roles]: el.roles.length > 1 ? roles.join(", ") : el.roles[0],
+      [replaceApiToFeKeys.roles]: el.roles.length > 1 ? el.roles.join(", ") : el.roles[0],
       [replaceApiToFeKeys.createdOn]: convertToDateAndTime(el.createdOn),
     };
   });

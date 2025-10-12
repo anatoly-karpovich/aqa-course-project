@@ -3,7 +3,7 @@ const CONTENT_CONTAINER_ID = "root";
 const CONTENT_ID = "contentInner";
 const PAGE_TITLE_ID = "title";
 
-const BASE_URL = "https://aqa-course-project.app/";
+const BASE_URL = "https://aqa-course-project.app";
 // const BASE_URL = "http://localhost:5000";
 
 const NUMBER_KEYS = ["amount", "price", "flat", "house"];
@@ -71,10 +71,25 @@ const SUCCESS_MESSAGES = {
   ["Password Successfully Changed"]: "Password was successfully changed",
   ["Manager Assigned"]: "Manager was successfully assigned to the order",
   ["Manager Unassigned"]: "Manager was successfully unassigned from the order",
+  ["Exported"]: "Data was successfully exported",
 };
 
 const ERROR_MESSAGES = {
   ["Connection Issue"]: `Connection issue. Please try again later.`,
+  ["Order not created"]: "Failed to create an order. Please try again later.",
+  ["Unable to create order"]: "Unable to create an order. Please try again later.",
+  ["No customers"]: "No customers found. Please add one before creating an order.",
+  ["No products"]: "No products found. Please add one before creating an order.",
+  ["Unable to edit customer"]: "Unable to update customer. Please try again later.",
+  ["Unable to edit product"]: "Unable to update products. Please try again later.",
+  ["Unable to assign manager"]: "Unable to assign manager. Please try again later.",
+  ["Failed to assign manager"]: "Failed to assign manager. Please try again later.",
+  ["Failed to update customer"]: "Failed to update customer. Please try again later.",
+  ["Failed to update products"]: "Failed to update products. Please try again later.",
+  ["Failed to create customer"]: "Failed to create customer. Please check the form.",
+  ["Customer exists"]: "Customer with this email already exists.",
+  ["Failed to create product"]: "Failed to create product. Please check the form.",
+  ["Failed to export"]: "Failed to export. Please try again later.",
 };
 
 const VALIDATION_ERROR_MESSAGES = {
@@ -138,6 +153,8 @@ const replaceApiToFeKeys = {
   username: "Username",
   roles: "Roles",
   assignedManager: "Assigned Manager",
+  products: "Products",
+  received: "Received",
 };
 
 const idToOrderNumber = {
@@ -208,4 +225,16 @@ const ROUTES = {
   SIGNIN: "#/login",
   HOME: "#/home",
   NOT_FOUND: "#/page-not-found",
+};
+
+const STATUS_CODES = {
+  OK: 200,
+  CREATED: 201,
+  DELETED: 204,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+  CONFLICT: 409,
+  INTERNAL_SERVER_ERROR: 500,
 };

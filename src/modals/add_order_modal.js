@@ -120,9 +120,11 @@ function addEventListelersToAddOrderModal() {
 
     const response = await OrdersService.createOrder(orderData);
     removeAddOrderModal();
-    if (response.data.IsSuccess) {
+    if (response.status === STATUS_CODES.CREATED) {
       renderNotification({ message: SUCCESS_MESSAGES["New Order Added"] });
       await renderOrdersPage();
+    } else if (response.status === STATUS_CODES.NOT_FOUND || response.status >= STATUS_CODES.INTERNAL_SERVER_ERROR) {
+      renderNotification({ message: ERROR_MESSAGES["Order not created"] }, true);
     } else {
       handleApiErrors(response, true);
     }
@@ -212,7 +214,8 @@ function generateAddOrderProductInput(options) {
 }
 
 function removeAddOrderModal() {
-  document.querySelector("[modal]").parentNode.removeChild(document.querySelector("[modal]"));
+  if (!document.querySelector("#add-order-modal")) return;
+  document.querySelector("#add-order-modal").parentNode.removeChild(document.querySelector("#add-order-modal"));
   orderModalWrap = null;
   $("body").removeClass("modal-open");
   $("body").removeAttr("style");

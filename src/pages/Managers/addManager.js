@@ -179,7 +179,7 @@ async function saveNewManager(event) {
   if (response.data.IsSuccess) {
     await renderManagersPage(ManagersProps);
     renderNotification({ message: SUCCESS_MESSAGES["New Manager Added"] });
-  } else if (response.status >= 500) {
+  } else if (response.status >= STATUS_CODES.INTERNAL_SERVER_ERROR) {
     handleApiErrors(response);
   } else {
     renderNotification({ message: response.data.ErrorMessage });

@@ -231,7 +231,7 @@ async function renderNotifications(data) {
     notifications = data;
   } else {
     const response = await NotificationsService.getNotifications();
-    if (response.status !== 200) {
+    if (response.status !== STATUS_CODES.OK) {
       handleApiErrors(response);
       return;
     }
@@ -279,7 +279,7 @@ async function clickOnNotification(target, event) {
   if (isRead === "true") return;
   showNotificationPopoverSpinner();
   const response = await NotificationsService.readNotification(notificationId);
-  if (response.status !== 200) {
+  if (response.status !== STATUS_CODES.OK) {
     handleApiErrors(response);
     renderNotification({ message: response.data.ErrorMessage }, true);
   } else {
@@ -293,7 +293,7 @@ async function markAllNotificationsAsRead(event) {
   event.preventDefault();
   showNotificationPopoverSpinner();
   const response = await NotificationsService.readAllNotifications();
-  if (response.status !== 200) {
+  if (response.status !== STATUS_CODES.OK) {
     handleApiErrors(response);
     renderNotification({ message: response.data.ErrorMessage }, true);
   } else {
@@ -318,7 +318,7 @@ function setNumberOfNotificationsToBadge(unreadAmount) {
 
 async function getNotificationsAndHangleBadge() {
   const response = await NotificationsService.getNotifications();
-  if (response.status !== 200) {
+  if (response.status !== STATUS_CODES.OK) {
     handleApiErrors(response);
   } else {
     handleNotificationBadge(response.data.Notifications);

@@ -41,7 +41,7 @@ async function renderCustomerDetailsModal(id) {
   try {
     // showSpinner();
     const response = await CustomersService.getCustomers(id);
-    if (response.status === 200) {
+    if (response.status === STATUS_CODES.OK) {
       createDetailsModal(customer_details_props(id), response.data);
       // hideSpinner();
       sideMenuActivateElement("Customers");
@@ -60,14 +60,18 @@ async function renderCustomerDetailsPage(id) {
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createCustomerDetailsPageLayout(emptyCustomer, []);
     showCustomerDetailsSpinners();
     const [customer, orders] = await Promise.all([CustomersService.getCustomers(id), CustomersService.getOrders(id)]);
-    if (customer.status === 200 && orders.status === 200 && state.checkPage(PAGES.CUSTOMER_DETAILS)) {
+    if (
+      customer.status === STATUS_CODES.OK &&
+      orders.status === STATUS_CODES.OK &&
+      state.checkPage(PAGES.CUSTOMER_DETAILS)
+    ) {
       document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createCustomerDetailsPageLayout(
         customer.data.Customer,
         orders.data.Orders
       );
       scrollToSection(`#${CONTENT_CONTAINER_ID}`);
     } else {
-      customer.status !== 200 ? handleApiErrors(customer, true) : handleApiErrors(orders, true);
+      customer.status !== STATUS_CODES.OK ? handleApiErrors(customer, true) : handleApiErrors(orders, true);
     }
   } catch (e) {
     console.error(e);
@@ -84,7 +88,7 @@ async function renderEditCustomerPage(id) {
     );
     renderSpinnerInContainer("#edit-customer-container");
     const response = await CustomersService.getCustomers(id);
-    if (response.status === 200 && state.checkPage(PAGES.EDIT_CUSTOMER)) {
+    if (response.status === STATUS_CODES.OK && state.checkPage(PAGES.EDIT_CUSTOMER)) {
       document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditCustomerLayout(
         edit_customer_props,
         response.data.Customer
@@ -161,7 +165,7 @@ async function renderProductDetailsModal(id) {
     renderSpinnerInContainer("#details-modal-container");
     const response = await ProductsService.getProducts(id);
     if (state.checkPage(PAGES.PRODUCTS)) {
-      if (response.status === 200) {
+      if (response.status === STATUS_CODES.OK) {
         setDataToProductDetailsModal(product_details_props(id), response.data);
         sideMenuActivateElement("Products");
       } else {
@@ -185,7 +189,7 @@ async function renderEditProductPage(id) {
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditProductLayout(edit_product_props, emptyProduct);
     renderSpinnerInContainer("#edit-product-container");
     const response = await ProductsService.getProducts(id);
-    if (response && response.status === 200 && state.checkPage(PAGES.EDIT_PRODUCT)) {
+    if (response && response.status === STATUS_CODES.OK && state.checkPage(PAGES.EDIT_PRODUCT)) {
       document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderEditProductLayout(
         edit_product_props,
         response.data.Product
@@ -230,7 +234,7 @@ async function renderOrderDetailsPage(id, withScroll = true) {
     }
     const [order, customers] = await Promise.all([OrdersService.getOrders(id), CustomersService.getCustomers()]);
     if (state.checkPage(PAGES.ORDER_DETAILS)) {
-      if (order && order.status === 200 && customers.status === 200) {
+      if (order && order.status === STATUS_CODES.OK && customers.status === STATUS_CODES.OK) {
         sideMenuActivateElement("Orders");
         state.order = order.data.Order;
         state.customers = customers.data.Customers;
@@ -242,7 +246,7 @@ async function renderOrderDetailsPage(id, withScroll = true) {
         addEventListelersToOrderDetailsPage();
         activateTab();
       } else {
-        const errorResponse = [order, customers].find((r) => r.status !== 200);
+        const errorResponse = [order, customers].find((r) => r.status !== STATUS_CODES.OK);
         handleApiErrors(errorResponse);
       }
     }
@@ -258,7 +262,7 @@ async function renderReceivingOrderDetailsPage(receiveButton) {
     setSpinnerToButton(receiveButton);
     const order = await OrdersService.getOrders(state.order._id);
     if (state.checkPage(PAGES.ORDER_DETAILS)) {
-      if (order && order.status === 200) {
+      if (order && order.status === STATUS_CODES.OK) {
         sideMenuActivateElement("Orders");
         state.order = order.data.Order;
         document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderOrderDetailsPageLayout(
@@ -283,16 +287,23 @@ async function renderCreateOrderModal() {
     state.page = PAGES.ORDERS;
     createAddOrderModal({ customers: [], products: [] });
     showAddOrderModalSpinner();
-    const [customers, products] = await Promise.all([CustomersService.getCustomers(), ProductsService.getProducts()]);
-    if (state.checkPage(PAGES.ORDERS))
-      if (customers.status === 200 && products.status === 200) {
+    const [customers, products] = (
+      await Promise.allSettled([CustomersService.getCustomers(), ProductsService.getProducts()])
+    ).map((r) => r.value);
+    if (state.checkPage(PAGES.ORDERS)) {
+      if (customers.status === STATUS_CODES.OK && products.status === STATUS_CODES.OK) {
         setDataToAddOrderModal({ customers: customers.data.Customers, products: products.data.Products });
         hideSpinners();
         sideMenuActivateElement("Orders");
+      } else if (customers.status === STATUS_CODES.UNAUTHORIZED || products.status === STATUS_CODES.UNAUTHORIZED) {
+        removeAddOrderModal();
+        const response = [customers, products].find((r) => r.status === STATUS_CODES.UNAUTHORIZED);
+        handleApiErrors(response);
       } else {
-        handleApiErrors(customers);
-        handleApiErrors(products);
+        removeAddOrderModal();
+        renderNotification({ message: ERROR_MESSAGES["Order not created"] }, true);
       }
+    }
   } catch (e) {
     console.error(e);
     renderErrorPage();
@@ -304,7 +315,7 @@ async function renderScheduleDeliveryPage(id) {
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderScheduleDeliveryLayout(emptyOrder, delivery_props);
     showDeliverySpinner();
     const response = await OrdersService.getOrders(id);
-    if (response.status !== 200) {
+    if (response.status !== STATUS_CODES.OK) {
       handleApiErrors(response);
       return;
     }
@@ -391,17 +402,9 @@ function renderProcessOrderModal() {
 
 async function renderEditCustomerModal() {
   try {
-    edit_order_details_modal_props.data = _.cloneDeep(state.customers);
-    edit_order_details_modal_props.customers.options.values = edit_order_details_modal_props.data.map((c) => c.name);
-    edit_order_details_modal_props.customers.options.titles = edit_order_details_modal_props.data.map((c) => c.email);
-    edit_order_details_modal_props.customers.defaultValue = {
-      name: state.order.customer.name,
-      title: state.order.customer.email,
-    };
-    createEditCustomerModal();
-    showEditCustomerModalSpinner();
+    setSpinnerToButton(document.querySelector("#edit-customer-pencil"), { saveDimensions: false });
     const customers = await CustomersService.getCustomers();
-    if (customers.status === 200) {
+    if (customers.status === STATUS_CODES.OK) {
       edit_order_details_modal_props.data = _.cloneDeep(customers.data.Customers).sort((a, b) =>
         a.name.localeCompare(b.name)
       );
@@ -411,11 +414,11 @@ async function renderEditCustomerModal() {
         name: state.order.customer.name,
         title: state.order.customer.email,
       };
-      // createEditCustomerModal(customers.data.Customers);
-      setDataToEditCustomerModal();
-      // hideSpinner();
-    } else {
+      createEditCustomerModal();
+    } else if (customers.status === STATUS_CODES.UNAUTHORIZED) {
       handleApiErrors(customers);
+    } else {
+      renderNotification({ message: ERROR_MESSAGES["Unable to edit customer"] }, true);
     }
   } catch (e) {
     console.error(e);
@@ -425,29 +428,40 @@ async function renderEditCustomerModal() {
 
 async function renderAssigneManagerModal() {
   try {
-    const managers = (await ManagersService.getManagers()).data.Users;
-    const current = state.order.assignedManager;
-    createEditManagerModal(managers, current ? current._id : null);
-    const activeItem = document.querySelector("#assign-manager-modal-container li.active");
-    if (activeItem) {
-      setTimeout(() => activeItem.scrollIntoView({ block: "center", behavior: "smooth" }), 300);
+    showAssignManagerSpinner();
+    const response = await ManagersService.getManagers();
+    if (response.status === STATUS_CODES.OK) {
+      const managers = response.data.Users;
+      const current = state.order.assignedManager;
+      createEditManagerModal(managers, current ? current._id : null);
+      const activeItem = document.querySelector("#assign-manager-modal-container li.active");
+      if (activeItem) {
+        setTimeout(() => activeItem.scrollIntoView({ block: "center", behavior: "smooth" }), 300);
+      }
+    } else if (response.status === STATUS_CODES.UNAUTHORIZED) {
+      handleApiErrors(response);
+    } else {
+      renderNotification({ message: ERROR_MESSAGES["Unable to assign manager"] }, true);
     }
   } catch (e) {
     console.error(e);
     renderErrorPage();
+  } finally {
+    hideSpinners();
   }
 }
 
 async function renderEditProductsModal() {
   try {
-    await createEditProductsModal([state.order.products[0]]);
-    showEditProductsModalSpinner();
+    const pencil = document.querySelector("#edit-products-pencil");
+    setSpinnerToButton(pencil);
     const products = await ProductsService.getProducts();
-    if (products.status === 200) {
-      setDataToEditProductsModal(products.data.Products.sort((a, b) => a.name.localeCompare(b.name)));
-      sideMenuActivateElement("Orders");
-    } else {
+    if (products.status === STATUS_CODES.OK) {
+      createEditProductsModal(products.data.Products.sort((a, b) => a.name.localeCompare(b.name)));
+    } else if (products.status === STATUS_CODES.UNAUTHORIZED) {
       handleApiErrors(products);
+    } else {
+      renderNotification({ message: ERROR_MESSAGES["Unable to edit product"] }, true);
     }
   } catch (e) {
     console.error(e);
@@ -465,7 +479,7 @@ async function renderManagersPage(options = ManagersProps) {
     });
     showTableSpinner();
     const response = await ManagersService.getManagers();
-    if (response.status === 200 && state.checkPage(PAGES.MANAGERS)) {
+    if (response.status === STATUS_CODES.OK && state.checkPage(PAGES.MANAGERS)) {
       document.getElementById(CONTENT_CONTAINER_ID).innerHTML = createManagersPageLayout(options, response.data);
     } else {
       handleApiErrors(response);
@@ -495,7 +509,7 @@ async function renderManagerDetailsPage(id) {
     document.getElementById(CONTENT_CONTAINER_ID).innerHTML = generateManagerDetailsPageLayout(emptyManager, []);
     showManagerDetailsSpinners();
     const response = await ManagersService.getManagers(id);
-    if (response.status === 200 && state.checkPage(PAGES.MANAGER_DETAILS)) {
+    if (response.status === STATUS_CODES.OK && state.checkPage(PAGES.MANAGER_DETAILS)) {
       document.getElementById(CONTENT_CONTAINER_ID).innerHTML = generateManagerDetailsPageLayout(
         response.data.User,
         response.data.Orders
@@ -548,7 +562,7 @@ async function renderHomePage(options = {}) {
     );
     const metrics = await MetricsService.get();
     if (state.checkPage(PAGES.HOME)) {
-      if (metrics.status === 200) {
+      if (metrics.status === STATUS_CODES.OK) {
         document.getElementById(CONTENT_CONTAINER_ID).innerHTML = renderHomePageLayout(metrics.data.Metrics);
         loadCharts(
           metrics.data.Metrics.orders.ordersCountPerDay,

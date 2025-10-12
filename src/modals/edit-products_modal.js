@@ -1,7 +1,7 @@
 let editProductsModalWrap = null;
 const updateProductsButtonSelector = "div#edit-products-modal #update-products-btn";
 
-async function createEditProductsModal(data) {
+function createEditProductsModal(data) {
   setProductsToEditProductsModalProps(data);
   if (editProductsModalWrap !== null) {
     editProductsModalWrap.remove();
@@ -68,7 +68,22 @@ async function createEditProductsModal(data) {
     };
     const submit = document.querySelector("div#edit-products-modal #update-products-btn");
     setSpinnerToButton(submit);
-    await submitOrder(orderData, removeEditProductsModal);
+    try {
+      const response = await OrdersService.editOrder(orderData);
+      if (response.status === STATUS_CODES.OK) {
+        renderNotification({ message: SUCCESS_MESSAGES["Order Successfully Updated"] });
+        await renderOrderDetailsPage(orderData._id);
+      } else if (response.status === STATUS_CODES.UNAUTHORIZED) {
+        handleApiErrors(response, true);
+      } else {
+        renderNotification({ message: ERROR_MESSAGES["Failed to update products"] }, true);
+      }
+    } catch (e) {
+      console.error(e);
+      renderErrorPage();
+    } finally {
+      removeEditProductsModal();
+    }
   });
 
   $("div.modal-footer #cancel-edit-products-modal-btn").on("click", (e) => {
