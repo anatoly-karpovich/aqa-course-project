@@ -95,7 +95,7 @@ function transformManagersForTable(managers) {
       [replaceApiToFeKeys._id]: el._id,
       [replaceApiToFeKeys.firstName]: el.firstName,
       [replaceApiToFeKeys.lastName]: el.lastName,
-      [replaceApiToFeKeys.roles]: el.roles.length > 1 ? roles.join(", ") : el.roles[0],
+      [replaceApiToFeKeys.roles]: el.roles.length > 1 ? el.roles.join(", ") : el.roles[0],
       [replaceApiToFeKeys.createdOn]: convertToDateAndTime(el.createdOn),
     };
   });

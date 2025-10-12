@@ -6,7 +6,10 @@ function createExportModal() {
       all: ["name", "price", "manufacturer", "amount", "createdOn", "notes"],
       default: ["name", "price", "manufacturer", "createdOn"],
     },
-    orders: { all: ["status", "assignedManager", "customer", "products", "createdOn"], default: [] },
+    orders: {
+      all: ["status", "total_price", "delivery", "customer", "products", "assignedManager", "createdOn"],
+      default: ["status", "total_price", "customer", "products", "createdOn"],
+    },
     customers: {
       all: ["email", "name", "country", "city", "street", "house", "flat", "phone", "createdOn", "notes"],
       default: ["email", "name", "country", "createdOn"],
@@ -66,7 +69,7 @@ function createExportModal() {
               <label class="form-label fw-semibold" for="export-fields-form">Select fields to include:</label>
               <form id="export-fields-form" class="mt-2">
                 <div class="form-check mb-2">
-                  <input class="form-check-input" type="checkbox" id="select-all-fields" onchange="toggleSelectAllFields(this)">
+                  <input class="form-check-input" type="checkbox" id="select-all-fields" onclick="toggleSelectAllFields(this)">
                   <label class="form-check-label fw-semibold" for="select-all-fields">Select All</label>
                 </div>
                 <div id="fields-checkboxes" class="d-flex flex-column gap-1">
@@ -121,7 +124,7 @@ function createExportFieldCheckbox(name, checked) {
             value="${name}" id="${name}-export-field" name="export-field"
             onClick="exportCheckboxHandler(this)">
             <label class="form-check-label" for="${name}-export-field">
-                ${replaceApiToFeKeys[name]}
+                ${idToOrderNumber[name] ?? replaceApiToFeKeys[name]}
             </label>
         </div>`;
 }
@@ -129,19 +132,15 @@ function createExportFieldCheckbox(name, checked) {
 function toggleSelectAllFields(checkbox) {
   checkbox.toggleAttribute("checked");
   const isChecked = checkbox.getAttribute("checked") === "";
-  const checkboxes = $('[name="export-field"]');
-  setTimeout(() => {
-    checkboxes.each(function () {
-      $(this).prop("checked", isChecked);
-    });
-  }, 0);
+  const checkboxes = [...document.querySelectorAll('[name="export-field"]')];
+  checkboxes.forEach((el) => (isChecked ? el.setAttribute("checked", "") : el.removeAttribute("checked")));
 }
 
 function handleExportSelectAllFields() {
   const checkboxes = [...document.querySelectorAll('[name="export-field"]')];
   const shouldBeChecked = checkboxes.every((el) => el.getAttribute("checked") === "");
   if (shouldBeChecked) document.getElementById("select-all-fields").setAttribute("checked", "");
-  else document.getElementById("select-all-fields").removeAttribute("checked");
+  else setTimeout(() => document.getElementById("select-all-fields").removeAttribute("checked"), 0);
 }
 
 function exportCheckboxHandler(checkbox) {
@@ -171,8 +170,64 @@ async function submitExport(button) {
     } else if (state.page === "Customers") {
       const response = exportAll ? await CustomersService.getCustomers() : await getSortedCustomers();
       data = response.data.Customers;
+    } else if (state.page === "Orders") {
+      const response = exportAll ? await OrdersService.getOrders() : await getSortedOrders();
+      data = response.data.Orders;
     }
-    data = data.map((p) => fields.reduce((acc, field) => ({ ...acc, [replaceApiToFeKeys[field]]: p[field] }), {}));
+    data = data.map((p) =>
+      fields.reduce((acc, field) => {
+        let obj = { ...acc };
+        if (typeof p[field] === "object") {
+          if (field === "customer") {
+            const customer = _.omit(p[field], "_id");
+            Object.keys(customer).forEach(
+              (key) =>
+                (obj[`${replaceApiToFeKeys[field] ?? _.capitalize(field)} - ${_.capitalize(replaceApiToFeKeys[key])}`] =
+                  p[field][key])
+            );
+          } else if (field === "products") {
+            p[field].forEach((el, i) => {
+              const product = _.omit(el, "_id");
+              Object.keys(product).forEach(
+                (key) => (obj[`Product ${i + 1} - ${_.capitalize(replaceApiToFeKeys[key])}`] = el[key])
+              );
+            });
+          } else if (field === "assignedManager") {
+            if (p[field]) {
+              const manager = p[field] ? _.pick(p[field], "firstName", "lastName") : { firstName: "", lastName: "" };
+              Object.keys(manager).forEach(
+                (key) =>
+                  (obj[
+                    `${replaceApiToFeKeys[field] ?? _.capitalize(field)} - ${_.capitalize(replaceApiToFeKeys[key])}`
+                  ] = p[field][key])
+              );
+            }
+          } else if (field === "delivery") {
+            if (p[field]) {
+              const d = p[field];
+              const deivery = p[field]
+                ? { finalDate: convertToDate(d.finalDate), condition: d.condition, ...d.address }
+                : {
+                    country: "",
+                    city: "",
+                    street: "",
+                    house: "",
+                    flat: "",
+                    finalDate: "",
+                    condition: "",
+                  };
+              Object.keys(deivery).forEach(
+                (key) =>
+                  (obj[
+                    `${replaceApiToFeKeys[field] ?? _.capitalize(field)} - ${_.capitalize(replaceApiToFeKeys[key])}`
+                  ] = deivery[key])
+              );
+            }
+          }
+        } else obj[replaceApiToFeKeys[field]] = p[field];
+        return obj;
+      }, {})
+    );
     exportDataToFile(data, exportType);
     renderNotification({ message: SUCCESS_MESSAGES["Exported"] });
   } catch (e) {

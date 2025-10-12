@@ -153,6 +153,8 @@ const replaceApiToFeKeys = {
   username: "Username",
   roles: "Roles",
   assignedManager: "Assigned Manager",
+  products: "Products",
+  received: "Received",
 };
 
 const idToOrderNumber = {

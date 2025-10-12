@@ -182,7 +182,7 @@ function addEventListelersToAddNewCustomerPage(options = add_new_customer_props.
         add_new_customer_props.requestOpts.body = customer;
         try {
           const response = await CustomersService.createCustomer(add_new_customer_props.requestOpts.body);
-          if (response.status === STATUS_CODES.OK) {
+          if (response.status === STATUS_CODES.CREATED) {
             renderNotification({ message: SUCCESS_MESSAGES["New Customer Added"] });
             setRoute(ROUTES.CUSTOMERS);
           } else if (response.status === STATUS_CODES.UNAUTHORIZED) {

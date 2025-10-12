@@ -23,6 +23,7 @@ function renderOrdersPageLayout(options = OrdersProps, response = {}) {
                 <button class="btn btn-outline-primary ms-2 d-flex justify-content-start" id="filter">
                     <i class="bi bi-funnel me-2"></i> Filter
                 </button>
+                <button id="export" class="btn btn-primary ms-2 page-title-button" onclick="createExportModal()">Export</button>       
             </div>
                 ${chipsSection()}
         </div>
@@ -104,7 +105,7 @@ const OrdersProps = {
 };
 
 function addEventListelersToOrdersPage() {
-  $("button.page-title-button").on("click", async (e) => {
+  $(`[name="add-button"]`).on("click", async (e) => {
     e.preventDefault();
 
     setSpinnerToButton(e.target);
